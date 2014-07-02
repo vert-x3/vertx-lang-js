@@ -33,8 +33,6 @@ which was published under public domain (see above)
 
     var moduleContent = '',
       moduleUri;
-    System.out.println("Trying to load " + id);
-
     var fileOrStream;
 
     // First try and load from classpath
@@ -45,7 +43,6 @@ which was published under public domain (see above)
       moduleUri = require.resolve(id);
       if (moduleUri.endsWith('undefined')) {
         //throw "Can't find module " + id;
-        System.out.println("Can't find module " + id);
         throw "Can't find module " + id;
       }
       fileOrStream = new java.io.File(moduleUri);
@@ -96,8 +93,6 @@ which was published under public domain (see above)
   require.resolve = function(id) {
     // TODO: 1. load node core modules
 
-    System.out.println("Resolving: " + id);
-
     // 2. dot-relative module id, like './foo/bar'
     var parts = id.match(/^(\.?\.(?:\\|\/)|(?:\\|\/))(.+)$/),
       isRelative = false,
@@ -121,8 +116,6 @@ which was published under public domain (see above)
           uri = '';
       }
 
-      System.out.println("Rooted id is : " + rootedId);
-
       if (uri = loadAsFile(rootedId)) {
       }
       else if (uri = loadAsDir(rootedId)) {
@@ -135,7 +128,6 @@ which was published under public domain (see above)
       }
 
       if (uri !== '') return toAbsolute(uri);
-
 
       throw 'Require Error: Not found.';
     }
@@ -207,7 +199,6 @@ which was published under public domain (see above)
       id += ".js";
     }
     var url = cl.getResource(id);
-    System.out.println("url is " + url);
     return url;
   }
 
