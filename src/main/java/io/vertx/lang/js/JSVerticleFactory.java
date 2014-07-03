@@ -2,8 +2,8 @@ package io.vertx.lang.js;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Verticle;
-import io.vertx.core.VerticleFactory;
 import io.vertx.core.Vertx;
+import io.vertx.core.spi.VerticleFactory;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;

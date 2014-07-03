@@ -1,7 +1,7 @@
 @declare{'genMethodCall'}
-j_@{ifaceName}.@{method.name}(
+@if{static}J@{ifaceSimpleName}@else{}j_@{ifaceName}@end{}.@{method.name}(
 	@foreach{param: method.params}
-	@includeNamed{'convParam'}
+@includeNamed{'convParam'}
 	@end{", "})
 @end{}
 
@@ -54,53 +54,53 @@ new @{helper.getSimpleName(returnType)}(@includeNamed{templ})
 @end{}
 
 @declare{'genMethod'}
-  @if{static == method.staticMethod}
-	@if{method.comment != null}
+	@if{static == method.staticMethod}
+		@if{method.comment != null}
   /*\n
   @{method.comment}
   */\n
-	@end{}
+		@end{}
   @if{static}@{ifaceSimpleName}@else{}this@end{}.@{method.name} = function(@foreach{param0: method.params}@{param0.name}@end{", "}) {\n
-	@if{method.squashed}
+		@if{method.squashed}
     switch (arguments.length) {\n
-		@foreach{method: methodsByName.get(method.name)}
+			@foreach{method: methodsByName.get(method.name)}
       case @{method.params.size()}:\n
-			@if{!method.returnType.equals("void")}
-				@if{method.fluent}
+				@if{!method.returnType.equals("void")}
+					@if{method.fluent}
         @includeNamed{'genMethodCall'};\n
-					@if{static}
-			  return @{ifaceSimpleName};\n
-					@else{}
+						@if{static}
+        return @{ifaceSimpleName};\n
+						@else{}
         return that;\n
+						@end{}
+					@else{}
+        return @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType};\n
 					@end{}
 				@else{}
-        return @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType};\n
-				@end{}
-			@else{}
         @includeNamed{'genMethodCall'};\n
         return;\n
+				@end{}
 			@end{}
-		@end{}
       default: throw "Invalid arguments"\n
     }\n
-	@else{}
-		@if{!method.returnType.equals("void")}
-			@if{method.fluent}
-    @includeNamed{'genMethodCall'};\n
-    		@if{static}
-       return @{ifaceSimpleName};\n
-    		@else{}
-       return that;\n
-    		@end{}
-			@else{}
-    return @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType};\n
-			@end{}
 		@else{}
+			@if{!method.returnType.equals("void")}
+				@if{method.fluent}
+    @includeNamed{'genMethodCall'};\n
+    			@if{static}
+    return @{ifaceSimpleName};\n
+    			@else{}
+    return that;\n
+    			@end{}
+				@else{}
+    return @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType};\n
+				@end{}
+			@else{}
 	  @includeNamed{'genMethodCall'};\n
+			@end{}
 		@end{}
-  @end{}
   };\n\n
-  @end{}
+	@end{}
 @end{}
 
 // Here is our generated JavaScript module\n\n
@@ -110,7 +110,8 @@ new @{helper.getSimpleName(returnType)}(@includeNamed{templ})
 var @{helper.getSimpleName(referencedType)} = require('vertx/@{helper.convertCamelCaseToFileNameWithUnderscores(helper.getSimpleName(referencedType))}');\n
 @end{}
 \n
-var io = Packages.io;
+var io = Packages.io;\n
+var J@{ifaceSimpleName} = Packages.@{helper.getNonGenericType(ifaceFQCN)};
 \n\n
 @code{ifaceName = helper.decapitaliseFirstLetter(ifaceSimpleName)}
 @if{ifaceComment != null}
@@ -118,15 +119,15 @@ var io = Packages.io;
 @{ifaceComment}
 */\n
 @end{}
-var @{ifaceSimpleName} = function() {\n
-  var j_@{ifaceName};\n
+var @{ifaceSimpleName} = function(j_val) {\n
+  var j_@{ifaceName} = j_val;\n
   var that = this;
 @foreach{superType: superTypes}
   @{helper.getSimpleName(helper.getNonGenericType(superType))}.call(this, j_val);\n
 @end{}
 \n
-@foreach{method : squashedMethods}
-@includeNamed{'genMethod'; static=false}
+@foreach{method:squashedMethods}
+@includeNamed{'genMethod';static=false}
 @end{}
   // Get a reference to the underlying Java delegate\n
   this._jdel = function() {\n
@@ -134,6 +135,9 @@ var @{ifaceSimpleName} = function() {\n
   }\n\n
 };\n
 \n
+@foreach{method:squashedMethods}
+@includeNamed{'genMethod';static=true}
+@end{}
 
 // We export the Constructor function\n
 module.exports = @{ifaceSimpleName};

@@ -2,7 +2,6 @@ package io.vertx.test.lang.js;
 
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
-import io.vertx.core.VertxFactory;
 
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>
@@ -10,7 +9,7 @@ import io.vertx.core.VertxFactory;
 public class ExampleRunner {
 
   public static void main(String[] args) {
-    Vertx vertx = VertxFactory.newVertx();
+    Vertx vertx = Vertx.newVertx();
     vertx.deployVerticle("js:echo_server", new DeploymentOptions(), ar -> {
       if (ar.succeeded()) {
         System.out.println("Succeeded in deploying");
