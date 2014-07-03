@@ -11,6 +11,10 @@ import io.vertx.core.streams.ReadStream;
 import io.vertx.core.streams.WriteStream;
 
 /**
+ * Actually run the generation
+ *
+ * TODO - we should wrap this in a Maven MOJO so it can run as part of the build lifecyle
+ *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
 public class Gen {

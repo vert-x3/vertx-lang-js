@@ -53,6 +53,55 @@ new @{helper.getSimpleName(returnType)}(@includeNamed{templ})
 	@end{}
 @end{}
 
+@declare{'genMethod'}
+  @if{static == method.staticMethod}
+	@if{method.comment != null}
+  /*\n
+  @{method.comment}
+  */\n
+	@end{}
+  @if{static}@{ifaceSimpleName}@else{}this@end{}.@{method.name} = function(@foreach{param0: method.params}@{param0.name}@end{", "}) {\n
+	@if{method.squashed}
+    switch (arguments.length) {\n
+		@foreach{method: methodsByName.get(method.name)}
+      case @{method.params.size()}:\n
+			@if{!method.returnType.equals("void")}
+				@if{method.fluent}
+        @includeNamed{'genMethodCall'};\n
+					@if{static}
+			  return @{ifaceSimpleName};\n
+					@else{}
+        return that;\n
+					@end{}
+				@else{}
+        return @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType};\n
+				@end{}
+			@else{}
+        @includeNamed{'genMethodCall'};\n
+        return;\n
+			@end{}
+		@end{}
+      default: throw "Invalid arguments"\n
+    }\n
+	@else{}
+		@if{!method.returnType.equals("void")}
+			@if{method.fluent}
+    @includeNamed{'genMethodCall'};\n
+    		@if{static}
+       return @{ifaceSimpleName};\n
+    		@else{}
+       return that;\n
+    		@end{}
+			@else{}
+    return @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType};\n
+			@end{}
+		@else{}
+	  @includeNamed{'genMethodCall'};\n
+		@end{}
+  @end{}
+  };\n\n
+  @end{}
+@end{}
 
 // Here is our generated JavaScript module\n\n
 
@@ -69,51 +118,15 @@ var io = Packages.io;
 @{ifaceComment}
 */\n
 @end{}
-var @{ifaceSimpleName} = function(j_val) {\n
-  var j_@{ifaceName} = j_val;\n
+var @{ifaceSimpleName} = function() {\n
+  var j_@{ifaceName};\n
   var that = this;
 @foreach{superType: superTypes}
   @{helper.getSimpleName(helper.getNonGenericType(superType))}.call(this, j_val);\n
 @end{}
 \n
 @foreach{method : squashedMethods}
-@if{method.comment != null}
-  /*\n
-  @{method.comment}
-  */\n
-@end{}
-  this.@{method.name} = function(@foreach{param0: method.params}@{param0.name}@end{", "}) {\n
-@if{method.squashed}
-    switch (arguments.length) {\n
-@foreach{method: methodsByName.get(method.name)}
-      case @{method.params.size()}:\n
-	@if{!method.returnType.equals("void")}
-		@if{method.fluent}
-        @includeNamed{'genMethodCall'};\n
-        return that;\n
-		@else{}
-        return @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType};\n
-		@end{}
-	@else{}
-        @includeNamed{'genMethodCall'};\n
-        return;\n
-	@end{}
-@end{}
-      default: throw "Invalid arguments"\n
-    }\n
-@else{}
-@if{!method.returnType.equals("void")}
-	@if{method.fluent}
-    @includeNamed{'genMethodCall'};\n
-    return that;\n
-	@else{}
-    return @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType};\n
-	@end{}
-@else{}
-	  @includeNamed{'genMethodCall'};\n
-@end{}
-@end{}
-  };\n\n
+@includeNamed{'genMethod'; static=false}
 @end{}
   // Get a reference to the underlying Java delegate\n
   this._jdel = function() {\n
