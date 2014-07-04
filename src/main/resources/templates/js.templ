@@ -26,8 +26,8 @@ function(jVal) { @{param.name}(new @{helper.getSimpleName(genericType)}(jVal))}
 		@end{}
 	@else{param.type.equals('io.vertx.core.json.JsonObject')}
 new io.vertx.core.json.JsonObject(JSON.stringify(@{param.name}))
-  @else{param.type.equals('io.vertx.core.net.NetServerOptions')}
-new io.vertx.core.net.NetServerOptions(new io.vertx.core.json.JsonObject(JSON.stringify(@{param.name})))
+  @else{param.type.endsWith('Options')}
+new @{param.type}(new io.vertx.core.json.JsonObject(JSON.stringify(@{param.name})))
 	@else{helper.isBasicType(param.type)}
 @{param.name}
 	@else{}
@@ -44,7 +44,7 @@ ar.result()
 @end{}
 
 @declare{'convReturn'}
-	@if{returnType.equals('java.lang.String')}
+	@if{returnType.startsWith('java.util.List') || returnType.startsWith('java.util.Set')}
 @includeNamed{templ}
 	@else{helper.isBasicType(returnType)}
 @includeNamed{templ}
@@ -103,9 +103,6 @@ new @{helper.getSimpleName(returnType)}(@includeNamed{templ})
 	@end{}
 @end{}
 
-// Here is our generated JavaScript module\n\n
-
-// Require stuff that we need\n
 @foreach{referencedType : referencedTypes}
 var @{helper.getSimpleName(referencedType)} = require('vertx/@{helper.convertCamelCaseToFileNameWithUnderscores(helper.getSimpleName(referencedType))}');\n
 @end{}
@@ -121,7 +118,7 @@ var J@{ifaceSimpleName} = Packages.@{helper.getNonGenericType(ifaceFQCN)};
 @end{}
 var @{ifaceSimpleName} = function(j_val) {\n
   var j_@{ifaceName} = j_val;\n
-  var that = this;
+  var that = this;\n
 @foreach{superType: superTypes}
   @{helper.getSimpleName(helper.getNonGenericType(superType))}.call(this, j_val);\n
 @end{}

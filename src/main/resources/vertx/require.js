@@ -30,6 +30,8 @@ which was published under public domain (see above)
 
   var require = global.require = function(id) { /*debug*///console.log('require('+id+')');
 
+    System.out.println("requiring: " + id);
+
     if (typeof arguments[0] !== 'string') throw 'USAGE: require(moduleId)';
 
     var moduleContent = '',
@@ -71,7 +73,7 @@ which was published under public domain (see above)
         require._root.shift();
       }
       catch(e) {
-        throw 'Unable to require source code from "' + moduleUri + '": ' + e.toSource();
+        throw 'Unable to require source code from "' + moduleUri + '": ' + e;
       }
 
       exports = module.exports || exports;
