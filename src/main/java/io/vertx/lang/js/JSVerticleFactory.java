@@ -30,10 +30,7 @@ public class JSVerticleFactory implements VerticleFactory {
   }
   @Override
   public Verticle createVerticle(String verticleName, ClassLoader classLoader) throws Exception {
-    if (!verticleName.startsWith("js:")) {
-      throw new IllegalStateException("verticleName must begin with js:");
-    }
-    return new JSVerticle(verticleName.substring(3));
+    return new JSVerticle(verticleName);
   }
 
   private class JSVerticle extends AbstractVerticle {
@@ -67,9 +64,9 @@ public class JSVerticleFactory implements VerticleFactory {
       if (engine == null) {
         throw new IllegalStateException("Cannot find Nashorn JavaScript engine - maybe you are not running with Java 8 or later?");
       }
-      URL url = getClass().getClassLoader().getResource("vertx/require.js");
+      URL url = getClass().getClassLoader().getResource("vertx/util/require.js");
       if (url == null) {
-        throw new IllegalStateException("Cannot find vertx/require.js on classpath");
+        throw new IllegalStateException("Cannot find vertx/util/require.js on classpath");
       }
       try (Scanner scanner = new Scanner(url.openStream(), "UTF-8").useDelimiter("\\A")) {
         String requireJS = scanner.next();
@@ -78,8 +75,9 @@ public class JSVerticleFactory implements VerticleFactory {
         throw new IllegalStateException("Failed to load vertx/require.js", e);
       }
       try {
+        // Put the globals in
         engine.put("__jvertx", vertx);
-        engine.eval("var Vertx = require('vertx/vertx'); var vertx = new Vertx(__jvertx);");
+        engine.eval("var Vertx = require('vertx/vertx'); var vertx = new Vertx(__jvertx); var console = require('vertx/util/console');");
       } catch (ScriptException e) {
         throw new IllegalStateException("Failed to eval: " + e.getMessage(), e);
       }

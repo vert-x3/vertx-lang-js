@@ -62,7 +62,7 @@ which was published under public domain (see above)
     }
 
     if (moduleContent) {
-      try {
+      //try {
         var f = new Function('require', 'exports', 'module', moduleContent),
           exports = require.cache[moduleUri] || {},
           module = { id: id, uri: moduleUri, exports: exports };
@@ -71,10 +71,10 @@ which was published under public domain (see above)
         require._root.unshift(moduleUri);
         f.call({}, require, exports, module);
         require._root.shift();
-      }
-      catch(e) {
-        throw 'Unable to require source code from "' + moduleUri + '": ' + e;
-      }
+//      }
+//      catch(e) {
+//        throw 'Unable to require source code from "' + moduleUri + '": ' + e;
+//      }
 
       exports = module.exports || exports;
       require.cache[id] = exports;

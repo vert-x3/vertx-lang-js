@@ -1,3 +1,5 @@
+console.log("in example server, vertx is " + vertx);
+
 var options = {
   host: "localhost",
   port: 8080

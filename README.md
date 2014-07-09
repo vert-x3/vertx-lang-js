@@ -8,5 +8,7 @@ Tests TODO:
 3. Implement async start and stop (maybe can pass in a function as a variable to the script)
 4. Test all the different types of constructs in the API.
 5. Test the docs are generated properly
+6. Test the require function properly
+7. test exceptions are propagated properly
 
 
