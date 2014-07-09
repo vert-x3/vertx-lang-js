@@ -19,17 +19,15 @@ public class JSVerticleFactory implements VerticleFactory {
   private Vertx vertx;
   private ScriptEngine engine;
 
-
   @Override
   public void init(Vertx vertx) {
     this.vertx = vertx;
   }
 
   @Override
-  public boolean matches(String verticleName) {
-    return verticleName.startsWith("js:");
+  public String prefix() {
+    return "js";
   }
-
   @Override
   public Verticle createVerticle(String verticleName, ClassLoader classLoader) throws Exception {
     if (!verticleName.startsWith("js:")) {

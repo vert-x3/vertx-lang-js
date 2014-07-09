@@ -1,9 +1,16 @@
+
+@comment{"Generate a call to a Java API method"}
+@comment{"===================================="}
+
 @declare{'genMethodCall'}
 @if{static}J@{ifaceSimpleName}@else{}j_@{ifaceName}@end{}.@{method.name}(
 	@foreach{param: method.params}
 @includeNamed{'convParam'}
 	@end{", "})
 @end{}
+
+@comment{"Generate the code that converts a parameter from JavaScript to Java to call a Java API method"}
+@comment{"============================================================================================="}
 
 @declare{'convParam'}
 	@if{param.type.startsWith('io.vertx.core.Handler<')}
@@ -12,22 +19,24 @@
 			@code{genericType = helper.getGenericType(genericType)}
 			@if{genericType.equals('java.lang.Void')}
 function(ar) { if (ar.succeeded()) { @{param.name}(null, null) } else { @{param.name}(null, ar.cause()); }}
-			@else{helper.isBasicType(genericType)}
-function(ar) { if (ar.succeeded()) { @{param.name}(@includeNamed{'convReturn'; templ='arVal'; returnType=genericType}, null) } else { @{param.name}(null, ar.cause()); }}
+			@else{helper.isBasicType(genericType) || genericType.startsWith('java.util.List') || genericType.startsWith('java.util.Set')}
+function(ar) {if (ar.succeeded()) { @{param.name}(@includeNamed{'convReturn'; templ='arVal'; returnType=genericType}, null) } else { @{param.name}(null, ar.cause()); }}
 			@else{}
-function(ar) { if (ar.succeeded()) { @{param.name}(new @{helper.getSimpleName(genericType)}(ar.result()), null) } else { @{param.name}(null, ar.cause()); }}
+function(ar) { if (ar.succeeded()) { @{param.name}(new @{helper.getSimpleName(helper.getNonGenericType(genericType))}(ar.result()), null) } else { @{param.name}(null, ar.cause()); }}
 			@end{}
 		@else{genericType.equals('java.lang.Void')}
 @{param.name}
 		@else{helper.isBasicType(genericType)}
 function(jVal) { @{param.name}(@includeNamed{'convReturn'; templ='basicVal'; returnType=genericType})}
 		@else{}
-function(jVal) { @{param.name}(new @{helper.getSimpleName(genericType)}(jVal))}
+function(jVal) { @{param.name}(new @{helper.getSimpleName(helper.getNonGenericType(genericType))}(jVal)) }
 		@end{}
 	@else{param.type.equals('io.vertx.core.json.JsonObject')}
-new io.vertx.core.json.JsonObject(JSON.stringify(@{param.name}))
-  @else{param.type.endsWith('Options')}
+utils.convJSObjectToJsonObject(@{param.name})
+	@else{param.options}
 new @{param.type}(new io.vertx.core.json.JsonObject(JSON.stringify(@{param.name})))
+	@else{param.type.equals('java.lang.Object')}
+utils.convRuntimeParam(@{param.name})
 	@else{helper.isBasicType(param.type)}
 @{param.name}
 	@else{}
@@ -43,97 +52,139 @@ jVal
 ar.result()
 @end{}
 
+@comment{"Generate the code that converts a Java return to the corresponding JavaScript value"}
+@comment{"This is also used for converting values returned from Java API via handlers"}
+@comment{"==================================================================================="}
+
 @declare{'convReturn'}
 	@if{returnType.startsWith('java.util.List') || returnType.startsWith('java.util.Set')}
 @includeNamed{templ}
 	@else{helper.isBasicType(returnType)}
 @includeNamed{templ}
-  @else{}
+	@else{helper.isVertxGenType(returnType)}
 new @{helper.getSimpleName(returnType)}(@includeNamed{templ})
+	@else{}
+utils.convRuntimeReturn(@includeNamed{templ})
 	@end{}
 @end{}
+
+@comment{"Generate a JavaScript Method"}
+@comment{"============================"}
 
 @declare{'genMethod'}
 	@if{static == method.staticMethod}
 		@if{method.comment != null}
-  /*\n
-  @{method.comment}
-  */\n
+@{helper.indentString("/*\n" + method.comment + "*/\n", ind)}
 		@end{}
-  @if{static}@{ifaceSimpleName}@else{}this@end{}.@{method.name} = function(@foreach{param0: method.params}@{param0.name}@end{", "}) {\n
+@{ind}@if{static}@{ifaceSimpleName}@else{}this@end{}.@{method.name} = function(@foreach{param0: method.params}@{param0.name}@end{", "}) {\n
 		@if{method.squashed}
-    switch (arguments.length) {\n
+@{ind}  switch (arguments.length) {\n
 			@foreach{method: methodsByName.get(method.name)}
-      case @{method.params.size()}:\n
+@{ind}    case @{method.params.size()}:\n
 				@if{!method.returnType.equals("void")}
 					@if{method.fluent}
-        @includeNamed{'genMethodCall'};\n
+@{ind}      @includeNamed{'genMethodCall'};\n
 						@if{static}
-        return @{ifaceSimpleName};\n
+@{ind}      return @{ifaceSimpleName};\n
 						@else{}
-        return that;\n
+@{ind}      return that;\n
 						@end{}
 					@else{}
-        return @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType};\n
+@{ind}      return @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType};\n
 					@end{}
 				@else{}
-        @includeNamed{'genMethodCall'};\n
-        return;\n
+@{ind}      @includeNamed{'genMethodCall'};\n
+@{ind}      return;\n
 				@end{}
 			@end{}
-      default: throw "Invalid arguments"\n
-    }\n
+@{ind}    default: throw "Invalid number of arguments"\n
+@{ind}  }\n
 		@else{}
 			@if{!method.returnType.equals("void")}
 				@if{method.fluent}
-    @includeNamed{'genMethodCall'};\n
-    			@if{static}
-    return @{ifaceSimpleName};\n
-    			@else{}
-    return that;\n
-    			@end{}
+@{ind}  @includeNamed{'genMethodCall'};\n
+					@if{static}
+@{ind}  return @{ifaceSimpleName};\n
+					@else{}
+@{ind}  return that;\n
+					@end{}
 				@else{}
-    return @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType};\n
+@{ind}  return @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType};\n
 				@end{}
 			@else{}
-	  @includeNamed{'genMethodCall'};\n
+@{ind}  @includeNamed{'genMethodCall'};\n
 			@end{}
 		@end{}
-  };\n\n
+@{ind}};\n\n
 	@end{}
 @end{}
 
+@comment{"This is where the generation starts"}
+@comment{"==================================="}
+
+@comment{"Generate the requires"}
+
+var utils = require('vertx/util/utils');\n
 @foreach{referencedType : referencedTypes}
-var @{helper.getSimpleName(referencedType)} = require('vertx/@{helper.convertCamelCaseToFileNameWithUnderscores(helper.getSimpleName(referencedType))}');\n
+@code{refedType=helper.getSimpleName(helper.getNonGenericType(referencedType));}
+var @{refedType} = require('vertx/@{helper.convertCamelCaseToFileNameWithUnderscores(refedType)}');\n
 @end{}
 \n
+
+@comment{"The top level vars for the module"}
+
 var io = Packages.io;\n
 var J@{ifaceSimpleName} = Packages.@{helper.getNonGenericType(ifaceFQCN)};
 \n\n
 @code{ifaceName = helper.decapitaliseFirstLetter(ifaceSimpleName)}
+
+@comment{"The main comment"}
+
 @if{ifaceComment != null}
 /*\n
 @{ifaceComment}
 */\n
 @end{}
-var @{ifaceSimpleName} = function(j_val) {\n
+
+@comment{"The constructor"}
+
+var @{ifaceSimpleName} = function(j_val) {\n\n
   var j_@{ifaceName} = j_val;\n
   var that = this;\n
+
+@comment{"Apply any supertypes"}
+
 @foreach{superType: superTypes}
   @{helper.getSimpleName(helper.getNonGenericType(superType))}.call(this, j_val);\n
 @end{}
 \n
+
+@comment{"Now iterate through each *squashed* method - we use squashed methods because JS doesn't support"}
+@comment{"function overloading"}
+
 @foreach{method:squashedMethods}
-@includeNamed{'genMethod';static=false}
+
+@comment{"Call out to actually generate the method, we only consider non static methods here"}
+@includeNamed{'genMethod';static=false;ind="  "}
+
 @end{}
+
+@comment{"Each object has a _jdel function which gives access to the underlying Java object"}
+
   // Get a reference to the underlying Java delegate\n
   this._jdel = function() {\n
     return j_@{ifaceName};\n
   }\n\n
 };\n
 \n
+
+@comment{"Iterate through the squashed methods again, this time only considering the static ones"}
+
 @foreach{method:squashedMethods}
-@includeNamed{'genMethod';static=true}
+
+@comment{"Call out to generate the static method"}
+@includeNamed{'genMethod';static=true;ind=""}
+
 @end{}
 
 // We export the Constructor function\n
