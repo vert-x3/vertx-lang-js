@@ -18,19 +18,33 @@
 		@if{genericType.startsWith('io.vertx.core.AsyncResult<')}
 			@code{genericType = helper.getGenericType(genericType)}
 			@if{genericType.equals('java.lang.Void')}
-function(ar) { if (ar.succeeded()) { @{param.name}(null, null) } else { @{param.name}(null, ar.cause()); }}
+function(ar) {\n
+@{ind}    if (ar.succeeded()) {\n
+@{ind}      @{param.name}(null, null);\n
+@{ind}    } else {\n
+@{ind}      @{param.name}(null, ar.cause());\n
+@{ind}    }\n
+@{ind}  }
 			@else{}
-function(ar) {if (ar.succeeded()) { @{param.name}(@includeNamed{'convReturn'; templ='arVal'; returnType=genericType}, null) } else { @{param.name}(null, ar.cause()); }}
+function(ar) {\n
+@{ind}    if (ar.succeeded()) {\n
+@{ind}      @{param.name}(@includeNamed{'convReturn'; templ='arVal'; returnType=genericType}, null);\n
+@{ind}    } else {\n
+@{ind}      @{param.name}(null, ar.cause());\n
+@{ind}    }\n
+@{ind}  }
 			@end{}
 		@else{genericType.equals('java.lang.Void')}
 @{param.name}
 		@else{}
-function(jVal) { @{param.name}(@includeNamed{'convReturn'; templ='basicVal'; returnType=genericType})}
+function(jVal) {\n
+@{ind}    @{param.name}(@includeNamed{'convReturn'; templ='basicVal'; returnType=genericType});\n
+@{ind}  }
 		@end{}
 	@else{param.type.equals('io.vertx.core.json.JsonObject')}
 utils.convJSObjectToJsonObject(@{param.name})
 	@else{param.options}
-new @{param.type}(new io.vertx.core.json.JsonObject(JSON.stringify(@{param.name})))
+new @{helper.getSimpleName(param.type)}(new JsonObject(JSON.stringify(@{param.name})))
 	@else{param.type.equals('java.lang.Object')}
 utils.convRuntimeParam(@{param.name})
 	@else{helper.isBasicType(param.type)}
@@ -138,8 +152,12 @@ var @{refedType} = require('vertx/@{helper.convertCamelCaseToUnderscores(refedTy
 @comment{"The top level vars for the module"}
 
 var io = Packages.io;\n
-var J@{ifaceSimpleName} = Packages.@{helper.getNonGenericType(ifaceFQCN)};
-\n\n
+var JsonObject = io.vertx.core.json.JsonObject;\n
+var J@{ifaceSimpleName} = @{helper.getNonGenericType(ifaceFQCN)};\n
+@foreach{optionType: referencedOptionsTypes}
+var @{helper.getSimpleName(optionType)} = @{optionType};\n
+@end{}
+\n
 @code{ifaceName = helper.decapitaliseFirstLetter(ifaceSimpleName)}
 
 @comment{"The main comment"}
