@@ -19,17 +19,13 @@
 			@code{genericType = helper.getGenericType(genericType)}
 			@if{genericType.equals('java.lang.Void')}
 function(ar) { if (ar.succeeded()) { @{param.name}(null, null) } else { @{param.name}(null, ar.cause()); }}
-			@else{helper.isBasicType(genericType) || genericType.startsWith('java.util.List') || genericType.startsWith('java.util.Set')}
-function(ar) {if (ar.succeeded()) { @{param.name}(@includeNamed{'convReturn'; templ='arVal'; returnType=genericType}, null) } else { @{param.name}(null, ar.cause()); }}
 			@else{}
-function(ar) { if (ar.succeeded()) { @{param.name}(new @{helper.getSimpleName(helper.getNonGenericType(genericType))}(ar.result()), null) } else { @{param.name}(null, ar.cause()); }}
+function(ar) {if (ar.succeeded()) { @{param.name}(@includeNamed{'convReturn'; templ='arVal'; returnType=genericType}, null) } else { @{param.name}(null, ar.cause()); }}
 			@end{}
 		@else{genericType.equals('java.lang.Void')}
 @{param.name}
-		@else{helper.isBasicType(genericType)}
-function(jVal) { @{param.name}(@includeNamed{'convReturn'; templ='basicVal'; returnType=genericType})}
 		@else{}
-function(jVal) { @{param.name}(new @{helper.getSimpleName(helper.getNonGenericType(genericType))}(jVal)) }
+function(jVal) { @{param.name}(@includeNamed{'convReturn'; templ='basicVal'; returnType=genericType})}
 		@end{}
 	@else{param.type.equals('io.vertx.core.json.JsonObject')}
 utils.convJSObjectToJsonObject(@{param.name})
@@ -57,13 +53,16 @@ ar.result()
 @comment{"==================================================================================="}
 
 @declare{'convReturn'}
-	@if{returnType.startsWith('java.util.List') || returnType.startsWith('java.util.Set')}
+	@if{returnType.startsWith('java.util.List')}
 @includeNamed{templ}
+	@else{returnType.startsWith('java.util.Set')}
+utils.convSet(@includeNamed{templ})
 	@else{helper.isBasicType(returnType)}
 @includeNamed{templ}
 	@else{helper.isVertxGenType(returnType)}
-new @{helper.getSimpleName(returnType)}(@includeNamed{templ})
+new @{helper.getSimpleName(helper.getNonGenericType(returnType))}(@includeNamed{templ})
 	@else{}
+	@comment{'This will probably happen if the return type is generic'}
 utils.convRuntimeReturn(@includeNamed{templ})
 	@end{}
 @end{}
@@ -108,6 +107,11 @@ utils.convRuntimeReturn(@includeNamed{templ})
 					@else{}
 @{ind}  return that;\n
 					@end{}
+				@else{method.cacheReturn}
+@{ind}  if (that.cached@{method.name} == null) {\n
+@{ind}    that.cached@{method.name} = @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType};\n
+@{ind}  }\n
+@{ind}  return that.cached@{method.name};\n
 				@else{}
 @{ind}  return @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType};\n
 				@end{}
@@ -127,7 +131,7 @@ utils.convRuntimeReturn(@includeNamed{templ})
 var utils = require('vertx/util/utils');\n
 @foreach{referencedType : referencedTypes}
 @code{refedType=helper.getSimpleName(helper.getNonGenericType(referencedType));}
-var @{refedType} = require('vertx/@{helper.convertCamelCaseToFileNameWithUnderscores(refedType)}');\n
+var @{refedType} = require('vertx/@{helper.convertCamelCaseToUnderscores(refedType)}');\n
 @end{}
 \n
 

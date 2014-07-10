@@ -23,8 +23,8 @@ public class Gen {
 
   public void run() throws Exception {
     Generator gen = new Generator();
-    gen.applyTemplate("io.vertx.core", packageName -> !packageName.contains("impl"),
-      clazz -> "src/main/resources/vertx/" +  Helper.convertCamelCaseToFileNameWithUnderscores(clazz.getSimpleName()) + ".js",
+    gen.genAndApply("io.vertx.core", packageName -> !packageName.contains("impl"),
+      clazz -> "src/main/resources/vertx/" +  Helper.convertCamelCaseToUnderscores(clazz.getSimpleName()) + ".js",
       "src/templates/js.templ");
   }
 }
