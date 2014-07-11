@@ -10,11 +10,6 @@
 
   <repositories>
     <repository>
-      <!-- This is temporary, until the MVEL release hits Maven Central -->
-      <id>Codehaus repository</id>
-      <url>http://repository.codehaus.org</url>
-    </repository>
-    <repository>
       <id>jsdoctk1</id>
       <url>http://jsdoctk-plugin.googlecode.com/svn/repo</url>
     </repository>
