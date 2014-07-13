@@ -41,6 +41,6 @@ public class Gen {
     Generator gen = new Generator();
     gen.genAndApply("io.vertx.core", packageName -> !packageName.contains("impl"),
       clazz -> "src/main/resources/vertx/" +  Helper.convertCamelCaseToUnderscores(clazz.getSimpleName()) + ".js",
-      "src/templates/js.templ");
+      "vertx-js/template/js.templ");
   }
 }

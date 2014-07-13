@@ -43,6 +43,8 @@ function(jVal) {\n
 		@end{}
 	@else{param.type.equals('io.vertx.core.json.JsonObject')}
 utils.convJSObjectToJsonObject(@{param.name})
+	@else{param.type.equals('io.vertx.core.json.JsonArray')}
+utils.convJSArrayToJsonArray(@{param.name})
 	@else{param.options}
 new @{helper.getSimpleName(param.type)}(new JsonObject(JSON.stringify(@{param.name})))
 	@else{param.type.equals('java.lang.Object')}
@@ -71,6 +73,8 @@ ar.result()
 @includeNamed{templ}
 	@else{returnType.startsWith('java.util.Set')}
 utils.convSet(@includeNamed{templ})
+	@else{returnType.equals('io.vertx.core.json.JsonObject') || returnType.equals('io.vertx.core.json.JsonArray')}
+JSON.parse((@includeNamed{templ}).encode())
 	@else{helper.isBasicType(returnType)}
 @includeNamed{templ}
 	@else{helper.isVertxGenType(returnType)}
@@ -158,10 +162,10 @@ utils.convRuntimeReturn(@includeNamed{templ})
 
 @comment{"Generate the requires"}
 
-var utils = require('vertx/util/utils');\n
+var utils = require('vertx-js/util/utils');\n
 @foreach{referencedType : referencedTypes}
 @code{refedType=helper.getSimpleName(helper.getNonGenericType(referencedType));}
-var @{refedType} = require('vertx/@{helper.convertCamelCaseToUnderscores(refedType)}');\n
+var @{refedType} = require('vertx-js/@{helper.convertCamelCaseToUnderscores(refedType)}');\n
 @end{}
 \n
 

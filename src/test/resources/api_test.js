@@ -1,7 +1,7 @@
 var Assert = org.junit.Assert;
 
-var TestInterface = require('vertx/test_interface');
-var RefedInterface1 = require('vertx/refed_interface1');
+var TestInterface = require('vertx-js/test_interface');
+var RefedInterface1 = require('vertx-js/refed_interface1');
 
 var obj = new TestInterface(new Packages.io.vertx.codegen.testmodel.TestInterfaceImpl());
 var refed_obj = new RefedInterface1(new Packages.io.vertx.codegen.testmodel.RefedInterface1Impl());
@@ -421,6 +421,62 @@ function testMethodWithCachedReturn() {
   Assert.assertSame(ret, ret2);
   var ret3 = obj.methodWithCachedReturn("bar");
   Assert.assertSame(ret2, ret3);
+}
+
+function testJsonReturns() {
+  var ret = obj.methodwithJsonObjectReturn();
+  Assert.assertTrue(typeof ret === 'object')
+  Assert.assertEquals("stilton", ret.cheese);
+  ret = obj.methodWithJsonArrayReturn();
+  Assert.assertTrue(typeof ret === 'object')
+  Assert.assertTrue(ret instanceof Array)
+  Assert.assertEquals("socks", ret[0]);
+  Assert.assertEquals("shoes", ret[1]);
+}
+
+function testJsonParams() {
+  var jsonObject = {
+    cat: "lion",
+    cheese: "cheddar"
+  }
+  var jsonArray = ["house", "spider"];
+  obj.methodWithJsonParams(jsonObject, jsonArray);
+}
+
+function testJsonHandlerParams() {
+
+  var count = 0;
+  obj.methodWithHandlerJson(function(jsonObject) {
+    Assert.assertTrue(typeof jsonObject === 'object')
+    Assert.assertEquals("stilton", jsonObject.cheese);
+    count++;
+  }, function(jsonArray) {
+    Assert.assertTrue(typeof jsonArray === 'object')
+    Assert.assertTrue(jsonArray instanceof Array)
+    Assert.assertEquals("socks", jsonArray[0]);
+    Assert.assertEquals("shoes", jsonArray[1]);
+    count++;
+  });
+  Assert.assertEquals(2, count, 0);
+}
+
+function testJsonHandlerAsyncResultParams() {
+
+  var count = 0;
+  obj.methodWithHandlerAsyncResultJson(function(jsonObject, err) {
+    Assert.assertNull(err);
+    Assert.assertTrue(typeof jsonObject === 'object')
+    Assert.assertEquals("stilton", jsonObject.cheese);
+    count++;
+  }, function(jsonArray, err) {
+    Assert.assertNull(err);
+    Assert.assertTrue(typeof jsonArray === 'object')
+    Assert.assertTrue(jsonArray instanceof Array)
+    Assert.assertEquals("socks", jsonArray[0]);
+    Assert.assertEquals("shoes", jsonArray[1]);
+    count++;
+  });
+  Assert.assertEquals(2, count, 0);
 }
 
 

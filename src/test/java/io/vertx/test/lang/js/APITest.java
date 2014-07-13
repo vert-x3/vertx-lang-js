@@ -26,8 +26,8 @@ public class APITest {
   public void before() throws Exception {
     Generator gen = new Generator();
     gen.genAndApply("io.vertx.codegen.testmodel", packageName -> !packageName.contains("impl"),
-                    clazz -> "src/test/resources/vertx/" + Helper.convertCamelCaseToUnderscores(clazz.getSimpleName()) + ".js",
-                    "src/templates/js.templ");
+                    clazz -> "src/test/resources/vertx-js/" + Helper.convertCamelCaseToUnderscores(clazz.getSimpleName()) + ".js",
+                    "vertx-js/template/js.templ");
   }
 
   // Test params
@@ -163,6 +163,26 @@ public class APITest {
 
   @Test
   public void testMethodWithCachedReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testJsonReturns() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testJsonParams() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testJsonHandlerParams() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testJsonHandlerAsyncResultParams() throws Exception {
     runTest();
   }
 

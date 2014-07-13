@@ -18,9 +18,9 @@ public class JSRunner {
     ScriptEngineManager mgr = new ScriptEngineManager();
     ScriptEngine engine = mgr.getEngineByName("nashorn");
     if (provideRequire) {
-      load("vertx/util/require.js", engine);
+      load("vertx-js/util/require.js", engine);
       if (provideConsole) {
-        engine.eval("var console = require('vertx/util/console'); var testName = '" + testName + "';");
+        engine.eval("var console = require('vertx-js/util/console'); var testName = '" + testName + "';");
       }
     }
 

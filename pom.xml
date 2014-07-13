@@ -126,7 +126,7 @@
               <optionMap>
                 <fileExtension>.js</fileExtension>
                 <outputLocation>${project.basedir}/src/main/resources/vertx/</outputLocation>
-                <templateFileName>src/templates/js.templ</templateFileName>
+                <templateFileName>vertx-js/template/js.templ</templateFileName>
               </optionMap>
               <sourceDirectory>${project.build.directory}/vertx-core</sourceDirectory>
             </configuration>
@@ -151,6 +151,7 @@
         <configuration>
           <additionalClasspathElements>
             <additionalClasspathElement>${project.build.testSourceDirectory}</additionalClasspathElement>
+            <additionalClasspathElement>${project.basedir}/src/main/resources</additionalClasspathElement>
           </additionalClasspathElements>
         </configuration>
       </plugin>
