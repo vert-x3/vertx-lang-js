@@ -125,10 +125,13 @@
               </processors>
               <optionMap>
                 <fileExtension>.js</fileExtension>
-                <outputLocation>${project.basedir}/src/main/resources/vertx/</outputLocation>
+                <outputLocation>${project.basedir}/src/main/resources/vertx-js/</outputLocation>
                 <templateFileName>vertx-js/template/js.templ</templateFileName>
               </optionMap>
               <sourceDirectory>${project.build.directory}/vertx-core</sourceDirectory>
+              <systemProperties>
+                <vertx-js.scriptDir>vertx-js</vertx-js.scriptDir>
+              </systemProperties>
             </configuration>
           </execution>
         </executions>
