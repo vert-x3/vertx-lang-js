@@ -86,6 +86,7 @@ public class JSVerticleFactory implements VerticleFactory {
       }
       try (Scanner scanner = new Scanner(url.openStream(), "UTF-8").useDelimiter("\\A")) {
         String requireJS = scanner.next();
+        engine.put(ScriptEngine.FILENAME, "require.js");
         engine.eval(requireJS);
       } catch (Exception e) {
         throw new IllegalStateException("Failed to load vertx/require.js", e);
@@ -93,6 +94,9 @@ public class JSVerticleFactory implements VerticleFactory {
       try {
         // Put the globals in
         engine.put("__jvertx", vertx);
+        // As a temporary hack we also put the engine itself in, this allows us to set script name from JS
+        // which we need to do until # sourceURL = is supported so we can name evals
+        engine.put("__engine", engine);
         engine.eval("var Vertx = require('vertx-js/vertx'); var vertx = new Vertx(__jvertx); var console = require('vertx-js/util/console');");
       } catch (ScriptException e) {
         throw new IllegalStateException("Failed to eval: " + e.getMessage(), e);

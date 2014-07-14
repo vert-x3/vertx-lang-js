@@ -12,15 +12,7 @@ import org.junit.Test;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-public class APITest {
-
-  protected String getMethodName() {
-    return Thread.currentThread().getStackTrace()[3].getMethodName();
-  }
-
-  protected void runTest() throws Exception {
-    new JSRunner().run("api_test.js", getMethodName());
-  }
+public class APITest extends JSTestBase{
 
   @Before
   public void before() throws Exception {
@@ -29,6 +21,11 @@ public class APITest {
     gen.genAndApply("io.vertx.codegen.testmodel", packageName -> !packageName.contains("impl"),
                     clazz -> "src/test/resources/vertx-js/" + Helper.convertCamelCaseToUnderscores(clazz.getSimpleName()) + ".js",
                     "vertx-js/template/js.templ");
+  }
+
+  @Override
+  protected String getTestFile() {
+    return "api_test.js";
   }
 
   // Test params

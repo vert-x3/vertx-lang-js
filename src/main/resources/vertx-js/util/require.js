@@ -1,8 +1,3 @@
-/*
-THIS SUCKS!!
-Rewrite it!
- */
-
 
 /*
  Rhino-Require is Public Domain
@@ -16,8 +11,10 @@ Rewrite it!
  */
 
 /*
-This version attempted from version found at https://github.com/micmath/Rhino-Require
+This version originally based on version found at https://github.com/micmath/Rhino-Require
 which was published under public domain (see above)
+
+But, tbh, it's been more or less rewritten since then.
  */
 
 (function(global) {
@@ -30,168 +27,38 @@ which was published under public domain (see above)
 
   var require = global.require = function(id) { /*debug*///console.log('require('+id+')');
 
-    //System.out.println("requiring: " + id);
+    if (typeof arguments[0] !== 'string' || arguments.length != 1) throw 'USAGE: require(moduleId)';
 
-    if (typeof arguments[0] !== 'string') throw 'USAGE: require(moduleId)';
+    // try and load from classpath
+    var moduleUri = loadFromClasspath(id);
 
-    var moduleContent = '',
-      moduleUri;
-    var fileOrStream;
-
-    // First try and load from classpath
-    moduleUri = loadFromClasspath(id);
-    if (moduleUri) {
-      fileOrStream = moduleUri.openStream();
-    } else {
-      moduleUri = require.resolve(id);
-      if (moduleUri.endsWith('undefined')) {
-        //throw "Can't find module " + id;
-        throw "Can't find module " + id;
-      }
-      fileOrStream = new java.io.File(moduleUri);
-    }
-
-    moduleContent = '';
+    var moduleContent;
 
     try {
-      var scanner = new java.util.Scanner(fileOrStream).useDelimiter("\\Z");
+      var scanner = new java.util.Scanner(moduleUri.openStream()).useDelimiter("\\Z");
       moduleContent = String( scanner.next() );
+    } catch (e) {
+      throw "Can't find module " + id + " on classpath";
     }
-    catch(e) {
-      throw 'Unable to read file at: '+moduleUri+', '+e;
-    }
 
-    if (moduleContent) {
-      //try {
-        var f = new Function('require', 'exports', 'module', moduleContent),
-          exports = require.cache[moduleUri] || {},
-          module = { id: id, uri: moduleUri, exports: exports };
+    var exports = require.cache[moduleUri];
 
-
-        require._root.unshift(moduleUri);
-        f.call({}, require, exports, module);
-        require._root.shift();
-//      }
-//      catch(e) {
-//        throw 'Unable to require source code from "' + moduleUri + '": ' + e;
-//      }
-
+    if (!exports) {
+      exports = {};
+      var func = "function(exports, module) {" + moduleContent + "}";
+      __engine.put("javax.script.filename", id);
+      // We need to eval using the Java engine otherwise we lose the script name in error messages
+      var f = __engine.eval(func);
+      var module = { id: id, uri: moduleUri, exports: exports };
+      f(exports, module);
       exports = module.exports || exports;
       require.cache[id] = exports;
-    }
-    else {
-      throw 'The requested module cannot be returned: no content for id: "' + id + '" in paths: ' + require.paths.join(', ');
     }
 
     return exports;
   }
-  require._root = [''];
-  require.paths = [];
+
   require.cache = {}; // cache module exports. Like: {id: exported}
-
-  var SLASH = Packages.java.io.File.separator;
-
-  /** Given a module id, try to find the path to the associated module.
-   */
-  require.resolve = function(id) {
-    // TODO: 1. load node core modules
-
-    // 2. dot-relative module id, like './foo/bar'
-    var parts = id.match(/^(\.?\.(?:\\|\/)|(?:\\|\/))(.+)$/),
-      isRelative = false,
-      isAbsolute = false,
-      basename = id;
-
-    if (parts) {
-      isRelative = parts[1] === './' || parts[1] === '.\\' || parts[1] === '../' || parts[1] === '..\\';
-      isAbsolute = parts[1] === '/' || parts[1] === '\\';
-      basename = parts[2];
-    }
-
-    if (typeof basename !== 'undefined') {
-
-      if (isAbsolute) {
-        rootedId = id;
-      }
-      else {
-        var root = (isRelative? toDir(require._root[0] || '.') : '.'),
-          rootedId = deDotPath(root + SLASH + id),
-          uri = '';
-      }
-
-      if (uri = loadAsFile(rootedId)) {
-      }
-      else if (uri = loadAsDir(rootedId)) {
-      }
-      else if (uri = loadNodeModules(rootedId)) {
-      }
-      else if (uri = nodeModulesPaths(rootedId, 'rhino_modules')) {
-      }
-      else if (uri = nodeModulesPaths(rootedId, 'node_modules')) {
-      }
-
-      if (uri !== '') return toAbsolute(uri);
-
-      throw 'Require Error: Not found.';
-    }
-  }
-
-  /** Given a path, return the base directory of that path.
-   @example toDir('/foo/bar/somefile.js'); => '/foo/bar'
-   */
-  function toDir(path) {
-    var file = new java.io.File(path);
-
-    if (file.isDirectory()) {
-      return path;
-    }
-
-    var parts = path.split(/[\\\/]/);
-    parts.pop();
-    return parts.join(SLASH);
-  }
-
-  /** Returns true if the given path exists and is a file.
-   */
-  function isFile(path) {
-    var file = new java.io.File(path);
-
-    if (file.isFile()) {
-      return true;
-    }
-
-    return false;
-  }
-
-  /** Returns true if the given path exists and is a directory.
-   */
-  function isDir(path) {
-    var file = new java.io.File(path);
-
-    if (file.isDirectory()) {
-      return true;
-    }
-
-    return false;
-  }
-
-  /** Get the path of the current working directory
-   */
-  function getCwd() {
-    return deDotPath( toDir( ''+new java.io.File('.').getAbsolutePath() ) );
-  }
-
-  function toAbsolute(relPath) {
-    absPath = ''+new java.io.File(relPath).getAbsolutePath();
-    absPath = deDotPath(absPath);
-    return absPath;
-  }
-
-  function deDotPath(path) {
-    return String(path)
-      .replace(/(\/|\\)[^\/\\]+\/\.\.(\/|\\)/g, SLASH)
-      .replace(/(\/|\\)\.(\/|\\|$)/g, SLASH);
-  }
 
   function loadFromClasspath(id) {
     var cl = java.lang.Thread.currentThread().getContextClassLoader();
@@ -201,111 +68,7 @@ which was published under public domain (see above)
     if (!id.endsWith(".js")) {
       id += ".js";
     }
-    var url = cl.getResource(id);
-    return url;
-  }
-
-  /** Assume the id is a file, try to find it.
-   */
-  function loadAsFile(id) {
-    if ( isFile(id) ) { return id; }
-
-    if ( isFile(id+'.js') ) { return id+'.js'; }
-
-    if ( isFile(id+'.node') ) { throw 'Require Error: .node files not supported'; }
-  }
-
-  /** Assume the id is a directory, try to find a module file within it.
-   */
-  function loadAsDir(id) {
-    if (!isDir(id)) {
-      return;
-    }
-    // look for the "main" property of the package.json file
-    if ( isFile(id+SLASH+'package.json') ) {
-      var packageJson = readFileSync(id+SLASH+'package.json', 'utf-8');
-      eval( 'packageJson = '+ packageJson);
-      if (packageJson.hasOwnProperty('main')) {
-        var main = deDotPath(id + SLASH + packageJson.main);
-        return require.resolve(main);
-      }
-    }
-
-    if ( isFile(id+SLASH+'index.js') ) {
-      return id+SLASH+'index.js';
-    }
-  }
-
-  function loadNodeModules(id) {
-    var path,
-      uri;
-    for (var i = 0, len = require.paths.length; i < len; i++) {
-      path = require.paths[i];
-      if (isDir(path)) {
-        path = deDotPath(path + SLASH + id);
-
-        uri = loadAsFile(path);
-        if (typeof uri !== 'undefined') {
-          return uri;
-        }
-
-        uri = loadAsDir(path);
-        if (typeof uri !== 'undefined') {
-          return uri;
-        }
-      }
-    }
-  }
-
-  function nodeModulesPaths(id, moduleFolder) {
-    var cwd = getCwd(),
-      dirs = cwd.split(SLASH),
-      dir,
-      path,
-      filename,
-      uri;
-
-    while (dirs.length) {
-      dir = dirs.join(SLASH);
-      path = dir+SLASH+moduleFolder;
-
-      if ( isDir(path) ) {
-        filename = deDotPath(path+SLASH+id);
-
-        if ( uri = loadAsFile(filename) ) {
-          uri = uri.replace(cwd, '.');
-          return uri;
-        }
-
-        if ( uri = loadAsDir(filename) ) {
-          uri = uri.replace(cwd, '.');
-          return uri;
-        }
-      }
-
-      dirs.pop();
-    }
-  }
-
-  function readFileSync(filename, encoding, callback) {
-    if (typeof arguments[1] === 'function') {
-      encoding = null;
-      callback = arguments[1];
-    }
-
-    encoding = encoding || System.getProperty('file.encoding');
-
-    try {
-      var content = new java.util.Scanner(
-        new java.io.File(filename),
-        encoding
-      ).useDelimiter("\\Z");
-
-      return String( content.next() );
-    }
-    catch (e) {
-      return '';
-    }
+    return cl.getResource(id);
   }
 
 })(this);

@@ -23,7 +23,6 @@ public class JSRunner {
         engine.eval("var console = require('vertx-js/util/console'); var testName = '" + testName + "';");
       }
     }
-
     load(scriptName, engine);
   }
 
@@ -34,6 +33,9 @@ public class JSRunner {
     }
     try (Scanner scanner = new Scanner(url.openStream(), "UTF-8").useDelimiter("\\A")) {
       String source = scanner.next();
+      //source = "//@ sourceURL=" + scriptName + "\n" + source;
+      engine.put("__engine", engine);
+      engine.put(ScriptEngine.FILENAME, scriptName);
       engine.eval(source);
     }
   }
