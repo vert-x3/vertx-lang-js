@@ -51,4 +51,5 @@ public class RequireTest extends JSTestBase {
   public void testCachedRequires() throws Exception {
     runTest();
   }
+
 }

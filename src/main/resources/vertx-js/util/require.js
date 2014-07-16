@@ -21,6 +21,8 @@ But, tbh, it's been more or less rewritten since then.
 
   var System = Packages.java.lang.System;
 
+  var Thread = java.lang.Thread;
+
   String.prototype.endsWith = function(suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
   };
@@ -41,13 +43,14 @@ But, tbh, it's been more or less rewritten since then.
       throw "Can't find module " + id + " on classpath";
     }
 
-    var exports = require.cache[moduleUri];
+    var exports = require.cache[id];
 
     if (!exports) {
       exports = {};
       var func = "function(exports, module) {" + moduleContent + "}";
       __engine.put("javax.script.filename", id);
       // We need to eval using the Java engine otherwise we lose the script name in error messages
+      // TODO once Nashorn supports //# sourceURL = then we should call JavaScript eval()
       var f = __engine.eval(func);
       var module = { id: id, uri: moduleUri, exports: exports };
       f(exports, module);
@@ -61,7 +64,7 @@ But, tbh, it's been more or less rewritten since then.
   require.cache = {}; // cache module exports. Like: {id: exported}
 
   function loadFromClasspath(id) {
-    var cl = java.lang.Thread.currentThread().getContextClassLoader();
+    var cl = Thread.currentThread().getContextClassLoader();
     if (cl == null) {
       throw "tccl not set!";
     }

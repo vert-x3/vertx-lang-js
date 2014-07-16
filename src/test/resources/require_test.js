@@ -49,7 +49,6 @@ function testCachedRequires() {
   Assert.assertSame(testMod2, testMod3);
 }
 
-
 if (typeof this[testName] === 'undefined') {
   throw "No such test: " + testName;
 }
