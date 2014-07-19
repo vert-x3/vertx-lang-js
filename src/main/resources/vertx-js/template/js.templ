@@ -13,7 +13,7 @@
 @comment{"============================================================================================="}
 
 @declare{'convParam'}
-	@if{param.type.startsWith('io.vertx.core.Handler<')}
+	@if{param.type.name.startsWith('io.vertx.core.Handler<')}
 		@code{genericType = helper.getGenericType(param.type)}
 		@if{genericType.startsWith('io.vertx.core.AsyncResult<')}
 			@code{genericType = helper.getGenericType(genericType)}

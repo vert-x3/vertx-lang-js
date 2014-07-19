@@ -131,8 +131,7 @@
                 <processor>io.vertx.codegen.CodeGenProcessor</processor>
               </processors>
               <optionMap>
-                <fileExtension>.js</fileExtension>
-                <outputLocation>${project.basedir}/src/main/resources/vertx-js/</outputLocation>
+                <nameTemplate>${project.basedir}/src/main/resources/vertx-js/@{helper.convertCamelCaseToUnderscores(typeSimpleName)}.js</nameTemplate>
                 <templateFileName>vertx-js/template/js.templ</templateFileName>
               </optionMap>
               <sourceDirectory>${project.build.directory}/vertx-core</sourceDirectory>
