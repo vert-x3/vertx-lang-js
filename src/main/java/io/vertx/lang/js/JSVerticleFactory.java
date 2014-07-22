@@ -20,6 +20,7 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
 import io.vertx.core.spi.VerticleFactory;
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -44,6 +45,7 @@ public class JSVerticleFactory implements VerticleFactory {
   public String prefix() {
     return "js";
   }
+
   @Override
   public Verticle createVerticle(String verticleName, ClassLoader classLoader) throws Exception {
     return new JSVerticle(verticleName);
@@ -51,21 +53,27 @@ public class JSVerticleFactory implements VerticleFactory {
 
   private class JSVerticle extends AbstractVerticle {
 
+    private static final String VERTX_STOP_FUNCTION = "vertxStop";
+
     private final String verticleName;
 
     private JSVerticle(String verticleName) {
       this.verticleName = verticleName;
     }
 
+    private ScriptObjectMirror exports;
+
     @Override
     public void start() throws Exception {
       init();
-      engine.eval("require('" + verticleName + "');");
+      exports = (ScriptObjectMirror)engine.eval("require('" + verticleName + "');");
     }
 
     @Override
     public void stop() throws Exception {
-      // TODO
+      if (exports.getMember(VERTX_STOP_FUNCTION) != null) {
+        exports.callMember(VERTX_STOP_FUNCTION);
+      }
     }
   }
 

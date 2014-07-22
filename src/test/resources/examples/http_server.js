@@ -8,3 +8,10 @@ var options = {
 vertx.createHttpServer(options).requestHandler(function(req) {
   req.response().writeStringAndEnd("<html>hello world</html>");
 }).listen();
+
+
+module.exports = {};
+
+module.exports.vertxStop = function() {
+  console.log("in vertxStop!");
+}
