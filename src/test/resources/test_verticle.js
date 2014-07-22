@@ -1,8 +1,6 @@
 
 // Make sure console globals are in scope
 
-console.log("in test verticle");
-
 if (typeof console !== 'object') {
   throw "No console global";
 }
@@ -13,6 +11,14 @@ if (typeof require !== 'function') {
 
 if (typeof vertx !== 'object') {
   throw "No vertx global";
+}
+
+console.log("in test verticle");
+
+
+exports.vertxStop = function() {
+  console.log("in vertx.stop!");
+  vertx.eventBus().send("testComplete", "foo");
 }
 
 

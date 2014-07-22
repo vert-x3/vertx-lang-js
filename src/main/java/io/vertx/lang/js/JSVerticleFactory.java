@@ -17,6 +17,7 @@
 package io.vertx.lang.js;
 
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Future;
 import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
 import io.vertx.core.spi.VerticleFactory;
@@ -51,7 +52,7 @@ public class JSVerticleFactory implements VerticleFactory {
     return new JSVerticle(verticleName);
   }
 
-  private class JSVerticle extends AbstractVerticle {
+  public class JSVerticle extends AbstractVerticle {
 
     private static final String VERTX_STOP_FUNCTION = "vertxStop";
 
@@ -63,16 +64,56 @@ public class JSVerticleFactory implements VerticleFactory {
 
     private ScriptObjectMirror exports;
 
+    private boolean asyncStart;
+    private boolean asyncStop;
+    private Future<Void> startFuture;
+    private Future<Void> stopFuture;
+
     @Override
-    public void start() throws Exception {
+    public void start(Future<Void> startFuture) throws Exception {
       init();
+      engine.put("__verticle", this);
       exports = (ScriptObjectMirror)engine.eval("require('" + verticleName + "');");
+      if (asyncStart) {
+        this.startFuture = startFuture;
+      } else {
+        startFuture.setResult(null);
+      }
     }
 
     @Override
-    public void stop() throws Exception {
+    public void stop(Future<Void> stopFuture) throws Exception {
       if (exports.getMember(VERTX_STOP_FUNCTION) != null) {
         exports.callMember(VERTX_STOP_FUNCTION);
+        if (asyncStop) {
+          System.out.println("async stop!");
+          this.stopFuture = stopFuture;
+        } else {
+          stopFuture.setResult(null);
+        }
+      } else {
+        stopFuture.setResult(null);
+      }
+    }
+
+    public void started(boolean started) {
+      if (startFuture != null) {
+        if (started) {
+          startFuture.setResult(null);
+        }
+      } else if (!started) {
+        asyncStart = true;
+      }
+    }
+
+    public void stopped(boolean stopped) {
+      System.out.println("Stopped called");
+      if (stopFuture != null) {
+        if (stopped) {
+          stopFuture.setResult(null);
+        }
+      } else if (!stopped) {
+        asyncStop = true;
       }
     }
   }

@@ -47,13 +47,19 @@ But, tbh, it's been more or less rewritten since then.
 
     if (!exports) {
       exports = {};
-      var func = "function(exports, module) {" + moduleContent + "}";
+      var func = "function(exports, module, moduleStarted, moduleStopped) {" + moduleContent + "}";
       __engine.put("javax.script.filename", id);
       // We need to eval using the Java engine otherwise we lose the script name in error messages
       // TODO once Nashorn supports //# sourceURL = then we should call JavaScript eval()
       var f = __engine.eval(func);
       var module = { id: id, uri: moduleUri, exports: exports };
-      f(exports, module);
+      function started(hasStarted) {
+        __verticle.started(hasStarted);
+      }
+      function stopped(hasStopped) {
+        __verticle.stopped(hasStopped);
+      }
+      f(exports, module, started, stopped);
       exports = module.exports || exports;
       require.cache[id] = exports;
     }

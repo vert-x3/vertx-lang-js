@@ -12,7 +12,7 @@ import org.junit.Test;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-public class APITest extends JSTestBase{
+public class APITest extends JSTestBase {
 
   @Before
   public void before() throws Exception {
