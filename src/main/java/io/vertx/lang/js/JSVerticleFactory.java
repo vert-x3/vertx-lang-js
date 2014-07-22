@@ -86,7 +86,6 @@ public class JSVerticleFactory implements VerticleFactory {
       if (exports.getMember(VERTX_STOP_FUNCTION) != null) {
         exports.callMember(VERTX_STOP_FUNCTION);
         if (asyncStop) {
-          System.out.println("async stop!");
           this.stopFuture = stopFuture;
         } else {
           stopFuture.setResult(null);
@@ -107,7 +106,6 @@ public class JSVerticleFactory implements VerticleFactory {
     }
 
     public void stopped(boolean stopped) {
-      System.out.println("Stopped called");
       if (stopFuture != null) {
         if (stopped) {
           stopFuture.setResult(null);
