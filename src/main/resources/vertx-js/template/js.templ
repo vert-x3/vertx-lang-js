@@ -98,7 +98,7 @@ utils.convRuntimeReturn(@includeNamed{templ})
 @{ind}  switch (arguments.length) {\n
 			@foreach{method: methodsByName.get(method.name)}
 @{ind}    case @{method.params.size()}:\n
-				@if{!method.returnType.equals("void")}
+				@if{!method.returnType.name.equals("void")}
 					@if{method.fluent}
 @{ind}      @includeNamed{'genMethodCall'};\n
 						@if{static}
@@ -107,7 +107,7 @@ utils.convRuntimeReturn(@includeNamed{templ})
 @{ind}      return that;\n
 						@end{}
 					@else{}
-@{ind}      return @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType};\n
+@{ind}      return @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType.name};\n
 					@end{}
 				@else{}
 @{ind}      @includeNamed{'genMethodCall'};\n
@@ -117,7 +117,7 @@ utils.convRuntimeReturn(@includeNamed{templ})
 @{ind}    default: throw "Invalid number of arguments"\n
 @{ind}  }\n
 		@else{}
-			@if{!method.returnType.equals("void")}
+			@if{!method.returnType.name.equals("void")}
 				@if{method.fluent}
 @{ind}  @includeNamed{'genMethodCall'};\n
 					@if{static}
@@ -127,11 +127,11 @@ utils.convRuntimeReturn(@includeNamed{templ})
 					@end{}
 				@else{method.cacheReturn}
 @{ind}  if (that.cached@{method.name} == null) {\n
-@{ind}    that.cached@{method.name} = @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType};\n
+@{ind}    that.cached@{method.name} = @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType.name};\n
 @{ind}  }\n
 @{ind}  return that.cached@{method.name};\n
 				@else{}
-@{ind}  return @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType};\n
+@{ind}  return @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType.name};\n
 				@end{}
 			@else{}
 @{ind}  @includeNamed{'genMethodCall'};\n
