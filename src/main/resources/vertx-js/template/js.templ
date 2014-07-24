@@ -69,10 +69,23 @@ ar.result()
 @comment{"==================================================================================="}
 
 @declare{'convReturn'}
+	@code{genericType=helper.getGenericType(returnType)}
 	@if{returnType.startsWith('java.util.List')}
+		@if{genericType.equals('io.vertx.core.json.JsonObject') || genericType.equals('io.vertx.core.json.JsonArray')}
+utils.convListSetJson(@includeNamed{templ})
+		@else{helper.isVertxGenType(helper.getGenericType(returnType))}
+utils.convListSetVertxGen(@includeNamed{templ}, @{helper.getSimpleName(helper.getGenericType(returnType))})
+		@else{}
 @includeNamed{templ}
+		@end{}
 	@else{returnType.startsWith('java.util.Set')}
+		@if{genericType.equals('io.vertx.core.json.JsonObject') || genericType.equals('io.vertx.core.json.JsonArray')}
+utils.convListSetJson(@includeNamed{templ})
+		@else{helper.isVertxGenType(helper.getGenericType(returnType))}
+utils.convListSetVertxGen(@includeNamed{templ}, @{helper.getSimpleName(helper.getGenericType(returnType))})
+		@else{}
 utils.convSet(@includeNamed{templ})
+		@end{}
 	@else{returnType.equals('io.vertx.core.json.JsonObject') || returnType.equals('io.vertx.core.json.JsonArray')}
 JSON.parse((@includeNamed{templ}).encode())
 	@else{helper.isBasicType(returnType)}

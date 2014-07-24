@@ -40,4 +40,32 @@ utils.convSet = function(jSet) {
   return new java.util.ArrayList(jSet);
 }
 
+utils.convListSetJson = function(jList) {
+  var arr = [];
+  arr.length = jList.size();
+  var iter = jList.iterator();
+  var pos = 0;
+  while (iter.hasNext()) {
+    var jJson = iter.next();
+    arr[pos++] = JSON.parse(jJson.encode());
+  }
+  return arr;
+}
+
+utils.convListSetVertxGen = function(jList, constructorFunction) {
+  var arr = [];
+  arr.length = jList.size();
+  var iter = jList.iterator();
+  var pos = 0;
+  while (iter.hasNext()) {
+    var jVertxGen = iter.next();
+    // A bit of jiggery pokery to create the object given a reference to the constructor function
+    var obj = Object.create(constructorFunction.prototype, {});
+    constructorFunction.apply(obj, [jVertxGen]);
+    arr[pos++] = obj;
+  }
+  return arr;
+}
+
+
 module.exports = utils;

@@ -260,6 +260,188 @@ function testMethodWithHandlerAsyncResultListAndSet() {
   Assert.assertEquals(4, count, 0);
 }
 
+function testMethodWithHandlerListVertxGen() {
+  var count = 0;
+  obj.methodWithHandlerListVertxGen(function(listVertxGen) {
+    Assert.assertTrue(typeof listVertxGen === 'object');
+    Assert.assertTrue(typeof listVertxGen[0] === 'object');
+    Assert.assertEquals("foo", listVertxGen[0].getString());
+    Assert.assertTrue(typeof listVertxGen[1] === 'object');
+    Assert.assertEquals("bar", listVertxGen[1].getString());
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerAsyncResultListVertxGen() {
+  var count = 0;
+  obj.methodWithHandlerAsyncResultListVertxGen(function(listVertxGen, err) {
+    Assert.assertNull(err);
+    Assert.assertTrue(typeof listVertxGen === 'object');
+    Assert.assertTrue(typeof listVertxGen[0] === 'object');
+    Assert.assertEquals("foo", listVertxGen[0].getString());
+    Assert.assertTrue(typeof listVertxGen[1] === 'object');
+    Assert.assertEquals("bar", listVertxGen[1].getString());
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerSetVertxGen() {
+  var count = 0;
+  obj.methodWithHandlerSetVertxGen(function(setVertxGen) {
+    Assert.assertTrue(typeof setVertxGen === 'object');
+    Assert.assertTrue(typeof setVertxGen[0] === 'object');
+    Assert.assertEquals("foo", setVertxGen[0].getString());
+    Assert.assertTrue(typeof setVertxGen[1] === 'object');
+    Assert.assertEquals("bar", setVertxGen[1].getString());
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerAsyncResultSetVertxGen() {
+  var count = 0;
+  obj.methodWithHandlerAsyncResultSetVertxGen(function(setVertxGen, err) {
+    Assert.assertNull(err);
+    Assert.assertTrue(typeof setVertxGen === 'object');
+    Assert.assertTrue(typeof setVertxGen[0] === 'object');
+    Assert.assertEquals("foo", setVertxGen[0].getString());
+    Assert.assertTrue(typeof setVertxGen[1] === 'object');
+    Assert.assertEquals("bar", setVertxGen[1].getString());
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerListJsonObject() {
+  var count = 0;
+  obj.methodWithHandlerListJsonObject(function(listJsonObject) {
+    Assert.assertTrue(typeof listJsonObject === 'object');
+    Assert.assertTrue(typeof listJsonObject[0] === 'object');
+    Assert.assertEquals("stilton", listJsonObject[0].cheese);
+    Assert.assertTrue(typeof listJsonObject[1] === 'object');
+    Assert.assertEquals("tartan", listJsonObject[1].socks);
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerAsyncResultListJsonObject() {
+  var count = 0;
+  obj.methodWithHandlerAsyncResultListJsonObject(function(listJsonObject, err) {
+    Assert.assertNull(err);
+    Assert.assertTrue(typeof listJsonObject === 'object');
+    Assert.assertTrue(typeof listJsonObject[0] === 'object');
+    Assert.assertEquals("stilton", listJsonObject[0].cheese);
+    Assert.assertTrue(typeof listJsonObject[1] === 'object');
+    Assert.assertEquals("tartan", listJsonObject[1].socks);
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerSetJsonObject() {
+  var count = 0;
+  obj.methodWithHandlerSetJsonObject(function(setJsonObject) {
+    Assert.assertTrue(typeof setJsonObject === 'object');
+    Assert.assertTrue(typeof setJsonObject[0] === 'object');
+    Assert.assertEquals("stilton", setJsonObject[0].cheese);
+    Assert.assertTrue(typeof setJsonObject[1] === 'object');
+    Assert.assertEquals("tartan", setJsonObject[1].socks);
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerAsyncResultSetJsonObject() {
+  var count = 0;
+  obj.methodWithHandlerAsyncResultSetJsonObject(function(setJsonObject, err) {
+    Assert.assertNull(err);
+    Assert.assertTrue(typeof setJsonObject === 'object');
+    Assert.assertTrue(typeof setJsonObject[0] === 'object');
+    Assert.assertEquals("stilton", setJsonObject[0].cheese);
+    Assert.assertTrue(typeof setJsonObject[1] === 'object');
+    Assert.assertEquals("tartan", setJsonObject[1].socks);
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerListJsonArray() {
+  var count = 0;
+  obj.methodWithHandlerListJsonArray(function(listJsonArray) {
+    Assert.assertTrue(typeof listJsonArray === 'object');
+    Assert.assertTrue(typeof listJsonArray[0] === 'object');
+    Assert.assertTrue(listJsonArray[0] instanceof Array);
+    Assert.assertEquals("green", listJsonArray[0][0]);
+    Assert.assertEquals("blue", listJsonArray[0][1]);
+    Assert.assertTrue(typeof listJsonArray[1] === 'object');
+    Assert.assertTrue(listJsonArray[1] instanceof Array);
+    Assert.assertEquals("yellow", listJsonArray[1][0]);
+    Assert.assertEquals("purple", listJsonArray[1][1]);
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerAsyncResultListJsonArray() {
+  var count = 0;
+  obj.methodWithHandlerAsyncResultListJsonArray(function(listJsonArray, err) {
+    Assert.assertNull(err);
+    Assert.assertTrue(typeof listJsonArray === 'object');
+    Assert.assertTrue(typeof listJsonArray[0] === 'object');
+    Assert.assertTrue(listJsonArray[0] instanceof Array);
+    Assert.assertEquals("green", listJsonArray[0][0]);
+    Assert.assertEquals("blue", listJsonArray[0][1]);
+    Assert.assertTrue(typeof listJsonArray[1] === 'object');
+    Assert.assertTrue(listJsonArray[1] instanceof Array);
+    Assert.assertEquals("yellow", listJsonArray[1][0]);
+    Assert.assertEquals("purple", listJsonArray[1][1]);
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerSetJsonArray() {
+  var count = 0;
+  obj.methodWithHandlerSetJsonArray(function(setJsonArray) {
+    Assert.assertTrue(typeof setJsonArray === 'object');
+    Assert.assertTrue(typeof setJsonArray[0] === 'object');
+    Assert.assertTrue(setJsonArray[0] instanceof Array);
+    Assert.assertEquals("green", setJsonArray[0][0]);
+    Assert.assertEquals("blue", setJsonArray[0][1]);
+    Assert.assertTrue(typeof setJsonArray[1] === 'object');
+    Assert.assertTrue(setJsonArray[1] instanceof Array);
+    Assert.assertEquals("yellow", setJsonArray[1][0]);
+    Assert.assertEquals("purple", setJsonArray[1][1]);
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerAsyncResultSetJsonArray() {
+  var count = 0;
+  obj.methodWithHandlerAsyncResultSetJsonArray(function(setJsonArray, err) {
+    Assert.assertNull(err);
+    Assert.assertTrue(typeof setJsonArray === 'object');
+    Assert.assertTrue(typeof setJsonArray[0] === 'object');
+    Assert.assertTrue(setJsonArray[0] instanceof Array);
+    Assert.assertEquals("green", setJsonArray[0][0]);
+    Assert.assertEquals("blue", setJsonArray[0][1]);
+    Assert.assertTrue(typeof setJsonArray[1] === 'object');
+    Assert.assertTrue(setJsonArray[1] instanceof Array);
+    Assert.assertEquals("yellow", setJsonArray[1][0]);
+    Assert.assertEquals("purple", setJsonArray[1][1]);
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
+
+
+
+
 function testMethodWithHandlerUserTypes() {
   var count = 0;
   obj.methodWithHandlerUserTypes(function(refedObj) {
@@ -478,8 +660,6 @@ function testJsonHandlerAsyncResultParams() {
   });
   Assert.assertEquals(2, count, 0);
 }
-
-
 
 if (typeof this[testName] === 'undefined') {
   throw "No such test: " + testName;

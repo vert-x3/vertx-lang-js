@@ -110,6 +110,66 @@ public class APITest extends JSTestBase {
     runTest();
   }
 
+  @Test
+  public void testMethodWithHandlerListVertxGen() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerSetVertxGen() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerListJsonObject() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerSetJsonObject() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerListJsonArray() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerSetJsonArray() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerAsyncResultListVertxGen() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerAsyncResultSetVertxGen() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerAsyncResultListJsonObject() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerAsyncResultSetJsonObject() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerAsyncResultListJsonArray() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerAsyncResultSetJsonArray() throws Exception {
+    runTest();
+  }
+
   // Test returns
 
   @Test
