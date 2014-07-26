@@ -170,6 +170,11 @@ public class APITest extends JSTestBase {
     runTest();
   }
 
+  @Test
+  public void testMethodWithGenericParams() throws Exception {
+    runTest();
+  }
+
   // Test returns
 
   @Test
