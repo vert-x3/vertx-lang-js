@@ -47,7 +47,7 @@ utils.convJSObjectToJsonObject(@{param.name})
 utils.convJSArrayToJsonArray(@{param.name})
 	@else{param.options}
 new @{helper.getSimpleName(param.type.name)}(new JsonObject(JSON.stringify(@{param.name})))
-	@else{param.type.name.equals('java.lang.Object') || param.type.kind.name().equals("VARIABLE")}
+	@else{param.type.kind == OBJECT}
 utils.convRuntimeParam(@{param.name})
 	@else{helper.isBasicType(param.type.name)}
 @{param.name}
