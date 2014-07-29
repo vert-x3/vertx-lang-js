@@ -171,7 +171,17 @@ public class APITest extends JSTestBase {
   }
 
   @Test
-  public void testMethodWithGenericParams() throws Exception {
+  public void testMethodWithGenericParam() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithGenericHandler() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithGenericHandlerAsyncResult() throws Exception {
     runTest();
   }
 
