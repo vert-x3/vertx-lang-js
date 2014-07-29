@@ -494,57 +494,78 @@ function testMethodWithHandlerThrowable() {
   Assert.assertEquals(1, count, 0);
 }
 
-function testMethodWithGenericParams() {
-  var count = 0;
-  obj.methodWithGenericParams("String", "foo", function(res) {
-    Assert.assertEquals("handlerFoo", res);
-    count++;
-  }, function (res, err) {
-    Assert.assertNull(err);
-    Assert.assertEquals("asyncResultHandlerFoo", res);
-    count++;
-  });
-  Assert.assertEquals(2, count, 0);
-  count = 0;
-  obj.methodWithGenericParams("Ref", "foo", function(res) {
-    Assert.assertEquals("bar", res.getString());
-    count++;
-  }, function (res, err) {
-    Assert.assertNull(err);
-    Assert.assertEquals("bar", res.getString());
-    count++;
-  });
-  Assert.assertEquals(2, count, 0);
-  count = 0;
+function testMethodWithGenericParam() {
+  obj.methodWithGenericParam("String", "foo");
   var jsonObj = {
     foo: "hello",
     bar: 123
   };
-  obj.methodWithGenericParams("JsonObject", jsonObj, function(res) {
-    Assert.assertEquals("hello", res.foo);
-    Assert.assertEquals(123, res.bar, 0);
-    count++;
-  }, function (res, err) {
-    Assert.assertNull(err);
-    Assert.assertEquals("hello", res.foo);
-    Assert.assertEquals(123, res.bar, 0);
-    count++;
-  });
-  Assert.assertEquals(2, count, 0);
-  count = 0;
+  obj.methodWithGenericParam("JsonObject", jsonObj);
   var jsonArr = ["foo", "bar", "wib"];
-  obj.methodWithGenericParams("JsonArray", jsonArr, function(res) {
-    Assert.assertEquals("foo", res[0]);
-    Assert.assertEquals("bar", res[1]);
-    Assert.assertEquals("wib", res[2]);
-    count++;
-  }, function (res, err) {
-    Assert.assertEquals("foo", res[0]);
-    Assert.assertEquals("bar", res[1]);
-    Assert.assertEquals("wib", res[2]);
-    count++;
-  });
-  Assert.assertEquals(2, count, 0);
+  obj.methodWithGenericParam("JsonArray", jsonArr);
+}
+
+function testMethodWithGenericHandler() {
+    var count = 0;
+    obj.methodWithGenericHandler("String", function(res) {
+        Assert.assertEquals("handlerFoo", res);
+        count++;
+    });
+    Assert.assertEquals(1, count, 0);
+    count = 0;
+    obj.methodWithGenericHandler("Ref", function(res) {
+        Assert.assertEquals("bar", res.getString());
+        count++;
+    });
+    Assert.assertEquals(1, count, 0);
+    count = 0;
+    obj.methodWithGenericHandler("JsonObject", function(res) {
+        Assert.assertEquals("hello", res.foo);
+        Assert.assertEquals(123, res.bar, 0);
+        count++;
+    });
+    Assert.assertEquals(1, count, 0);
+    count = 0;
+    obj.methodWithGenericHandler("JsonArray", function(res) {
+        Assert.assertEquals("foo", res[0]);
+        Assert.assertEquals("bar", res[1]);
+        Assert.assertEquals("wib", res[2]);
+        count++;
+    });
+    Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithGenericHandlerAsyncResult() {
+    var count = 0;
+    obj.methodWithGenericHandlerAsyncResult("String", function (res, err) {
+        Assert.assertNull(err);
+        Assert.assertEquals("asyncResultHandlerFoo", res);
+        count++;
+    });
+    Assert.assertEquals(1, count, 0);
+    count = 0;
+    obj.methodWithGenericHandlerAsyncResult("Ref", function (res, err) {
+        Assert.assertNull(err);
+        Assert.assertEquals("bar", res.getString());
+        count++;
+    });
+    Assert.assertEquals(1, count, 0);
+    count = 0;
+    obj.methodWithGenericHandlerAsyncResult("JsonObject", function (res, err) {
+        Assert.assertNull(err);
+        Assert.assertEquals("hello", res.foo);
+        Assert.assertEquals(123, res.bar, 0);
+        count++;
+    });
+    Assert.assertEquals(1, count, 0);
+    count = 0;
+    obj.methodWithGenericHandlerAsyncResult("JsonArray", function (res, err) {
+        Assert.assertEquals("foo", res[0]);
+        Assert.assertEquals("bar", res[1]);
+        Assert.assertEquals("wib", res[2]);
+        count++;
+    });
+    Assert.assertEquals(1, count, 0);
 }
 
 function testBasicReturns() {
