@@ -10,7 +10,7 @@ public class ExampleRunner {
 
   public static void main(String[] args) {
     Vertx vertx = Vertx.vertx();
-    vertx.deployVerticle("js:examples/http_server", new DeploymentOptions(), ar -> {
+    vertx.deployVerticle("js:examples/http_server", DeploymentOptions.options(), ar -> {
       if (ar.succeeded()) {
         System.out.println("Succeeded in deploying");
       } else {
