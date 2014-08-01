@@ -25,7 +25,7 @@ function testStopCalled() {
     });
   });
 
-  Assert.assertTrue(latch.await(10, TimeUnit.SECONDS));
+  Assert.assertTrue(latch.await(2, TimeUnit.MINUTES));
 }
 
 if (typeof this[testName] === 'undefined') {
