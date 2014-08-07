@@ -65,42 +65,49 @@ function testMethodWithHandlerBasicTypes() {
 
 function testMethodWithHandlerAsyncResultBasicTypes() {
   var count = 0;
-  obj.methodWithHandlerAsyncResultBasicTypes(false, function(b, err) {
+  obj.methodWithHandlerAsyncResultByte(false, function(b, err) {
     Assert.assertEquals("number", typeof b);
     Assert.assertEquals(123, b, 0);
     Assert.assertNull(err);
     count++;
-  }, function(s, err) {
+  });
+  obj.methodWithHandlerAsyncResultShort(false, function(s, err) {
     Assert.assertEquals("number", typeof s);
     Assert.assertEquals(12345, s, 0);
     Assert.assertNull(err);
     count++;
-  }, function (i, err) {
+  });
+  obj.methodWithHandlerAsyncResultInteger(false, function (i, err) {
     Assert.assertEquals("number", typeof i);
     Assert.assertEquals(1234567, i, 0);
     Assert.assertNull(err);
     count++;
-  }, function (l, err) {
+  });
+  obj.methodWithHandlerAsyncResultLong(false, function (l, err) {
     Assert.assertEquals("number", typeof l);
     Assert["assertEquals(double, double, double)"](1265615234, l, 0);
     Assert.assertNull(err);
     count++;
-  }, function (f, err) {
+  });
+  obj.methodWithHandlerAsyncResultFloat(false, function (f, err) {
     Assert.assertEquals("number", typeof f);
     Assert["assertEquals(float, float, float)"](12.345, f, 0);
     Assert.assertNull(err);
     count++;
-  }, function(d, err) {
+  });
+  obj.methodWithHandlerAsyncResultDouble(false, function(d, err) {
     Assert.assertEquals("number", typeof d);
     Assert["assertEquals(double, double, double)"](12.34566, d, 0);
     Assert.assertNull(err);
     count++;
-  }, function (bool, err) {
+  });
+  obj.methodWithHandlerAsyncResultBoolean(false, function (bool, err) {
     Assert.assertEquals("boolean", typeof bool);
     Assert.assertTrue(bool);
     Assert.assertNull(err);
     count++;
-  }, function (char, err) {
+  });
+  obj.methodWithHandlerAsyncResultCharacter(false, function (char, err) {
     // TODO - it seems that Nashorn passes Java chars as object and doesn't convert them to String automatically
     Assert.assertEquals("object", typeof char); // !!
     if (typeof char === "object") {
@@ -110,7 +117,8 @@ function testMethodWithHandlerAsyncResultBasicTypes() {
     Assert.assertEquals('X', '' + char);
     Assert.assertNull(err);
     count++;
-  }, function (str, err) {
+  });
+  obj.methodWithHandlerAsyncResultString(false, function (str, err) {
     Assert.assertEquals("string", typeof str);
     Assert.assertEquals("quux!", str);
     Assert.assertNull(err);
@@ -122,48 +130,56 @@ function testMethodWithHandlerAsyncResultBasicTypes() {
 function testMethodWithHandlerAsyncResultBasicTypesFails() {
   console.log("Starting test");
   var count = 0;
-  obj.methodWithHandlerAsyncResultBasicTypes(true, function(b, err) {
+  obj.methodWithHandlerAsyncResultByte(true, function(b, err) {
     Assert.assertNull(b)
     Assert.assertNotNull(err);
     Assert.assertEquals("foobar!", err.getMessage());
     console.log("type:" + typeof err);
     count++;
-  }, function(s, err) {
+  });
+  obj.methodWithHandlerAsyncResultShort(true, function(s, err) {
     Assert.assertNull(s)
     Assert.assertNotNull(err);
     Assert.assertEquals("foobar!", err.getMessage());
     count++;
-  }, function (i, err) {
+  });
+  obj.methodWithHandlerAsyncResultInteger(true, function (i, err) {
     Assert.assertNull(i)
     Assert.assertNotNull(err);
     Assert.assertEquals("foobar!", err.getMessage());
     count++;
-  }, function (l, err) {
+  });
+  obj.methodWithHandlerAsyncResultLong(true, function (l, err) {
     Assert.assertNull(l)
     Assert.assertNotNull(err);
     Assert.assertEquals("foobar!", err.getMessage());
     count++;
-  }, function (f, err) {
+  });
+  obj.methodWithHandlerAsyncResultFloat(true, function (f, err) {
     Assert.assertNull(f)
     Assert.assertNotNull(err);
     Assert.assertEquals("foobar!", err.getMessage());
     count++;
-  }, function(d, err) {
+  });
+  obj.methodWithHandlerAsyncResultDouble(true, function(d, err) {
     Assert.assertNull(d)
     Assert.assertNotNull(err);
     Assert.assertEquals("foobar!", err.getMessage());
     count++;
-  }, function (bool, err) {
+  });
+  obj.methodWithHandlerAsyncResultBoolean(true, function (bool, err) {
     Assert.assertNull(bool)
     Assert.assertNotNull(err);
     Assert.assertEquals("foobar!", err.getMessage());
     count++;
-  }, function (char, err) {
+  });
+  obj.methodWithHandlerAsyncResultCharacter(true, function (char, err) {
     Assert.assertNull(char)
     Assert.assertNotNull(err);
     Assert.assertEquals("foobar!", err.getMessage());
     count++;
-  }, function (str, err) {
+  });
+  obj.methodWithHandlerAsyncResultString(true, function (str, err) {
     Assert.assertNull(str)
     Assert.assertNotNull(err);
     Assert.assertEquals("foobar!", err.getMessage());
@@ -228,28 +244,31 @@ function testMethodWithHandlerListAndSet() {
 
 function testMethodWithHandlerAsyncResultListAndSet() {
   var count = 0;
-  obj.methodWithHandlerAsyncResultListAndSet(function(listString, err) {
+  obj.methodWithHandlerAsyncResultListString(function(listString, err) {
     Assert.assertNull(err);
     Assert.assertTrue(typeof listString === 'object');
     Assert.assertEquals("foo", listString[0]);
     Assert.assertEquals("bar", listString[1]);
     Assert.assertEquals("wibble", listString[2]);
     count++;
-  }, function(listInt, err) {
+  });
+  obj.methodWithHandlerAsyncResultListInteger(function(listInt, err) {
     Assert.assertNull(err);
     Assert.assertTrue(typeof listInt === 'object');
     Assert.assertEquals(5, listInt[0], 0);
     Assert.assertEquals(12, listInt[1], 0);
     Assert.assertEquals(100, listInt[2], 0);
     count++;
-  }, function(setString, err) {
+  });
+    obj.methodWithHandlerAsyncResultSetString(function(setString, err) {
     Assert.assertNull(err);
     Assert.assertTrue(typeof setString === 'object');
     Assert.assertEquals("foo", setString[0]);
     Assert.assertEquals("bar", setString[1]);
     Assert.assertEquals("wibble", setString[2])
     count++;
-  }, function(setInt, err) {
+  });
+  obj.methodWithHandlerAsyncResultSetInteger(function(setInt, err) {
     Assert.assertNull(err);
     Assert.assertTrue(typeof setInt === 'object');
     Assert.assertEquals(5, setInt[0], 0);
@@ -715,12 +734,13 @@ function testJsonHandlerParams() {
 function testJsonHandlerAsyncResultParams() {
 
   var count = 0;
-  obj.methodWithHandlerAsyncResultJson(function(jsonObject, err) {
+  obj.methodWithHandlerAsyncResultJsonObject(function(jsonObject, err) {
     Assert.assertNull(err);
     Assert.assertTrue(typeof jsonObject === 'object')
     Assert.assertEquals("stilton", jsonObject.cheese);
     count++;
-  }, function(jsonArray, err) {
+  });
+  obj.methodWithHandlerAsyncResultJsonArray(function(jsonArray, err) {
     Assert.assertNull(err);
     Assert.assertTrue(typeof jsonArray === 'object')
     Assert.assertTrue(jsonArray instanceof Array)
