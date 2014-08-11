@@ -212,6 +212,10 @@ function testOptionsParam() {
   obj.methodWithOptionsParam(options);
 }
 
+function testNullOptionsParam() {
+    obj.methodWithNullOptionsParam(null);
+}
+
 function testMethodWithHandlerListAndSet() {
   var count = 0;
   obj.methodWithHandlerListAndSet(function(listString) {
@@ -346,6 +350,16 @@ function testMethodWithHandlerListJsonObject() {
   Assert.assertEquals(1, count, 0);
 }
 
+function testMethodWithHandlerListNullJsonObject() {
+    var count = 0;
+    obj.methodWithHandlerListNullJsonObject(function(listJsonObject) {
+        Assert.assertTrue(typeof listJsonObject === 'object');
+        Assert.assertNull(listJsonObject[0]);
+        count++;
+    });
+    Assert.assertEquals(1, count, 0);
+}
+
 function testMethodWithHandlerAsyncResultListJsonObject() {
   var count = 0;
   obj.methodWithHandlerAsyncResultListJsonObject(function(listJsonObject, err) {
@@ -358,6 +372,17 @@ function testMethodWithHandlerAsyncResultListJsonObject() {
     count++;
   });
   Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerAsyncResultListNullJsonObject() {
+    var count = 0;
+    obj.methodWithHandlerAsyncResultListNullJsonObject(function(listJsonObject, err) {
+        Assert.assertNull(err);
+        Assert.assertTrue(typeof listJsonObject === 'object');
+        Assert.assertNull(listJsonObject[0]);
+        count++;
+    });
+    Assert.assertEquals(1, count, 0);
 }
 
 function testMethodWithHandlerSetJsonObject() {
@@ -373,6 +398,16 @@ function testMethodWithHandlerSetJsonObject() {
   Assert.assertEquals(1, count, 0);
 }
 
+function testMethodWithHandlerSetNullJsonObject() {
+    var count = 0;
+    obj.methodWithHandlerSetNullJsonObject(function(setJsonObject) {
+        Assert.assertTrue(typeof setJsonObject === 'object');
+        Assert.assertNull(setJsonObject[0]);
+        count++;
+    });
+    Assert.assertEquals(1, count, 0);
+}
+
 function testMethodWithHandlerAsyncResultSetJsonObject() {
   var count = 0;
   obj.methodWithHandlerAsyncResultSetJsonObject(function(setJsonObject, err) {
@@ -385,6 +420,17 @@ function testMethodWithHandlerAsyncResultSetJsonObject() {
     count++;
   });
   Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerAsyncResultSetNullJsonObject() {
+    var count = 0;
+    obj.methodWithHandlerAsyncResultSetNullJsonObject(function(setJsonObject, err) {
+        Assert.assertNull(err);
+        Assert.assertTrue(typeof setJsonObject === 'object');
+        Assert.assertNull(setJsonObject[0]);
+        count++;
+    });
+    Assert.assertEquals(1, count, 0);
 }
 
 function testMethodWithHandlerListJsonArray() {
@@ -402,6 +448,16 @@ function testMethodWithHandlerListJsonArray() {
     count++;
   });
   Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerListNullJsonArray() {
+    var count = 0;
+    obj.methodWithHandlerListNullJsonArray(function(listJsonArray) {
+        Assert.assertTrue(typeof listJsonArray === 'object');
+        Assert.assertNull(listJsonArray[0]);
+        count++;
+    });
+    Assert.assertEquals(1, count, 0);
 }
 
 function testMethodWithHandlerAsyncResultListJsonArray() {
@@ -422,6 +478,17 @@ function testMethodWithHandlerAsyncResultListJsonArray() {
   Assert.assertEquals(1, count, 0);
 }
 
+function testMethodWithHandlerAsyncResultListNullJsonArray() {
+    var count = 0;
+    obj.methodWithHandlerAsyncResultListNullJsonArray(function(listJsonArray, err) {
+        Assert.assertNull(err);
+        Assert.assertTrue(typeof listJsonArray === 'object');
+        Assert.assertNull(listJsonArray[0]);
+        count++;
+    });
+    Assert.assertEquals(1, count, 0);
+}
+
 function testMethodWithHandlerSetJsonArray() {
   var count = 0;
   obj.methodWithHandlerSetJsonArray(function(setJsonArray) {
@@ -437,6 +504,16 @@ function testMethodWithHandlerSetJsonArray() {
     count++;
   });
   Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerSetNullJsonArray() {
+    var count = 0;
+    obj.methodWithHandlerSetNullJsonArray(function(setJsonArray) {
+        Assert.assertTrue(typeof setJsonArray === 'object');
+        Assert.assertNull(setJsonArray[0]);
+        count++;
+    });
+    Assert.assertEquals(1, count, 0);
 }
 
 function testMethodWithHandlerAsyncResultSetJsonArray() {
@@ -455,6 +532,17 @@ function testMethodWithHandlerAsyncResultSetJsonArray() {
     count++;
   });
   Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerAsyncResultSetNullJsonArray() {
+    var count = 0;
+    obj.methodWithHandlerAsyncResultSetNullJsonArray(function(setJsonArray, err) {
+        Assert.assertNull(err);
+        Assert.assertTrue(typeof setJsonArray === 'object');
+        Assert.assertNull(setJsonArray[0]);
+        count++;
+    });
+    Assert.assertEquals(1, count, 0);
 }
 
 function testMethodWithHandlerUserTypes() {
@@ -705,6 +793,13 @@ function testJsonReturns() {
   Assert.assertEquals("shoes", ret[1]);
 }
 
+function testNullJsonReturns() {
+    var ret = obj.methodWithNullJsonObjectReturn();
+    Assert.assertNull(ret)
+    ret = obj.methodWithNullJsonArrayReturn();
+    Assert.assertNull(ret)
+}
+
 function testJsonParams() {
   var jsonObject = {
     cat: "lion",
@@ -712,6 +807,15 @@ function testJsonParams() {
   }
   var jsonArray = ["house", "spider"];
   obj.methodWithJsonParams(jsonObject, jsonArray);
+}
+
+function testNullJsonParams() {
+    var jsonObject = {
+        cat: "lion",
+        cheese: "cheddar"
+    }
+    var jsonArray = ["house", "spider"];
+    obj.methodWithNullJsonParams(null, null);
 }
 
 function testJsonHandlerParams() {
@@ -729,6 +833,21 @@ function testJsonHandlerParams() {
     count++;
   });
   Assert.assertEquals(2, count, 0);
+}
+
+function testNullJsonHandlerParams() {
+
+    var count = 0;
+    obj.methodWithHandlerNullJson(function(jsonObject) {
+        Assert.assertTrue(typeof jsonObject === 'object')
+        Assert.assertNull(jsonObject);
+        count++;
+    }, function(jsonArray) {
+        Assert.assertTrue(typeof jsonArray === 'object')
+        Assert.assertNull(jsonArray);
+        count++;
+    });
+    Assert.assertEquals(2, count, 0);
 }
 
 function testJsonHandlerAsyncResultParams() {
@@ -749,6 +868,24 @@ function testJsonHandlerAsyncResultParams() {
     count++;
   });
   Assert.assertEquals(2, count, 0);
+}
+
+function testNullJsonHandlerAsyncResultParams() {
+
+    var count = 0;
+    obj.methodWithHandlerAsyncResultNullJsonObject(function(jsonObject, err) {
+        Assert.assertNull(err);
+        Assert.assertTrue(typeof jsonObject === 'object')
+        Assert.assertNull(jsonObject);
+        count++;
+    });
+    obj.methodWithHandlerAsyncResultNullJsonArray(function(jsonArray, err) {
+        Assert.assertNull(err);
+        Assert.assertTrue(typeof jsonArray === 'object')
+        Assert.assertNull(jsonArray);
+        count++;
+    });
+    Assert.assertEquals(2, count, 0);
 }
 
 if (typeof this[testName] === 'undefined') {

@@ -71,6 +71,11 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testNullOptionsParam() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMethodWithHandlerListAndSet() throws Exception {
     runTest();
   }
@@ -126,7 +131,17 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testMethodWithHandlerListNullJsonObject() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMethodWithHandlerSetJsonObject() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerSetNullJsonObject() throws Exception {
     runTest();
   }
 
@@ -136,7 +151,17 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testMethodWithHandlerListNullJsonArray() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMethodWithHandlerSetJsonArray() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerSetNullJsonArray() throws Exception {
     runTest();
   }
 
@@ -156,12 +181,27 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testMethodWithHandlerAsyncResultListNullJsonObject() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMethodWithHandlerAsyncResultSetJsonObject() throws Exception {
     runTest();
   }
 
   @Test
+  public void testMethodWithHandlerAsyncResultSetNullJsonObject() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMethodWithHandlerAsyncResultListJsonArray() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerAsyncResultListNullJsonArray() throws Exception {
     runTest();
   }
 
@@ -245,7 +285,17 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testNullJsonReturns() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testJsonParams() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullJsonParams() throws Exception {
     runTest();
   }
 
@@ -255,7 +305,17 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testNullJsonHandlerParams() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testJsonHandlerAsyncResultParams() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullJsonHandlerAsyncResultParams() throws Exception {
     runTest();
   }
 

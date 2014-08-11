@@ -12,11 +12,15 @@ utils.convRuntimeReturn = function(ret) {
 };
 
 utils.convJSObjectToJsonObject = function(param) {
-  return new JsonObject(JSON.stringify(param));
+  return param != null ? new JsonObject(JSON.stringify(param)) : null;
+};
+
+utils.convJsonToJS = function(param) {
+    return param != null ? JSON.parse(param.encode()) : null;
 };
 
 utils.convJSArrayToJsonArray = function(param) {
-  return new JsonArray(JSON.stringify(param));
+  return param != null ? new JsonArray(JSON.stringify(param)) : null;
 };
 
 utils.convRuntimeParam = function(param) {
@@ -47,7 +51,7 @@ utils.convListSetJson = function(jList) {
   var pos = 0;
   while (iter.hasNext()) {
     var jJson = iter.next();
-    arr[pos++] = JSON.parse(jJson.encode());
+    arr[pos++] = jJson != null ? JSON.parse(jJson.encode()) : null;
   }
   return arr;
 }
