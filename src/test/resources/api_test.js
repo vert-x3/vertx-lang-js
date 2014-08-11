@@ -783,7 +783,7 @@ function testMethodWithCachedReturn() {
 }
 
 function testJsonReturns() {
-  var ret = obj.methodwithJsonObjectReturn();
+  var ret = obj.methodWithJsonObjectReturn();
   Assert.assertTrue(typeof ret === 'object')
   Assert.assertEquals("stilton", ret.cheese);
   ret = obj.methodWithJsonArrayReturn();
