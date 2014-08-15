@@ -10,7 +10,7 @@ function testAsyncStartStop() {
   var vertx = Vertx.vertx();
   var latch = new CountDownLatch(1);
   var start = Date.now();
-  vertx.deployVerticle("js:async_test_verticle", {}, function(deploymentID, err) {
+  vertx.deployVerticle("js:async_test_verticle", function(deploymentID, err) {
 
     Assert.assertNotNull(deploymentID);
     Assert.assertNull(err);

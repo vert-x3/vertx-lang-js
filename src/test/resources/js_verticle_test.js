@@ -9,7 +9,7 @@ var Vertx = require("vertx-js/vertx");
 function testStopCalled() {
   var vertx = Vertx.vertx();
   var latch = new CountDownLatch(1);
-  vertx.deployVerticle("js:test_verticle", {}, function(deploymentID, err) {
+  vertx.deployVerticle("js:test_verticle", function(deploymentID, err) {
 
     Assert.assertNotNull(deploymentID);
     Assert.assertNull(err);

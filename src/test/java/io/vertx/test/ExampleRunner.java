@@ -1,6 +1,5 @@
 package io.vertx.test;
 
-import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 
 /**
@@ -10,7 +9,7 @@ public class ExampleRunner {
 
   public static void main(String[] args) {
     Vertx vertx = Vertx.vertx();
-    vertx.deployVerticle("js:examples/http_server", DeploymentOptions.options(), ar -> {
+    vertx.deployVerticle("js:examples/http_server", ar -> {
       if (ar.succeeded()) {
         System.out.println("Succeeded in deploying");
       } else {
