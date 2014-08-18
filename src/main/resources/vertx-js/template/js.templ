@@ -177,8 +177,8 @@ utils.convRuntimeReturn(@includeNamed{templ})
 
 var utils = require('vertx-js/util/utils');\n
 @foreach{referencedType : referencedTypes}
-@code{refedType=helper.getSimpleName(helper.getNonGenericType(referencedType));}
-var @{refedType} = require('@{options["vertx.js.scriptDir"]}/@{helper.convertCamelCaseToUnderscores(refedType)}');\n
+@code{refedType=referencedType.simpleName;}
+var @{refedType} = require('@{referencedType.moduleName}-js/@{helper.convertCamelCaseToUnderscores(refedType)}');\n
 @end{}
 \n
 

@@ -1,7 +1,7 @@
 var Assert = org.junit.Assert;
 
-var TestInterface = require('vertx-js/test_interface');
-var RefedInterface1 = require('vertx-js/refed_interface1');
+var TestInterface = require('testmodel-js/test_interface');
+var RefedInterface1 = require('testmodel-js/refed_interface1');
 
 var obj = new TestInterface(new Packages.io.vertx.codegen.testmodel.TestInterfaceImpl());
 var refed_obj = new RefedInterface1(new Packages.io.vertx.codegen.testmodel.RefedInterface1Impl());

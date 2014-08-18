@@ -17,9 +17,8 @@ public class APITest extends JSTestBase {
   @Before
   public void before() throws Exception {
     Generator gen = new Generator();
-    gen.setOption("vertx.js.scriptDir", "vertx-js");
     gen.genAndApply("io.vertx.codegen.testmodel", packageName -> !packageName.contains("impl"),
-                    clazz -> "target/classes/vertx-js/" + Helper.convertCamelCaseToUnderscores(clazz.getSimpleName()) + ".js",
+                    clazz -> "target/classes/testmodel-js/" + Helper.convertCamelCaseToUnderscores(clazz.getSimpleName()) + ".js",
                     "vertx-js/template/js.templ");
   }
 
