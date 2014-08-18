@@ -1,0 +1,5 @@
+{
+  "name": "JavaScript",
+  "nameTemplate": "resources/vertx-js/@{helper.convertCamelCaseToUnderscores(typeSimpleName)}.js",
+  "templateFileName": "vertx-js/template/js.templ"
+}
