@@ -1,5 +1,7 @@
 {
   "name": "JavaScript",
-  "nameTemplate": "resources/@{type.moduleName}-js/@{helper.convertCamelCaseToUnderscores(type.simpleName)}.js",
-  "templateFileName": "vertx-js/template/js.templ"
+  "class": {
+    "nameTemplate": "resources/@{type.raw.moduleName}-js/@{helper.convertCamelCaseToUnderscores(type.raw.simpleName)}.js",
+    "templateFileName": "vertx-js/template/js.templ"
+  }
 }

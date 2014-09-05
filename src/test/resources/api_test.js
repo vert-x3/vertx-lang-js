@@ -615,7 +615,7 @@ function testMethodWithGenericParam() {
 function testMethodWithGenericHandler() {
     var count = 0;
     obj.methodWithGenericHandler("String", function(res) {
-        Assert.assertEquals("handlerFoo", res);
+        Assert.assertEquals("foo", res);
         count++;
     });
     Assert.assertEquals(1, count, 0);
@@ -646,7 +646,7 @@ function testMethodWithGenericHandlerAsyncResult() {
     var count = 0;
     obj.methodWithGenericHandlerAsyncResult("String", function (res, err) {
         Assert.assertNull(err);
-        Assert.assertEquals("asyncResultHandlerFoo", res);
+        Assert.assertEquals("foo", res);
         count++;
     });
     Assert.assertEquals(1, count, 0);
@@ -749,15 +749,17 @@ function testSuperInterfaces() {
 
 function testMethodWithGenericReturn() {
   // JsonObject should be converted to JS object
-  var ret = obj.methodWithGenericReturn(true);
+  var ret = obj.methodWithGenericReturn("JsonObject");
   Assert.assertTrue(typeof ret === 'object');
-  Assert.assertEquals("bar", ret.foo);
+  Assert.assertEquals("hello", ret.foo);
+  Assert.assertEquals(123, ret.bar, 0);
 
-  ret = obj.methodWithGenericReturn(false);
+  ret = obj.methodWithGenericReturn("JsonArray");
   Assert.assertTrue(typeof ret === 'object');
   Assert.assertTrue(ret instanceof Array)
   Assert.assertEquals("foo", ret[0]);
   Assert.assertEquals("bar", ret[1]);
+  Assert.assertEquals("wib", ret[2]);
 }
 
 function testFluentMethod() {
