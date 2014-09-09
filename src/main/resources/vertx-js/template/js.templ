@@ -1,11 +1,12 @@
-
 @comment{"Generate a call to a Java API method"}
 @comment{"===================================="}
 
 @declare{'genMethodCall'}
 @if{static}J@{ifaceSimpleName}@else{}j_@{ifaceName}@end{}.@{method.name}(
+	@code{pcnt=0;}
 	@foreach{param: method.params}
-@includeNamed{'convParam'}
+		@code{argName='__args[' + (pcnt++) + ']';}
+		@includeNamed{'convParam'}
 	@end{", "})
 @end{}
 
@@ -13,6 +14,7 @@
 @comment{"============================================================================================="}
 
 @declare{'convParam'}
+	@code{paramName = overloaded ? argName : param.name;}
 	@if{param.type.name.startsWith('io.vertx.core.Handler<')}
 		@code{genericType = helper.getGenericType(param.type.name)}
 		@if{genericType.startsWith('io.vertx.core.AsyncResult<')}
@@ -20,39 +22,39 @@
 			@if{genericType.equals('java.lang.Void')}
 function(ar) {\n
 @{ind}    if (ar.succeeded()) {\n
-@{ind}      @{param.name}(null, null);\n
+@{ind}      @{paramName}(null, null);\n
 @{ind}    } else {\n
-@{ind}      @{param.name}(null, ar.cause());\n
+@{ind}      @{paramName}(null, ar.cause());\n
 @{ind}    }\n
 @{ind}  }
 			@else{}
 function(ar) {\n
 @{ind}    if (ar.succeeded()) {\n
-@{ind}      @{param.name}(@includeNamed{'convReturn'; templ='arVal'; returnType=genericType}, null);\n
+@{ind}      @{paramName}(@includeNamed{'convReturn'; templ='arVal'; returnType=genericType}, null);\n
 @{ind}    } else {\n
-@{ind}      @{param.name}(null, ar.cause());\n
+@{ind}      @{paramName}(null, ar.cause());\n
 @{ind}    }\n
 @{ind}  }
 			@end{}
 		@else{genericType.equals('java.lang.Void')}
-@{param.name}
+@{paramName}
 		@else{}
 function(jVal) {\n
-@{ind}    @{param.name}(@includeNamed{'convReturn'; templ='basicVal'; returnType=genericType});\n
+@{ind}    @{paramName}(@includeNamed{'convReturn'; templ='basicVal'; returnType=genericType});\n
 @{ind}  }
 		@end{}
 	@else{param.type.name.equals('io.vertx.core.json.JsonObject')}
-utils.convJSObjectToJsonObject(@{param.name})
+utils.convJSObjectToJsonObject(@{paramName})
 	@else{param.type.name.equals('io.vertx.core.json.JsonArray')}
-utils.convJSArrayToJsonArray(@{param.name})
+utils.convJSArrayToJsonArray(@{paramName})
 	@else{param.options}
-@{param.name} != null ? @{helper.getSimpleName(param.type.name)}.optionsFromJson(new JsonObject(JSON.stringify(@{param.name}))) : null
+@{paramName} != null ? @{helper.getSimpleName(param.type.name)}.optionsFromJson(new JsonObject(JSON.stringify(@{paramName}))) : null
 	@else{param.type.kind == CLASS_OBJECT}
-utils.convRuntimeParam(@{param.name})
+utils.convRuntimeParam(@{paramName})
 	@else{helper.isBasicType(param.type.name)}
-@{param.name}
+@{paramName}
 	@else{}
-@{param.name}._jdel()
+@{paramName}._jdel()
 	@end{}
 @end{}
 
@@ -102,54 +104,74 @@ utils.convRuntimeReturn(@includeNamed{templ})
 @comment{"============================"}
 
 @declare{'genMethod'}
+	@code{methodList = methodsByName.get(methodName); overloaded = methodList.size() > 1; method = methodList.get(0);}
 	@if{static == method.staticMethod}
 		@if{method.comment != null}
 @{helper.indentString("/*\n" + helper.removeTags(method.comment) + "\n*/\n", ind)}
 		@end{}
-@{ind}@if{static}@{ifaceSimpleName}@else{}this@end{}.@{method.name} = function(@foreach{param0: method.params}@{param0.name}@end{", "}) {\n
-		@if{method.squashed}
-@{ind}  switch (arguments.length) {\n
-			@foreach{method: methodsByName.get(method.name)}
-@{ind}    case @{method.params.size()}:\n
+@{ind}@if{static}@{ifaceSimpleName}@else{}this@end{}.@{methodName} =
+		@if{overloaded}
+		 function() {\n
+		@else{}
+		 function(@foreach{param: method.params}@{param.name}@end{", "}) {\n
+		@end{}
+			@code{mcnt = 0;}
+@{ind}  var __args = arguments;\n
+			@foreach{method: methodList}
+@{ind}@if{mcnt == 0}  if@else{}else if@end{} (__args.length === @{method.params.size()}
+				@code{mcnt++;}
+				@code{cnt = 0;}
+				@if{method.params.size() > 0} && @end{}
+				@foreach{param: method.params}
+					@if{param.type.kind == CLASS_PRIMITIVE || param.type.kind == CLASS_BOXED_PRIMITIVE}
+					typeof __args[@{cnt++}] ===
+						@if{param.type.name == 'long' || param.type.name == 'java.lang.Long' ||
+								param.type.name == 'int'  || param.type.name == 'java.lang.Integer' ||
+								param.type.name == 'short' || param.type.name == 'java.lang.Short' ||
+								param.type.name == 'float' || param.type.name == 'java.lang.Float' ||
+								param.type.name == 'double' || param.type.name == 'java.lang.Double' ||
+								param.type.name == 'byte' || param.type.name == 'java.lang.Byte'}
+							'number'
+						@else{param.type.name == 'boolean' || param.type.name == 'java.lang.Boolean'}
+							'boolean'
+						@else{param.type.name == 'char' || param.type.name == 'java.lang.Character'}
+							'string'
+						@end{}
+					@else{param.type.kind == CLASS_STRING}
+					typeof __args[@{cnt++}] === 'string'
+					@else{param.type.kind == CLASS_API}
+						typeof __args[@{cnt}] === 'object' && __args[@{cnt++}]._vertxgen
+					@else{param.type.kind == CLASS_JSON_ARRAY}
+						typeof __args[@{cnt}] === 'object' && __args[@{cnt++}] instanceof Array
+					@else{param.type.kind == CLASS_HANDLER}
+						typeof __args[@{cnt++}] === 'function'
+					@else{param.type.kind == CLASS_OBJECT}
+						true
+					@else{}
+						typeof __args[@{cnt++}] === 'object'
+					@end{}
+				@end{' && '}) {\n
 				@if{!method.returnType.name.equals("void")}
 					@if{method.fluent}
-@{ind}      @includeNamed{'genMethodCall'};\n
+@{ind}    @includeNamed{'genMethodCall'};\n
 						@if{static}
-@{ind}      return @{ifaceSimpleName};\n
+@{ind}    return @{ifaceSimpleName};\n
 						@else{}
-@{ind}      return that;\n
+@{ind}    return that;\n
 						@end{}
+					@else{method.cacheReturn}
+@{ind}    if (that.cached@{method.name} == null) {\n
+@{ind}      that.cached@{method.name} = @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType.name};\n
+@{ind}    }\n
+@{ind}    return that.cached@{method.name};\n
 					@else{}
-@{ind}      return @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType.name};\n
+@{ind}    return @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType.name};\n
 					@end{}
 				@else{}
-@{ind}      @includeNamed{'genMethodCall'};\n
-@{ind}      return;\n
+@{ind}    @includeNamed{'genMethodCall'};\n
 				@end{}
-			@end{}
-@{ind}    default: throw "Invalid number of arguments"\n
-@{ind}  }\n
-		@else{}
-			@if{!method.returnType.name.equals("void")}
-				@if{method.fluent}
-@{ind}  @includeNamed{'genMethodCall'};\n
-					@if{static}
-@{ind}  return @{ifaceSimpleName};\n
-					@else{}
-@{ind}  return that;\n
-					@end{}
-				@else{method.cacheReturn}
-@{ind}  if (that.cached@{method.name} == null) {\n
-@{ind}    that.cached@{method.name} = @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType.name};\n
-@{ind}  }\n
-@{ind}  return that.cached@{method.name};\n
-				@else{}
-@{ind}  return @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType.name};\n
-				@end{}
-			@else{}
-@{ind}  @includeNamed{'genMethodCall'};\n
-			@end{}
-		@end{}
+@{ind}  }
+			@end{} else utils.invalidArgs();\n
 @{ind}};\n\n
 	@end{}
 @end{}
@@ -215,10 +237,9 @@ var @{ifaceSimpleName} = function(j_val) {\n\n
 @end{}
 \n
 
-@comment{"Now iterate through each *squashed* method - we use squashed methods because JS doesn't support"}
-@comment{"function overloading"}
+@comment{"Now iterate through each unique method"}
 
-@foreach{method:squashedMethods}
+@foreach{methodName:methodsByName.keySet()}
 
 @comment{"Call out to actually generate the method, we only consider non static methods here"}
 @includeNamed{'genMethod';static=false;ind="  "}
@@ -227,6 +248,8 @@ var @{ifaceSimpleName} = function(j_val) {\n\n
 
 @comment{"Each object has a _jdel function which gives access to the underlying Java object"}
 
+  this._vertxgen = true;\n\n
+
   // Get a reference to the underlying Java delegate\n
   this._jdel = function() {\n
     return j_@{ifaceName};\n
@@ -234,9 +257,9 @@ var @{ifaceSimpleName} = function(j_val) {\n\n
 };\n
 \n
 
-@comment{"Iterate through the squashed methods again, this time only considering the static ones"}
+@comment{"Iterate through the methods again, this time only considering the static ones"}
 
-@foreach{method:squashedMethods}
+@foreach{methodName:methodsByName.keySet()}
 
 @comment{"Call out to generate the static method"}
 @includeNamed{'genMethod';static=true;ind=""}

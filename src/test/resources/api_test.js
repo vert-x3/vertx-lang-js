@@ -718,27 +718,51 @@ function testSetStringReturn() {
 }
 
 function testOverloadedMethods() {
-  try {
-    obj.overloadedMethod("cat");
-  } catch (e) {
-    Assert.assertEquals("Invalid number of arguments", e);
-  }
   refed_obj.setString("dog");
   var ret = obj.overloadedMethod("cat", refed_obj);
   Assert.assertEquals("meth1", ret);
-  ret = obj.overloadedMethod("cat", refed_obj, 12345);
-  Assert.assertEquals("meth2", ret);
-  var called = false;
   ret = obj.overloadedMethod("cat", refed_obj, 12345, function(animal) {
+    Assert.assertEquals("giraffe", animal);
+    called = true;
+  });
+  Assert.assertEquals("meth2", ret);
+  Assert.assertTrue(called);
+  called = false;
+  ret = obj.overloadedMethod("cat", function(animal) {
     Assert.assertEquals("giraffe", animal);
     called = true;
   });
   Assert.assertEquals("meth3", ret);
   Assert.assertTrue(called);
+  called = false;
+  ret = obj.overloadedMethod("cat", refed_obj, function(animal) {
+    Assert.assertEquals("giraffe", animal);
+    called = true;
+  });
+  Assert.assertEquals("meth4", ret);
+  Assert.assertTrue(called);
+
+  try {
+    obj.overloadedMethod("cat");
+  } catch (e) {
+    Assert.assertTrue(e instanceof TypeError)
+  }
   try {
     obj.overloadedMethod("cat", refed_obj, 12345, function(animal) {}, "foo");
   } catch (e) {
-    Assert.assertEquals("Invalid number of arguments", e);
+    Assert.assertTrue(e instanceof TypeError)
+  }
+
+  try {
+    obj.overloadedMethod(refed_obj);
+  } catch (e) {
+    Assert.assertTrue(e instanceof TypeError)
+  }
+
+  try {
+    obj.overloadedMethod(function(animal) {});
+  } catch (e) {
+    Assert.assertTrue(e instanceof TypeError)
   }
 }
 
@@ -812,12 +836,12 @@ function testJsonParams() {
 }
 
 function testNullJsonParams() {
-    var jsonObject = {
-        cat: "lion",
-        cheese: "cheddar"
-    }
-    var jsonArray = ["house", "spider"];
-    obj.methodWithNullJsonParams(null, null);
+   var jsonObject = {
+     cat: "lion",
+     cheese: "cheddar"
+   }
+   var jsonArray = ["house", "spider"];
+   obj.methodWithNullJsonParams(null, null);
 }
 
 function testJsonHandlerParams() {

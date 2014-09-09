@@ -71,5 +71,8 @@ utils.convListSetVertxGen = function(jList, constructorFunction) {
   return arr;
 }
 
+utils.invalidArgs = function() {
+  throw new TypeError('function invoked with invalid arguments');
+}
 
 module.exports = utils;

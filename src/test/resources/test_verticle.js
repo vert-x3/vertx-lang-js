@@ -13,11 +13,7 @@ if (typeof vertx !== 'object') {
   throw "No vertx global";
 }
 
-console.log("in test verticle");
-
-
 exports.vertxStop = function() {
-  console.log("in vertx.stop!");
   vertx.eventBus().send("testComplete", "foo");
 }
 

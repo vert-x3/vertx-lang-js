@@ -15,4 +15,9 @@ public class DeployTest extends JSTestBase {
   public void testStopCalled() throws Exception {
     runTest();
   }
+
+  @Test
+  public void testFailureInStop() throws Exception {
+    runTest();
+  }
 }

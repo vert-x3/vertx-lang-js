@@ -6,6 +6,8 @@ var TimeUnit = java.util.concurrent.TimeUnit;
 // Use an embedded Vert.x
 var Vertx = require("vertx-js/vertx");
 
+var console = require("vertx-js/util/console");
+
 function testStopCalled() {
   var vertx = Vertx.vertx();
   var latch = new CountDownLatch(1);
@@ -20,8 +22,28 @@ function testStopCalled() {
       latch.countDown();
     })
 
-    vertx.undeployVerticle(deploymentID, function (err) {
+    vertx.undeployVerticle(deploymentID, function (v, err) {
+      Assert.assertNull(v);
       Assert.assertNull(err);
+    });
+  });
+
+  Assert.assertTrue(latch.await(2, TimeUnit.MINUTES));
+}
+
+function testFailureInStop() {
+
+  var vertx = Vertx.vertx();
+  var latch = new CountDownLatch(1);
+  vertx.deployVerticle("js:test_verticle_fail", function(deploymentID, err) {
+
+    Assert.assertNotNull(deploymentID);
+    Assert.assertNull(err);
+
+    vertx.undeployVerticle(deploymentID, function (v, err) {
+      Assert.assertNull(v);
+      Assert.assertNotNull(err);
+      latch.countDown();
     });
   });
 
