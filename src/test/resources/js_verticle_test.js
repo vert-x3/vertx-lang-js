@@ -50,6 +50,24 @@ function testFailureInStop() {
   Assert.assertTrue(latch.await(2, TimeUnit.MINUTES));
 }
 
+function testStoppedOKIfNoVertxStop() {
+  var vertx = Vertx.vertx();
+  var latch = new CountDownLatch(1);
+  vertx.deployVerticle("js:test_verticle_no_vertxstop", function(deploymentID, err) {
+
+    Assert.assertNotNull(deploymentID);
+    Assert.assertNull(err);
+
+    vertx.undeployVerticle(deploymentID, function (v, err) {
+      Assert.assertNull(v);
+      Assert.assertNull(err);
+      latch.countDown();
+    });
+  });
+
+  Assert.assertTrue(latch.await(2, TimeUnit.MINUTES));
+}
+
 if (typeof this[testName] === 'undefined') {
   throw "No such test: " + testName;
 }

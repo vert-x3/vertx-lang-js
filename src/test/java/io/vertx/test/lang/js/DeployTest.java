@@ -20,4 +20,10 @@ public class DeployTest extends JSTestBase {
   public void testFailureInStop() throws Exception {
     runTest();
   }
+
+  @Test
+  public void testStoppedOKIfNoVertxStop() throws Exception {
+    runTest();
+  }
+
 }

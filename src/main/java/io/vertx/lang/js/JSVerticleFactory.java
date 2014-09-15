@@ -77,28 +77,29 @@ public class JSVerticleFactory implements VerticleFactory {
       if (asyncStart) {
         this.startFuture = startFuture;
       } else {
-        startFuture.setResult(null);
+        startFuture.complete();
       }
     }
 
     @Override
     public void stop(Future<Void> stopFuture) throws Exception {
-      if (exports.getMember(VERTX_STOP_FUNCTION) != null) {
+      if (!exports.getMember(VERTX_STOP_FUNCTION).toString().equals("undefined")) {
         exports.callMember(VERTX_STOP_FUNCTION);
         if (asyncStop) {
           this.stopFuture = stopFuture;
         } else {
-          stopFuture.setResult(null);
+          stopFuture.complete();
         }
       } else {
-        stopFuture.setResult(null);
+        stopFuture.complete();
       }
     }
 
+    // TODO - tests for this!
     public void started(boolean started) {
       if (startFuture != null) {
         if (started) {
-          startFuture.setResult(null);
+          startFuture.complete();
         }
       } else if (!started) {
         asyncStart = true;
@@ -108,7 +109,7 @@ public class JSVerticleFactory implements VerticleFactory {
     public void stopped(boolean stopped) {
       if (stopFuture != null) {
         if (stopped) {
-          stopFuture.setResult(null);
+          stopFuture.complete();
         }
       } else if (!stopped) {
         asyncStop = true;
