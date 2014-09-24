@@ -40,6 +40,7 @@ public class JSVerticleFactory implements VerticleFactory {
   @Override
   public void init(Vertx vertx) {
     this.vertx = vertx;
+    init();
   }
 
   @Override
@@ -71,7 +72,6 @@ public class JSVerticleFactory implements VerticleFactory {
 
     @Override
     public void start(Future<Void> startFuture) throws Exception {
-      init();
       engine.put("__verticle", this);
       exports = (ScriptObjectMirror)engine.eval("require('" + verticleName + "');");
       if (asyncStart) {
