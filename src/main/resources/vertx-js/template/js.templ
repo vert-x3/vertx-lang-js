@@ -48,7 +48,7 @@ utils.convJSObjectToJsonObject(@{paramName})
 	@else{param.type.name.equals('io.vertx.core.json.JsonArray')}
 utils.convJSArrayToJsonArray(@{paramName})
 	@else{param.options}
-@{paramName} != null ? @{helper.getSimpleName(param.type.name)}.optionsFromJson(new JsonObject(JSON.stringify(@{paramName}))) : null
+@{paramName} != null ? new @{helper.getSimpleName(param.type.name)}(new JsonObject(JSON.stringify(@{paramName}))) : null
 	@else{param.type.kind == CLASS_OBJECT}
 utils.convRuntimeParam(@{paramName})
 	@else{helper.isBasicType(param.type.name)}
