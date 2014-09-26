@@ -16,7 +16,7 @@ function testStopCalled() {
     Assert.assertNotNull(deploymentID);
     Assert.assertNull(err);
 
-    vertx.eventBus().registerHandler("testComplete", function(msg) {
+    vertx.eventBus().consumer("testComplete").handler(function(msg) {
       // Verticle will send a message if vertxStop is called
       Assert.assertEquals("foo", msg.body());
       latch.countDown();
