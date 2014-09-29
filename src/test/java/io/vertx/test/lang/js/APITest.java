@@ -120,7 +120,17 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testMethodWithHandlerListAbstractVertxGen() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMethodWithHandlerSetVertxGen() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerSetAbstractVertxGen() throws Exception {
     runTest();
   }
 
@@ -170,7 +180,17 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testMethodWithHandlerAsyncResultListAbstractVertxGen() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMethodWithHandlerAsyncResultSetVertxGen() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerAsyncResultSetAbstractVertxGen() throws Exception {
     runTest();
   }
 
@@ -233,6 +253,11 @@ public class APITest extends JSTestBase {
 
   @Test
   public void testVertxGenReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testAbstractVertxGenReturn() throws Exception {
     runTest();
   }
 

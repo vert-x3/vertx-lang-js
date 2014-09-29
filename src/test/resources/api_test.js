@@ -296,6 +296,19 @@ function testMethodWithHandlerListVertxGen() {
   Assert.assertEquals(1, count, 0);
 }
 
+function testMethodWithHandlerListAbstractVertxGen() {
+    var count = 0;
+    obj.methodWithHandlerListAbstractVertxGen(function(listVertxGen) {
+        Assert.assertTrue(typeof listVertxGen === 'object');
+        Assert.assertTrue(typeof listVertxGen[0] === 'object');
+        Assert.assertEquals("abstractfoo", listVertxGen[0].getString());
+        Assert.assertTrue(typeof listVertxGen[1] === 'object');
+        Assert.assertEquals("abstractbar", listVertxGen[1].getString());
+        count++;
+    });
+    Assert.assertEquals(1, count, 0);
+}
+
 function testMethodWithHandlerAsyncResultListVertxGen() {
   var count = 0;
   obj.methodWithHandlerAsyncResultListVertxGen(function(listVertxGen, err) {
@@ -308,6 +321,20 @@ function testMethodWithHandlerAsyncResultListVertxGen() {
     count++;
   });
   Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerAsyncResultListAbstractVertxGen() {
+    var count = 0;
+    obj.methodWithHandlerAsyncResultListAbstractVertxGen(function(listVertxGen, err) {
+        Assert.assertNull(err);
+        Assert.assertTrue(typeof listVertxGen === 'object');
+        Assert.assertTrue(typeof listVertxGen[0] === 'object');
+        Assert.assertEquals("abstractfoo", listVertxGen[0].getString());
+        Assert.assertTrue(typeof listVertxGen[1] === 'object');
+        Assert.assertEquals("abstractbar", listVertxGen[1].getString());
+        count++;
+    });
+    Assert.assertEquals(1, count, 0);
 }
 
 function testMethodWithHandlerSetVertxGen() {
@@ -323,6 +350,19 @@ function testMethodWithHandlerSetVertxGen() {
   Assert.assertEquals(1, count, 0);
 }
 
+function testMethodWithHandlerSetAbstractVertxGen() {
+    var count = 0;
+    obj.methodWithHandlerSetAbstractVertxGen(function(setVertxGen) {
+        Assert.assertTrue(typeof setVertxGen === 'object');
+        Assert.assertTrue(typeof setVertxGen[0] === 'object');
+        Assert.assertEquals("abstractfoo", setVertxGen[0].getString());
+        Assert.assertTrue(typeof setVertxGen[1] === 'object');
+        Assert.assertEquals("abstractbar", setVertxGen[1].getString());
+        count++;
+    });
+    Assert.assertEquals(1, count, 0);
+}
+
 function testMethodWithHandlerAsyncResultSetVertxGen() {
   var count = 0;
   obj.methodWithHandlerAsyncResultSetVertxGen(function(setVertxGen, err) {
@@ -335,6 +375,20 @@ function testMethodWithHandlerAsyncResultSetVertxGen() {
     count++;
   });
   Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerAsyncResultSetAbstractVertxGen() {
+    var count = 0;
+    obj.methodWithHandlerAsyncResultSetAbstractVertxGen(function(setVertxGen, err) {
+        Assert.assertNull(err);
+        Assert.assertTrue(typeof setVertxGen === 'object');
+        Assert.assertTrue(typeof setVertxGen[0] === 'object');
+        Assert.assertEquals("abstractfoo", setVertxGen[0].getString());
+        Assert.assertTrue(typeof setVertxGen[1] === 'object');
+        Assert.assertEquals("abstractbar", setVertxGen[1].getString());
+        count++;
+    });
+    Assert.assertEquals(1, count, 0);
 }
 
 function testMethodWithHandlerListJsonObject() {
@@ -699,6 +753,11 @@ function testBasicReturns() {
 function testVertxGenReturn() {
   var ret = obj.methodWithVertxGenReturn();
   Assert.assertEquals("chaffinch", ret.getString());
+}
+
+function testAbstractVertxGenReturn() {
+    var ret = obj.methodWithAbstractVertxGenReturn();
+    Assert.assertEquals("abstractchaffinch", ret.getString());
 }
 
 function testListStringReturn() {
