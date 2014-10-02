@@ -8,7 +8,8 @@ import io.vertx.core.Vertx;
 public class ExampleRunner {
 
   public static void main(String[] args) {
-    Vertx vertx = Vertx.vertx();
+    Vertx vertx = Vertx.vertx(/*new VertxOptions().setMetricsEnabled(true)*/);
+    //vertx.deployVerticle("js:examples/metrics", ar -> {
     vertx.deployVerticle("js:examples/http_server", ar -> {
       if (ar.succeeded()) {
         System.out.println("Succeeded in deploying");

@@ -42,7 +42,7 @@ Note that this involves copying - so best to avoid Set in the API!
  */
 utils.convSet = function(jSet) {
   return new java.util.ArrayList(jSet);
-}
+};
 
 utils.convListSetJson = function(jList) {
   var arr = [];
@@ -54,7 +54,7 @@ utils.convListSetJson = function(jList) {
     arr[pos++] = jJson != null ? JSON.parse(jJson.encode()) : null;
   }
   return arr;
-}
+};
 
 utils.convListSetVertxGen = function(jList, constructorFunction) {
   var arr = [];
@@ -69,10 +69,22 @@ utils.convListSetVertxGen = function(jList, constructorFunction) {
     arr[pos++] = obj;
   }
   return arr;
-}
+};
+
+utils.convMap = function(jMap) {
+  var iter = jMap.entrySet().iterator();
+  var map = {};
+  while (iter.hasNext()) {
+    var entry = iter.next();
+    var val = entry.getValue();
+    var key = entry.getKey();
+    map[key] = utils.convRuntimeReturn(val);
+  }
+  return map;
+};
 
 utils.invalidArgs = function() {
   throw new TypeError('function invoked with invalid arguments');
-}
+};
 
 module.exports = utils;

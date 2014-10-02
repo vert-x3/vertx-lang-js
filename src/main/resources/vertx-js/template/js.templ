@@ -88,6 +88,8 @@ utils.convListSetVertxGen(@includeNamed{templ}, @{helper.getSimpleName(helper.ge
 		@else{}
 utils.convSet(@includeNamed{templ})
 		@end{}
+	@else{returnType.startsWith('java.util.Map')}
+utils.convMap(@includeNamed{templ})
 	@else{returnType.equals('io.vertx.core.json.JsonObject') || returnType.equals('io.vertx.core.json.JsonArray')}
 utils.convJsonToJS(@includeNamed{templ})
 	@else{helper.isBasicType(returnType)}
