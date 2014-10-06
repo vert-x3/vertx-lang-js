@@ -957,20 +957,25 @@ function testJsonHandlerAsyncResultParams() {
 
 function testNullJsonHandlerAsyncResultParams() {
 
-    var count = 0;
-    obj.methodWithHandlerAsyncResultNullJsonObject(function(jsonObject, err) {
-        Assert.assertNull(err);
-        Assert.assertTrue(typeof jsonObject === 'object')
-        Assert.assertNull(jsonObject);
-        count++;
-    });
-    obj.methodWithHandlerAsyncResultNullJsonArray(function(jsonArray, err) {
-        Assert.assertNull(err);
-        Assert.assertTrue(typeof jsonArray === 'object')
-        Assert.assertNull(jsonArray);
-        count++;
-    });
-    Assert.assertEquals(2, count, 0);
+  var count = 0;
+  obj.methodWithHandlerAsyncResultNullJsonObject(function(jsonObject, err) {
+      Assert.assertNull(err);
+      Assert.assertTrue(typeof jsonObject === 'object')
+      Assert.assertNull(jsonObject);
+      count++;
+  });
+  obj.methodWithHandlerAsyncResultNullJsonArray(function(jsonArray, err) {
+      Assert.assertNull(err);
+      Assert.assertTrue(typeof jsonArray === 'object')
+      Assert.assertNull(jsonArray);
+      count++;
+  });
+  Assert.assertEquals(2, count, 0);
+}
+
+function testEnumParam() {
+  var ret = obj.methodWithEnumParam("sausages", "TIM");
+  Assert.assertEquals("sausagesTIM", ret);
 }
 
 if (typeof this[testName] === 'undefined') {

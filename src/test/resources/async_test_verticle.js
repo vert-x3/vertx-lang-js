@@ -1,7 +1,4 @@
 
-
-console.log("in test verticle");
-
 moduleStarted(false);
 
 vertx.setTimer(1100, function() {

@@ -345,4 +345,9 @@ public class APITest extends JSTestBase {
     runTest();
   }
 
+  @Test
+  public void testEnumParam() throws Exception {
+    runTest();
+  }
+
 }

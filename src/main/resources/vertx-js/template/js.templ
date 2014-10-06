@@ -49,6 +49,8 @@ utils.convJSObjectToJsonObject(@{paramName})
 utils.convJSArrayToJsonArray(@{paramName})
 	@else{param.options}
 @{paramName} != null ? new @{helper.getSimpleName(param.type.name)}(new JsonObject(JSON.stringify(@{paramName}))) : null
+	@else{param.type.kind == CLASS_ENUM}
+@{param.type.name}.valueOf(@{argName})
 	@else{param.type.kind == CLASS_OBJECT}
 utils.convRuntimeParam(@{paramName})
 	@else{helper.isBasicType(param.type.name)}
@@ -139,7 +141,7 @@ utils.convRuntimeReturn(@includeNamed{templ})
 						@else{param.type.name == 'char' || param.type.name == 'java.lang.Character'}
 							'string'
 						@end{}
-					@else{param.type.kind == CLASS_STRING}
+					@else{param.type.kind == CLASS_STRING || param.type.kind == CLASS_ENUM}
 					typeof __args[@{cnt++}] === 'string'
 					@else{param.type.kind == CLASS_API}
 						typeof __args[@{cnt}] === 'object' && __args[@{cnt++}]._vertxgen
