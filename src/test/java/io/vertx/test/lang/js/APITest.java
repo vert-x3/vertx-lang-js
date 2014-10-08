@@ -350,4 +350,10 @@ public class APITest extends JSTestBase {
     runTest();
   }
 
+  @Test
+  public void testEnumReturn() throws Exception {
+    runTest();
+  }
+
+
 }

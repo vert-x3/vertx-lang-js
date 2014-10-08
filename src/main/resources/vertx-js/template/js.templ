@@ -98,6 +98,8 @@ utils.convJsonToJS(@includeNamed{templ})
 @includeNamed{templ}
 	@else{method.returnType.kind == CLASS_API}
 new @{helper.getSimpleName(helper.getNonGenericType(returnType))}(@includeNamed{templ})
+	@else{method.returnType.kind == CLASS_ENUM}
+(@includeNamed{templ}).toString()
 	@else{}
 	@comment{'This will probably happen if the return type is generic'}
 utils.convRuntimeReturn(@includeNamed{templ})

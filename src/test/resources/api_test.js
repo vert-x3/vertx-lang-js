@@ -978,6 +978,11 @@ function testEnumParam() {
   Assert.assertEquals("sausagesTIM", ret);
 }
 
+function testEnumReturn() {
+  var ret = obj.methodWithEnumReturn("JULIEN");
+  Assert.assertEquals("JULIEN", ret);
+}
+
 if (typeof this[testName] === 'undefined') {
   throw "No such test: " + testName;
 }
