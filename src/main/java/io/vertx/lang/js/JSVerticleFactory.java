@@ -50,7 +50,7 @@ public class JSVerticleFactory implements VerticleFactory {
 
   @Override
   public Verticle createVerticle(String verticleName, ClassLoader classLoader) throws Exception {
-    return new JSVerticle(verticleName);
+    return new JSVerticle(VerticleFactory.removePrefix(verticleName));
   }
 
   public class JSVerticle extends AbstractVerticle {
@@ -115,10 +115,6 @@ public class JSVerticleFactory implements VerticleFactory {
         asyncStop = true;
       }
     }
-  }
-
-  @Override
-  public void close() {
   }
 
   private synchronized void init() {
