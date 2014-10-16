@@ -72,15 +72,49 @@ utils.convListSetVertxGen = function(jList, constructorFunction) {
 };
 
 utils.convMap = function(jMap) {
-  var iter = jMap.entrySet().iterator();
-  var map = {};
-  while (iter.hasNext()) {
-    var entry = iter.next();
-    var val = entry.getValue();
-    var key = entry.getKey();
-    map[key] = utils.convRuntimeReturn(val);
+  if (jMap) {
+    var adaptor = new JSAdapter({
+      __get__: function (name) {
+        return jMap.get(name);
+      },
+
+      __put__: function (name, value) {
+        jMap.put(name, value);
+      },
+
+      __call__: function (name, arg1, arg2) {
+        switch (name) {
+          case "size":
+          {
+            return jMap.size();
+          }
+        }
+      },
+
+      __new__: function (arg1, arg2) {
+      },
+
+      __getIds__: function () {
+        return jMap.keySet();
+      },
+
+      __getValues__: function () {
+        return jMap.values();
+      },
+
+      __has__: function (name) {
+        return jMap.containsKey(name);
+      },
+
+      __delete__: function (name) {
+        return jMap.remove(name);
+      }
+    });
+
+    return adaptor;
+  } else {
+    return null;
   }
-  return map;
 };
 
 utils.invalidArgs = function() {

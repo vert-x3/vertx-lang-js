@@ -983,6 +983,61 @@ function testEnumReturn() {
   Assert.assertEquals("JULIEN", ret);
 }
 
+function testMapReturn() {
+  var count = 0;
+  var map = obj.methodWithMapReturn(function(op) {
+    switch (count) {
+      case 0: {
+        Assert.assertEquals('put(foo,bar)', op);
+        break;
+      }
+      case 1: {
+        Assert.assertEquals('get(foo)', op);
+        break;
+      }
+      case 2: {
+        Assert.assertEquals('get(foo)', op);
+        break;
+      }
+      case 3: {
+        Assert.assertEquals('put(wibble,quux)', op);
+        break;
+      }
+      case 4: {
+        Assert.assertEquals('size()', op);
+        break;
+      }
+      case 5: {
+        Assert.assertEquals('get(wibble)', op);
+        break;
+      }
+      case 6: {
+        Assert.assertEquals('remove(wibble)', op);
+        break;
+      }
+      case 7: {
+        Assert.assertEquals('size()', op);
+        break;
+      }
+    }
+    count++;
+  });
+  map["foo"] = "bar";
+  Assert.assertEquals("bar", map["foo"]);
+  Assert.assertEquals("bar", map.foo);
+  map.wibble = "quux";
+  Assert.assertEquals(2, map.size(), 0);
+  Assert.assertEquals("quux", map["wibble"]);
+  Assert.assertTrue(delete map["wibble"]);
+  Assert.assertEquals(1, map.size(), 0);
+  Assert.assertEquals(8, count, 0);
+}
+
+function testMapNullReturn() {
+  var map = obj.methodWithNullMapReturn();
+  Assert.assertTrue(map === null);
+}
+
 if (typeof this[testName] === 'undefined') {
   throw "No such test: " + testName;
 }

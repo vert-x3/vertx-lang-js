@@ -355,5 +355,15 @@ public class APITest extends JSTestBase {
     runTest();
   }
 
+  @Test
+  public void testMapReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMapNullReturn() throws Exception {
+    runTest();
+  }
+
 
 }
