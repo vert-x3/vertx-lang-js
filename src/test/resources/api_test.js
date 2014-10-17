@@ -1019,6 +1019,36 @@ function testMapReturn() {
         Assert.assertEquals('size()', op);
         break;
       }
+      case 8: {
+        Assert.assertEquals('put(blah,123)', op);
+        break;
+      }
+      case 9: {
+        Assert.assertEquals('keySet()', op);
+        break;
+      }
+      case 10: {
+        Assert.assertEquals('get(foo)', op);
+        break;
+      }
+      case 11: {
+        Assert.assertEquals('get(blah)', op);
+        break;
+      }
+      case 12: {
+        Assert.assertEquals('keySet()', op);
+        break
+      }
+      case 13: {
+        Assert.assertEquals('get(foo)', op);
+        break;
+      }
+      case 14: {
+        Assert.assertEquals('get(blah)', op);
+        break;
+      }
+      default :
+        Assert.fail("Unexpected method call # " + count + " for op `" + op + "`");
     }
     count++;
   });
@@ -1030,7 +1060,41 @@ function testMapReturn() {
   Assert.assertEquals("quux", map["wibble"]);
   Assert.assertTrue(delete map["wibble"]);
   Assert.assertEquals(1, map.size(), 0);
-  Assert.assertEquals(8, count, 0);
+
+  // Test iteration forEach / for in
+  map["blah"] = 123;
+  var keyCount = 0;
+  map.forEach(function(key) {
+    if (keyCount++ == 0) {
+      Assert.assertEquals("bar", map[key]);
+    } else {
+      Assert.assertEquals(123, map[key], 0);
+    }
+  });
+  Assert.assertEquals(2, keyCount, 0);
+
+  keyCount = 0;
+  for (var k in map) {
+    if (keyCount++ == 0) {
+      Assert.assertEquals("bar", map[k]);
+    } else {
+      Assert.assertEquals(123, map[k], 0);
+    }
+  }
+
+  Assert.assertEquals(15, count, 0);
+
+  // TODO: This should pass if Object.keys is supported for JSAdapter (see utils#convMap)
+  /*keyCount = 0;
+  Object.keys(map).forEach(function(key) {
+    if (keyCount++ == 0) {
+      Assert.assertEquals("bar", map[key]);
+    } else {
+      Assert.assertEquals(123, map[key], 0);
+    }
+  });
+  Assert.assertEquals(2, keyCount, 0);
+  */
 }
 
 function testMapNullReturn() {

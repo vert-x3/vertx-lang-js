@@ -50,8 +50,11 @@ utils.convListSetJson = function(jList) {
   var iter = jList.iterator();
   var pos = 0;
   while (iter.hasNext()) {
-    var jJson = iter.next();
-    arr[pos++] = jJson != null ? JSON.parse(jJson.encode()) : null;
+    var elem = iter.next();
+    if (elem instanceof JsonObject || elem instanceof JsonArray) {
+      elem = JSON.parse(elem.encode());
+    }
+    arr[pos++] = elem;
   }
   return arr;
 };
@@ -73,13 +76,15 @@ utils.convListSetVertxGen = function(jList, constructorFunction) {
 
 utils.convMap = function(jMap) {
   if (jMap) {
-    var adaptor = new JSAdapter({
+    // Object.keys is not supported. hasOwnKeys is called on ScriptObject which does not get proxied down
+    // to JSAdapter.
+    return new JSAdapter({
       __get__: function (name) {
-        return jMap.get(name);
+        return utils.convRuntimeReturn(jMap.get(name));
       },
 
       __put__: function (name, value) {
-        jMap.put(name, value);
+        jMap.put(name, utils.convRuntimeParam(value));
       },
 
       __call__: function (name, arg1, arg2) {
@@ -88,6 +93,17 @@ utils.convMap = function(jMap) {
           {
             return jMap.size();
           }
+          case "forEach":
+          {
+            if (typeof arg1 == 'function') {
+              utils.convSet(jMap.keySet()).forEach(arg1);
+            } else {
+              throw new TypeError(arg1 + " is not a function");
+            }
+            break;
+          }
+          default :
+            console.log("WARN: Unsupported method call " + name + " for wrapped map object.");
         }
       },
 
@@ -95,11 +111,11 @@ utils.convMap = function(jMap) {
       },
 
       __getIds__: function () {
-        return jMap.keySet();
+        return utils.convSet(jMap.keySet());
       },
 
       __getValues__: function () {
-        return jMap.values();
+        return utils.convListSetJson(jMap.values());
       },
 
       __has__: function (name) {
@@ -110,8 +126,6 @@ utils.convMap = function(jMap) {
         return jMap.remove(name);
       }
     });
-
-    return adaptor;
   } else {
     return null;
   }
