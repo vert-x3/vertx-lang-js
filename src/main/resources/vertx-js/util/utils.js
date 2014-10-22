@@ -96,7 +96,7 @@ utils.convMap = function(jMap) {
           case "forEach":
           {
             if (typeof arg1 == 'function') {
-              utils.convSet(jMap.keySet()).forEach(arg1);
+              jMap.keySet().forEach(arg1);
             } else {
               throw new TypeError(arg1 + " is not a function");
             }
