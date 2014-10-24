@@ -1,8 +1,5 @@
 package io.vertx.test.lang.js;
 
-import io.vertx.codegen.Generator;
-import io.vertx.codegen.Helper;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -13,14 +10,6 @@ import org.junit.Test;
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
 public class APITest extends JSTestBase {
-
-  @Before
-  public void before() throws Exception {
-    Generator gen = new Generator();
-    gen.genAndApply("io.vertx.codegen.testmodel", packageName -> !packageName.contains("impl"),
-                    clazz -> "target/classes/testmodel-js/" + Helper.convertCamelCaseToUnderscores(clazz.getSimpleName()) + ".js",
-                    "vertx-js/template/js.templ");
-  }
 
   @Override
   protected String getTestFile() {
