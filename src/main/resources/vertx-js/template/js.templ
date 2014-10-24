@@ -152,6 +152,7 @@ utils.convRuntimeReturn(@includeNamed{templ})
 					@else{param.type.kind == CLASS_HANDLER}
 						typeof __args[@{cnt++}] === 'function'
 					@else{param.type.kind == CLASS_OBJECT}
+						@code{cnt++}
 						true
 					@else{}
 						typeof __args[@{cnt++}] === 'object'
