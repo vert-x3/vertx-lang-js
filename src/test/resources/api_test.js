@@ -656,13 +656,35 @@ function testMethodWithHandlerThrowable() {
 }
 
 function testMethodWithHandlerGenericUserType() {
-  var count = 0;
-  obj.methodWithHandlerGenericUserType("string_value", function(refedObj) {
-    Assert.assertEquals("[object Object]", refedObj.toString());
-    Assert.assertEquals("string_value", refedObj.getValue());
-    count++;
-  });
-  Assert.assertEquals(1, count, 0);
+  function runTest(value, assert) {
+    var count = 0;
+    obj.methodWithHandlerGenericUserType(value, function(refedObj) {
+      Assert.assertEquals("[object Object]", refedObj.toString()); // Make sure we don't have a Java object
+      assert(refedObj.getValue());
+      count++;
+    });
+    Assert.assertEquals(1, count, 0);
+  }
+  runTest("string_value", function(value) { Assert.assertEquals("string_value", value) });
+  runTest({"key":"key_value"}, function(value) { Assert.assertEquals("key_value", value["key"]) });
+  runTest(["foo","bar","juu"], function(value) { Assert.assertEquals(["foo","bar","juu"], value) });
+}
+
+function testMethodWithHandlerAsyncResultGenericUserType() {
+  function runTest(value, assert) {
+    var count = 0;
+    obj.methodWithHandlerAsyncResultGenericUserType(value, function(refedObj, err) {
+      Assert.assertNotNull(refedObj);
+      Assert.assertNull(err);
+      Assert.assertEquals("[object Object]", refedObj.toString()); // Make sure we don't have a Java object
+      assert(refedObj.getValue());
+      count++;
+    });
+    Assert.assertEquals(1, count, 0);
+  }
+  runTest("string_value", function(value) { Assert.assertEquals("string_value", value) });
+  runTest({"key":"key_value"}, function(value) { Assert.assertEquals("key_value", value["key"]) });
+  runTest(["foo","bar","juu"], function(value) { Assert.assertEquals(["foo","bar","juu"], value) });
 }
 
 function testMethodWithGenericParam() {
