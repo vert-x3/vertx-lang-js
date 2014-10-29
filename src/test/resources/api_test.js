@@ -655,6 +655,16 @@ function testMethodWithHandlerThrowable() {
   Assert.assertEquals(1, count, 0);
 }
 
+function testMethodWithHandlerGenericUserType() {
+  var count = 0;
+  obj.methodWithHandlerGenericUserType("string_value", function(refedObj) {
+    Assert.assertEquals("[object Object]", refedObj.toString());
+    Assert.assertEquals("string_value", refedObj.getValue());
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
 function testMethodWithGenericParam() {
   obj.methodWithGenericParam("String", "foo");
   var jsonObj = {

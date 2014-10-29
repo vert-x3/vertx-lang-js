@@ -104,6 +104,11 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testMethodWithHandlerGenericUserType() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMethodWithHandlerListVertxGen() throws Exception {
     runTest();
   }

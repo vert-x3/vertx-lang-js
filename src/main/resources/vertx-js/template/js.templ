@@ -30,7 +30,7 @@ function(ar) {\n
 			@else{}
 function(ar) {\n
 @{ind}    if (ar.succeeded()) {\n
-@{ind}      @{paramName}(@includeNamed{'convReturn'; templ='arVal'; returnType=genericType}, null);\n
+@{ind}      @{paramName}(@includeNamed{'convReturn'; templ='arVal'; returnType=param.type.args[0].args[0]}, null);\n
 @{ind}    } else {\n
 @{ind}      @{paramName}(null, ar.cause());\n
 @{ind}    }\n
@@ -40,7 +40,7 @@ function(ar) {\n
 @{paramName}
 		@else{}
 function(jVal) {\n
-@{ind}    @{paramName}(@includeNamed{'convReturn'; templ='basicVal'; returnType=genericType});\n
+@{ind}    @{paramName}(@includeNamed{'convReturn'; templ='basicVal'; returnType=param.type.args[0]});\n
 @{ind}  }
 		@end{}
 	@else{param.type.name.equals('io.vertx.core.json.JsonObject')}
@@ -73,32 +73,33 @@ ar.result()
 @comment{"==================================================================================="}
 
 @declare{'convReturn'}
-	@code{genericType=helper.getGenericType(returnType)}
-	@if{returnType.startsWith('java.util.List')}
-		@if{genericType.equals('io.vertx.core.json.JsonObject') || genericType.equals('io.vertx.core.json.JsonArray')}
+	@if{returnType.kind == CLASS_LIST}
+		@code{elementType=returnType.args[0]}
+		@if{elementType.kind.json}
 utils.convListSetJson(@includeNamed{templ})
-		@else{helper.isVertxGenType(helper.getGenericType(returnType))}
-utils.convListSetVertxGen(@includeNamed{templ}, @{helper.getSimpleName(helper.getGenericType(returnType))})
+		@else{elementType == CLASS_API}
+utils.convListSetVertxGen(@includeNamed{templ}, @{elementType.raw.simpleName})
 		@else{}
 @includeNamed{templ}
 		@end{}
-	@else{returnType.startsWith('java.util.Set')}
-		@if{genericType.equals('io.vertx.core.json.JsonObject') || genericType.equals('io.vertx.core.json.JsonArray')}
+	@else{returnType.kind == CLASS_SET}
+		@code{elementType=returnType.args[0]}
+		@if{elementType.kind.json}
 utils.convListSetJson(@includeNamed{templ})
 		@else{helper.isVertxGenType(helper.getGenericType(returnType))}
-utils.convListSetVertxGen(@includeNamed{templ}, @{helper.getSimpleName(helper.getGenericType(returnType))})
+utils.convListSetVertxGen(@includeNamed{templ}, @{elementType.raw.simpleName})
 		@else{}
 utils.convSet(@includeNamed{templ})
 		@end{}
-	@else{returnType.startsWith('java.util.Map')}
+	@else{returnType.kind == CLASS_MAP}
 utils.convMap(@includeNamed{templ})
-	@else{returnType.equals('io.vertx.core.json.JsonObject') || returnType.equals('io.vertx.core.json.JsonArray')}
+	@else{returnType.kind.json}
 utils.convJsonToJS(@includeNamed{templ})
-	@else{helper.isBasicType(returnType)}
+	@else{returnType.kind.basic}
 @includeNamed{templ}
-	@else{method.returnType.kind == CLASS_API}
-new @{helper.getSimpleName(helper.getNonGenericType(returnType))}(@includeNamed{templ})
-	@else{method.returnType.kind == CLASS_ENUM}
+	@else{returnType.kind == CLASS_API}
+new @{returnType.raw.simpleName}(@includeNamed{templ})
+	@else{returnType.kind == CLASS_ENUM}
 (@includeNamed{templ}).toString()
 	@else{}
 	@comment{'This will probably happen if the return type is generic'}
@@ -168,11 +169,11 @@ utils.convRuntimeReturn(@includeNamed{templ})
 						@end{}
 					@else{method.cacheReturn}
 @{ind}    if (that.cached@{method.name} == null) {\n
-@{ind}      that.cached@{method.name} = @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType.name};\n
+@{ind}      that.cached@{method.name} = @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType};\n
 @{ind}    }\n
 @{ind}    return that.cached@{method.name};\n
 					@else{}
-@{ind}    return @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType.name};\n
+@{ind}    return @includeNamed{'convReturn'; templ='genMethodCall'; returnType=method.returnType};\n
 					@end{}
 				@else{}
 @{ind}    @includeNamed{'genMethodCall'};\n
