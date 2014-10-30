@@ -21,6 +21,14 @@ if (typeof clearTimeout !== 'function') {
   throw "No clearTimeout global";
 }
 
+if (typeof clearTimeout !== 'function') {
+  throw "No clearTimeout global";
+}
+
+if (typeof parent !== 'object') {
+  throw "No parent global";
+}
+
 exports.vertxStop = function() {
   vertx.eventBus().send("testComplete", "foo");
 }
