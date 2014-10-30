@@ -142,6 +142,8 @@ public class JSVerticleFactory implements VerticleFactory {
         // which we need to do until # sourceURL = is supported so we can name evals
         engine.put("__engine", engine);
         engine.eval("var Vertx = require('vertx-js/vertx'); var vertx = new Vertx(__jvertx); var console = require('vertx-js/util/console');");
+        engine.eval("var setTimeout = function(callback,delay) { return vertx.setTimer(delay, callback); };");
+        engine.eval("var clearTimeout = function(id) { vertx.cancelTimer(id); };");
       } catch (ScriptException e) {
         throw new IllegalStateException("Failed to eval: " + e.getMessage(), e);
       }
