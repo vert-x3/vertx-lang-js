@@ -21,8 +21,12 @@ if (typeof clearTimeout !== 'function') {
   throw "No clearTimeout global";
 }
 
-if (typeof clearTimeout !== 'function') {
-  throw "No clearTimeout global";
+if (typeof setInterval !== 'function') {
+  throw "No setInterval global";
+}
+
+if (typeof clearInterval !== 'function') {
+  throw "No clearInterval global";
 }
 
 if (typeof parent !== 'object') {

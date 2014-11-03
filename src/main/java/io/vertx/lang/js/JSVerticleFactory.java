@@ -144,6 +144,8 @@ public class JSVerticleFactory implements VerticleFactory {
         engine.eval("var Vertx = require('vertx-js/vertx'); var vertx = new Vertx(__jvertx); var console = require('vertx-js/util/console');");
         engine.eval("var setTimeout = function(callback,delay) { return vertx.setTimer(delay, callback); };");
         engine.eval("var clearTimeout = function(id) { vertx.cancelTimer(id); };");
+        engine.eval("var setInterval = function(callback, delay) { return vertx.setPeriodic(delay, callback); };");
+        engine.eval("var clearInterval = clearTimeout;");
         engine.eval("var parent = this;");
       } catch (ScriptException e) {
         throw new IllegalStateException("Failed to eval: " + e.getMessage(), e);

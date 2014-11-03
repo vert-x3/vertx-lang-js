@@ -21,4 +21,14 @@ public class TimeoutTest extends JSTestBase {
     runTest();
   }
 
+  @Test
+  public void testSetInterval() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testClearInterval() throws Exception {
+    runTest();
+  }
+
 }
