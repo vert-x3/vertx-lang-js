@@ -363,4 +363,9 @@ public class APITest extends JSTestBase {
   public void testMapNullReturn() throws Exception {
     runTest();
   }
+
+  @Test
+  public void testThrowableReturn() throws Exception {
+    runTest();
+  }
 }

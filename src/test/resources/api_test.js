@@ -1134,6 +1134,11 @@ function testMapNullReturn() {
   Assert.assertTrue(map === null);
 }
 
+function testThrowableReturn() {
+  var ret = obj.methodWithThrowableReturn("bogies");
+  Assert.assertEquals("bogies", ret.getMessage());
+}
+
 if (typeof this[testName] === 'undefined') {
   throw "No such test: " + testName;
 }
