@@ -40,7 +40,6 @@ public class JSVerticleFactory implements VerticleFactory {
   @Override
   public void init(Vertx vertx) {
     this.vertx = vertx;
-    init();
   }
 
   @Override
@@ -50,6 +49,7 @@ public class JSVerticleFactory implements VerticleFactory {
 
   @Override
   public Verticle createVerticle(String verticleName, ClassLoader classLoader) throws Exception {
+    init();
     return new JSVerticle(VerticleFactory.removePrefix(verticleName));
   }
 
