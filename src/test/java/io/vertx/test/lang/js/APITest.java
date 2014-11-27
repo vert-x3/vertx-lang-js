@@ -243,6 +243,59 @@ public class APITest extends JSTestBase {
     runTest();
   }
 
+  @Test
+  public void testJsonParams() throws Exception {
+    runTest();
+  }
+
+// FIXME - temporarily commented out until we have proper support for nullable / not nullable params using
+// codegen
+//  @Test
+//  public void testNullJsonParams() throws Exception {
+//    runTest();
+//  }
+
+  @Test
+  public void testJsonHandlerParams() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullJsonHandlerParams() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testJsonHandlerAsyncResultParams() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullJsonHandlerAsyncResultParams() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testEnumParam() throws Exception {
+    runTest();
+  }
+
+
+  @Test
+  public void testMethodWithListParams() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithSetParams() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithMapParams() throws Exception {
+    runTest();
+  }
+
   // Test returns
 
   @Test
@@ -257,18 +310,6 @@ public class APITest extends JSTestBase {
 
   @Test
   public void testAbstractVertxGenReturn() throws Exception {
-    runTest();
-  }
-
-  // TODO - could really test List and Set of all basic types instead of just String below
-
-  @Test
-  public void testListStringReturn() throws Exception {
-    runTest();
-  }
-
-  @Test
-  public void testSetStringReturn() throws Exception {
     runTest();
   }
 
@@ -312,42 +353,7 @@ public class APITest extends JSTestBase {
     runTest();
   }
 
-  @Test
-  public void testJsonParams() throws Exception {
-    runTest();
-  }
 
-// FIXME - temporarily commented out until we have proper support for nullable / not nullable params using
-// codegen
-//  @Test
-//  public void testNullJsonParams() throws Exception {
-//    runTest();
-//  }
-
-  @Test
-  public void testJsonHandlerParams() throws Exception {
-    runTest();
-  }
-
-  @Test
-  public void testNullJsonHandlerParams() throws Exception {
-    runTest();
-  }
-
-  @Test
-  public void testJsonHandlerAsyncResultParams() throws Exception {
-    runTest();
-  }
-
-  @Test
-  public void testNullJsonHandlerAsyncResultParams() throws Exception {
-    runTest();
-  }
-
-  @Test
-  public void testEnumParam() throws Exception {
-    runTest();
-  }
 
   @Test
   public void testEnumReturn() throws Exception {
@@ -360,9 +366,80 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testMapStringReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMapJsonObjectReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMapJsonArrayReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMapLongReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMapNullReturn() throws Exception {
     runTest();
   }
+
+  @Test
+  public void testListStringReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testListLongReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testListJsonObjectReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testListJsonArrayReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testListVertxGenReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testSetStringReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testSetLongReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testSetJsonObjectReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testSetJsonArrayReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testSetVertxGenReturn() throws Exception {
+    runTest();
+  }
+
 
   @Test
   public void testThrowableReturn() throws Exception {

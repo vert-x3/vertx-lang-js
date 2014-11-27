@@ -5,6 +5,7 @@ var RefedInterface1 = require('testmodel-js/refed_interface1');
 
 var obj = new TestInterface(new Packages.io.vertx.codegen.testmodel.TestInterfaceImpl());
 var refed_obj = new RefedInterface1(new Packages.io.vertx.codegen.testmodel.RefedInterface1Impl());
+var refed_obj2 = new RefedInterface1(new Packages.io.vertx.codegen.testmodel.RefedInterface1Impl());
 
 var that = this;
 
@@ -128,14 +129,12 @@ function testMethodWithHandlerAsyncResultBasicTypes() {
 }
 
 function testMethodWithHandlerAsyncResultBasicTypesFails() {
-  console.log("Starting test");
   var count = 0;
   obj.methodWithHandlerAsyncResultByte(true, function(b, err) {
     Assert.assertNull(b)
     Assert.assertNotNull(err);
     Assert.assertEquals("foobar!", err.getMessage());
-    console.log("type:" + typeof err);
-    count++;
+     count++;
   });
   obj.methodWithHandlerAsyncResultShort(true, function(s, err) {
     Assert.assertNull(s)
@@ -792,22 +791,6 @@ function testAbstractVertxGenReturn() {
     Assert.assertEquals("abstractchaffinch", ret.getString());
 }
 
-function testListStringReturn() {
-  var listString = obj.methodWithListStringReturn();
-  Assert.assertTrue(typeof listString === 'object');
-  Assert.assertEquals("foo", listString[0]);
-  Assert.assertEquals("bar", listString[1]);
-  Assert.assertEquals("wibble", listString[2]);
-}
-
-function testSetStringReturn() {
-  var setString = obj.methodWithSetStringReturn();
-  Assert.assertTrue(typeof setString === 'object');
-  Assert.assertEquals("foo", setString[0]);
-  Assert.assertEquals("bar", setString[1]);
-  Assert.assertEquals("wibble", setString[2]);
-}
-
 function testOverloadedMethods() {
   refed_obj.setString("dog");
   var ret = obj.overloadedMethod("cat", refed_obj);
@@ -1079,6 +1062,14 @@ function testMapReturn() {
         Assert.assertEquals('get(blah)', op);
         break;
       }
+      case 15: {
+        Assert.assertEquals('clear()', op);
+        break;
+      }
+      case 16: {
+        Assert.assertEquals('size()', op);
+        break;
+      }
       default :
         Assert.fail("Unexpected method call # " + count + " for op `" + op + "`");
     }
@@ -1116,6 +1107,10 @@ function testMapReturn() {
 
   Assert.assertEquals(15, count, 0);
 
+  map.clear();
+
+  Assert.assertEquals(0, map.size(), 0);
+
   // TODO: This should pass if Object.keys is supported for JSAdapter (see utils#convMap)
   /*keyCount = 0;
   Object.keys(map).forEach(function(key) {
@@ -1129,14 +1124,164 @@ function testMapReturn() {
   */
 }
 
+function testMapStringReturn() {
+  var map = obj.methodWithMapStringReturn(function() {});
+  Assert.assertTrue(typeof map === 'object');
+  Assert.assertEquals("bar", map["foo"]);
+  Assert.assertEquals("bar", map.foo);
+  Assert.assertTrue(typeof map["foo"] === 'string');
+}
+
+function testMapJsonObjectReturn() {
+  var map = obj.methodWithMapJsonObjectReturn(function() {});
+  Assert.assertTrue(typeof map === 'object');
+  var json = map["foo"];
+  Assert.assertTrue(typeof json === 'object');
+  Assert.assertEquals("eek", json["wibble"]);
+}
+
+function testMapJsonArrayReturn() {
+  var map = obj.methodWithMapJsonArrayReturn(function() {});
+  Assert.assertTrue(typeof map === 'object');
+  var arr = map["foo"];
+  Assert.assertTrue(typeof arr === 'object');
+  Assert.assertTrue(arr instanceof Array);
+  Assert.assertEquals("wibble", arr[0]);
+}
+
+function testMapLongReturn() {
+  var map = obj.methodWithMapLongReturn(function() {});
+  Assert.assertTrue(typeof map === 'object');
+  Assert.assertTrue(123 === map["foo"]);
+  Assert.assertTrue(123 === map.foo);
+  Assert.assertTrue(typeof map["foo"] === 'number');
+}
+
 function testMapNullReturn() {
   var map = obj.methodWithNullMapReturn();
   Assert.assertTrue(map === null);
 }
 
+function testListStringReturn() {
+  var list = obj.methodWithListStringReturn();
+  Assert.assertTrue(typeof list === 'object');
+  Assert.assertEquals("foo", list[0]);
+  Assert.assertEquals("bar", list[1]);
+  Assert.assertEquals("wibble", list[2]);
+}
+
+function testListLongReturn() {
+  var list = obj.methodWithListLongReturn();
+  Assert.assertTrue(typeof list === 'object');
+  Assert.assertTrue(123 === list[0]);
+  Assert.assertTrue(456 === list[1]);
+}
+
+function testListJsonObjectReturn() {
+  var list = obj.methodWithListJsonObjectReturn();
+  Assert.assertTrue(typeof list === 'object');
+  Assert.assertTrue(list instanceof Array);
+  var obj1 = list[0];
+  var obj2 = list[1];
+  Assert.assertEquals("bar", obj1.foo);
+  Assert.assertEquals("eek", obj2.blah);
+}
+
+function testListJsonArrayReturn() {
+  var list = obj.methodWithListJsonArrayReturn();
+  Assert.assertTrue(typeof list === 'object');
+  Assert.assertTrue(list instanceof Array);
+  var arr1 = list[0];
+  var arr2 = list[1];
+  Assert.assertTrue(arr1 instanceof Array);
+  Assert.assertTrue(arr2 instanceof Array);
+  Assert.assertEquals("foo", arr1[0]);
+  Assert.assertEquals("blah", arr2[0]);
+}
+
+function testListVertxGenReturn() {
+  var list = obj.methodWithListVertxGenReturn();
+  Assert.assertTrue(typeof list === 'object');
+  //Assert.assertTrue(list instanceof Array);
+  var obj1 = list[0];
+  var obj2 = list[1];
+  Assert.assertTrue(typeof obj1 === 'object');
+  Assert.assertTrue(typeof obj2 === 'object');
+  Assert.assertEquals("foo", obj1.getString());
+  Assert.assertTrue(obj1._vertxgen);
+  Assert.assertEquals("bar", obj2.getString());
+  Assert.assertTrue(obj2._vertxgen);
+}
+
+function testSetStringReturn() {
+  var setString = obj.methodWithSetStringReturn();
+  Assert.assertTrue(typeof setString === 'object');
+  Assert.assertEquals("foo", setString[0]);
+  Assert.assertEquals("bar", setString[1]);
+  Assert.assertEquals("wibble", setString[2]);
+}
+
+function testSetLongReturn() {
+  var list = obj.methodWithSetLongReturn();
+  Assert.assertTrue(typeof list === 'object');
+  Assert.assertTrue(123 === list[0]);
+  Assert.assertTrue(456 === list[1]);
+}
+
+function testSetJsonObjectReturn() {
+  var list = obj.methodWithSetJsonObjectReturn();
+  Assert.assertTrue(typeof list === 'object');
+  Assert.assertTrue(list instanceof Array);
+  var obj1 = list[0];
+  var obj2 = list[1];
+  Assert.assertEquals("bar", obj1.foo);
+  Assert.assertEquals("eek", obj2.blah);
+}
+
+function testSetJsonArrayReturn() {
+  var list = obj.methodWithSetJsonArrayReturn();
+  Assert.assertTrue(typeof list === 'object');
+  Assert.assertTrue(list instanceof Array);
+  var arr1 = list[0];
+  var arr2 = list[1];
+  Assert.assertTrue(arr1 instanceof Array);
+  Assert.assertTrue(arr2 instanceof Array);
+  Assert.assertEquals("foo", arr1[0]);
+  Assert.assertEquals("blah", arr2[0]);
+}
+
+function testSetVertxGenReturn() {
+  var list = obj.methodWithSetVertxGenReturn();
+  Assert.assertTrue(typeof list === 'object');
+  Assert.assertTrue(list instanceof Array);
+  var obj1 = list[0];
+  var obj2 = list[1];
+  Assert.assertTrue(typeof obj1 === 'object');
+  Assert.assertTrue(typeof obj2 === 'object');
+  Assert.assertEquals("foo", obj1.getString());
+  Assert.assertTrue(obj1._vertxgen);
+  Assert.assertEquals("bar", obj2.getString());
+  Assert.assertTrue(obj2._vertxgen);
+}
+
 function testThrowableReturn() {
   var ret = obj.methodWithThrowableReturn("bogies");
   Assert.assertEquals("bogies", ret.getMessage());
+}
+
+// TODO should test more than just List<Long>
+function testMethodWithListParams() {
+  obj.methodWithListParams(["foo", "bar"], [2, 3], [12, 13], [1234, 1345], [123, 456], [{foo: "bar"}, {eek: "wibble"}], [["foo"], ["blah"]], [refed_obj.setString("foo"), refed_obj2.setString("bar")]);
+}
+
+function testMethodWithSetParams() {
+  obj.methodWithSetParams(["foo", "bar"], [2, 3], [12, 13], [1234, 1345], [123, 456], [{foo: "bar"}, {eek: "wibble"}], [["foo"], ["blah"]], [refed_obj.setString("foo"), refed_obj2.setString("bar")]);
+}
+
+function testMethodWithMapParams() {
+  obj.methodWithMapParams({foo: "bar", eek: "wibble"}, {foo: 2, eek: 3}, {foo:12, eek:13}, {foo:1234, eek:1345},
+    {foo: 123, eek: 456}, {foo: {foo: "bar"}, eek: {eek: "wibble"}}, {foo: ["foo"], eek: ["blah"]},
+    {foo: refed_obj.setString("foo"), eek: refed_obj2.setString("bar")});
 }
 
 if (typeof this[testName] === 'undefined') {

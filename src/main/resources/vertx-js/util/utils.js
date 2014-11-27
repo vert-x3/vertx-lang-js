@@ -1,9 +1,156 @@
 var JsonObject = Packages.io.vertx.core.json.JsonObject;
 var JsonArray = Packages.io.vertx.core.json.JsonArray;
+var asList = java.util.Arrays.asList;
+var LongArrayType = Java.type("java.lang.Long[]");
+var ShortArrayType = Java.type("java.lang.Short[]");
+var ByteArrayType = Java.type("java.lang.Byte[]");
+var VertxGenConverterList = Java.type("io.vertx.lang.js.VertxGenConverterList");
+var VertxGenConverterSet = Java.type("io.vertx.lang.js.VertxGenConverterSet");
+var JavaArraySetWrapper = Java.type("io.vertx.lang.js.JavaArraySetWrapper");
+var ListConverterSet = Java.type("io.vertx.lang.js.ListConverterSet");
+var VertxGenConverterMap = Java.type("io.vertx.lang.js.VertxGenConverterMap");
+var LongConverterMap = Java.type("io.vertx.lang.js.LongConverterMap");
+var ShortConverterMap = Java.type("io.vertx.lang.js.ShortConverterMap");
+var ByteConverterMap = Java.type("io.vertx.lang.js.ByteConverterMap");
 
 var utils = {};
 
-utils.convRuntimeReturn = function(ret) {
+// Param conversion
+
+// Convert JS JSON object param to Java JsonObject
+utils.convParamJsonObject = function(param) {
+  return param != null ? new JsonObject(JSON.stringify(param)) : null;
+};
+
+// Convert JS Array param to Java JsonArray
+utils.convParamJsonArray = function(param) {
+  return param != null ? new JsonArray(JSON.stringify(param)) : null;
+};
+
+// Convert Object type param (e.g. eventbus send)
+utils.convParamTypeUnknown = function(param) {
+  if (param == null) {
+    return param;
+  }
+  if (typeof param === 'object') {
+    if (param instanceof Array) {
+      return utils.convParamJsonArray(param);
+    }
+    return utils.convParamJsonObject(param);
+  }
+  return param;
+};
+
+
+utils.convParamListLong = function(arr) {
+  return asList(Java.to(arr, LongArrayType));
+}
+
+utils.convParamListShort = function(arr) {
+  return asList(Java.to(arr, ShortArrayType));
+}
+
+utils.convParamListByte = function(arr) {
+  return asList(Java.to(arr, ByteArrayType));
+}
+
+utils.convParamSetBasicOther = function(arr) {
+  return new ListConverterSet(arr);
+}
+
+utils.convParamSetLong = function(arr) {
+  return new JavaArraySetWrapper(Java.to(arr, LongArrayType));
+}
+
+utils.convParamSetShort = function(arr) {
+  return new JavaArraySetWrapper(Java.to(arr, ShortArrayType));
+}
+
+utils.convParamSetByte = function(arr) {
+  return new JavaArraySetWrapper(Java.to(arr, ByteArrayType));
+}
+
+utils.convParamListVertxGen = function(arr) {
+  return new VertxGenConverterList(arr);
+}
+
+utils.convParamSetVertxGen = function(arr) {
+  return new VertxGenConverterSet(arr);
+}
+
+utils.convParamMapLong = function(arr) {
+  return new LongConverterMap(arr);
+}
+
+utils.convParamMapShort = function(arr) {
+  return new ShortConverterMap(arr);
+}
+
+utils.convParamMapByte = function(arr) {
+  return new ByteConverterMap(arr);
+}
+
+utils.convParamMapVertxGen = function(arr) {
+  return new VertxGenConverterMap(arr);
+}
+
+utils.convParamMapJsonObject = function(arr) {
+  var newmap = {};
+  for (var key in arr) {
+    if (arr.hasOwnProperty(key)) {
+      var val = arr[key];
+      newmap[key] = new JsonObject(JSON.stringify(val));
+    }
+  }
+  return newmap;
+}
+
+utils.convParamMapJsonArray = function(arr) {
+  var newmap = {};
+  for (var key in arr) {
+    if (arr.hasOwnProperty(key)) {
+      var val = arr[key];
+      newmap[key] = new JsonArray(JSON.stringify(val));
+    }
+  }
+  return newmap;
+}
+
+utils.convParamListJsonObject = function(arr) {
+  var len = arr.length;
+  var newarr = [];
+  for (var i = 0; i < len; i++) {
+    var elem = arr[i];
+    newarr[i] = new JsonObject(JSON.stringify(elem));
+  }
+  return newarr;
+}
+
+utils.convParamListJsonArray = function(arr) {
+  var len = arr.length;
+  var newarr = [];
+  for (var i = 0; i < len; i++) {
+    var elem = arr[i];
+    newarr[i] = new JsonArray(JSON.stringify(elem));
+  }
+  return newarr;
+}
+
+utils.convParamSetJsonObject = function(arr) {
+  return new ListConverterSet(utils.convParamListJsonObject(arr));
+}
+
+utils.convParamSetJsonArray = function(arr) {
+  return new ListConverterSet(utils.convParamListJsonArray(arr));
+}
+
+
+
+// Return conversion
+
+// This is used to convert the return value from any Generic method where we don't know the actual type
+// or Throwable return
+utils.convReturnTypeUnknown = function(ret) {
   if (ret instanceof JsonObject || ret instanceof JsonArray) {
     return JSON.parse(ret.encode());
   } else {
@@ -11,40 +158,22 @@ utils.convRuntimeReturn = function(ret) {
   }
 };
 
-utils.convJSObjectToJsonObject = function(param) {
-  return param != null ? new JsonObject(JSON.stringify(param)) : null;
-};
-
-utils.convJsonToJS = function(param) {
-    return param != null ? JSON.parse(param.encode()) : null;
-};
-
-utils.convJSArrayToJsonArray = function(param) {
-  return param != null ? new JsonArray(JSON.stringify(param)) : null;
-};
-
-utils.convRuntimeParam = function(param) {
-  if (param == null) {
-    return param;
-  }
-  if (typeof param === 'object') {
-    if (param instanceof Array) {
-      return utils.convJSArrayToJsonArray(param);
-    }
-    return utils.convJSObjectToJsonObject(param);
-  }
-  return param;
+// Convert a Java JsonObject/JsonArray return to JS JSON
+utils.convReturnJson = function(param) {
+  return param != null ? JSON.parse(param.encode()) : null;
 };
 
 /*
-Nashorn doesn't automatically convert Sets to JS Arrays so we have to do this manually
-Note that this involves copying - so best to avoid Set in the API!
+ Convert a set return
+ Nashorn doesn't automatically convert Sets to JS Arrays so we have to do this manually
+ Note that this involves copying - so best to avoid Set in the API!
  */
-utils.convSet = function(jSet) {
+utils.convReturnSet = function(jSet) {
   return new java.util.ArrayList(jSet);
 };
 
-utils.convListSetJson = function(jList) {
+// Convert a list/set containing json return
+utils.convReturnListSetJson = function(jList) {
   var arr = [];
   arr.length = jList.size();
   var iter = jList.iterator();
@@ -59,7 +188,8 @@ utils.convListSetJson = function(jList) {
   return arr;
 };
 
-utils.convListSetVertxGen = function(jList, constructorFunction) {
+// Convert a list/set containing VertxGen return
+utils.convReturnListSetVertxGen = function(jList, constructorFunction) {
   var arr = [];
   arr.length = jList.size();
   var iter = jList.iterator();
@@ -74,32 +204,35 @@ utils.convListSetVertxGen = function(jList, constructorFunction) {
   return arr;
 };
 
-utils.convMap = function(jMap) {
+// Convert a map return
+utils.convReturnMap = function(jMap) {
   if (jMap) {
     // Object.keys is not supported. hasOwnKeys is called on ScriptObject which does not get proxied down
     // to JSAdapter.
     return new JSAdapter({
       __get__: function (name) {
-        return utils.convRuntimeReturn(jMap.get(name));
+        return utils.convReturnTypeUnknown(jMap.get(name));
       },
 
       __put__: function (name, value) {
-        jMap.put(name, utils.convRuntimeParam(value));
+        jMap.put(name, utils.convParamTypeUnknown(value));
       },
 
       __call__: function (name, arg1, arg2) {
         switch (name) {
-          case "size":
-          {
+          case "size": {
             return jMap.size();
           }
-          case "forEach":
-          {
+          case "forEach": {
             if (typeof arg1 == 'function') {
               jMap.keySet().forEach(arg1);
             } else {
               throw new TypeError(arg1 + " is not a function");
             }
+            break;
+          }
+          case "clear": {
+            jMap.clear();
             break;
           }
           default :
@@ -111,11 +244,11 @@ utils.convMap = function(jMap) {
       },
 
       __getIds__: function () {
-        return utils.convSet(jMap.keySet());
+        return utils.convReturnSet(jMap.keySet());
       },
 
       __getValues__: function () {
-        return utils.convListSetJson(jMap.values());
+        return utils.convReturnListSetJson(jMap.values());
       },
 
       __has__: function (name) {
@@ -125,6 +258,7 @@ utils.convMap = function(jMap) {
       __delete__: function (name) {
         return jMap.remove(name);
       }
+
     });
   } else {
     return null;

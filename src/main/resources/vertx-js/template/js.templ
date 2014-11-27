@@ -15,11 +15,9 @@
 
 @declare{'convParam'}
 	@code{paramName = overloaded ? argName : param.name;}
-	@if{param.type.name.startsWith('io.vertx.core.Handler<')}
-		@code{genericType = helper.getGenericType(param.type.name)}
-		@if{genericType.startsWith('io.vertx.core.AsyncResult<')}
-			@code{genericType = helper.getGenericType(genericType)}
-			@if{genericType.equals('java.lang.Void')}
+	@if{param.type.kind == CLASS_HANDLER}
+		@if{param.type.args[0].kind == CLASS_ASYNC_RESULT}
+			@if{param.type.args[0].args[0].name == "java.lang.Void"}
 function(ar) {\n
 @{ind}    if (ar.succeeded()) {\n
 @{ind}      @{paramName}(null, null);\n
@@ -36,27 +34,75 @@ function(ar) {\n
 @{ind}    }\n
 @{ind}  }
 			@end{}
-		@else{genericType.equals('java.lang.Void')}
+		@else{param.type.args[0].name == "java.lang.Void"}
 @{paramName}
 		@else{}
 function(jVal) {\n
 @{ind}    @{paramName}(@includeNamed{'convReturn'; templ='basicVal'; returnType=param.type.args[0]});\n
 @{ind}  }
 		@end{}
-	@else{param.type.name.equals('io.vertx.core.json.JsonObject')}
-utils.convJSObjectToJsonObject(@{paramName})
-	@else{param.type.name.equals('io.vertx.core.json.JsonArray')}
-utils.convJSArrayToJsonArray(@{paramName})
+	@else{param.type.kind == CLASS_JSON_OBJECT}
+utils.convParamJsonObject(@{paramName})
+	@else{param.type.kind == CLASS_JSON_ARRAY}
+utils.convParamJsonArray(@{paramName})
 	@else{param.options}
-@{paramName} != null ? new @{helper.getSimpleName(param.type.name)}(new JsonObject(JSON.stringify(@{paramName}))) : null
+@{paramName} != null ? new @{param.type.simpleName}(new JsonObject(JSON.stringify(@{paramName}))) : null
 	@else{param.type.kind == CLASS_ENUM}
 @{param.type.name}.valueOf(@{argName})
 	@else{param.type.kind == CLASS_OBJECT}
-utils.convRuntimeParam(@{paramName})
-	@else{helper.isBasicType(param.type.name)}
+utils.convParamTypeUnknown(@{paramName})
+	@else{param.type.kind.basic}
 @{paramName}
+	@else{param.type.kind == CLASS_LIST}
+		@if{param.type.args[0].name == 'long' || param.type.args[0].name == 'java.lang.Long'}
+utils.convParamListLong(@{paramName})
+		@else{param.type.args[0].name == 'short' || param.type.args[0].name == 'java.lang.Short'}
+utils.convParamListShort(@{paramName})
+		@else{param.type.args[0].name == 'byte' || param.type.args[0].name == 'java.lang.Byte'}
+utils.convParamListByte(@{paramName})
+		@else{param.type.args[0].kind == CLASS_API}
+utils.convParamListVertxGen(@{paramName})
+		@else{param.type.args[0].kind == CLASS_JSON_OBJECT}
+utils.convParamListJsonObject(@{paramName})
+		@else{param.type.args[0].kind == CLASS_JSON_ARRAY}
+utils.convParamListJsonArray(@{paramName})
+		@else{}
+@{paramName}
+		@end{}
+	@else{param.type.kind == CLASS_SET}
+		@if{param.type.args[0].name == 'long' || param.type.args[0].name == 'java.lang.Long'}
+utils.convParamSetLong(@{paramName})
+		@else{param.type.args[0].name == 'short' || param.type.args[0].name == 'java.lang.Short'}
+utils.convParamSetShort(@{paramName})
+		@else{param.type.args[0].name == 'byte' || param.type.args[0].name == 'java.lang.Byte'}
+utils.convParamSetByte(@{paramName})
+		@else{param.type.args[0].kind == CLASS_API}
+utils.convParamSetVertxGen(@{paramName})
+		@else{param.type.args[0].kind == CLASS_JSON_OBJECT}
+utils.convParamSetJsonObject(@{paramName})
+		@else{param.type.args[0].kind == CLASS_JSON_ARRAY}
+utils.convParamSetJsonArray(@{paramName})
+		@else{}
+utils.convParamSetBasicOther(@{paramName})
+		@end{}
+	@else{param.type.kind == CLASS_MAP}
+		@if{param.type.args[1].name == 'long' || param.type.args[1].name == 'java.lang.Long'}
+utils.convParamMapLong(@{paramName})
+		@else{param.type.args[1].name == 'short' || param.type.args[1].name == 'java.lang.Short'}
+utils.convParamMapShort(@{paramName})
+		@else{param.type.args[1].name == 'byte' || param.type.args[1].name == 'java.lang.Byte'}
+utils.convParamMapByte(@{paramName})
+		@else{param.type.args[1].kind == CLASS_API}
+utils.convParamMapVertxGen(@{paramName})
+		@else{param.type.args[1].kind == CLASS_JSON_OBJECT}
+utils.convParamMapJsonObject(@{paramName})
+		@else{param.type.args[1].kind == CLASS_JSON_ARRAY}
+utils.convParamMapJsonArray(@{paramName})
+		@else{}
+@{paramName}
+		@end{}
 	@else{}
-@{paramName}._jdel()
+@{paramName}._jdel
 	@end{}
 @end{}
 
@@ -76,25 +122,25 @@ ar.result()
 	@if{returnType.kind == CLASS_LIST}
 		@code{elementType=returnType.args[0]}
 		@if{elementType.kind.json}
-utils.convListSetJson(@includeNamed{templ})
-		@else{elementType == CLASS_API}
-utils.convListSetVertxGen(@includeNamed{templ}, @{elementType.raw.simpleName})
+utils.convReturnListSetJson(@includeNamed{templ})
+		@else{elementType.kind == CLASS_API}
+utils.convReturnListSetVertxGen(@includeNamed{templ}, @{elementType.raw.simpleName})
 		@else{}
 @includeNamed{templ}
 		@end{}
 	@else{returnType.kind == CLASS_SET}
 		@code{elementType=returnType.args[0]}
 		@if{elementType.kind.json}
-utils.convListSetJson(@includeNamed{templ})
-		@else{helper.isVertxGenType(helper.getGenericType(returnType))}
-utils.convListSetVertxGen(@includeNamed{templ}, @{elementType.raw.simpleName})
+utils.convReturnListSetJson(@includeNamed{templ})
+		@else{elementType.kind == CLASS_API}
+utils.convReturnListSetVertxGen(@includeNamed{templ}, @{elementType.raw.simpleName})
 		@else{}
-utils.convSet(@includeNamed{templ})
+utils.convReturnSet(@includeNamed{templ})
 		@end{}
 	@else{returnType.kind == CLASS_MAP}
-utils.convMap(@includeNamed{templ})
+utils.convReturnMap(@includeNamed{templ})
 	@else{returnType.kind.json}
-utils.convJsonToJS(@includeNamed{templ})
+utils.convReturnJson(@includeNamed{templ})
 	@else{returnType.kind.basic}
 @includeNamed{templ}
 	@else{returnType.kind == CLASS_API}
@@ -103,7 +149,7 @@ new @{returnType.raw.simpleName}(@includeNamed{templ})
 (@includeNamed{templ}).toString()
 	@else{}
 	@comment{'This will probably happen if the return type is generic'}
-utils.convRuntimeReturn(@includeNamed{templ})
+utils.convReturnTypeUnknown(@includeNamed{templ})
 	@end{}
 @end{}
 
@@ -148,7 +194,7 @@ utils.convRuntimeReturn(@includeNamed{templ})
 					typeof __args[@{cnt++}] === 'string'
 					@else{param.type.kind == CLASS_API}
 						typeof __args[@{cnt}] === 'object' && __args[@{cnt++}]._vertxgen
-					@else{param.type.kind == CLASS_JSON_ARRAY}
+					@else{param.type.kind == CLASS_JSON_ARRAY || param.type.kind == CLASS_LIST || param.type.kind == CLASS_SET}
 						typeof __args[@{cnt}] === 'object' && __args[@{cnt++}] instanceof Array
 					@else{param.type.kind == CLASS_HANDLER}
 						typeof __args[@{cnt++}] === 'function'
@@ -216,9 +262,9 @@ var @{refedType} = require('@{referencedType.moduleName}-js/@{helper.convertCame
 
 var io = Packages.io;\n
 var JsonObject = io.vertx.core.json.JsonObject;\n
-var J@{ifaceSimpleName} = @{helper.getNonGenericType(ifaceFQCN)};\n
+var J@{ifaceSimpleName} = @{type.raw.name};\n
 @foreach{optionType: referencedOptionsTypes}
-var @{helper.getSimpleName(optionType)} = @{optionType};\n
+var @{optionType.simpleName} = @{optionType};\n
 @end{}
 \n
 @code{ifaceName = helper.decapitaliseFirstLetter(ifaceSimpleName)}
@@ -241,7 +287,7 @@ var @{ifaceSimpleName} = function(j_val) {\n\n
 @comment{"Apply any supertypes"}
 
 @foreach{superType: superTypes}
-  @{helper.getSimpleName(helper.getNonGenericType(superType))}.call(this, j_val);\n
+  @{superType.raw.simpleName}.call(this, j_val);\n
 @end{}
 \n
 
@@ -258,10 +304,10 @@ var @{ifaceSimpleName} = function(j_val) {\n\n
 
   this._vertxgen = true;\n\n
 
-  // Get a reference to the underlying Java delegate\n
-  this._jdel = function() {\n
-    return j_@{ifaceName};\n
-  }\n\n
+  // A reference to the underlying Java delegate\n
+  // NOTE! This is an internal API and must not be used in user code.\n
+  // If you rely on this property your code is likely to break if we change it / remove it without warning.\n
+  this._jdel = j_@{ifaceName};\n
 };\n
 \n
 
