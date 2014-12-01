@@ -193,7 +193,7 @@ utils.convReturnTypeUnknown(@includeNamed{templ})
 					@else{param.type.kind == CLASS_STRING || param.type.kind == CLASS_ENUM}
 					typeof __args[@{cnt++}] === 'string'
 					@else{param.type.kind == CLASS_API}
-						typeof __args[@{cnt}] === 'object' && __args[@{cnt++}]._vertxgen
+						typeof __args[@{cnt}] === 'object' && __args[@{cnt++}]._jdel
 					@else{param.type.kind == CLASS_JSON_ARRAY || param.type.kind == CLASS_LIST || param.type.kind == CLASS_SET}
 						typeof __args[@{cnt}] === 'object' && __args[@{cnt++}] instanceof Array
 					@else{param.type.kind == CLASS_HANDLER}
@@ -301,8 +301,6 @@ var @{ifaceSimpleName} = function(j_val) {\n\n
 @end{}
 
 @comment{"Each object has a _jdel function which gives access to the underlying Java object"}
-
-  this._vertxgen = true;\n\n
 
   // A reference to the underlying Java delegate\n
   // NOTE! This is an internal API and must not be used in user code.\n

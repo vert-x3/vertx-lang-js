@@ -290,6 +290,8 @@ function testMethodWithHandlerListVertxGen() {
     Assert.assertEquals("foo", listVertxGen[0].getString());
     Assert.assertTrue(typeof listVertxGen[1] === 'object');
     Assert.assertEquals("bar", listVertxGen[1].getString());
+    Assert.assertTrue(listVertxGen[0]._jdel);
+    Assert.assertTrue(listVertxGen[1]._jdel);
     count++;
   });
   Assert.assertEquals(1, count, 0);
@@ -298,11 +300,13 @@ function testMethodWithHandlerListVertxGen() {
 function testMethodWithHandlerListAbstractVertxGen() {
     var count = 0;
     obj.methodWithHandlerListAbstractVertxGen(function(listVertxGen) {
-        Assert.assertTrue(typeof listVertxGen === 'object');
-        Assert.assertTrue(typeof listVertxGen[0] === 'object');
-        Assert.assertEquals("abstractfoo", listVertxGen[0].getString());
-        Assert.assertTrue(typeof listVertxGen[1] === 'object');
-        Assert.assertEquals("abstractbar", listVertxGen[1].getString());
+      Assert.assertTrue(typeof listVertxGen === 'object');
+      Assert.assertTrue(typeof listVertxGen[0] === 'object');
+      Assert.assertEquals("abstractfoo", listVertxGen[0].getString());
+      Assert.assertTrue(typeof listVertxGen[1] === 'object');
+      Assert.assertEquals("abstractbar", listVertxGen[1].getString());
+      Assert.assertTrue(listVertxGen[0]._jdel);
+      Assert.assertTrue(listVertxGen[1]._jdel);
         count++;
     });
     Assert.assertEquals(1, count, 0);
@@ -317,6 +321,8 @@ function testMethodWithHandlerAsyncResultListVertxGen() {
     Assert.assertEquals("foo", listVertxGen[0].getString());
     Assert.assertTrue(typeof listVertxGen[1] === 'object');
     Assert.assertEquals("bar", listVertxGen[1].getString());
+    Assert.assertTrue(listVertxGen[0]._jdel);
+    Assert.assertTrue(listVertxGen[1]._jdel);
     count++;
   });
   Assert.assertEquals(1, count, 0);
@@ -325,13 +331,15 @@ function testMethodWithHandlerAsyncResultListVertxGen() {
 function testMethodWithHandlerAsyncResultListAbstractVertxGen() {
     var count = 0;
     obj.methodWithHandlerAsyncResultListAbstractVertxGen(function(listVertxGen, err) {
-        Assert.assertNull(err);
-        Assert.assertTrue(typeof listVertxGen === 'object');
-        Assert.assertTrue(typeof listVertxGen[0] === 'object');
-        Assert.assertEquals("abstractfoo", listVertxGen[0].getString());
-        Assert.assertTrue(typeof listVertxGen[1] === 'object');
-        Assert.assertEquals("abstractbar", listVertxGen[1].getString());
-        count++;
+      Assert.assertNull(err);
+      Assert.assertTrue(typeof listVertxGen === 'object');
+      Assert.assertTrue(typeof listVertxGen[0] === 'object');
+      Assert.assertEquals("abstractfoo", listVertxGen[0].getString());
+      Assert.assertTrue(typeof listVertxGen[1] === 'object');
+      Assert.assertEquals("abstractbar", listVertxGen[1].getString());
+      Assert.assertTrue(listVertxGen[0]._jdel);
+      Assert.assertTrue(listVertxGen[1]._jdel);
+      count++;
     });
     Assert.assertEquals(1, count, 0);
 }
@@ -344,6 +352,8 @@ function testMethodWithHandlerSetVertxGen() {
     Assert.assertEquals("foo", setVertxGen[0].getString());
     Assert.assertTrue(typeof setVertxGen[1] === 'object');
     Assert.assertEquals("bar", setVertxGen[1].getString());
+    Assert.assertTrue(setVertxGen[0]._jdel);
+    Assert.assertTrue(setVertxGen[1]._jdel);
     count++;
   });
   Assert.assertEquals(1, count, 0);
@@ -352,12 +362,14 @@ function testMethodWithHandlerSetVertxGen() {
 function testMethodWithHandlerSetAbstractVertxGen() {
     var count = 0;
     obj.methodWithHandlerSetAbstractVertxGen(function(setVertxGen) {
-        Assert.assertTrue(typeof setVertxGen === 'object');
-        Assert.assertTrue(typeof setVertxGen[0] === 'object');
-        Assert.assertEquals("abstractfoo", setVertxGen[0].getString());
-        Assert.assertTrue(typeof setVertxGen[1] === 'object');
-        Assert.assertEquals("abstractbar", setVertxGen[1].getString());
-        count++;
+      Assert.assertTrue(typeof setVertxGen === 'object');
+      Assert.assertTrue(typeof setVertxGen[0] === 'object');
+      Assert.assertEquals("abstractfoo", setVertxGen[0].getString());
+      Assert.assertTrue(typeof setVertxGen[1] === 'object');
+      Assert.assertEquals("abstractbar", setVertxGen[1].getString());
+      Assert.assertTrue(setVertxGen[0]._jdel);
+      Assert.assertTrue(setVertxGen[1]._jdel);
+      count++;
     });
     Assert.assertEquals(1, count, 0);
 }
@@ -371,6 +383,8 @@ function testMethodWithHandlerAsyncResultSetVertxGen() {
     Assert.assertEquals("foo", setVertxGen[0].getString());
     Assert.assertTrue(typeof setVertxGen[1] === 'object');
     Assert.assertEquals("bar", setVertxGen[1].getString());
+    Assert.assertTrue(setVertxGen[0]._jdel);
+    Assert.assertTrue(setVertxGen[1]._jdel);
     count++;
   });
   Assert.assertEquals(1, count, 0);
@@ -379,13 +393,15 @@ function testMethodWithHandlerAsyncResultSetVertxGen() {
 function testMethodWithHandlerAsyncResultSetAbstractVertxGen() {
     var count = 0;
     obj.methodWithHandlerAsyncResultSetAbstractVertxGen(function(setVertxGen, err) {
-        Assert.assertNull(err);
-        Assert.assertTrue(typeof setVertxGen === 'object');
-        Assert.assertTrue(typeof setVertxGen[0] === 'object');
-        Assert.assertEquals("abstractfoo", setVertxGen[0].getString());
-        Assert.assertTrue(typeof setVertxGen[1] === 'object');
-        Assert.assertEquals("abstractbar", setVertxGen[1].getString());
-        count++;
+      Assert.assertNull(err);
+      Assert.assertTrue(typeof setVertxGen === 'object');
+      Assert.assertTrue(typeof setVertxGen[0] === 'object');
+      Assert.assertEquals("abstractfoo", setVertxGen[0].getString());
+      Assert.assertTrue(typeof setVertxGen[1] === 'object');
+      Assert.assertEquals("abstractbar", setVertxGen[1].getString());
+      Assert.assertTrue(setVertxGen[0]._jdel);
+      Assert.assertTrue(setVertxGen[1]._jdel);
+      count++;
     });
     Assert.assertEquals(1, count, 0);
 }
@@ -784,11 +800,13 @@ function testBasicReturns() {
 function testVertxGenReturn() {
   var ret = obj.methodWithVertxGenReturn();
   Assert.assertEquals("chaffinch", ret.getString());
+  Assert.assertTrue(ret._jdel);
 }
 
 function testAbstractVertxGenReturn() {
-    var ret = obj.methodWithAbstractVertxGenReturn();
-    Assert.assertEquals("abstractchaffinch", ret.getString());
+  var ret = obj.methodWithAbstractVertxGenReturn();
+  Assert.assertEquals("abstractchaffinch", ret.getString());
+  Assert.assertTrue(ret._jdel);
 }
 
 function testOverloadedMethods() {
@@ -1208,9 +1226,9 @@ function testListVertxGenReturn() {
   Assert.assertTrue(typeof obj1 === 'object');
   Assert.assertTrue(typeof obj2 === 'object');
   Assert.assertEquals("foo", obj1.getString());
-  Assert.assertTrue(obj1._vertxgen);
+  Assert.assertTrue(obj1._jdel);
   Assert.assertEquals("bar", obj2.getString());
-  Assert.assertTrue(obj2._vertxgen);
+  Assert.assertTrue(obj2._jdel);
 }
 
 function testSetStringReturn() {
@@ -1259,9 +1277,9 @@ function testSetVertxGenReturn() {
   Assert.assertTrue(typeof obj1 === 'object');
   Assert.assertTrue(typeof obj2 === 'object');
   Assert.assertEquals("foo", obj1.getString());
-  Assert.assertTrue(obj1._vertxgen);
+  Assert.assertTrue(obj1._jdel);
   Assert.assertEquals("bar", obj2.getString());
-  Assert.assertTrue(obj2._vertxgen);
+  Assert.assertTrue(obj2._jdel);
 }
 
 function testThrowableReturn() {
