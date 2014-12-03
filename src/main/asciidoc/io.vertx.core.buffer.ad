@@ -1,4 +1,4 @@
-Most data in Vert.x is shuffled around using instances of link:jsdoc/symbols/Buffer.html[`Buffer`]
+Most data in Vert.x is shuffled around using instances of link:jsdoc/buffer-Buffer.html[`Buffer`]
 
 A Buffer represents a sequence of zero or more bytes that can be written to or read from, and which expands
 automatically as necessary to accomodate any bytes written to it.
@@ -102,8 +102,8 @@ for (var i = 0;i < buff.length();4) {
 
 === Other buffer methods:
 
-* link:jsdoc/symbols/Buffer.html#length[`length`]. To obtain the length of the buffer. The length of a buffer is the
+* link:jsdoc/buffer-Buffer.html#length[`length`]. To obtain the length of the buffer. The length of a buffer is the
   index of the byte in the buffer with the largest index + 1.
-* link:jsdoc/symbols/Buffer.html#copy[`copy`]. Copy the entire buffer
+* link:jsdoc/buffer-Buffer.html#copy[`copy`]. Copy the entire buffer
 
-See the link:jsdoc/symbols/Buffer.html[`doc`] for more detailed method level documentation.
+See the link:jsdoc/buffer-Buffer.html[`doc`] for more detailed method level documentation.

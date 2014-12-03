@@ -84,7 +84,7 @@ eb.consumer("test.address", function (message) {
 
 It's as simple as that. The handler will then receive any messages sent to that address.
 
-The class link:jsdoc/symbols/Message.html[`Message`] is a generic type and specific Message types include
+The class link:jsdoc/message-Message.html[`Message`] is a generic type and specific Message types include
 `Message<Boolean>`, `Message<Buffer>`, `Message<byte[]>`, `Message<Byte>`, `Message<Character>`, `Message<Double>`,
 `Message<Float>`, `Message<Integer>`, `Message<JsonObject>`, `Message<JsonArray>`, `Message<Long>`, `Message<Short>`
 and `Message<String>`.

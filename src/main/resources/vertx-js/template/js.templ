@@ -1,3 +1,50 @@
+@comment{"Generate the module name of a type"}
+@comment{"===================================="}
+
+@code{
+  def genModuleName(moduleType) {
+    return moduleType.raw.moduleName + "-js/" + helper.convertCamelCaseToUnderscores(moduleType.raw.simpleName);
+  }
+}
+
+@comment{"Generate the JSDoc type of a type"}
+@comment{"===================================="}
+
+@comment{"TODO : add missing types"}
+@code{
+  def genJSDocType(type) {
+    if (type.kind == CLASS_STRING) {
+      return 'string';
+    } else if (type.kind == CLASS_PRIMITIVE || type.kind == CLASS_BOXED_PRIMITIVE) {
+      if (type.simpleName == 'boolean' || type.simpleName == 'Boolean') {
+        return 'boolean';
+      } else if (type.simpleName == 'char' || type.simpleName == 'Character') {
+        return 'string';
+      } else {
+        return 'number';
+      }
+    } else if (type.kind == CLASS_JSON_OBJECT) {
+      return 'Object';
+    } else if (type.kind == CLASS_OPTIONS) {
+      return 'Object';
+    } else if (type.kind == CLASS_ENUM) {
+      return 'Object';
+    } else if (type.kind == CLASS_API) {
+      return type.raw.simpleName;
+    } else if (type.kind.collection) {
+      return 'Array.<' + genJSDocType(type.args[0]) + '>';
+    } else if (type.kind == CLASS_MAP) {
+      return 'Object.<string, ' + genJSDocType(type.args[1]) + '>';
+    } else if (type.kind == CLASS_OBJECT) {
+      return 'Object';
+    } else if (type.kind == CLASS_HANDLER) {
+      return 'function';
+    } else {
+      return 'todo';
+    }
+  }
+}
+
 @comment{"Generate a call to a Java API method"}
 @comment{"===================================="}
 
@@ -159,9 +206,16 @@ utils.convReturnTypeUnknown(@includeNamed{templ})
 @declare{'genMethod'}
 	@code{methodList = methodsByName.get(methodName); overloaded = methodList.size() > 1; method = methodList.get(0);}
 	@if{static == method.staticMethod}
-		@if{method.comment != null}
-@{helper.indentString("/*\n" + helper.removeTags(method.comment) + "\n*/\n", ind)}
-		@end{}
+@{ind}/**\n
+@if{method.comment != null}
+@{helper.indentString(helper.removeTags(method.comment), ind)}
+@end{}\n
+@{ind} @{static ? ("@memberof module:" + genModuleName(type)) : "@public" }\n
+@foreach{param: method.params}@{ind} @param @{param.name} {@{genJSDocType(param.type)}} @end{"\n"}\n
+@if{!method.returnType.name.equals("void")}
+@{ind} @return {@{genJSDocType(method.returnType)}}\n
+@end{}
+@{ind} */\n
 @{ind}@if{static}@{ifaceSimpleName}@else{}this@end{}.@{methodName} =
 		@if{overloaded}
 		 function() {\n
@@ -251,10 +305,12 @@ utils.convReturnTypeUnknown(@includeNamed{templ})
 
 @comment{"Generate the requires"}
 
+/** @module @{genModuleName(type)} */\n
+
 var utils = require('vertx-js/util/utils');\n
 @foreach{referencedType : referencedTypes}
 @code{refedType=referencedType.simpleName;}
-var @{refedType} = require('@{referencedType.moduleName}-js/@{helper.convertCamelCaseToUnderscores(refedType)}');\n
+var @{refedType} = require('@{genModuleName(referencedType)}');\n
 @end{}
 \n
 
@@ -275,7 +331,7 @@ var @{optionType.simpleName} = @{optionType};\n
 @if{ifaceComment != null}
 @{helper.removeTags(ifaceComment)}\n
 @end{}
-  @class\n
+ @class\n
 */\n
 
 @comment{"The constructor"}

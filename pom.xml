@@ -14,19 +14,6 @@
   <artifactId>vertx-lang-js</artifactId>
   <version>3.0.0-SNAPSHOT</version>
 
-  <repositories>
-    <repository>
-      <id>jsdoctk1</id>
-      <url>http://jsdoctk-plugin.googlecode.com/svn/repo</url>
-    </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>jsdoctk2</id>
-      <url>http://jsdoctk-plugin.googlecode.com/svn/repo</url>
-    </pluginRepository>
-  </pluginRepositories>
-
   <properties>
     <asciidoc.dir>${project.basedir}/src/main/asciidoc</asciidoc.dir>
     <tools.jar>${java.home}/../lib/tools.jar</tools.jar>
@@ -226,30 +213,22 @@
         </dependencies>
       </plugin>
       <plugin>
-        <groupId>nl.windgazer</groupId>
-        <artifactId>jsdoctk-plugin</artifactId>
-        <version>2.3.2</version>
-        <configuration>
-          <directory>${project.build.directory}/jsdoc</directory>
-          <recurse>5</recurse>
-          <!--<ext>js</ext>-->
-          <!--<allfunctions>true</allfunctions>-->
-          <!--<Allfunctions>false</Allfunctions>-->
-          <privateOption>false</privateOption>
-          <!-- If you're using the maven default setup this alternative is sometimes required
-          to make the plugin work: ${basedir}/src/main/webapp/ -->
-          <srcDir>${basedir}/src/main/resources</srcDir>
-          <directory>${project.build.directory}/docs/jsdoc</directory>
-          <exclude>
-            <param>regularexpression</param><!--Multiple param entries allowed-->
-          </exclude>
-        </configuration>
+        <groupId>com.phasebash.jsdoc</groupId>
+        <artifactId>jsdoc3-maven-plugin</artifactId>
+        <version>1.1.0</version>
         <executions>
           <execution>
-            <phase>package</phase>
+            <phase>prepare-package</phase>
             <goals>
-              <goal>jsdoc</goal>
+              <goal>jsdoc3</goal>
             </goals>
+            <configuration>
+              <recursive>false</recursive>
+              <directoryRoots>
+                <directoryRoot>${basedir}/src/main/resources/vertx-js</directoryRoot>
+              </directoryRoots>
+              <outputDirectory>${project.build.directory}/docs/jsdoc</outputDirectory>
+            </configuration>
           </execution>
         </executions>
       </plugin>
