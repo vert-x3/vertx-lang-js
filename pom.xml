@@ -244,7 +244,7 @@
             <phase>package</phase>
             <configuration>
               <sourceDirectory>${asciidoc.dir}</sourceDirectory>
-              <sourceDocumentName>index.ad</sourceDocumentName>
+              <sourceDocumentName>index.adoc</sourceDocumentName>
               <outputDirectory>${project.build.directory}/docs</outputDirectory>
               <backend>html</backend>
               <doctype>book</doctype>
