@@ -1,19 +1,15 @@
 
-moduleStarted(false);
+exports.vertxStartAsync = function(startFuture) {
+  vertx.setTimer(1100, function() {
+    startFuture.complete();
+  });
+};
 
-vertx.setTimer(1100, function() {
-  moduleStarted(true);
-});
-
-
-exports.vertxStop = function() {
-
-  moduleStopped(false);
+exports.vertxStopAsync = function(stopFuture) {
 
   vertx.setTimer(1100, function() {
-    moduleStopped(true);
+    stopFuture.complete();
   });
-
 
 }
 

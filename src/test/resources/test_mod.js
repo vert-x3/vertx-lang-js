@@ -2,4 +2,6 @@
 
 var someGlobal = "foo";
 
-module.exports = "hello";
+console.log("in testmod!!!!");
+
+module.exports = "hello"

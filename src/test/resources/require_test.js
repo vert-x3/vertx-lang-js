@@ -24,7 +24,7 @@ function testRequireNotFound() {
   try {
     require("nosuchmodule");
   } catch (e) {
-    Assert.assertEquals("Can't find module nosuchmodule on classpath", e);
+    Assert.assertEquals("Cannot find module nosuchmodule", e.message);
   }
 }
 
@@ -32,7 +32,7 @@ function testBrokenModule() {
   try {
     require("brokenmodule");
   } catch (e) {
-    Assert.assertTrue(e.message.indexOf("in brokenmodule at line number 5 at column number 2") != -1);
+    Assert.assertEquals("Cannot load module brokenmodule", e.message);
   }
 }
 
@@ -42,11 +42,16 @@ function testTopLevelIsolated() {
 }
 
 function testCachedRequires() {
-  var testMod1 = require("test_mod");
-  var testMod2 = require("test_mod");
-  var testMod3 = require("test_mod");
+  var testMod1 = require("test_mod_cached_require");
+  var testMod2 = require("test_mod_cached_require");
+  var testMod3 = require("test_mod_cached_require");
   Assert.assertSame(testMod1, testMod2);
   Assert.assertSame(testMod2, testMod3);
+}
+
+function testRequireNPMModule() {
+  var testMod1 = require("src/test/npm/testmod1");
+  Assert.assertEquals("hello from testmod1", testMod1);
 }
 
 if (typeof this[testName] === 'undefined') {
