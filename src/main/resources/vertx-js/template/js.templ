@@ -194,6 +194,8 @@ utils.convReturnJson(@includeNamed{templ})
 new @{returnType.raw.simpleName}(@includeNamed{templ})
 	@else{returnType.kind == CLASS_ENUM}
 (@includeNamed{templ}).toString()
+	@else{returnType.kind == CLASS_OPTIONS}
+new @{returnType.raw.simpleName}(@includeNamed{templ})
 	@else{}
 	@comment{'This will probably happen if the return type is generic'}
 utils.convReturnTypeUnknown(@includeNamed{templ})

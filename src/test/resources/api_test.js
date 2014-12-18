@@ -131,55 +131,55 @@ function testMethodWithHandlerAsyncResultBasicTypes() {
 function testMethodWithHandlerAsyncResultBasicTypesFails() {
   var count = 0;
   obj.methodWithHandlerAsyncResultByte(true, function(b, err) {
-    Assert.assertNull(b)
+    Assert.assertNull(b);
     Assert.assertNotNull(err);
     Assert.assertEquals("foobar!", err.getMessage());
      count++;
   });
   obj.methodWithHandlerAsyncResultShort(true, function(s, err) {
-    Assert.assertNull(s)
+    Assert.assertNull(s);
     Assert.assertNotNull(err);
     Assert.assertEquals("foobar!", err.getMessage());
     count++;
   });
   obj.methodWithHandlerAsyncResultInteger(true, function (i, err) {
-    Assert.assertNull(i)
+    Assert.assertNull(i);
     Assert.assertNotNull(err);
     Assert.assertEquals("foobar!", err.getMessage());
     count++;
   });
   obj.methodWithHandlerAsyncResultLong(true, function (l, err) {
-    Assert.assertNull(l)
+    Assert.assertNull(l);
     Assert.assertNotNull(err);
     Assert.assertEquals("foobar!", err.getMessage());
     count++;
   });
   obj.methodWithHandlerAsyncResultFloat(true, function (f, err) {
-    Assert.assertNull(f)
+    Assert.assertNull(f);
     Assert.assertNotNull(err);
     Assert.assertEquals("foobar!", err.getMessage());
     count++;
   });
   obj.methodWithHandlerAsyncResultDouble(true, function(d, err) {
-    Assert.assertNull(d)
+    Assert.assertNull(d);
     Assert.assertNotNull(err);
     Assert.assertEquals("foobar!", err.getMessage());
     count++;
   });
   obj.methodWithHandlerAsyncResultBoolean(true, function (bool, err) {
-    Assert.assertNull(bool)
+    Assert.assertNull(bool);
     Assert.assertNotNull(err);
     Assert.assertEquals("foobar!", err.getMessage());
     count++;
   });
   obj.methodWithHandlerAsyncResultCharacter(true, function (char, err) {
-    Assert.assertNull(char)
+    Assert.assertNull(char);
     Assert.assertNotNull(err);
     Assert.assertEquals("foobar!", err.getMessage());
     count++;
   });
   obj.methodWithHandlerAsyncResultString(true, function (str, err) {
-    Assert.assertNull(str)
+    Assert.assertNull(str);
     Assert.assertNotNull(err);
     Assert.assertEquals("foobar!", err.getMessage());
     count++;
@@ -212,7 +212,45 @@ function testOptionsParam() {
 }
 
 function testNullOptionsParam() {
-    obj.methodWithNullOptionsParam(null);
+  obj.methodWithNullOptionsParam(null);
+}
+
+function testMethodWithHandlerOptions() {
+  var count = 0;
+
+  obj.methodWithHandlerOptions(function(option) {
+    Assert.assertTrue(typeof option === 'object');
+    Assert.assertEquals("foo", option.foo);
+    Assert.assertEquals(123, option.bar, 0);
+    // Assert.assertNull(option.wibble); // this will result in NPE. Options should use Integer / Double to avoid this
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerAsyncResultOptions() {
+  var count = 0;
+
+  obj.methodWithHandlerAsyncResultOptions(false, function(option, err) {
+    Assert.assertNull(err);
+    Assert.assertTrue(typeof option === 'object');
+    Assert.assertEquals("foo", option.foo);
+    Assert.assertEquals(123, option.bar, 0);
+    // Assert.assertNull(option.wibble); // this will result in NPE. Options should use Integer / Double to avoid this
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerAsyncResultOptionsFails() {
+  var count = 0;
+  obj.methodWithHandlerAsyncResultOptions(true, function(option, err) {
+    Assert.assertNull(option);
+    Assert.assertNotNull(err);
+    Assert.assertEquals("foobar!", err.getMessage());
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
 }
 
 function testMethodWithHandlerListAndSet() {

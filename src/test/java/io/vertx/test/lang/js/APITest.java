@@ -114,6 +114,16 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testMethodWithHandlerOptions() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerAsyncResultOptions() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMethodWithHandlerListVertxGen() throws Exception {
     runTest();
   }
