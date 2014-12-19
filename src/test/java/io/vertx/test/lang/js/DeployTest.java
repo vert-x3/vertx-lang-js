@@ -26,4 +26,14 @@ public class DeployTest extends JSTestBase {
     runTest();
   }
 
+  @Test
+  public void testDeployMultipleInstances() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testDeployMultipleInstancesWithVertxStart() throws Exception {
+    runTest();
+  }
+
 }

@@ -52,4 +52,9 @@ public class RequireTest extends JSTestBase {
     runTest();
   }
 
+  @Test
+  public void testRequireNPMModule() throws Exception {
+    runTest();
+  }
+
 }

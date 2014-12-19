@@ -1,0 +1,6 @@
+{
+  "name": "testmod1",
+  "version": "1.0",
+  "description": "My test mod 1",
+  "main": "testmod1_main.js"
+}
