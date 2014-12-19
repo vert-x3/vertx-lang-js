@@ -86,7 +86,7 @@ function testDeployMultipleInstances() {
       });
     }
   });
-  vertx.deployVerticle("js:test_verticle_multiple", {instances: 3});
+  vertx.deployVerticle("js:test_verticle_multiple", {instances: numInstances});
   Assert.assertTrue(latch.await(2, TimeUnit.MINUTES));
   Assert.assertFalse(tooMany);
 }

@@ -62,8 +62,12 @@ module = (typeof module == 'undefined') ? {} :  module;
       args   = ['exports', 'module', 'require', '__filename', '__dirname'],
       func   = new Function(args, body);
     var runModule = function() {
+      var rm = module.exports.__vertxRunModule;
       func.apply(module,
         [module.exports, module, module.require, module.filename, dir]);
+      if (rm) {
+        module.exports.__vertxRunModule = rm;
+      }
     }
     runModule();
     module.loaded = true;

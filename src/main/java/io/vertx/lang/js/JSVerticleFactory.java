@@ -56,7 +56,7 @@ public class JSVerticleFactory implements VerticleFactory {
     return new JSVerticle(VerticleFactory.removePrefix(verticleName));
   }
 
-  private Map<String, AtomicInteger> deployCounts = new ConcurrentHashMap<>();
+  private final Map<String, AtomicInteger> deployCounts = new ConcurrentHashMap<>();
 
   public class JSVerticle extends AbstractVerticle {
 
@@ -75,7 +75,8 @@ public class JSVerticleFactory implements VerticleFactory {
     private ScriptObjectMirror exports;
 
     private boolean functionExists(String functionName) {
-      return !exports.getMember(functionName).toString().equals("undefined");
+      Object som = exports.getMember(functionName);
+      return som != null && !som.toString().equals("undefined");
     }
 
     @Override
