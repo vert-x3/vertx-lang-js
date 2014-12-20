@@ -222,7 +222,7 @@ function testMethodWithHandlerOptions() {
     Assert.assertTrue(typeof option === 'object');
     Assert.assertEquals("foo", option.foo);
     Assert.assertEquals(123, option.bar, 0);
-    // Assert.assertNull(option.wibble); // this will result in NPE. Options should use Integer / Double to avoid this
+    Assert.assertEquals(0.0, option.wibble, 0);
     count++;
   });
   Assert.assertEquals(1, count, 0);
@@ -236,7 +236,7 @@ function testMethodWithHandlerAsyncResultOptions() {
     Assert.assertTrue(typeof option === 'object');
     Assert.assertEquals("foo", option.foo);
     Assert.assertEquals(123, option.bar, 0);
-    // Assert.assertNull(option.wibble); // this will result in NPE. Options should use Integer / Double to avoid this
+    Assert.assertEquals(0.0, option.wibble, 0);
     count++;
   });
   Assert.assertEquals(1, count, 0);
