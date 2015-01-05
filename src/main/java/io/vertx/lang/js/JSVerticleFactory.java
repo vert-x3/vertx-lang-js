@@ -158,7 +158,7 @@ public class JSVerticleFactory implements VerticleFactory {
         engine.eval("var clearTimeout = function(id) { vertx.cancelTimer(id); };");
         engine.eval("var setInterval = function(callback, delay) { return vertx.setPeriodic(delay, callback); };");
         engine.eval("var clearInterval = clearTimeout;");
-        engine.eval("var parent = this;");
+        engine.eval("var parent = this, global = this;");
       } catch (ScriptException e) {
         throw new IllegalStateException("Failed to eval: " + e.getMessage(), e);
       }

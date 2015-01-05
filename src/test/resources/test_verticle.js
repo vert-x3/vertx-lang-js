@@ -33,6 +33,10 @@ if (typeof parent !== 'object') {
   throw "No parent global";
 }
 
+if (typeof global !== 'object') {
+  throw "No global";
+}
+
 exports.vertxStop = function() {
   vertx.eventBus().send("testComplete", "foo");
 }
