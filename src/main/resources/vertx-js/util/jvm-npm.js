@@ -286,7 +286,7 @@ module = (typeof module == 'undefined') ? {} :  module;
     };
   }
 
-  ModuleError.prototype = new Error();
+  ModuleError.prototype = Object.create(Error.prototype);;
   ModuleError.prototype.constructor = ModuleError;
 
 }());
