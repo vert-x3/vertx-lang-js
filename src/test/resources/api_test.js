@@ -14,7 +14,7 @@ function testMethodWithBasicParams() {
 }
 
 function testMethodWithBasicBoxedParams() {
-  obj.methodWithBasicParams(123, 12345, 1234567, 1265615234, 12.345, 12.34566, true, 'X', 'foobar');
+  obj.methodWithBasicBoxedParams(123, 12345, 1234567, 1265615234, 12.345, 12.34566, true, 'X');
 }
 
 function testMethodWithHandlerBasicTypes() {
