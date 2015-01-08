@@ -1,9 +1,45 @@
 === Writing Verticles
 
+JavaScript verticles are implemented either as http://wiki.commonjs.org/wiki/Modules/1.1[CommonJS modules] or
+https://www.npmjs.com/[NPM] modules
+
+Here's an example JavaScript verticle written as a CommonJS module.
+
+JavaScript verticles will have the following globals pre-set as a convenience:
+
+* +vertx+ - A reference to the Vertx object
+* +console+ A reference to the <<console, console>> object
+
+----
+
+// Start a timer
+vertx.setPeriodic(1000, function() {
+  console.log('Timer has fired');
+});
+
+// Optional - called when verticle is undeployed
+exports.vertxStop = function() {
+  console.log('stop called');
+}
+
+
+
+----
+
+When the verticle is deployed the body of the script will be executed.
+
+Optionally a
+
+[[console]]
+=== The console
+
+Blah, blah
+
+JAVASCRIPT MOFO!
+
 Verticle classes must implement the link:jsdoc/verticle-Verticle.html[`Verticle`] interface.
 
-They can implement it directly if you like but usually it's simpler to extend
-the abstract class link:jsdoc/abstrac_verticle-AbstractVerticle.html[`AbstractVerticle`].
+They can implement it directly if you like but usually it's easier to extend the abstract class link:jsdoc/abstrac_verticle-AbstractVerticle.html[`AbstractVerticle`].
 
 Here's an example verticle:
 
@@ -34,15 +70,13 @@ the method has completed the verticle will be considered stopped.
 Sometimes you want to do something in your verticle start-up which takes some time and you don't want the verticle to
 be considered deployed until that happens. For example you might want to deploy other verticles in the start method.
 
-You can't block waiting for the other verticles to deploy in your start method as that would break the <<golden_rule, Golden Rule>>.
+You can't block waiting for the other verticles to deploy in your start method as that would break the Golden Rule.
 
 So how can you do this?
 
 The way to do it is to implement the *asynchronous* start method. This version of the method takes a Future as a parameter.
-When the method returns the verticle will *not* be considered deployed.
-
-Some time later, after you've done everything you need to do (e.g. start other verticles), you can call complete
-on the Future (or fail) to signal that you're done.
+When the method returns the verticle will *not* be considered deployed yet. Some time later, after you've done everything
+you need to do (e.g. start other verticles), you can call complete on the Future (or fail) to signal that you're done.
 
 Here's an example:
 
