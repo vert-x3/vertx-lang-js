@@ -966,11 +966,6 @@ function testJsonParams() {
 }
 
 function testNullJsonParams() {
-   var jsonObject = {
-     cat: "lion",
-     cheese: "cheddar"
-   }
-   var jsonArray = ["house", "spider"];
    obj.methodWithNullJsonParams(null, null);
 }
 
