@@ -25,7 +25,7 @@
       }
     } else if (type.kind == CLASS_JSON_OBJECT) {
       return 'Object';
-    } else if (type.kind == CLASS_OPTIONS) {
+    } else if (type.kind == CLASS_DATA_OBJECT) {
       return 'Object';
     } else if (type.kind == CLASS_ENUM) {
       return 'Object';
@@ -92,7 +92,7 @@ function(jVal) {\n
 utils.convParamJsonObject(@{paramName})
 	@else{param.type.kind == CLASS_JSON_ARRAY}
 utils.convParamJsonArray(@{paramName})
-	@else{param.options}
+	@else{param.dataObject}
 @{paramName} != null ? new @{param.type.simpleName}(new JsonObject(JSON.stringify(@{paramName}))) : null
 	@else{param.type.kind == CLASS_ENUM}
 @{param.type.name}.valueOf(@{argName})
@@ -194,7 +194,7 @@ utils.convReturnJson(@includeNamed{templ})
 new @{returnType.raw.simpleName}(@includeNamed{templ})
 	@else{returnType.kind == CLASS_ENUM}
 (@includeNamed{templ}).toString()
-	@else{returnType.kind == CLASS_OPTIONS}
+	@else{returnType.kind == CLASS_DATA_OBJECT}
 utils.convReturnJson(@includeNamed{templ}.toJson())
 	@else{}
 	@comment{'This will probably happen if the return type is generic'}
@@ -321,8 +321,8 @@ var @{refedType} = require('@{genModuleName(referencedType)}');\n
 var io = Packages.io;\n
 var JsonObject = io.vertx.core.json.JsonObject;\n
 var J@{ifaceSimpleName} = @{type.raw.name};\n
-@foreach{optionType: referencedOptionsTypes}
-var @{optionType.simpleName} = @{optionType};\n
+@foreach{dataObjectType: referencedDataObjectTypes}
+var @{dataObjectType.simpleName} = @{dataObjectType};\n
 @end{}
 \n
 @code{ifaceName = helper.decapitaliseFirstLetter(ifaceSimpleName)}

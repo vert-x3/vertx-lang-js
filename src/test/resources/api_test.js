@@ -202,23 +202,23 @@ function testObjectParam() {
   obj.methodWithObjectParam("JsonArray", jsonArr);
 }
 
-function testOptionsParam() {
-  var options = {
+function testDataObjectParam() {
+  var dataObject = {
     foo: "hello",
     bar: 123,
     wibble: 1.23
   };
-  obj.methodWithOptionsParam(options);
+  obj.methodWithDataObjectParam(dataObject);
 }
 
-function testNullOptionsParam() {
-  obj.methodWithNullOptionsParam(null);
+function testNullDataObjectParam() {
+  obj.methodWithNullDataObjectParam(null);
 }
 
-function testMethodWithHandlerOptions() {
+function testMethodWithHandlerDataObject() {
   var count = 0;
 
-  obj.methodWithHandlerOptions(function(option) {
+  obj.methodWithHandlerDataObject(function(option) {
     Assert.assertTrue(typeof option === 'object');
     Assert.assertEquals("foo", option.foo);
     Assert.assertEquals(123, option.bar, 0);
@@ -228,10 +228,10 @@ function testMethodWithHandlerOptions() {
   Assert.assertEquals(1, count, 0);
 }
 
-function testMethodWithHandlerAsyncResultOptions() {
+function testMethodWithHandlerAsyncResultDataObject() {
   var count = 0;
 
-  obj.methodWithHandlerAsyncResultOptions(false, function(option, err) {
+  obj.methodWithHandlerAsyncResultDataObject(false, function(option, err) {
     Assert.assertNull(err);
     Assert.assertTrue(typeof option === 'object');
     Assert.assertEquals("foo", option.foo);
@@ -242,9 +242,9 @@ function testMethodWithHandlerAsyncResultOptions() {
   Assert.assertEquals(1, count, 0);
 }
 
-function testMethodWithHandlerAsyncResultOptionsFails() {
+function testMethodWithHandlerAsyncResultDataObjectFails() {
   var count = 0;
-  obj.methodWithHandlerAsyncResultOptions(true, function(option, err) {
+  obj.methodWithHandlerAsyncResultDataObject(true, function(option, err) {
     Assert.assertNull(option);
     Assert.assertNotNull(err);
     Assert.assertEquals("foobar!", err.getMessage());

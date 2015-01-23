@@ -54,12 +54,12 @@ public class APITest extends JSTestBase {
   }
 
   @Test
-  public void testOptionsParam() throws Exception {
+  public void testDataObjectParam() throws Exception {
     runTest();
   }
 
   @Test
-  public void testNullOptionsParam() throws Exception {
+  public void testNullDataObjectParam() throws Exception {
     runTest();
   }
 
@@ -114,12 +114,12 @@ public class APITest extends JSTestBase {
   }
 
   @Test
-  public void testMethodWithHandlerOptions() throws Exception {
+  public void testMethodWithHandlerDataObject() throws Exception {
     runTest();
   }
 
   @Test
-  public void testMethodWithHandlerAsyncResultOptions() throws Exception {
+  public void testMethodWithHandlerAsyncResultDataObject() throws Exception {
     runTest();
   }
 
