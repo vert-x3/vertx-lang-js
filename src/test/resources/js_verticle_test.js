@@ -22,7 +22,7 @@ function testStopCalled() {
       latch.countDown();
     })
 
-    vertx.undeployVerticle(deploymentID, function (v, err) {
+    vertx.undeploy(deploymentID, function (v, err) {
       Assert.assertNull(v);
       Assert.assertNull(err);
     });
@@ -40,7 +40,7 @@ function testFailureInStop() {
     Assert.assertNotNull(deploymentID);
     Assert.assertNull(err);
 
-    vertx.undeployVerticle(deploymentID, function (v, err) {
+    vertx.undeploy(deploymentID, function (v, err) {
       Assert.assertNull(v);
       Assert.assertNotNull(err);
       latch.countDown();
@@ -58,7 +58,7 @@ function testStoppedOKIfNoVertxStop() {
     Assert.assertNotNull(deploymentID);
     Assert.assertNull(err);
 
-    vertx.undeployVerticle(deploymentID, function (v, err) {
+    vertx.undeploy(deploymentID, function (v, err) {
       Assert.assertNull(v);
       Assert.assertNull(err);
       latch.countDown();

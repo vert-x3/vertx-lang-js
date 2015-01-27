@@ -20,7 +20,7 @@ function testAsyncStartStop() {
 
     var start2 = Date.now();
 
-    vertx.undeployVerticle(deploymentID, function (v, err) {
+    vertx.undeploy(deploymentID, function (v, err) {
       Assert.assertNull(err);
       Assert.assertTrue(Date.now() - start2 > 1000);
       latch.countDown();
