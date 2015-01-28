@@ -43,6 +43,59 @@
       return 'todo';
     }
   }
+
+  def renderLinkToHtml(link) {
+    var rawType = link.targetType.raw;
+    if (rawType.module != null) {
+      var label = link.label.trim();
+      if (label.length() > 0) {
+        label = "[" + label + "] ";
+      } else {
+        label = "";
+      }
+      var elt = link.targetElement;
+      var jsType = rawType.simpleName;
+      var kind = elt.getKind().name();
+      if (kind == "CLASS" || kind == "INTERFACE") {
+        return label + "{@link " + jsType + "}";
+      } else if (kind == "METHOD") {
+        return label + "{@link " + jsType + "#" + elt.getSimpleName().toString() + "}";
+      } else {
+        System.out.println("Unhandled kind " + kind);
+      }
+    }
+  }
+
+  def renderDocToHtml(margin, doc) {
+    var need = true;
+    var html = new StringBuilder();
+    for (token : doc.tokens) {
+      if (need) {
+        html.append(margin);
+        need = false;
+      }
+      if (token.lineBreak) {
+        html.append("\n");
+        need = true;
+      } else {
+        if (token.text) {
+          html.append(token.value);
+        } else {
+          var tag = token.tag;
+          if (tag instanceof io.vertx.codegen.doc.Tag$Link) {
+            var link = renderLinkToHtml(tag);
+            html.append(link);
+          } else if (tag.name == "code") {
+            html.append("<code>").append(tag.value.trim()).append("</code>");
+          }
+        }
+      }
+    }
+    if (!need) {
+      html.append("\n");
+    }
+    return html.toString();
+  }
 }
 
 @comment{"Generate a call to a Java API method"}
@@ -206,16 +259,16 @@ utils.convReturnTypeUnknown(@includeNamed{templ})
 @comment{"============================"}
 
 @declare{'genMethod'}
-	@code{methodList = methodsByName.get(methodName); overloaded = methodList.size() > 1; method = methodList.get(0);}
+	@code{methodList = methodsByName.get(methodName); overloaded = methodList.size() > 1; method = methodList.get(methodList.size() - 1);}
 	@if{static == method.staticMethod}
 @{ind}/**\n
-@if{method.comment != null}
-@{helper.indentString(helper.removeTags(method.comment), ind)}
+@if{method.doc != null}
+@{renderDocToHtml(ind, method.doc)}
 @end{}\n
 @{ind} @{static ? ("@memberof module:" + genModuleName(type)) : "@public" }\n
-@foreach{param: method.params}@{ind} @param @{param.name} {@{genJSDocType(param.type)}} @end{"\n"}\n
+@foreach{param: method.params}@{ind} @param @{param.name} {@{genJSDocType(param.type)}} @if{param.description != null}@{param.description} @end{}@end{"\n"}\n
 @if{!method.returnType.name.equals("void")}
-@{ind} @return {@{genJSDocType(method.returnType)}}\n
+@{ind} @return {@{genJSDocType(method.returnType)}}@if{method.returnDescription != null} @{method.returnDescription}@end{}\n
 @end{}
 @{ind} */\n
 @{ind}@if{static}@{ifaceSimpleName}@else{}this@end{}.@{methodName} =
