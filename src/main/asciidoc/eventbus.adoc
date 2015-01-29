@@ -277,30 +277,7 @@ Message sends can fail for other reasons, including:
 
 In all cases the reply handler will be called with the specific failure.
 
-==== Message Codecs
-
-You can send any object you like across the event bus if you define and register a link:jsdoc/messag_codec-MessageCodec.html[`message codec`] for it.
-
-Message codecs have a name and you specify that name in the link:jsdoc/deliver_options-DeliveryOptions.html[`DeliveryOptions`]
-when sending or publishing the message:
-
-[source,java]
-----
-todo
-----
-
-If you always want the same codec to be used for a particular type then you can register a default codec for it, then
-you don't have to specify the codec on each send in the delivery options:
-
-[source,java]
-----
-todo
-----
-
-You unregister a message codec with link:jsdoc/even_bus-EventBus.html#unregisterCodec[`unregisterCodec`].
-
-Message codecs don't always have to encode and decode as the same type. For example you can write a codec that
-allows a MyPOJO class to be sent, but when that message is sent to a handler it arrives as a MyOtherPOJO class.
+include::override/eventbus.adoc[]
 
 ==== Clustered Event Bus
 
