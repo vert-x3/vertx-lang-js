@@ -12,7 +12,8 @@ function renderSource(elt, source) {
         var translation = translator.translate(elt, lang);
         return translation
     } catch (Err) {
-        java.lang.System.out.println("Cannot generate: " + elt);
+        java.lang.System.out.println("Cannot generate: " + elt + " from " + elt.getEnclosingElement());
+        Err.printStackTrace();
         return "todo";
     }
 }

@@ -41,12 +41,7 @@ var buff = Buffer.buffer("some string", "UTF-16");
 
 ----
 
-Create a buffer from a byte[]
-
-[source,java]
-----
-todo
-----
+include::override/buffer_from_bytes.adoc[]
 
 Create a buffer with an initial size hint. If you know your buffer will have a certain amount of data written to it
 you can create the buffer and specify this size. This makes the buffer initially allocate that much memory and is
