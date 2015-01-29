@@ -39,7 +39,7 @@ JAVASCRIPT MOFO!
 
 Verticle classes must implement the link:jsdoc/verticle-Verticle.html[`Verticle`] interface.
 
-They can implement it directly if you like but usually it's easier to extend the abstract class link:jsdoc/abstrac_verticle-AbstractVerticle.html[`AbstractVerticle`].
+They can implement it directly if you like but usually it's easier to extend the abstract class link:jsdoc/abstract_verticle-AbstractVerticle.html[`AbstractVerticle`].
 
 Here's an example verticle:
 

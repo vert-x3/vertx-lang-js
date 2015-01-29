@@ -1,6 +1,6 @@
 == Using the file system with Vert.x
 
-The Vert.x link:jsdoc/fil_system-FileSystem.html[`FileSystem`] object provides many operations for manipulating the file system.
+The Vert.x link:jsdoc/file_system-FileSystem.html[`FileSystem`] object provides many operations for manipulating the file system.
 
 There is one file system object per Vert.x instance, and you obtain it with link:jsdoc/vertx-Vertx.html#fileSystem[`fileSystem`].
 
@@ -39,13 +39,13 @@ fs.copyBlocking("foo.txt", "bar.txt");
 
 Many operations exist to copy, move, truncate, chmod and many other file operations.
 
-We won't list them all here, please consult the link:jsdoc/fil_system-FileSystem.html[`API docs`] for the full list.
+We won't list them all here, please consult the link:jsdoc/file_system-FileSystem.html[`API docs`] for the full list.
 
 === Asynchronous files
 
 Vert.x provides an asynchronous file abstraction that allows you to manipulate a file on the file system
 
-You open an link:jsdoc/asyn_file-AsyncFile.html[`AsyncFile`] as follows:
+You open an link:jsdoc/async_file-AsyncFile.html[`AsyncFile`] as follows:
 
 [source,java]
 ----

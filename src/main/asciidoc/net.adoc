@@ -14,7 +14,7 @@ var server = vertx.createNetServer();
 
 === Configuring a TCP server
 
-If you don't want the default, a server can be configured by passing in a link:jsdoc/ne_serve_options-NetServerOptions.html[`NetServerOptions`]
+If you don't want the default, a server can be configured by passing in a link:jsdoc/net_server_options-NetServerOptions.html[`NetServerOptions`]
 instance when creating it:
 
 [source,java]
@@ -28,7 +28,7 @@ var server = vertx.createNetServer(options);
 
 === Start the Server Listening
 
-To tell the server to listen for incoming requests you use one of the link:jsdoc/ne_server-NetServer.html#listen[`listen`]
+To tell the server to listen for incoming requests you use one of the link:jsdoc/net_server-NetServer.html#listen[`listen`]
 alternatives.
 
 To tell the server to listen at the host and port as specified in the options:
@@ -75,7 +75,7 @@ server.listen(1234, "localhost", function (res, res_err) {
 
 If `0` is used as the listening port, the server will find an unused random port to listen on.
 
-To find out the real port the server is listening on you can call link:jsdoc/ne_server-NetServer.html#actualPort[`actualPort`].
+To find out the real port the server is listening on you can call link:jsdoc/net_server-NetServer.html#actualPort[`actualPort`].
 
 [source,java]
 ----
@@ -92,7 +92,7 @@ server.listen(0, "localhost", function (res, res_err) {
 
 === Getting notified of incoming connections
 
-To be notified when a connection is made you need to set a link:jsdoc/ne_server-NetServer.html#connectHandler[`connectHandler`]:
+To be notified when a connection is made you need to set a link:jsdoc/net_server-NetServer.html#connectHandler[`connectHandler`]:
 
 [source,java]
 ----
@@ -102,14 +102,14 @@ server.connectHandler(function (socket) {
 
 ----
 
-When a connection is made the handler will be called with an instance of link:jsdoc/ne_socket-NetSocket.html[`NetSocket`].
+When a connection is made the handler will be called with an instance of link:jsdoc/net_socket-NetSocket.html[`NetSocket`].
 
 This is a socket-like interface to the actual connection, and allows you to read and write data as well as do various
 other things like close the socket.
 
 === Reading data from the socket
 
-To read data from the socket you set the link:jsdoc/ne_socket-NetSocket.html#handler[`handler`] on the
+To read data from the socket you set the link:jsdoc/net_socket-NetSocket.html#handler[`handler`] on the
 socket.
 
 This handler will be called with an instance of link:jsdoc/buffer-Buffer.html[`Buffer`] every time data is received on
@@ -128,7 +128,7 @@ server.connectHandler(function (socket) {
 
 === Writing data to a socket
 
-You write to a socket using one of link:jsdoc/ne_socket-NetSocket.html#write[`write`].
+You write to a socket using one of link:jsdoc/net_socket-NetSocket.html#write[`write`].
 
 [source,java]
 ----
@@ -144,7 +144,7 @@ Write operations are asynchronous and may not occur until some time after the ca
 
 === Closed handler
 
-If you want to be notified when a socket is closed, you can set a link:jsdoc/ne_socket-NetSocket.html#closeHandler[`closeHandler`]
+If you want to be notified when a socket is closed, you can set a link:jsdoc/net_socket-NetSocket.html#closeHandler[`closeHandler`]
 on it:
 
 [source,java]
@@ -157,7 +157,7 @@ socket.closeHandler(function (v) {
 
 === Handling exceptions
 
-You can set an link:jsdoc/ne_socket-NetSocket.html#exceptionHandler[`exceptionHandler`] to receive any
+You can set an link:jsdoc/net_socket-NetSocket.html#exceptionHandler[`exceptionHandler`] to receive any
 exceptions that happen on the socket.
 
 === Event bus write handler
@@ -168,18 +168,18 @@ it writes them to itself.
 This enables you to write data to a socket which is potentially in a completely different verticle or even in a
 different Vert.x instance by sending the buffer to the address of that handler.
 
-The address of the handler is given by link:jsdoc/ne_socket-NetSocket.html#writeHandlerID[`writeHandlerID`]
+The address of the handler is given by link:jsdoc/net_socket-NetSocket.html#writeHandlerID[`writeHandlerID`]
 
 === Local and remote addresses
 
-The local address of a link:jsdoc/ne_socket-NetSocket.html[`NetSocket`] can be retrieved using link:jsdoc/ne_socket-NetSocket.html#localAddress[`localAddress`].
+The local address of a link:jsdoc/net_socket-NetSocket.html[`NetSocket`] can be retrieved using link:jsdoc/net_socket-NetSocket.html#localAddress[`localAddress`].
 
-The remote address, (i.e. the address of the other end of the connection) of a link:jsdoc/ne_socket-NetSocket.html[`NetSocket`]
-can be retrieved using link:jsdoc/ne_socket-NetSocket.html#remoteAddress[`remoteAddress`].
+The remote address, (i.e. the address of the other end of the connection) of a link:jsdoc/net_socket-NetSocket.html[`NetSocket`]
+can be retrieved using link:jsdoc/net_socket-NetSocket.html#remoteAddress[`remoteAddress`].
 
 === Sending files
 
-Files can be written to the socket directly using link:jsdoc/ne_socket-NetSocket.html#sendFile[`sendFile`]. This can be a very
+Files can be written to the socket directly using link:jsdoc/net_socket-NetSocket.html#sendFile[`sendFile`]. This can be a very
 efficient way to send files, as it can be handled by the OS kernel directly where supported by the operating system.
 
 [source,java]
@@ -190,22 +190,22 @@ socket.sendFile("myfile.dat");
 
 === Streaming sockets
 
-Instances of link:jsdoc/ne_socket-NetSocket.html[`NetSocket`] are also link:jsdoc/rea_stream-ReadStream.html[`ReadStream`] and
-link:jsdoc/writ_stream-WriteStream.html[`WriteStream`] instances so they can be used to pump data to or from other
+Instances of link:jsdoc/net_socket-NetSocket.html[`NetSocket`] are also link:jsdoc/read_stream-ReadStream.html[`ReadStream`] and
+link:jsdoc/write_stream-WriteStream.html[`WriteStream`] instances so they can be used to pump data to or from other
 read and write streams.
 
 See the chapter on <<streams, streams and pumps>> for more information.
 
 === Upgrading connections to SSL/TLS
 
-A non SSL/TLS connection can be upgraded to SSL/TLS using link:jsdoc/ne_socket-NetSocket.html#upgradeToSsl[`upgradeToSsl`].
+A non SSL/TLS connection can be upgraded to SSL/TLS using link:jsdoc/net_socket-NetSocket.html#upgradeToSsl[`upgradeToSsl`].
 
 The server or client must be configured for SSL/TLS for this to work correctly. Please see the <<ssl, chapter on SSL/TLS>>
 for more information.
 
 === Closing a TCP Server
 
-Call link:jsdoc/ne_server-NetServer.html#close[`close`] to close the server. Closing the server closes any open connections
+Call link:jsdoc/net_server-NetServer.html#close[`close`] to close the server. Closing the server closes any open connections
 and releases all server resources.
 
 The close is actually asynchronous and might not complete until some time after the call has returned.
@@ -299,7 +299,7 @@ var client = vertx.createNetClient();
 
 === Configuring a TCP client
 
-If you don't want the default, a client can be configured by passing in a link:jsdoc/ne_clien_options-NetClientOptions.html[`NetClientOptions`]
+If you don't want the default, a client can be configured by passing in a link:jsdoc/net_client_options-NetClientOptions.html[`NetClientOptions`]
 instance when creating it:
 
 [source,java]
@@ -313,9 +313,9 @@ var client = vertx.createNetClient(options);
 
 === Making connections
 
-To make a connection to a server you use link:jsdoc/ne_client-NetClient.html#connect[`connect`],
+To make a connection to a server you use link:jsdoc/net_client-NetClient.html#connect[`connect`],
 specifying the port and host of the server and a handler that will be called with a result containing the
-link:jsdoc/ne_socket-NetSocket.html[`NetSocket`] when connection is successful or with a failure if connection failed.
+link:jsdoc/net_socket-NetSocket.html[`NetSocket`] when connection is successful or with a failure if connection failed.
 
 [source,java]
 ----
@@ -337,8 +337,8 @@ client.connect(4321, "localhost", function (res, res_err) {
 === Configuring connection attempts
 
 A client can be configured to automatically retry connecting to the server in the event that it cannot connect.
-This is configured with link:jsdoc/ne_clien_options-NetClientOptions.html#setReconnectInterval[`setReconnectInterval`] and
-link:jsdoc/ne_clien_options-NetClientOptions.html#setReconnectAttempts[`setReconnectAttempts`].
+This is configured with link:jsdoc/net_client_options-NetClientOptions.html#setReconnectInterval[`setReconnectInterval`] and
+link:jsdoc/net_client_options-NetClientOptions.html#setReconnectAttempts[`setReconnectAttempts`].
 
 NOTE: Currently Vert.x will not attempt to reconnect if a connection fails, reconnect attempts and interval
 only apply to creating initial connections.
@@ -361,12 +361,12 @@ TCP clients and servers can be configured to use http://en.wikipedia.org/wiki/Tr
 - earlier versions of TLS were known as SSL.
 
 The APIs of the servers and clients are identical whether or not SSL/TLS is used, and it's enabled by configuring
-the link:jsdoc/ne_clien_options-NetClientOptions.html[`NetClientOptions`] or link:jsdoc/ne_serve_options-NetServerOptions.html[`NetServerOptions`] instances used
+the link:jsdoc/net_client_options-NetClientOptions.html[`NetClientOptions`] or link:jsdoc/net_server_options-NetServerOptions.html[`NetServerOptions`] instances used
 to create the servers or clients.
 
 ==== Enabling SSL/TLS on the server
 
-SSL/TLS is enabled with  link:jsdoc/ne_serve_options-NetServerOptions.html#setSsl[`setSsl`].
+SSL/TLS is enabled with  link:jsdoc/net_server_options-NetServerOptions.html#setSsl[`setSsl`].
 
 By default it is disabled.
 

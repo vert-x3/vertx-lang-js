@@ -18,18 +18,11 @@ function renderSource(elt, source) {
     }
 }
 
-function toCamelCase(str) {
-    for (var i = 1;i < str.length;i++) {
-        var code = str.charCodeAt(i);
-        if (code >= 65 && code <= 92) {
-            return str.substring(0, i - 1).toLowerCase() + '_' + toCamelCase(str.substring(i));
-        }
-    }
-    return str.toLowerCase();
-}
-
 function toTypeLink(elt) {
-    return "jsdoc/" + toCamelCase(elt.getSimpleName().toString()) + "-" + elt.getSimpleName() + ".html";
+    var caseType = java.lang.Thread.currentThread().getContextClassLoader().loadClass("io.vertx.codegen.Case");
+    var camel = caseType.getField("CAMEL").get(null);
+    var snake = caseType.getField("SNAKE").get(null);
+    return "jsdoc/" + snake.format(camel.parse(elt.getSimpleName().toString())) + "-" + elt.getSimpleName() + ".html";
 }
 
 function toMethodLink(elt) {

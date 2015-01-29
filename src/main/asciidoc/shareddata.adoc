@@ -8,7 +8,7 @@ asynchronous cluster-wide counters.
 
 === Local shared maps
 
-link:jsdoc/loca_map-LocalMap.html[`Local shared maps`] allow you to share data safely between different event
+link:jsdoc/local_map-LocalMap.html[`Local shared maps`] allow you to share data safely between different event
 loops (e.g. different verticles) in the same Vert.x instance.
 
 Local shared maps only allow certain data types to be used as keys and values. Those types must either be immutable,
@@ -43,8 +43,8 @@ other node.
 This makes them really useful for things like storing session state in a farm of servers hosting a Vert.x web
 application.
 
-You get an instance of link:jsdoc/asyn_map-AsyncMap.html[`AsyncMap`] with
-link:jsdoc/share_data-SharedData.html#getClusterWideMap[`getClusterWideMap`].
+You get an instance of link:jsdoc/async_map-AsyncMap.html[`AsyncMap`] with
+link:jsdoc/shared_data-SharedData.html#getClusterWideMap[`getClusterWideMap`].
 
 Getting the map is asynchronous and the result is returned to you in the handler that you specify. Here's an example:
 
@@ -62,7 +62,7 @@ sd.getClusterWideMap("mymap", function (res, res_err) {
 
 ==== Putting data in a map
 
-You put data in a map with link:jsdoc/asyn_map-AsyncMap.html#put[`put`].
+You put data in a map with link:jsdoc/async_map-AsyncMap.html#put[`put`].
 
 The actual put is asynchronous and the handler is notified once it is complete:
 
@@ -78,7 +78,7 @@ map.put("foo", "bar", function (resPut, resPut_err) {
 
 ==== Getting data from a map
 
-You get data from a map with link:jsdoc/asyn_map-AsyncMap.html#get[`get`].
+You get data from a map with link:jsdoc/async_map-AsyncMap.html#get[`get`].
 
 The actual get is asynchronous and the handler is notified with the result some time later
 
@@ -97,7 +97,7 @@ map.get("foo", function (resGet, resGet_err) {
 
 You can also remove entries from an asynchronous map, clear them and get the size.
 
-See the link:jsdoc/asyn_map-AsyncMap.html[`API docs`] for more information.
+See the link:jsdoc/async_map-AsyncMap.html[`API docs`] for more information.
 
 === Cluster-wide locks
 
@@ -107,7 +107,7 @@ this is useful when you want to do something or access a resource on only one no
 Cluster wide locks have an asynchronous API unlike most lock APIs which block the calling thread until the lock
 is obtained.
 
-To obtain a lock use link:jsdoc/share_data-SharedData.html#getLock[`getLock`].
+To obtain a lock use link:jsdoc/shared_data-SharedData.html#getLock[`getLock`].
 
 This won't block, but when the lock is available, the handler will be called with an instance of link:jsdoc/lock-Lock.html[`Lock`],
 signifying that you now own the lock.
@@ -150,7 +150,7 @@ It's often useful to maintain an atomic counter across the different nodes of yo
 
 You can do this with link:jsdoc/counter-Counter.html[`Counter`].
 
-You obtain an instance with link:jsdoc/share_data-SharedData.html#getCounter[`getCounter`]:
+You obtain an instance with link:jsdoc/shared_data-SharedData.html#getCounter[`getCounter`]:
 
 [source,java]
 ----

@@ -13,12 +13,12 @@ exhausting available memory.
 
 To solve this problem a simple flow control capability is provided by some objects in the Vert.x API.
 
-Any flow control aware object that can be written-to implements link:jsdoc/rea_stream-ReadStream.html[`ReadStream`],
-and any flow control object that can be read-from is said to implement link:jsdoc/writ_stream-WriteStream.html[`WriteStream`].
+Any flow control aware object that can be written-to implements link:jsdoc/read_stream-ReadStream.html[`ReadStream`],
+and any flow control object that can be read-from is said to implement link:jsdoc/write_stream-WriteStream.html[`WriteStream`].
 
 Let's take an example where we want to read from a `ReadStream` and write the data to a `WriteStream`.
 
-A very simple example would be reading from a link:jsdoc/ne_socket-NetSocket.html[`NetSocket`] on a server and writing back to the
+A very simple example would be reading from a link:jsdoc/net_socket-NetSocket.html[`NetSocket`] on a server and writing back to the
 same `NetSocket` - since `NetSocket` implements both `ReadStream` and `WriteStream`, but you can
 do this between any `ReadStream` and any `WriteStream`, including HTTP requests and response,
 async files, WebSockets, etc.
@@ -107,7 +107,7 @@ server.connectHandler(function (sock) {
 
 ----
 
-And there we have it. The link:jsdoc/writ_stream-WriteStream.html#drainHandler[`drainHandler`] event handler will
+And there we have it. The link:jsdoc/write_stream-WriteStream.html#drainHandler[`drainHandler`] event handler will
 get called when the write queue is ready to accept more data, this resumes the `NetSocket` which
 allows it to read more data.
 
@@ -134,48 +134,48 @@ Let's look at the methods on `ReadStream` and `WriteStream` in more detail:
 
 === ReadStream
 
-`ReadStream` is implemented by link:jsdoc/htt_clien_response-HttpClientResponse.html[`HttpClientResponse`], link:jsdoc/datagra_socket-DatagramSocket.html[`DatagramSocket`],
-link:jsdoc/htt_clien_request-HttpClientRequest.html[`HttpClientRequest`], link:jsdoc/htt_serve_fil_upload-HttpServerFileUpload.html[`HttpServerFileUpload`],
-link:jsdoc/htt_serve_request-HttpServerRequest.html[`HttpServerRequest`], link:jsdoc/htt_serve_reques_stream-HttpServerRequestStream.html[`HttpServerRequestStream`],
-link:jsdoc/messag_consumer-MessageConsumer.html[`MessageConsumer`], link:jsdoc/ne_socket-NetSocket.html[`NetSocket`], link:jsdoc/ne_socke_stream-NetSocketStream.html[`NetSocketStream`],
-link:jsdoc/we_socket-WebSocket.html[`WebSocket`], link:jsdoc/we_socke_stream-WebSocketStream.html[`WebSocketStream`], link:jsdoc/timeou_stream-TimeoutStream.html[`TimeoutStream`],
-link:jsdoc/asyn_file-AsyncFile.html[`AsyncFile`].
+`ReadStream` is implemented by link:jsdoc/http_client_response-HttpClientResponse.html[`HttpClientResponse`], link:jsdoc/datagram_socket-DatagramSocket.html[`DatagramSocket`],
+link:jsdoc/http_client_request-HttpClientRequest.html[`HttpClientRequest`], link:jsdoc/http_server_file_upload-HttpServerFileUpload.html[`HttpServerFileUpload`],
+link:jsdoc/http_server_request-HttpServerRequest.html[`HttpServerRequest`], link:jsdoc/http_server_request_stream-HttpServerRequestStream.html[`HttpServerRequestStream`],
+link:jsdoc/message_consumer-MessageConsumer.html[`MessageConsumer`], link:jsdoc/net_socket-NetSocket.html[`NetSocket`], link:jsdoc/net_socket_stream-NetSocketStream.html[`NetSocketStream`],
+link:jsdoc/web_socket-WebSocket.html[`WebSocket`], link:jsdoc/web_socket_stream-WebSocketStream.html[`WebSocketStream`], link:jsdoc/timeout_stream-TimeoutStream.html[`TimeoutStream`],
+link:jsdoc/async_file-AsyncFile.html[`AsyncFile`].
 
 Functions:
 
-- link:jsdoc/rea_stream-ReadStream.html#handler[`handler`]:
+- link:jsdoc/read_stream-ReadStream.html#handler[`handler`]:
 set a handler which will receive items from the ReadStream.
-- link:jsdoc/rea_stream-ReadStream.html#pause[`pause`]:
+- link:jsdoc/read_stream-ReadStream.html#pause[`pause`]:
 pause the handler. When paused no items will be received in the handler.
-- link:jsdoc/rea_stream-ReadStream.html#resume[`resume`]:
+- link:jsdoc/read_stream-ReadStream.html#resume[`resume`]:
 resume the handler. The handler will be called if any item arrives.
-- link:jsdoc/rea_stream-ReadStream.html#exceptionHandler[`exceptionHandler`]:
+- link:jsdoc/read_stream-ReadStream.html#exceptionHandler[`exceptionHandler`]:
 Will be called if an exception occurs on the ReadStream.
-- link:jsdoc/rea_stream-ReadStream.html#endHandler[`endHandler`]:
+- link:jsdoc/read_stream-ReadStream.html#endHandler[`endHandler`]:
 Will be called when end of stream is reached. This might be when EOF is reached if the ReadStream represents a file,
 or when end of request is reached if it's an HTTP request, or when the connection is closed if it's a TCP socket.
 
 === WriteStream
 
-`WriteStream` is implemented by link:jsdoc/htt_clien_request-HttpClientRequest.html[`HttpClientRequest`], link:jsdoc/htt_serve_response-HttpServerResponse.html[`HttpServerResponse`]
-link:jsdoc/we_socket-WebSocket.html[`WebSocket`], link:jsdoc/ne_socket-NetSocket.html[`NetSocket`], link:jsdoc/asyn_file-AsyncFile.html[`AsyncFile`],
-link:jsdoc/packe_writestream-PacketWritestream.html[`PacketWritestream`] and link:jsdoc/messag_producer-MessageProducer.html[`MessageProducer`]
+`WriteStream` is implemented by link:jsdoc/http_client_request-HttpClientRequest.html[`HttpClientRequest`], link:jsdoc/http_server_response-HttpServerResponse.html[`HttpServerResponse`]
+link:jsdoc/web_socket-WebSocket.html[`WebSocket`], link:jsdoc/net_socket-NetSocket.html[`NetSocket`], link:jsdoc/async_file-AsyncFile.html[`AsyncFile`],
+link:jsdoc/packet_writestream-PacketWritestream.html[`PacketWritestream`] and link:jsdoc/message_producer-MessageProducer.html[`MessageProducer`]
 
 Functions:
 
-- link:jsdoc/writ_stream-WriteStream.html#write[`write`]:
+- link:jsdoc/write_stream-WriteStream.html#write[`write`]:
 write an object to the WriteStream. This method will never block. Writes are queued internally and asynchronously
 written to the underlying resource.
-- link:jsdoc/writ_stream-WriteStream.html#setWriteQueueMaxSize[`setWriteQueueMaxSize`]:
-set the number of object at which the write queue is considered _full_, and the method link:jsdoc/writ_stream-WriteStream.html#writeQueueFull[`writeQueueFull`]
+- link:jsdoc/write_stream-WriteStream.html#setWriteQueueMaxSize[`setWriteQueueMaxSize`]:
+set the number of object at which the write queue is considered _full_, and the method link:jsdoc/write_stream-WriteStream.html#writeQueueFull[`writeQueueFull`]
 returns `true`. Note that, when the write queue is considered full, if write is called the data will still be accepted
 and queued. The actual number depends on the stream implementation, for link:jsdoc/buffer-Buffer.html[`Buffer`] the size
 represents the actual number of bytes written and not the number of buffers.
-- link:jsdoc/writ_stream-WriteStream.html#writeQueueFull[`writeQueueFull`]:
+- link:jsdoc/write_stream-WriteStream.html#writeQueueFull[`writeQueueFull`]:
 returns `true` if the write queue is considered full.
-- link:jsdoc/writ_stream-WriteStream.html#exceptionHandler[`exceptionHandler`]:
+- link:jsdoc/write_stream-WriteStream.html#exceptionHandler[`exceptionHandler`]:
 Will be called if an exception occurs on the `WriteStream`.
-- link:jsdoc/writ_stream-WriteStream.html#drainHandler[`drainHandler`]:
+- link:jsdoc/write_stream-WriteStream.html#drainHandler[`drainHandler`]:
 The handler will be called if the `WriteStream` is considered no longer full.
 
 === Pump
@@ -187,7 +187,7 @@ Start the pump.
 - link:jsdoc/pump-Pump.html#stop[`stop`]:
 Stops the pump. When the pump starts it is in stopped mode.
 - link:jsdoc/pump-Pump.html#setWriteQueueMaxSize[`setWriteQueueMaxSize`]:
-This has the same meaning as link:jsdoc/writ_stream-WriteStream.html#setWriteQueueMaxSize[`setWriteQueueMaxSize`] on the `WriteStream`.
+This has the same meaning as link:jsdoc/write_stream-WriteStream.html#setWriteQueueMaxSize[`setWriteQueueMaxSize`] on the `WriteStream`.
 
 A pump can be started and stopped multiple times.
 
