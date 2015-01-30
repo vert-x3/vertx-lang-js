@@ -31,7 +31,8 @@ and receive.
 
 [source,java]
 ----
-var socket = vertx.createDatagramSocket({});
+var socket = vertx.createDatagramSocket({
+});
 
 ----
 
@@ -50,7 +51,8 @@ Sending packets is as easy as shown here:
 [source,java]
 ----
 var Buffer = require("vertx-js/buffer");
-var socket = vertx.createDatagramSocket({});
+var socket = vertx.createDatagramSocket({
+});
 var buffer = Buffer.buffer("content");
 socket.send(buffer, 1234, "10.0.0.1", function (asyncResult, asyncResult_err) {
   console.log("Send succeeded? " + (asyncResult != null));
@@ -80,7 +82,8 @@ So to listen on a specific address and port you would do something like shown he
 
 [source,java]
 ----
-var socket = vertx.createDatagramSocket({});
+var socket = vertx.createDatagramSocket({
+});
 socket.listen(1234, "0.0.0.0", function (asyncResult, asyncResult_err) {
   if ((asyncResult != null)) {
     socket.handler(function (packet) {
@@ -115,7 +118,8 @@ This is show here:
 [source,java]
 ----
 var Buffer = require("vertx-js/buffer");
-var socket = vertx.createDatagramSocket({});
+var socket = vertx.createDatagramSocket({
+});
 var buffer = Buffer.buffer("content");
 socket.send(buffer, 1234, "230.0.0.1", function (asyncResult, asyncResult_err) {
   console.log("Send succeeded? " + (asyncResult != null));
@@ -145,7 +149,8 @@ would do something like shown here:
 
 [source,java]
 ----
-var socket = vertx.createDatagramSocket({});
+var socket = vertx.createDatagramSocket({
+});
 socket.listen(1234, "0.0.0.0", function (asyncResult, asyncResult_err) {
   if ((asyncResult != null)) {
     socket.handler(function (packet) {
@@ -170,7 +175,8 @@ This is shown here:
 
 [source,java]
 ----
-var socket = vertx.createDatagramSocket({});
+var socket = vertx.createDatagramSocket({
+});
 socket.listen(1234, "0.0.0.0", function (asyncResult, asyncResult_err) {
   if ((asyncResult != null)) {
     socket.handler(function (packet) {
@@ -205,7 +211,8 @@ like shown here:
 
 [source,java]
 ----
-var socket = vertx.createDatagramSocket({});
+var socket = vertx.createDatagramSocket({
+});
 socket.blockMulticastGroup("230.0.0.1", "10.0.0.2", function (asyncResult, asyncResult_err) {
   console.log("block succeeded? " + (asyncResult != null));
 });
