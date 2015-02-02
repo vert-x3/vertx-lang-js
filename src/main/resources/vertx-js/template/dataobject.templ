@@ -16,7 +16,7 @@
         return "Number";
       }
     } else if (kind == CLASS_DATA_OBJECT) {
-      return 'link:' + type.raw.moduleName + '_' + CASE_SNAKE.format(CASE_CAMEL.parse(type.raw.simpleName)) + '.html[' + type.raw.simpleName + ']';
+      return 'link:' + type.raw.simpleName + '.html[' + type.raw.simpleName + ']';
     }
     System.out.println("unhandled type " + type);
     return null;

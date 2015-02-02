@@ -42,10 +42,10 @@
 |Boolean
 |-
 |keyStoreOptions
-|link:vertx_key_store_options.html[KeyStoreOptions]
+|link:KeyStoreOptions.html[KeyStoreOptions]
 |-
 |trustStoreOptions
-|link:vertx_trust_store_options.html[TrustStoreOptions]
+|link:TrustStoreOptions.html[TrustStoreOptions]
 |-
 |enabledCipherSuites
 |Array of String

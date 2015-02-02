@@ -51,11 +51,11 @@
 | Set whether SSL/TLS is enabled
 
 |keyStoreOptions
-|link:vertx_key_store_options.html[KeyStoreOptions]
+|link:KeyStoreOptions.html[KeyStoreOptions]
 | Set the key store options
 
 |trustStoreOptions
-|link:vertx_trust_store_options.html[TrustStoreOptions]
+|link:TrustStoreOptions.html[TrustStoreOptions]
 | Set the trust store options
 
 |enabledCipherSuites
