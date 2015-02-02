@@ -1,3 +1,5 @@
+@includeNamed{"common.templ"}
+
 @comment{"Generate the module name of a type"}
 @comment{"===================================="}
 
@@ -42,59 +44,6 @@
     } else {
       return 'todo';
     }
-  }
-
-  def renderLinkToHtml(link) {
-    var rawType = link.targetType.raw;
-    if (rawType.module != null) {
-      var label = link.label.trim();
-      if (label.length() > 0) {
-        label = "[" + label + "] ";
-      } else {
-        label = "";
-      }
-      var elt = link.targetElement;
-      var jsType = rawType.simpleName;
-      var kind = elt.getKind().name();
-      if (kind == "CLASS" || kind == "INTERFACE") {
-        return label + "{@link " + jsType + "}";
-      } else if (kind == "METHOD") {
-        return label + "{@link " + jsType + "#" + elt.getSimpleName().toString() + "}";
-      } else {
-        System.out.println("Unhandled kind " + kind);
-      }
-    }
-  }
-
-  def renderDocToHtml(margin, doc) {
-    var need = true;
-    var html = new StringBuilder();
-    for (token : doc.tokens) {
-      if (need) {
-        html.append(margin);
-        need = false;
-      }
-      if (token.lineBreak) {
-        html.append("\n");
-        need = true;
-      } else {
-        if (token.text) {
-          html.append(token.value);
-        } else {
-          var tag = token.tag;
-          if (tag instanceof io.vertx.codegen.doc.Tag$Link) {
-            var link = renderLinkToHtml(tag);
-            html.append(link);
-          } else if (tag.name == "code") {
-            html.append("<code>").append(tag.value.trim()).append("</code>");
-          }
-        }
-      }
-    }
-    if (!need) {
-      html.append("\n");
-    }
-    return html.toString();
   }
 }
 

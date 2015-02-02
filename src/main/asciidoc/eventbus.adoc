@@ -205,7 +205,7 @@ eventBus.send("news.uk.sport", "Yay! Someone kicked a ball");
 ==== Setting headers on messages
 
 Messages sent over the event bus can also contain headers. This can be specified by providing a
-link:jsdoc/delivery_options-DeliveryOptions.html[`DeliveryOptions`] when sending or publishing:
+link:dataobject/DeliveryOptions.html[`DeliveryOptions`] when sending or publishing:
 
 [source,java]
 ----
@@ -262,7 +262,7 @@ consisting of multiple rounds.
 
 ==== Sending with timeouts
 
-When sending a message with a reply handler you can specify a timeout in the link:jsdoc/delivery_options-DeliveryOptions.html[`DeliveryOptions`].
+When sending a message with a reply handler you can specify a timeout in the link:dataobject/DeliveryOptions.html[`DeliveryOptions`].
 
 If a reply is not received within that time, the reply handler will be called with a failure.
 

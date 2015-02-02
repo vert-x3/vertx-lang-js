@@ -176,10 +176,7 @@ The link:jsdoc/mx_record-MxRecord.html[`MxRecord`] allows you to access the prio
 
 [source,java]
 ----
-var record = getMxRecord();
-record.priority();
-record.name();
-
+todo
 ----
 
 === resolveTXT
@@ -257,15 +254,7 @@ The SrvRecord allows you to access all informations contained in the SRV record 
 
 [source,java]
 ----
-var record = getSrvRecord();
-record.priority();
-record.name();
-record.weight();
-record.port();
-record.protocol();
-record.service();
-record.target();
-
+todo
 ----
 
 Please refer to the API docs for the exact details.

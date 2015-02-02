@@ -263,7 +263,7 @@
       <plugin>
         <groupId>org.asciidoctor</groupId>
         <artifactId>asciidoctor-maven-plugin</artifactId>
-        <version>1.5.0</version>
+        <version>1.5.2</version>
         <executions>
           <execution>
             <goals>
@@ -272,10 +272,10 @@
             <phase>package</phase>
             <configuration>
               <sourceDirectory>${asciidoc.dir}</sourceDirectory>
-              <sourceDocumentName>index.adoc</sourceDocumentName>
               <outputDirectory>${project.build.directory}/docs</outputDirectory>
               <backend>html</backend>
               <doctype>book</doctype>
+              <preserveDirectories>true</preserveDirectories>
             </configuration>
           </execution>
         </executions>

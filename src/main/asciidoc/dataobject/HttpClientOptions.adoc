@@ -1,0 +1,104 @@
+== HttpClientOptions
+
+++++
+ Options describing how an {@link HttpClient} will make connections.
+++++
+
+|===
+|Name | Type | Description
+
+|crlPaths
+|Array of String
+| Add a CRL path
+
+|sendBufferSize
+|Number
+| Set the TCP send buffer size
+
+|receiveBufferSize
+|Number
+| Set the TCP receive buffer size
+
+|reuseAddress
+|Boolean
+| Set the value of reuse address
+
+|trafficClass
+|Number
+| Set the value of traffic class
+
+|tcpNoDelay
+|Boolean
+| Set whether TCP no delay is enabled
+
+|tcpKeepAlive
+|Boolean
+| Set whether TCP keep alive is enabled
+
+|soLinger
+|Number
+| Set whether SO_linger keep alive is enabled
+
+|usePooledBuffers
+|Boolean
+| Set whether Netty pooled buffers are enabled
+
+|idleTimeout
+|Number
+|-
+|ssl
+|Boolean
+| Set whether SSL/TLS is enabled
+
+|keyStoreOptions
+|link:vertx_key_store_options.html[KeyStoreOptions]
+| Set the key store options
+
+|trustStoreOptions
+|link:vertx_trust_store_options.html[TrustStoreOptions]
+| Set the trust store options
+
+|enabledCipherSuites
+|Array of String
+| Add an enabled cipher suite
+
+|connectTimeout
+|Number
+| Set the connect timeout
+
+|trustAll
+|Boolean
+| Set whether all server certificates should be trusted
+
+|maxPoolSize
+|Number
+| Set the maximum pool size for connections
+
+|keepAlive
+|Boolean
+| Set whether keep alive is enabled on the client
+
+|pipelining
+|Boolean
+| Set whether pipe-lining is enabled on the client
+
+|verifyHost
+|Boolean
+| Set whether hostname verification is enabled
+
+|tryUseCompression
+|Boolean
+| Set whether compression is enabled
+
+|maxWebsocketFrameSize
+|Number
+| Set the max websocket frame size
+
+|defaultHost
+|String
+| Set the default host name to be used by this client in requests if none is provided when making the request.
+
+|defaultPort
+|Number
+| Set the default port to be used by this client in requests if none is provided when making the request.
+|===

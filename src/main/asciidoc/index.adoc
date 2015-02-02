@@ -73,7 +73,7 @@ var vertx = Vertx.vertx({
 
 ----
 
-The link:jsdoc/vertx_options-VertxOptions.html[`VertxOptions`] object has many settings and allows you to configure things like clustering,
+The link:dataobject/VertxOptions.html[`VertxOptions`] object has many settings and allows you to configure things like clustering,
 high availability, pool sizes and various other settings. The Javadoc describes all the settings in detail.
 
 === Creating a clustered Vert.x object
@@ -250,7 +250,7 @@ some time. If you see warnings like these in your logs, then you should investig
 Vert.x will also provide stack traces to pinpoint exactly where the blocking is occurring.
 
 If you want to turn of these warnings or change the settings, you can do that in the
-link:jsdoc/vertx_options-VertxOptions.html[`VertxOptions`] object before creating the Vertx object.
+link:dataobject/VertxOptions.html[`VertxOptions`] object before creating the Vertx object.
 
 [[blocking_code]]
 == Running blocking code
@@ -345,7 +345,7 @@ Worker verticles are designed for calling blocking code, as they won't block any
 If you don't want to use a worker verticle to run blocking code, you can also run <<blocking_code, inline blocking code>>
 directly while on an event loop.
 
-If you want to deploy a verticle as a worker verticle you do that with link:jsdoc/deployment_options-DeploymentOptions.html#setWorker[`setWorker`].
+If you want to deploy a verticle as a worker verticle you do that with link:dataobject/DeploymentOptions.html#setWorker[`setWorker`].
 
 [source,java]
 ----
@@ -538,7 +538,7 @@ vertx.deployVerticle("com.mycompany.MyIsolatedVerticle", options);
 Isolation groups are identified by a name, and the name can be used between different deployments if you want them
 to share an isolated class-loader.
 
-Extra classpath entries can also be provided with link:jsdoc/deployment_options-DeploymentOptions.html#setExtraClasspath[`setExtraClasspath`] so they
+Extra classpath entries can also be provided with link:dataobject/DeploymentOptions.html#setExtraClasspath[`setExtraClasspath`] so they
 can locate resources that are isolated to them.
 
 === High Availability

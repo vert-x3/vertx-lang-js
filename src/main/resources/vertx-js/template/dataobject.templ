@@ -1,0 +1,47 @@
+@includeNamed{"common.templ"}
+
+@code{
+  def getDataType(type) {
+    var kind = type.kind;
+    if (kind.basic) {
+      if (kind == CLASS_STRING) {
+        return 'String';
+      }
+      var typeName = type.name;
+      if (typeName == 'java.lang.Boolean' || typeName == 'boolean') {
+        return "Boolean";
+      }
+      if (typeName == 'java.lang.Integer' || typeName == 'int' ||
+          typeName == 'java.lang.Long' || typeName == 'long') {
+        return "Number";
+      }
+    } else if (kind == CLASS_DATA_OBJECT) {
+      return 'link:' + type.raw.moduleName + '_' + CASE_SNAKE.format(CASE_CAMEL.parse(type.raw.simpleName)) + '.html[' + type.raw.simpleName + ']';
+    }
+    System.out.println("unhandled type " + type);
+    return null;
+  }
+}
+
+
+== @{type.simpleName}\n
+\n
+@if{doc != null}
+++++\n
+@{renderDocToHtml('', doc)}
+++++\n
+@end{}
+\n
+|===\n
+|Name | Type | Description\n
+@foreach{property:properties}
+	@code{propertyType=getDataType(property.type)}
+	@code{arrayPrefix = property.array ? 'Array of ' : ''}
+	@if{propertyType != null}
+		\n
+		|@{property.name}\n
+		|@{arrayPrefix}@{getDataType(property.type)}\n
+		|@if{property.doc != null}@{renderDocToHtml('', property.doc)}@else{}-@end{}
+	@end{}
+@end{}
+|===\n

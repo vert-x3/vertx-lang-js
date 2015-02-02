@@ -19,10 +19,15 @@ function renderSource(elt, source) {
 }
 
 function toTypeLink(elt) {
-    var caseType = java.lang.Thread.currentThread().getContextClassLoader().loadClass("io.vertx.codegen.Case");
-    var camel = caseType.getField("CAMEL").get(null);
-    var snake = caseType.getField("SNAKE").get(null);
-    return "jsdoc/" + snake.format(camel.parse(elt.getSimpleName().toString())) + "-" + elt.getSimpleName() + ".html";
+    var annotation = java.lang.Thread.currentThread().getContextClassLoader().loadClass("io.vertx.codegen.annotations.DataObject");
+    if (elt.getAnnotation(annotation) != null) {
+      return "dataobject/" + elt.getSimpleName().toString() + ".html";
+    } else {
+      var caseType = java.lang.Thread.currentThread().getContextClassLoader().loadClass("io.vertx.codegen.Case");
+      var camel = caseType.getField("CAMEL").get(null);
+      var snake = caseType.getField("SNAKE").get(null);
+      return "jsdoc/" + snake.format(camel.parse(elt.getSimpleName().toString())) + "-" + elt.getSimpleName() + ".html";
+    }
 }
 
 function toMethodLink(elt) {

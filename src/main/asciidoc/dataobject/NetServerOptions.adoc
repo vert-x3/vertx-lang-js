@@ -1,0 +1,80 @@
+== NetServerOptions
+
+++++
+ Options for configuring a {@link NetServer}.
+++++
+
+|===
+|Name | Type | Description
+
+|crlPaths
+|Array of String
+| Add a CRL path
+
+|sendBufferSize
+|Number
+| Set the TCP send buffer size
+
+|receiveBufferSize
+|Number
+| Set the TCP receive buffer size
+
+|reuseAddress
+|Boolean
+| Set the value of reuse address
+
+|trafficClass
+|Number
+| Set the value of traffic class
+
+|tcpNoDelay
+|Boolean
+| Set whether TCP no delay is enabled
+
+|tcpKeepAlive
+|Boolean
+| Set whether TCP keep alive is enabled
+
+|soLinger
+|Number
+| Set whether SO_linger keep alive is enabled
+
+|usePooledBuffers
+|Boolean
+| Set whether Netty pooled buffers are enabled
+
+|idleTimeout
+|Number
+|-
+|ssl
+|Boolean
+| Set whether SSL/TLS is enabled
+
+|keyStoreOptions
+|link:vertx_key_store_options.html[KeyStoreOptions]
+| Set the key store options
+
+|trustStoreOptions
+|link:vertx_trust_store_options.html[TrustStoreOptions]
+| Set the trust store options
+
+|enabledCipherSuites
+|Array of String
+| Add an enabled cipher suite
+
+|acceptBacklog
+|Number
+| Set the accept back log
+
+|port
+|Number
+| Set the port
+
+|host
+|String
+| Set the host
+
+|clientAuthRequired
+|Boolean
+| Set whether client auth is required
+|===

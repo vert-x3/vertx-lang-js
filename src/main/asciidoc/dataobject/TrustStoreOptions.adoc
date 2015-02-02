@@ -1,0 +1,9 @@
+== TrustStoreOptions
+
+++++
+ An interface for trust store configuration options.
+++++
+
+|===
+|Name | Type | Description
+|===

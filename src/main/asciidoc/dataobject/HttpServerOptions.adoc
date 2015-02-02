@@ -1,0 +1,80 @@
+== HttpServerOptions
+
+++++
+ Represents options used by an {@link HttpServer} instance
+++++
+
+|===
+|Name | Type | Description
+
+|crlPaths
+|Array of String
+| Add a CRL path
+
+|sendBufferSize
+|Number
+|-
+|receiveBufferSize
+|Number
+|-
+|reuseAddress
+|Boolean
+|-
+|trafficClass
+|Number
+|-
+|tcpNoDelay
+|Boolean
+|-
+|tcpKeepAlive
+|Boolean
+|-
+|soLinger
+|Number
+|-
+|usePooledBuffers
+|Boolean
+|-
+|idleTimeout
+|Number
+|-
+|ssl
+|Boolean
+|-
+|keyStoreOptions
+|link:vertx_key_store_options.html[KeyStoreOptions]
+|-
+|trustStoreOptions
+|link:vertx_trust_store_options.html[TrustStoreOptions]
+|-
+|enabledCipherSuites
+|Array of String
+|-
+|acceptBacklog
+|Number
+| Set the accept back log
+
+|port
+|Number
+| Set the port
+
+|host
+|String
+| Set the host
+
+|compressionSupported
+|Boolean
+| Set whether the server supports compression
+
+|maxWebsocketFrameSize
+|Number
+| Set the maximum websocket frames size
+
+|websocketSubProtocol
+|String
+| Set the websocket subprotocols supported by the server.
+
+|clientAuthRequired
+|Boolean
+| Set whether client auth is required
+|===
