@@ -51,12 +51,28 @@
 | Set whether SSL/TLS is enabled
 
 |keyStoreOptions
-|link:KeyStoreOptions.html[KeyStoreOptions]
-| Set the key store options
+|link:JksOptions.html[JksOptions]
+| Set the key/cert options in jks format, aka Java keystore.
+
+|pfxKeyCertOptions
+|link:PfxOptions.html[PfxOptions]
+| Set the key/cert options in pfx format.
+
+|pemKeyCertOptions
+|link:PemKeyCertOptions.html[PemKeyCertOptions]
+| Set the key/cert store options in pem format.
 
 |trustStoreOptions
-|link:TrustStoreOptions.html[TrustStoreOptions]
-| Set the trust store options
+|link:JksOptions.html[JksOptions]
+| Set the certificate authority options in jks format, aka Java trustore
+
+|pfxCaOptions
+|link:PfxOptions.html[PfxOptions]
+| Set the certificate authority options in pfx format
+
+|pemCaOptions
+|link:PemCaOptions.html[PemCaOptions]
+| Set the certificate authority options in pfx format
 
 |enabledCipherSuites
 |Array of String

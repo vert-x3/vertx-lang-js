@@ -42,10 +42,22 @@
 |Boolean
 |-
 |keyStoreOptions
-|link:KeyStoreOptions.html[KeyStoreOptions]
+|link:JksOptions.html[JksOptions]
+|-
+|pfxKeyCertOptions
+|link:PfxOptions.html[PfxOptions]
+|-
+|pemKeyCertOptions
+|link:PemKeyCertOptions.html[PemKeyCertOptions]
 |-
 |trustStoreOptions
-|link:TrustStoreOptions.html[TrustStoreOptions]
+|link:JksOptions.html[JksOptions]
+|-
+|pemCaOptions
+|link:PemCaOptions.html[PemCaOptions]
+|-
+|pfxCaOptions
+|link:PfxOptions.html[PfxOptions]
 |-
 |enabledCipherSuites
 |Array of String

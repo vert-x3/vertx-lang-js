@@ -1,4 +1,4 @@
-== PKCS12Options
+== PfxOptions
 
 ++++
  Key or trust store options configuring private key and/or certificates based on PKCS#12 files.
@@ -11,14 +11,14 @@
  <p>
  <pre>
  HttpServerOptions options = new HttpServerOptions();
- options.setKeyStore(new PKCS12Options().setPath("/mykeystore.p12").setPassword("foo"));
+ options.setPfxKeyCertOptions(new PfxOptions().setPath("/mykeystore.p12").setPassword("foo"));
  </pre>
 
  Or directly provided as a buffer:<p>
 
  <pre>
  Buffer store = vertx.fileSystem().readFileSync("/mykeystore.p12");
- options.setKeyStore(new PKCS12Options().setValue(store).setPassword("foo"));
+ options.setPfxKeyCertOptions(new PfxOptions().setValue(store).setPassword("foo"));
  </pre>
 ++++
 

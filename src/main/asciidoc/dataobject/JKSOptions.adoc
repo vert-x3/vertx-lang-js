@@ -1,4 +1,4 @@
-== JKSOptions
+== JksOptions
 
 ++++
  Key or trust store options configuring private key and/or certificates based on Java Keystore files.
