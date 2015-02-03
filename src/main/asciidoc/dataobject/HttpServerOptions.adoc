@@ -7,10 +7,6 @@
 |===
 |Name | Type | Description
 
-|crlPaths
-|Array of String
-| Add a CRL path
-
 |sendBufferSize
 |Number
 |-
@@ -53,13 +49,16 @@
 |trustStoreOptions
 |link:JksOptions.html[JksOptions]
 |-
-|pemCaOptions
-|link:PemCaOptions.html[PemCaOptions]
+|pemTrustOptions
+|link:PemTrustOptions.html[PemTrustOptions]
 |-
-|pfxCaOptions
+|pfxTrustOptions
 |link:PfxOptions.html[PfxOptions]
 |-
 |enabledCipherSuites
+|Array of String
+|-
+|crlPaths
 |Array of String
 |-
 |acceptBacklog

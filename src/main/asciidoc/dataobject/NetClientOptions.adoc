@@ -7,10 +7,6 @@
 |===
 |Name | Type | Description
 
-|crlPaths
-|Array of String
-| Add a CRL path
-
 |sendBufferSize
 |Number
 | Set the TCP send buffer size
@@ -64,19 +60,23 @@
 
 |trustStoreOptions
 |link:JksOptions.html[JksOptions]
-| Set the certificate authority options in jks format, aka Java trustore
+| Set the trust options in jks format, aka Java trustore
 
-|pemCaOptions
-|link:PemCaOptions.html[PemCaOptions]
-| Set the certificate authority options in pfx format
+|pemTrustOptions
+|link:PemTrustOptions.html[PemTrustOptions]
+| Set the trust options in pem format
 
-|pfxCaOptions
+|pfxTrustOptions
 |link:PfxOptions.html[PfxOptions]
-| Set the certificate authority options in pfx format
+| Set the trust options in pfx format
 
 |enabledCipherSuites
 |Array of String
 | Add an enabled cipher suite
+
+|crlPaths
+|Array of String
+| Add a CRL path
 
 |trustAll
 |Boolean
