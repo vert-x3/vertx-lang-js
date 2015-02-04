@@ -63,15 +63,7 @@
 |String
 | Set the HA group to be used when HA is enabled.
 
-|metricsEnabled
-|Boolean
-| Set whether metrics will be enabled on the Vert.x instance.
-
-|jmxEnabled
-|Boolean
-| Set whether JMX will be enabled on the Vert.x instance.
-
-|jmxDomain
-|String
-| Set the JMX domain to use when JMX metrics are enabled.
+|metricsOptions
+|link:MetricsOptions.html[MetricsOptions]
+| Set the metrics options
 |===

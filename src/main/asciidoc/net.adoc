@@ -14,7 +14,7 @@ var server = vertx.createNetServer();
 
 === Configuring a TCP server
 
-If you don't want the default, a server can be configured by passing in a link:jsdoc/net_server_options-NetServerOptions.html[`NetServerOptions`]
+If you don't want the default, a server can be configured by passing in a link:dataobject/NetServerOptions.html[`NetServerOptions`]
 instance when creating it:
 
 [source,java]
@@ -299,7 +299,7 @@ var client = vertx.createNetClient();
 
 === Configuring a TCP client
 
-If you don't want the default, a client can be configured by passing in a link:jsdoc/net_client_options-NetClientOptions.html[`NetClientOptions`]
+If you don't want the default, a client can be configured by passing in a link:dataobject/NetClientOptions.html[`NetClientOptions`]
 instance when creating it:
 
 [source,java]
@@ -337,8 +337,8 @@ client.connect(4321, "localhost", function (res, res_err) {
 === Configuring connection attempts
 
 A client can be configured to automatically retry connecting to the server in the event that it cannot connect.
-This is configured with link:jsdoc/net_client_options-NetClientOptions.html#setReconnectInterval[`setReconnectInterval`] and
-link:jsdoc/net_client_options-NetClientOptions.html#setReconnectAttempts[`setReconnectAttempts`].
+This is configured with link:dataobject/NetClientOptions.html#setReconnectInterval[`setReconnectInterval`] and
+link:dataobject/NetClientOptions.html#setReconnectAttempts[`setReconnectAttempts`].
 
 NOTE: Currently Vert.x will not attempt to reconnect if a connection fails, reconnect attempts and interval
 only apply to creating initial connections.
@@ -361,16 +361,16 @@ TCP clients and servers can be configured to use http://en.wikipedia.org/wiki/Tr
 - earlier versions of TLS were known as SSL.
 
 The APIs of the servers and clients are identical whether or not SSL/TLS is used, and it's enabled by configuring
-the link:jsdoc/net_client_options-NetClientOptions.html[`NetClientOptions`] or link:jsdoc/net_server_options-NetServerOptions.html[`NetServerOptions`] instances used
+the link:dataobject/NetClientOptions.html[`NetClientOptions`] or link:dataobject/NetServerOptions.html[`NetServerOptions`] instances used
 to create the servers or clients.
 
 ==== Enabling SSL/TLS on the server
 
-SSL/TLS is enabled with  link:jsdoc/net_server_options-NetServerOptions.html#setSsl[`setSsl`].
+SSL/TLS is enabled with  link:dataobject/NetServerOptions.html#setSsl[`ssl`].
 
 By default it is disabled.
 
-=== Specifying key/certificate for the server
+==== Specifying key/certificate for the server
 
 SSL/TLS servers usually provide certificates to clients in order verify their identity to clients.
 
@@ -381,18 +381,17 @@ The first method is by specifying the location of a Java key-store which contain
 Java key stores can be managed with the http://docs.oracle.com/javase/6/docs/technotes/tools/solaris/keytool.html[keytool]
 utility which ships with the JDK.
 
-The password for the keystore should also be provided:
+The password for the key store should also be provided:
 
 [source,java]
 ----
 var options = {
+  "ssl" : true,
+  "keyStoreOptions" : {
+    "path" : "/path/to/your/server-keystore.jks",
+    "password" : "password-of-your-keystore"
+  }
 };
-options.ssl = true;
-var jksOptions = {
-};
-jksOptions.path = "/path/to/your/keystore.jks";
-jksOptions.password = "password-of-your-keystore";
-options.keyStoreOptions = jksOptions;
 var server = vertx.createNetServer(options);
 
 ----
@@ -401,9 +400,465 @@ Alternatively you can read the key store yourself as a buffer and provide that d
 
 [source,java]
 ----
-todo
+var myKeyStoreAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/server-keystore.jks");
+var jksOptions = {
+  "value" : myKeyStoreAsABuffer,
+  "password" : "password-of-your-keystore"
+};
+var options = {
+  "ssl" : true,
+  "keyStoreOptions" : jksOptions
+};
+var server = vertx.createNetServer(options);
+
 ----
 
-Another way of providing server private key and certificate is using `.PEM` files
+Key/certificate in PKCS#12 format (http://en.wikipedia.org/wiki/PKCS_12), usually with the `.pfx`  or the `.p12`
+extension can also be loaded in a similar fashion than JKS key stores:
 
-TODO all the other ways of configuring SSL/TLS
+[source,java]
+----
+var options = {
+  "ssl" : true,
+  "pfxKeyCertOptions" : {
+    "path" : "/path/to/your/server-keystore.pfx",
+    "password" : "password-of-your-keystore"
+  }
+};
+var server = vertx.createNetServer(options);
+
+----
+
+Buffer configuration is also supported:
+
+[source,java]
+----
+var myKeyStoreAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/server-keystore.pfx");
+var pfxOptions = {
+  "value" : myKeyStoreAsABuffer,
+  "password" : "password-of-your-keystore"
+};
+var options = {
+  "ssl" : true,
+  "pfxKeyCertOptions" : pfxOptions
+};
+var server = vertx.createNetServer(options);
+
+----
+
+Another way of providing server private key and certificate separately using `.pem` files.
+
+[source,java]
+----
+var options = {
+  "ssl" : true,
+  "pemKeyCertOptions" : {
+    "keyPath" : "/path/to/your/server-key.pem",
+    "certPath" : "/path/to/your/server-cert.pem"
+  }
+};
+var server = vertx.createNetServer(options);
+
+----
+
+Buffer configuration is also supported:
+
+[source,java]
+----
+var myKeyAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/server-key.pem");
+var myCertAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/server-cert.pem");
+var pemOptions = {
+  "keyValue" : myKeyAsABuffer,
+  "certValue" : myCertAsABuffer
+};
+var options = {
+  "ssl" : true,
+  "pemKeyCertOptions" : pemOptions
+};
+var server = vertx.createNetServer(options);
+
+----
+
+Keep in mind that pem configuration, the private key is not crypted.
+
+==== Specifying trust for the server
+
+SSL/TLS servers can use a certificate authority in order to verify the identity of the clients.
+
+Certificate authorities can be configured for servers in several ways:
+
+Java trust stores can be managed with the http://docs.oracle.com/javase/6/docs/technotes/tools/solaris/keytool.html[keytool]
+utility which ships with the JDK.
+
+The password for the trust store should also be provided:
+
+[source,java]
+----
+var options = {
+  "ssl" : true,
+  "clientAuthRequired" : true,
+  "trustStoreOptions" : {
+    "path" : "/path/to/your/truststore.jks",
+    "password" : "password-of-your-truststore"
+  }
+};
+var server = vertx.createNetServer(options);
+
+----
+
+Alternatively you can read the trust store yourself as a buffer and provide that directly:
+
+[source,java]
+----
+var myTrustStoreAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/truststore.jks");
+var options = {
+  "ssl" : true,
+  "clientAuthRequired" : true,
+  "trustStoreOptions" : {
+    "value" : myTrustStoreAsABuffer,
+    "password" : "password-of-your-truststore"
+  }
+};
+var server = vertx.createNetServer(options);
+
+----
+
+Certificate authority in PKCS#12 format (http://en.wikipedia.org/wiki/PKCS_12), usually with the `.pfx`  or the `.p12`
+extension can also be loaded in a similar fashion than JKS trust stores:
+
+[source,java]
+----
+var options = {
+  "ssl" : true,
+  "clientAuthRequired" : true,
+  "pfxTrustOptions" : {
+    "path" : "/path/to/your/truststore.pfx",
+    "password" : "password-of-your-truststore"
+  }
+};
+var server = vertx.createNetServer(options);
+
+----
+
+Buffer configuration is also supported:
+
+[source,java]
+----
+var myTrustStoreAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/truststore.pfx");
+var options = {
+  "ssl" : true,
+  "clientAuthRequired" : true,
+  "pfxTrustOptions" : {
+    "value" : myTrustStoreAsABuffer,
+    "password" : "password-of-your-truststore"
+  }
+};
+var server = vertx.createNetServer(options);
+
+----
+
+Another way of providing server certificate authority using a list `.pem` files.
+
+[source,java]
+----
+var options = {
+  "ssl" : true,
+  "clientAuthRequired" : true,
+  "pemTrustOptions" : {
+    "certPaths" : [
+      "/path/to/your/server-ca.pem"
+    ]
+  }
+};
+var server = vertx.createNetServer(options);
+
+----
+
+Buffer configuration is also supported:
+
+[source,java]
+----
+var myCaAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/server-ca.pfx");
+var options = {
+  "ssl" : true,
+  "clientAuthRequired" : true,
+  "pemTrustOptions" : {
+    "certValues" : [
+      myCaAsABuffer
+    ]
+  }
+};
+var server = vertx.createNetServer(options);
+
+----
+
+==== Enabling SSL/TLS on the client
+
+Net Clients can also be easily configured to use SSL. They have the exact same API when using SSL as when using standard sockets.
+
+To enable SSL on a NetClient the function setSSL(true) is called.
+
+==== Client trust configuration
+
+If the link:jsdoc/client_options_base-ClientOptionsBase.html#setTrustAll[`trustALl`] is set to true on the client, then the client will
+trust all server certificates. The connection will still be encrypted but this mode is vulnerable to 'man in the middle' attacks. I.e. you can't
+be sure who you are connecting to. Use this with caution. Default value is false.
+
+[source,java]
+----
+var options = {
+  "ssl" : true,
+  "trustAll" : true
+};
+var client = vertx.createNetClient(options);
+
+----
+
+If link:jsdoc/client_options_base-ClientOptionsBase.html#setTrustAll[`trustAll`] is not set then a client trust store must be
+configured and should contain the certificates of the servers that the client trusts.
+
+Likewise server configuration, the client trust can be configured in several ways:
+
+The first method is by specifying the location of a Java trust-store which contains the certificate authority.
+
+It is just a standard Java key store, the same as the key stores on the server side. The client
+trust store location is set by using the function link:dataobject/JksOptions.html#setPath[`path`] on the
+link:dataobject/JksOptions.html[`jks options`]. If a server presents a certificate during connection which is not
+in the client trust store, the connection attempt will not succeed.
+
+[source,java]
+----
+var options = {
+  "ssl" : true,
+  "trustStoreOptions" : {
+    "path" : "/path/to/your/truststore.jks",
+    "password" : "password-of-your-truststore"
+  }
+};
+var client = vertx.createNetClient(options);
+
+----
+
+Buffer configuration is also supported:
+
+[source,java]
+----
+var myTrustStoreAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/truststore.jks");
+var options = {
+  "ssl" : true,
+  "trustStoreOptions" : {
+    "value" : myTrustStoreAsABuffer,
+    "password" : "password-of-your-truststore"
+  }
+};
+var client = vertx.createNetClient(options);
+
+----
+
+Certificate authority in PKCS#12 format (http://en.wikipedia.org/wiki/PKCS_12), usually with the `.pfx`  or the `.p12`
+extension can also be loaded in a similar fashion than JKS trust stores:
+
+[source,java]
+----
+var options = {
+  "ssl" : true,
+  "pfxTrustOptions" : {
+    "path" : "/path/to/your/truststore.pfx",
+    "password" : "password-of-your-truststore"
+  }
+};
+var client = vertx.createNetClient(options);
+
+----
+
+Buffer configuration is also supported:
+
+[source,java]
+----
+var myTrustStoreAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/truststore.pfx");
+var options = {
+  "ssl" : true,
+  "pfxTrustOptions" : {
+    "value" : myTrustStoreAsABuffer,
+    "password" : "password-of-your-truststore"
+  }
+};
+var client = vertx.createNetClient(options);
+
+----
+
+Another way of providing server certificate authority using a list `.pem` files.
+
+[source,java]
+----
+var options = {
+  "ssl" : true,
+  "pemTrustOptions" : {
+    "certPaths" : [
+      "/path/to/your/ca-cert.pem"
+    ]
+  }
+};
+var client = vertx.createNetClient(options);
+
+----
+
+Buffer configuration is also supported:
+
+[source,java]
+----
+var myTrustStoreAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/ca-cert.pem");
+var options = {
+  "ssl" : true,
+  "pemTrustOptions" : {
+    "certValues" : [
+      myTrustStoreAsABuffer
+    ]
+  }
+};
+var client = vertx.createNetClient(options);
+
+----
+
+==== Specifying key/certificate for the client
+
+If the server requires client authentication then the client must present its own certificate to the server when
+connecting. The client can be configured in several ways:
+
+The first method is by specifying the location of a Java key-store which contains the key and certificate.
+Again it's just a regular Java key store. The client keystore location is set by using the function
+link:dataobject/JksOptions.html#setPath[`path`] on the
+link:dataobject/JksOptions.html[`jks options`].
+
+[source,java]
+----
+var options = {
+  "ssl" : true,
+  "keyStoreOptions" : {
+    "path" : "/path/to/your/client-keystore.jks",
+    "password" : "password-of-your-keystore"
+  }
+};
+var client = vertx.createNetClient(options);
+
+----
+
+Buffer configuration is also supported:
+
+[source,java]
+----
+var myKeyStoreAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/client-keystore.jks");
+var jksOptions = {
+  "value" : myKeyStoreAsABuffer,
+  "password" : "password-of-your-keystore"
+};
+var options = {
+  "ssl" : true,
+  "keyStoreOptions" : jksOptions
+};
+var client = vertx.createNetClient(options);
+
+----
+
+Key/certificate in PKCS#12 format (http://en.wikipedia.org/wiki/PKCS_12), usually with the `.pfx`  or the `.p12`
+extension can also be loaded in a similar fashion than JKS key stores:
+
+[source,java]
+----
+var options = {
+  "ssl" : true,
+  "pfxKeyCertOptions" : {
+    "path" : "/path/to/your/client-keystore.pfx",
+    "password" : "password-of-your-keystore"
+  }
+};
+var client = vertx.createNetClient(options);
+
+----
+
+Buffer configuration is also supported:
+
+[source,java]
+----
+var myKeyStoreAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/client-keystore.pfx");
+var pfxOptions = {
+  "value" : myKeyStoreAsABuffer,
+  "password" : "password-of-your-keystore"
+};
+var options = {
+  "ssl" : true,
+  "pfxKeyCertOptions" : pfxOptions
+};
+var client = vertx.createNetClient(options);
+
+----
+
+Another way of providing server private key and certificate separately using `.pem` files.
+
+[source,java]
+----
+var options = {
+  "ssl" : true,
+  "pemKeyCertOptions" : {
+    "keyPath" : "/path/to/your/client-key.pem",
+    "certPath" : "/path/to/your/client-cert.pem"
+  }
+};
+var client = vertx.createNetClient(options);
+
+----
+
+Buffer configuration is also supported:
+
+[source,java]
+----
+var myKeyAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/client-key.pem");
+var myCertAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/client-cert.pem");
+var pemOptions = {
+  "keyValue" : myKeyAsABuffer,
+  "certValue" : myCertAsABuffer
+};
+var options = {
+  "ssl" : true,
+  "pemKeyCertOptions" : pemOptions
+};
+var client = vertx.createNetClient(options);
+
+----
+
+Keep in mind that pem configuration, the private key is not crypted.
+
+==== Revoking certificate authorities
+
+Trust can be configured to use a certificate revocation list (CRL) for revoked certificates that should no
+longer be trusted. The link:dataobject/NetClientOptions.html#addCrlPath[`crlPath`] configures
+the crl list to use:
+
+[source,java]
+----
+var options = {
+  "ssl" : true,
+  "trustStoreOptions" : trustOptions,
+  "crlPaths" : [
+    "/path/to/your/crl.pem"
+  ]
+};
+var client = vertx.createNetClient(options);
+
+----
+
+Buffer configuration is also supported:
+
+[source,java]
+----
+var myCrlAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/crl.pem");
+var options = {
+  "ssl" : true,
+  "trustStoreOptions" : trustOptions,
+  "crlValues" : [
+    myCrlAsABuffer
+  ]
+};
+var client = vertx.createNetClient(options);
+
+----
