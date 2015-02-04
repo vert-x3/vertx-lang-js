@@ -49,7 +49,15 @@ You open an link:jsdoc/asyn_file-AsyncFile.html[`AsyncFile`] as follows:
 
 [source,java]
 ----
-todo
+var options = {
+};
+fileSystem.open("myfile.txt", options, function (res, res_err) {
+  if ((res != null)) {
+    var file = res;
+  } else {
+  };
+});
+
 ----
 
 

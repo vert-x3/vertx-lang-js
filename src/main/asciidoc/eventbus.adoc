@@ -314,7 +314,19 @@ instance as clustered;
 
 [source,java]
 ----
-todo
+var Vertx = require("vertx-js/vertx");
+var options = {
+};
+Vertx.clusteredVertx(options, function (res, res_err) {
+  if ((res != null)) {
+    var vertx = res;
+    var eventBus = vertx.eventBus();
+    console.log("We now have a clustered event bus: " + eventBus);
+  } else {
+    console.log("Failed: " + res_err);
+  };
+});
+
 ----
 
 You should also make sure you have a link:jsdoc/cluste_manager-ClusterManager.html[`ClusterManager`] implementation on your classpath,

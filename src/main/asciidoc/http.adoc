@@ -19,7 +19,11 @@ instance when creating it:
 
 [source,java]
 ----
-todo
+var options = {
+  "maxWebsocketFrameSize" : 1000000
+};
+var server = vertx.createHttpServer(options);
+
 ----
 
 === Start the Server Listening
@@ -552,7 +556,19 @@ at any one time:
 
 [source,java]
 ----
-todo
+var Pump = require("vertx-js/pump");
+vertx.createHttpServer().requestHandler(function (request) {
+  var response = request.response();
+  if (request.method() === Java.type("io.vertx.core.http.HttpMethod").PUT) {
+    response.setChunked(true);
+    Pump.pump(request, response).start();
+    request.endHandler(function (v) {
+      response.end()});
+  } else {
+    response.setStatusCode(400).end();
+  };
+}).listen(8080);
+
 ----
 
 === HTTP Compression
@@ -591,7 +607,11 @@ If you want to configure options for the client, you create it as follows:
 
 [source,java]
 ----
-todo
+var options = {
+  "keepAlive" : false
+};
+var client = vertx.createHttpClient();
+
 ----
 
 === Making requests
@@ -604,7 +624,14 @@ every time you make a request you can configure the client with a default host/p
 
 [source,java]
 ----
-todo
+var options = {
+  "defaultHost" : "wibble.com"
+};
+var client = vertx.createHttpClient(options);
+client.getNow("/some-uri", function (response) {
+  console.log("Received response with status code " + response.statusCode());
+});
+
 ----
 
 Alternatively if you find yourself making lots of requests to different host/ports with the same client you can
@@ -655,7 +682,14 @@ the HTTP method at run-time:
 
 [source,java]
 ----
-todo
+var client = vertx.createHttpClient();
+client.request(Java.type("io.vertx.core.http.HttpMethod").GET, "some-uri", function (response) {
+  console.log("Received response with status code " + response.statusCode());
+}).end();
+client.request(Java.type("io.vertx.core.http.HttpMethod").POST, "foo-uri", function (response) {
+  console.log("Received response with status code " + response.statusCode());
+}).end("some-data");
+
 ----
 
 ==== Writing request bodies
@@ -694,7 +728,13 @@ Methods exist to write strings in UTF-8 encoding and in any specific encoding an
 
 [source,java]
 ----
-todo
+var Buffer = require("vertx-js/buffer");
+request.write("some data");
+request.write("some other data", "UTF-16");
+var buffer = Buffer.buffer();
+buffer.appendInt(123).appendLong(245);
+request.write(buffer);
+
 ----
 
 If you are just writing a single string or buffer to the HTTP request you can write it and end the request in a
@@ -702,7 +742,11 @@ single call to the `end` function.
 
 [source,java]
 ----
-todo
+var Buffer = require("vertx-js/buffer");
+request.end("some simple data");
+var buffer = Buffer.buffer().appendDouble(12.34).appendLong(432);
+request.end(buffer);
+
 ----
 
 When you're writing to a request, the first call to `write` will result in the request headers being written
@@ -766,7 +810,11 @@ before calling `end` with no arguments
 
 [source,java]
 ----
-todo
+var Buffer = require("vertx-js/buffer");
+request.end("some-data");
+var buffer = Buffer.buffer().appendFloat(12.3).appendInt(321);
+request.end(buffer);
+
 ----
 
 ==== Chunked HTTP requests
@@ -1156,7 +1204,10 @@ common case) the simplest way to do this is to use link:jsdoc/we_socket-WebSocke
 
 [source,java]
 ----
-todo
+var Buffer = require("vertx-js/buffer");
+var buffer = Buffer.buffer().appendInt(123).appendFloat(1.23);
+websocket.writeMessage(buffer);
+
 ----
 
 If the websocket message is larger than the maximum websocket frame size as configured with

@@ -28,7 +28,16 @@ to the `NetSocket`, for example:
 
 [source,java]
 ----
-todo
+var server = vertx.createNetServer({
+  "port" : 1234,
+  "host" : "localhost"
+});
+server.connectHandler(function (sock) {
+  sock.handler(function (buffer) {
+    sock.write(buffer);
+  });
+}).listen();
+
 ----
 
 There's a problem with the above example: If data is read from the socket faster than it can be
@@ -41,7 +50,18 @@ writing to it:
 
 [source,java]
 ----
-todo
+var server = vertx.createNetServer({
+  "port" : 1234,
+  "host" : "localhost"
+});
+server.connectHandler(function (sock) {
+  sock.handler(function (buffer) {
+    if (!sock.writeQueueFull()) {
+      sock.write(buffer);
+    };
+  });
+}).listen();
+
 ----
 
 This example won't run out of RAM but we'll end up losing data if the write queue gets full. What we
@@ -49,7 +69,19 @@ really want to do is pause the `NetSocket` when the write queue is full. Let's d
 
 [source,java]
 ----
-todo
+var server = vertx.createNetServer({
+  "port" : 1234,
+  "host" : "localhost"
+});
+server.connectHandler(function (sock) {
+  sock.handler(function (buffer) {
+    sock.write(buffer);
+    if (sock.writeQueueFull()) {
+      sock.pause();
+    };
+  });
+}).listen();
+
 ----
 
 We're almost there, but not quite. The `NetSocket` now gets paused when the file is full, but we also need to unpause
@@ -57,7 +89,22 @@ it when the write queue has processed its backlog:
 
 [source,java]
 ----
-todo
+var server = vertx.createNetServer({
+  "port" : 1234,
+  "host" : "localhost"
+});
+server.connectHandler(function (sock) {
+  sock.handler(function (buffer) {
+    sock.write(buffer);
+    if (sock.writeQueueFull()) {
+      sock.pause();
+      sock.drainHandler(function (done) {
+        sock.resume();
+      });
+    };
+  });
+}).listen();
+
 ----
 
 And there we have it. The link:jsdoc/writ_stream-WriteStream.html#drainHandler[`drainHandler`] event handler will
@@ -70,7 +117,15 @@ the `WriteStream` and it tell it to start:
 
 [source,java]
 ----
-todo
+var Pump = require("vertx-js/pump");
+var server = vertx.createNetServer({
+  "port" : 1234,
+  "host" : "localhost"
+});
+server.connectHandler(function (sock) {
+  Pump.pump(sock, sock).start();
+}).listen();
+
 ----
 
 Which does exactly the same thing as the more verbose example.

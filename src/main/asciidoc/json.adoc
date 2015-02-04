@@ -32,8 +32,9 @@ The method invocations can be chained because of the fluent API:
 
 [source,java]
 ----
-var object = {};
-object.put("foo", "bar").put("num", 123).put("mybool", true);
+var object = {
+};
+object."foo" = "bar"."num" = 123."mybool" = true;
 
 ----
 
@@ -43,8 +44,8 @@ You get values from a JSON object using the  methods, for example:
 
 [source,java]
 ----
-var val = jsonObject.getString("some-key");
-var intVal = jsonObject.getInteger("some-other-key");
+var val = jsonObject."some-key";
+var intVal = jsonObject."some-other-key";
 
 ----
 
@@ -77,7 +78,8 @@ You add entries to a JSON array using the link:jsdoc/jso_array-JsonArray.html#ad
 
 [source,java]
 ----
-var array = [];
+var array = [
+];
 array.add("foo").add(123).add(false);
 
 ----

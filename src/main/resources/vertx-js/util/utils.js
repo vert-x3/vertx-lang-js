@@ -225,7 +225,9 @@ utils.convReturnMap = function(jMap) {
           }
           case "forEach": {
             if (typeof arg1 == 'function') {
-              jMap.keySet().forEach(arg1);
+              jMap.entrySet().forEach(function(entry) {
+                arg1(utils.convReturnTypeUnknown(entry.getValue()), entry.getKey());
+              });
             } else {
               throw new TypeError(arg1 + " is not a function");
             }

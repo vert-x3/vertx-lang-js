@@ -1090,34 +1090,26 @@ function testMapReturn() {
         break;
       }
       case 9: {
-        Assert.assertEquals('keySet()', op);
+        Assert.assertEquals('entrySet()', op);
         break;
       }
       case 10: {
-        Assert.assertEquals('get(foo)', op);
-        break;
-      }
-      case 11: {
-        Assert.assertEquals('get(blah)', op);
-        break;
-      }
-      case 12: {
         Assert.assertEquals('keySet()', op);
         break
       }
-      case 13: {
+      case 11: {
         Assert.assertEquals('get(foo)', op);
         break;
       }
-      case 14: {
+      case 12: {
         Assert.assertEquals('get(blah)', op);
         break;
       }
-      case 15: {
+      case 13: {
         Assert.assertEquals('clear()', op);
         break;
       }
-      case 16: {
+      case 14: {
         Assert.assertEquals('size()', op);
         break;
       }
@@ -1138,11 +1130,13 @@ function testMapReturn() {
   // Test iteration forEach / for in
   map["blah"] = 123;
   var keyCount = 0;
-  map.forEach(function(key) {
+  map.forEach(function(value, key) {
     if (keyCount++ == 0) {
-      Assert.assertEquals("bar", map[key]);
+      Assert.assertEquals("foo", key);
+      Assert.assertEquals("bar", value);
     } else {
-      Assert.assertEquals(123, map[key], 0);
+      Assert.assertEquals("blah", key);
+      Assert.assertEquals(123, value, 0);
     }
   });
   Assert.assertEquals(2, keyCount, 0);
@@ -1156,7 +1150,7 @@ function testMapReturn() {
     }
   }
 
-  Assert.assertEquals(15, count, 0);
+  Assert.assertEquals(13, count, 0);
 
   map.clear();
 
@@ -1189,6 +1183,13 @@ function testMapJsonObjectReturn() {
   var json = map["foo"];
   Assert.assertTrue(typeof json === 'object');
   Assert.assertEquals("eek", json["wibble"]);
+  var count = 0;
+  map.forEach(function(val, index) {
+    Assert.assertTrue(count == 0);
+    Assert.assertEquals("foo", index);
+    Assert.assertTrue(typeof val === 'object');
+    Assert.assertEquals("eek", val["wibble"]);
+  });
 }
 
 function testMapJsonArrayReturn() {

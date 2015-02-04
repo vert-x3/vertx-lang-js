@@ -19,7 +19,11 @@ instance when creating it:
 
 [source,java]
 ----
-todo
+var options = {
+  "port" : 4321
+};
+var server = vertx.createNetServer(options);
+
 ----
 
 === Start the Server Listening
@@ -128,7 +132,12 @@ You write to a socket using one of link:jsdoc/ne_socket-NetSocket.html#write[`wr
 
 [source,java]
 ----
-todo
+var Buffer = require("vertx-js/buffer");
+var buffer = Buffer.buffer().appendFloat(12.34).appendInt(123);
+socket.write(buffer);
+socket.write("some data");
+socket.write("some data", "UTF-16");
+
 ----
 
 Write operations are asynchronous and may not occur until some time after the call to write has returned.
@@ -255,7 +264,11 @@ or when programmatically deploying your verticle
 
 [source,java]
 ----
-todo
+var options = {
+  "instances" : 10
+};
+vertx.deployVerticle("com.mycompany.MyVerticle", options);
+
 ----
 
 Once you do this you will find the echo server works functionally identically to before, but all your cores on your
@@ -291,7 +304,11 @@ instance when creating it:
 
 [source,java]
 ----
-todo
+var options = {
+  "connectTimeout" : 10000
+};
+var client = vertx.createNetClient(options);
+
 ----
 
 === Making connections
@@ -302,7 +319,19 @@ link:jsdoc/ne_socket-NetSocket.html[`NetSocket`] when connection is successful o
 
 [source,java]
 ----
-todo
+var options = {
+  "connectTimeout" : 10000
+};
+var client = vertx.createNetClient(options);
+client.connect(4321, "localhost", function (res, res_err) {
+  if ((res != null)) {
+    console.log("Connected!");
+    var socket = res;
+  } else {
+    console.log("Failed to connect: " + res_err.getMessage());
+  };
+});
+
 ----
 
 === Configuring connection attempts
@@ -316,7 +345,11 @@ only apply to creating initial connections.
 
 [source,java]
 ----
-todo
+var options = {
+};
+options.reconnectAttempts = 10.reconnectInterval = 500;
+var client = vertx.createNetClient(options);
+
 ----
 
 By default, multiple connection attempts are disabled.
@@ -352,7 +385,16 @@ The password for the keystore should also be provided:
 
 [source,java]
 ----
-todo
+var options = {
+};
+options.ssl = true;
+var jksOptions = {
+};
+jksOptions.path = "/path/to/your/keystore.jks";
+jksOptions.password = "password-of-your-keystore";
+options.keyStoreOptions = jksOptions;
+var server = vertx.createNetServer(options);
+
 ----
 
 Alternatively you can read the key store yourself as a buffer and provide that directly:

@@ -66,7 +66,11 @@ When creating a Vertx object you can also specify options if the defaults aren't
 
 [source,java]
 ----
-todo
+var Vertx = require("vertx-js/vertx");
+var vertx = Vertx.vertx({
+  "workerPoolSize" : 40
+});
+
 ----
 
 The link:jsdoc/vert_options-VertxOptions.html[`VertxOptions`] object has many settings and allows you to configure things like clustering,
@@ -345,7 +349,11 @@ If you want to deploy a verticle as a worker verticle you do that with link:jsdo
 
 [source,java]
 ----
-todo
+var options = {
+  "worker" : true
+};
+vertx.deployVerticle("com.mycompany.MyOrderProcessorVerticle", options);
+
 ----
 
 Worker verticle instances are never executed concurrently by Vert.x by more than one thread, but can executed by
@@ -465,7 +473,11 @@ want to deploy:
 
 [source,java]
 ----
-todo
+var options = {
+  "instances" : 16
+};
+vertx.deployVerticle("com.mycompany.MyOrderProcessorVerticle", options);
+
 ----
 
 This is useful for scaling easily across multiple cores. For example you might have a web-server verticle to deploy
@@ -477,7 +489,15 @@ Configuration in the form of JSON can be passed to a verticle at deployment time
 
 [source,java]
 ----
-todo
+var config = {
+  "name" : "tim",
+  "directory" : "/blah"
+};
+var options = {
+  "config" : config
+};
+vertx.deployVerticle("com.mycompany.MyOrderProcessorVerticle", options);
+
 ----
 
 This configuration is then available via the link:jsdoc/context-Context.html[`Context`] object.
@@ -507,7 +527,12 @@ Here's an example of using an isolation group to isolate a verticle deployment.
 
 [source,java]
 ----
-todo
+var options = {
+  "isolationGroup" : "mygroup"
+};
+options.extraClasspath = Java.type("java.util.Arrays").asList("lib/jars/some-library.jar");
+vertx.deployVerticle("com.mycompany.MyIsolatedVerticle", options);
+
 ----
 
 Isolation groups are identified by a name, and the name can be used between different deployments if you want them
