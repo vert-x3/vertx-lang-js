@@ -39,7 +39,7 @@ Let's discuss the different concepts and features in core.
 
 NOTE: Much of this is Java specific - need someway of swapping in language specific parts
 
-You can't do much in Vert.x-land unless you can commune with a link:jsdoc/vertx-Vertx.html[`Vertx`] object!
+You can't do much in Vert.x-land unless you can commune with a `link:jsdoc/vertx-Vertx.html[Vertx]` object!
 
 It's the control centre of Vert.x and is how you do pretty much everything, including creating clients and servers,
 getting a reference to the event bus, setting timers, as well as many other things.
@@ -73,7 +73,7 @@ var vertx = Vertx.vertx({
 
 ----
 
-The link:dataobject/VertxOptions.html[`VertxOptions`] object has many settings and allows you to configure things like clustering,
+The `link:dataobject/VertxOptions.html[VertxOptions]` object has many settings and allows you to configure things like clustering,
 high availability, pool sizes and various other settings. The Javadoc describes all the settings in detail.
 
 === Creating a clustered Vert.x object
@@ -250,7 +250,7 @@ some time. If you see warnings like these in your logs, then you should investig
 Vert.x will also provide stack traces to pinpoint exactly where the blocking is occurring.
 
 If you want to turn of these warnings or change the settings, you can do that in the
-link:dataobject/VertxOptions.html[`VertxOptions`] object before creating the Vertx object.
+`link:dataobject/VertxOptions.html[VertxOptions]` object before creating the Vertx object.
 
 [[blocking_code]]
 == Running blocking code
@@ -270,7 +270,7 @@ blocking APIs safely within a Vert.x application.
 As discussed before, you can't call blocking operations directly from an event loop, as that would prevent it
 from doing any other useful work. So how can you do this?
 
-It's done by calling link:jsdoc/vertx-Vertx.html#executeBlocking[`executeBlocking`] specifying both the blocking code to execute and a
+It's done by calling `link:jsdoc/vertx-Vertx.html#executeBlocking[executeBlocking]` specifying both the blocking code to execute and a
 result handler to be called back asynchronous when the blocking code has been executed.
 
 [source,java]
@@ -345,7 +345,7 @@ Worker verticles are designed for calling blocking code, as they won't block any
 If you don't want to use a worker verticle to run blocking code, you can also run <<blocking_code, inline blocking code>>
 directly while on an event loop.
 
-If you want to deploy a verticle as a worker verticle you do that with link:dataobject/DeploymentOptions.html#setWorker[`setWorker`].
+If you want to deploy a verticle as a worker verticle you do that with `link:dataobject/DeploymentOptions.html#setWorker[setWorker]`.
 
 [source,java]
 ----
@@ -370,7 +370,7 @@ using standard Java techniques for multi-threaded programming.
 
 === Deploying verticles programmatically
 
-You can deploy a verticle using one of the link:jsdoc/vertx-Vertx.html#deployVerticle[`deployVerticle`] method, specifying a verticle
+You can deploy a verticle using one of the `link:jsdoc/vertx-Vertx.html#deployVerticle[deployVerticle]` method, specifying a verticle
 name or you can pass in a verticle instance you have already created yourself.
 
 NOTE: Deploying Verticle *instances* is Java only.
@@ -382,7 +382,7 @@ todo
 
 You can also deploy verticles by specifying the verticle *name*.
 
-The verticle name is used to look up the specific link:jsdoc/verticle_factory-VerticleFactory.html[`VerticleFactory`] that will be used to
+The verticle name is used to look up the specific `link:jsdoc/verticle_factory-VerticleFactory.html[VerticleFactory]` that will be used to
 instantiate the actual verticle instance(s).
 
 Different verticle factories are available for instantiating verticles in different languages and for various other
@@ -423,8 +423,8 @@ and instantiate that.
 
 Most Verticle factories are loaded from the classpath and registered at Vert.x startup.
 
-You can also programmatically register and unregister verticle factories using link:jsdoc/vertx-Vertx.html#registerVerticleFactory[`registerVerticleFactory`]
-and link:jsdoc/vertx-Vertx.html#unregisterVerticleFactory[`unregisterVerticleFactory`] if you wish.
+You can also programmatically register and unregister verticle factories using `link:jsdoc/vertx-Vertx.html#registerVerticleFactory[registerVerticleFactory]`
+and `link:jsdoc/vertx-Vertx.html#unregisterVerticleFactory[unregisterVerticleFactory]` if you wish.
 
 === Waiting for deployment to complete
 
@@ -450,7 +450,7 @@ This deployment ID can be used later if you want to undeploy the deployment.
 
 === Undeploying verticle deployments
 
-Deployments can be undeployed with link:jsdoc/vertx-Vertx.html#undeploy[`undeploy`].
+Deployments can be undeployed with `link:jsdoc/vertx-Vertx.html#undeploy[undeploy]`.
 
 Un-deployment is itself asynchronous so if you want to be notified when un-deployment is complete you can deploy specifying a completion handler:
 
@@ -500,7 +500,7 @@ vertx.deployVerticle("com.mycompany.MyOrderProcessorVerticle", options);
 
 ----
 
-This configuration is then available via the link:jsdoc/context-Context.html[`Context`] object.
+This configuration is then available via the `link:jsdoc/context-Context.html[Context]` object.
 
 TODO
 
@@ -538,7 +538,7 @@ vertx.deployVerticle("com.mycompany.MyIsolatedVerticle", options);
 Isolation groups are identified by a name, and the name can be used between different deployments if you want them
 to share an isolated class-loader.
 
-Extra classpath entries can also be provided with link:dataobject/DeploymentOptions.html#setExtraClasspath[`setExtraClasspath`] so they
+Extra classpath entries can also be provided with `link:dataobject/DeploymentOptions.html#setExtraClasspath[setExtraClasspath]` so they
 can locate resources that are isolated to them.
 
 === High Availability
@@ -586,7 +586,7 @@ type `vertx` at the command line.
 
 Threads maintained by Vert.x instances are not daemon threads so they will prevent the JVM from exiting.
 
-If you are embedding Vert.x and you have finished with it, you can call link:jsdoc/vertx-Vertx.html#close[`close`] to close it
+If you are embedding Vert.x and you have finished with it, you can call `link:jsdoc/vertx-Vertx.html#close[close]` to close it
 down.
 
 This will shut-down all internal thread pools and close other resources, and will allow the JVM to exit.
@@ -607,7 +607,7 @@ Instead you use Vert.x timers. Timers can be *one-shot* or *periodic*. We'll dis
 
 A one shot timer calls an event handler after a certain delay, expressed in milliseconds.
 
-To set a timer to fire once you use link:jsdoc/vertx-Vertx.html#setTimer[`setTimer`] method passing in the delay and a handler
+To set a timer to fire once you use `link:jsdoc/vertx-Vertx.html#setTimer[setTimer]` method passing in the delay and a handler
 
 [source,java]
 ----
@@ -622,7 +622,7 @@ The return value is a unique timer id which can later be used to cancel the time
 
 ==== Periodic Timers
 
-You can also set a timer to fire periodically by using link:jsdoc/vertx-Vertx.html#setPeriodic[`setPeriodic`].
+You can also set a timer to fire periodically by using `link:jsdoc/vertx-Vertx.html#setPeriodic[setPeriodic]`.
 
 There will be an initial delay equal to the period.
 
@@ -641,7 +641,7 @@ console.log("First this is printed");
 
 ==== Cancelling timers
 
-To cancel a periodic timer, call link:jsdoc/vertx-Vertx.html#cancelTimer[`cancelTimer`] specifying the timer id. For example:
+To cancel a periodic timer, call `link:jsdoc/vertx-Vertx.html#cancelTimer[cancelTimer]` specifying the timer id. For example:
 
 [source,java]
 ----
