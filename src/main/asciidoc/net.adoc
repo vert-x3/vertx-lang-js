@@ -8,6 +8,7 @@ The simplest way to create a TCP server, using all default options is as follows
 
 [source,java]
 ----
+
 var server = vertx.createNetServer();
 
 ----
@@ -19,6 +20,7 @@ instance when creating it:
 
 [source,java]
 ----
+
 var options = {
   "port" : 4321
 };
@@ -35,6 +37,7 @@ To tell the server to listen at the host and port as specified in the options:
 
 [source,java]
 ----
+
 var server = vertx.createNetServer();
 server.listen();
 
@@ -44,6 +47,7 @@ Or to specify the host and port in the call to listen, ignoring what is configur
 
 [source,java]
 ----
+
 var server = vertx.createNetServer();
 server.listen(1234, "localhost");
 
@@ -60,6 +64,7 @@ For example:
 
 [source,java]
 ----
+
 var server = vertx.createNetServer();
 server.listen(1234, "localhost", function (res, res_err) {
   if ((res != null)) {
@@ -79,6 +84,7 @@ To find out the real port the server is listening on you can call `link:jsdoc/ne
 
 [source,java]
 ----
+
 var server = vertx.createNetServer();
 server.listen(0, "localhost", function (res, res_err) {
   if ((res != null)) {
@@ -96,6 +102,7 @@ To be notified when a connection is made you need to set a `link:jsdoc/net_serve
 
 [source,java]
 ----
+
 var server = vertx.createNetServer();
 server.connectHandler(function (socket) {
 });
@@ -117,6 +124,7 @@ the socket.
 
 [source,java]
 ----
+
 var server = vertx.createNetServer();
 server.connectHandler(function (socket) {
   socket.handler(function (buffer) {
@@ -133,10 +141,18 @@ You write to a socket using one of `link:jsdoc/net_socket-NetSocket.html#write[w
 [source,java]
 ----
 var Buffer = require("vertx-js/buffer");
+
+// Write a buffer
 var buffer = Buffer.buffer().appendFloat(12.34).appendInt(123);
 socket.write(buffer);
+
+// Write a string in UTF-8 encoding
 socket.write("some data");
+
+// Write a string using the specified encoding
 socket.write("some data", "UTF-16");
+
+
 
 ----
 
@@ -149,6 +165,7 @@ on it:
 
 [source,java]
 ----
+
 socket.closeHandler(function (v) {
   console.log("The socket has been closed");
 });
@@ -184,6 +201,7 @@ efficient way to send files, as it can be handled by the OS kernel directly wher
 
 [source,java]
 ----
+
 socket.sendFile("myfile.dat");
 
 ----
@@ -215,6 +233,7 @@ This handler will then be called when the close has fully completed.
 
 [source,java]
 ----
+
 server.close(function (res, res_err) {
   if ((res != null)) {
     console.log("Server is now closed");
@@ -243,10 +262,14 @@ You can instantiate more instances programmatically in your code:
 
 [source,java]
 ----
+
+// Create a few instances so we can utilise cores
+
 for (var i = 0;i < 10;i++) {
   var server = vertx.createNetServer();
   server.connectHandler(function (socket) {
     socket.handler(function (buffer) {
+      // Just echo back the data
       socket.write(buffer);
     });
   });
@@ -264,6 +287,7 @@ or when programmatically deploying your verticle
 
 [source,java]
 ----
+
 var options = {
   "instances" : 10
 };
@@ -293,6 +317,7 @@ The simplest way to create a TCP client, using all default options is as follows
 
 [source,java]
 ----
+
 var client = vertx.createNetClient();
 
 ----
@@ -304,6 +329,7 @@ instance when creating it:
 
 [source,java]
 ----
+
 var options = {
   "connectTimeout" : 10000
 };
@@ -319,6 +345,7 @@ specifying the port and host of the server and a handler that will be called wit
 
 [source,java]
 ----
+
 var options = {
   "connectTimeout" : 10000
 };
@@ -345,9 +372,11 @@ only apply to creating initial connections.
 
 [source,java]
 ----
+
 var options = {
 };
 options.reconnectAttempts = 10.reconnectInterval = 500;
+
 var client = vertx.createNetClient(options);
 
 ----

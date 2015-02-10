@@ -34,6 +34,7 @@ var server = vertx.createNetServer({
 });
 server.connectHandler(function (sock) {
   sock.handler(function (buffer) {
+    // Write the data straight back
     sock.write(buffer);
   });
 }).listen();
@@ -60,6 +61,7 @@ server.connectHandler(function (sock) {
       sock.write(buffer);
     };
   });
+
 }).listen();
 
 ----

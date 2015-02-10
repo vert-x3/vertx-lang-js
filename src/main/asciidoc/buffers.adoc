@@ -73,7 +73,9 @@ The return value of the  methods is the buffer itself, so these can be chained:
 ----
 var Buffer = require("vertx-js/buffer");
 var buff = Buffer.buffer();
+
 buff.appendInt(123).appendString("hello\n");
+
 socket.write(buff);
 
 ----
@@ -90,6 +92,7 @@ The buffer will always expand as necessary to accommodate the data.
 ----
 var Buffer = require("vertx-js/buffer");
 var buff = Buffer.buffer();
+
 buff.setInt(1000, 123);
 buff.setString(0, "hello");
 

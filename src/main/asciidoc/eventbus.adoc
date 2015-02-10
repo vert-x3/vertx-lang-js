@@ -114,6 +114,7 @@ Here's an example:
 [source,java]
 ----
 var eb = vertx.eventBus();
+
 eb.consumer("news.uk.sport", function (message) {
   console.log("I have received a message: " + message.body());
 });
@@ -132,6 +133,7 @@ to return a +MessageConsumer+ with no handler set, and then set the handler on t
 [source,java]
 ----
 var eb = vertx.eventBus();
+
 var consumer = eb.consumer("news.uk.sport");
 consumer.handler(function (message) {
   console.log("I have received a message: " + message.body());

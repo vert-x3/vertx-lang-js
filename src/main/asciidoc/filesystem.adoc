@@ -13,6 +13,8 @@ Here's an example of asynchronously copying a file:
 [source,java]
 ----
 var fs = vertx.fileSystem();
+
+// Copy file from foo.txt to bar.txt
 fs.copy("foo.txt", "bar.txt", function (res, res_err) {
   if ((res != null)) {
   } else {
@@ -33,6 +35,8 @@ Here's the copy using the blocking API:
 [source,java]
 ----
 var fs = vertx.fileSystem();
+
+// Copy file from foo.txt to bar.txt synchronously
 fs.copyBlocking("foo.txt", "bar.txt");
 
 ----

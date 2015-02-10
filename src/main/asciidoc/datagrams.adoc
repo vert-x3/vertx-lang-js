@@ -54,9 +54,11 @@ var Buffer = require("vertx-js/buffer");
 var socket = vertx.createDatagramSocket({
 });
 var buffer = Buffer.buffer("content");
+// Send a Buffer
 socket.send(buffer, 1234, "10.0.0.1", function (asyncResult, asyncResult_err) {
   console.log("Send succeeded? " + (asyncResult != null));
 });
+// Send a String
 socket.send("A string used as content", 1234, "10.0.0.1", function (asyncResult, asyncResult_err) {
   console.log("Send succeeded? " + (asyncResult != null));
 });
@@ -121,6 +123,7 @@ var Buffer = require("vertx-js/buffer");
 var socket = vertx.createDatagramSocket({
 });
 var buffer = Buffer.buffer("content");
+// Send a Buffer to a multicast address
 socket.send(buffer, 1234, "230.0.0.1", function (asyncResult, asyncResult_err) {
   console.log("Send succeeded? " + (asyncResult != null));
 });
@@ -155,6 +158,8 @@ socket.listen(1234, "0.0.0.0", function (asyncResult, asyncResult_err) {
   if ((asyncResult != null)) {
     socket.handler(function (packet) {
     });
+
+    // join the multicast group
     socket.listenMulticastGroup("230.0.0.1", function (asyncResult2, asyncResult2_err) {
       console.log("Listen succeeded? " + (asyncResult2 != null));
     });
@@ -181,8 +186,14 @@ socket.listen(1234, "0.0.0.0", function (asyncResult, asyncResult_err) {
   if ((asyncResult != null)) {
     socket.handler(function (packet) {
     });
+
+    // join the multicast group
     socket.listenMulticastGroup("230.0.0.1", function (asyncResult2, asyncResult2_err) {
       if ((asyncResult2 != null)) {
+        // will now receive packets for group
+
+        // do some work
+
         socket.unlistenMulticastGroup("230.0.0.1", function (asyncResult3, asyncResult3_err) {
           console.log("Unlisten succeeded? " + (asyncResult3 != null));
         });
@@ -213,6 +224,10 @@ like shown here:
 ----
 var socket = vertx.createDatagramSocket({
 });
+
+// Some code
+
+// This would block packets which are send from 10.0.0.2
 socket.blockMulticastGroup("230.0.0.1", "10.0.0.2", function (asyncResult, asyncResult_err) {
   console.log("block succeeded? " + (asyncResult != null));
 });

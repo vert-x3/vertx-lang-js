@@ -130,6 +130,7 @@ would do:
 [source,java]
 ----
 vertx.setTimer(1000, function (id) {
+  // This handler will get called every second
   console.log("timer fired!");
 });
 
@@ -139,7 +140,9 @@ Or to receive an HTTP request:
 
 [source,java]
 ----
+// Respond to each http request with "Hello World"
 server.requestHandler(function (request) {
+  // This handler will be called every time an HTTP request is received at the server
   request.response().end("hello world!");
 });
 
@@ -276,6 +279,7 @@ result handler to be called back asynchronous when the blocking code has been ex
 [source,java]
 ----
 vertx.executeBlocking(function (future) {
+  // Call some blocking API that takes a significant amount of time to return
   var result = someAPI.blockingMethod("hello");
   future.complete(result);
 }, function (res, res_err) {
@@ -394,9 +398,16 @@ Here's an example of deploying some different types of verticles:
 
 [source,java]
 ----
+
+// Deploy a Java verticle - the name is the fully qualified class name of the verticle class
 vertx.deployVerticle("com.mycompany.MyOrderProcessorVerticle");
+
+// Deploy a JavaScript verticle
 vertx.deployVerticle("verticles/myverticle.js");
+
+// Deploy a Ruby verticle verticle
 vertx.deployVerticle("verticles/my_verticle.rb");
+
 
 ----
 
@@ -614,6 +625,7 @@ To set a timer to fire once you use `link:jsdoc/vertx-Vertx.html#setTimer[setTim
 var timerID = vertx.setTimer(1000, function (id) {
   console.log("And one second later this is printed");
 });
+
 console.log("First this is printed");
 
 ----
@@ -635,6 +647,7 @@ The argument passed into the timer event handler is also the unique timer id:
 var timerID = vertx.setPeriodic(1000, function (id) {
   console.log("And every second this is printed");
 });
+
 console.log("First this is printed");
 
 ----
