@@ -87,7 +87,7 @@ _lingua franca_ for Vert.x.
 
 However you are not forced to use JSON if you don't want to.
 
-The event bus is very flexible and also supports supports sending arbitrary objects over the event bus.
+The event bus is very flexible and also supports sending arbitrary objects over the event bus.
 You do this by defining a `link:jsdoc/message_codec-MessageCodec.html[codec]` for the objects you want to send.
 
 === The Event Bus API
@@ -98,7 +98,7 @@ Let's jump into the API
 
 You get a reference to the event bus as follows:
 
-[source,java]
+[source,js]
 ----
 var eb = vertx.eventBus();
 
@@ -111,7 +111,7 @@ There is a single instance of the event bus per Vert.x instance.
 This simplest way to register a handler is using `link:jsdoc/event_bus-EventBus.html#consumer[consumer]`.
 Here's an example:
 
-[source,java]
+[source,js]
 ----
 var eb = vertx.eventBus();
 
@@ -130,7 +130,7 @@ This object can subsequently be used to unregister the handler, or use the handl
 Alternatively you can use `link:jsdoc/event_bus-EventBus.html#consumer[consumer]` to
 to return a +MessageConsumer+ with no handler set, and then set the handler on that. For example:
 
-[source,java]
+[source,js]
 ----
 var eb = vertx.eventBus();
 
@@ -147,7 +147,7 @@ nodes of the cluster.
 If you want to be notified when this has completed, you can register a `link:jsdoc/message_consumer-MessageConsumer.html#completionHandler[completion handler]`
 on the +MessageConsumer+ object.
 
-[source,java]
+[source,js]
 ----
 consumer.completionHandler(function (res, res_err) {
   if ((res != null)) {
@@ -166,7 +166,7 @@ To unregister a handler, call `link:jsdoc/message_consumer-MessageConsumer.html#
 If you are on a clustered event bus, un-registering can take some time to propagate across the nodes, if you want to
 be notified when this is complete use `link:jsdoc/message_consumer-MessageConsumer.html#unregister[unregister]`.
 
-[source,java]
+[source,js]
 ----
 consumer.unregister(function (res, res_err) {
   if ((res != null)) {
@@ -183,7 +183,7 @@ consumer.unregister(function (res, res_err) {
 Publishing a message is simple. Just use `link:jsdoc/event_bus-EventBus.html#publish[publish]` specifying the
 address to publish it to.
 
-[source,java]
+[source,js]
 ----
 eventBus.publish("news.uk.sport", "Yay! Someone kicked a ball");
 
@@ -198,7 +198,7 @@ This is the point to point messaging pattern. The handler is chosen in a non-str
 
 You can send a message with `link:jsdoc/event_bus-EventBus.html#send[send]`
 
-[source,java]
+[source,js]
 ----
 eventBus.send("news.uk.sport", "Yay! Someone kicked a ball");
 
@@ -209,7 +209,7 @@ eventBus.send("news.uk.sport", "Yay! Someone kicked a ball");
 Messages sent over the event bus can also contain headers. This can be specified by providing a
 `link:dataobject/DeliveryOptions.html[DeliveryOptions]` when sending or publishing:
 
-[source,java]
+[source,js]
 ----
 todo
 ----
@@ -237,7 +237,7 @@ An example will make this clear:
 
 The receiver:
 
-[source,java]
+[source,js]
 ----
 var consumer = eventBus.consumer("news.uk.sport");
 consumer.handler(function (message) {
@@ -249,7 +249,7 @@ consumer.handler(function (message) {
 
 The sender:
 
-[source,java]
+[source,js]
 ----
 eventBus.send("news.uk.sport", "Yay! Someone kicked a ball across a patch of grass", function (ar, ar_err) {
   if ((ar != null)) {
@@ -291,7 +291,7 @@ your network they can form a single, distributed, event bus.
 If you're creating your Vert.x instance programmatically you get a clustered event bus by configuring the Vert.x
 instance as clustered;
 
-[source,java]
+[source,js]
 ----
 var Vertx = require("vertx-js/vertx");
 var options = {

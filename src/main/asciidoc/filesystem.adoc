@@ -10,7 +10,7 @@ The non blocking versions take a handler which is called when the operation comp
 
 Here's an example of asynchronously copying a file:
 
-[source,java]
+[source,js]
 ----
 var fs = vertx.fileSystem();
 
@@ -32,7 +32,7 @@ return in your particular application before using them from an event loop, so a
 
 Here's the copy using the blocking API:
 
-[source,java]
+[source,js]
 ----
 var fs = vertx.fileSystem();
 
@@ -51,7 +51,7 @@ Vert.x provides an asynchronous file abstraction that allows you to manipulate a
 
 You open an `link:jsdoc/async_file-AsyncFile.html[AsyncFile]` as follows:
 
-[source,java]
+[source,js]
 ----
 var options = {
 };

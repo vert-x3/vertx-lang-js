@@ -6,7 +6,7 @@ Vert.x allows you to easily write non blocking HTTP clients and servers.
 
 The simplest way to create an HTTP server, using all default options is as follows:
 
-[source,java]
+[source,js]
 ----
 
 var server = vertx.createHttpServer();
@@ -18,7 +18,7 @@ var server = vertx.createHttpServer();
 If you don't want the default, a server can be configured by passing in a `link:dataobject/HttpServerOptions.html[HttpServerOptions]`
 instance when creating it:
 
-[source,java]
+[source,js]
 ----
 
 var options = {
@@ -36,7 +36,7 @@ alternatives.
 
 To tell the server to listen at the host and port as specified in the options:
 
-[source,java]
+[source,js]
 ----
 
 var server = vertx.createHttpServer();
@@ -46,7 +46,7 @@ server.listen();
 
 Or to specify the host and port in the call to listen, ignoring what is configured in the options:
 
-[source,java]
+[source,js]
 ----
 
 var server = vertx.createHttpServer();
@@ -62,7 +62,7 @@ listen has returned.
 If you want to be notified when the server is actually listening you can provide a handler to the `listen` call.
 For example:
 
-[source,java]
+[source,js]
 ----
 
 var server = vertx.createHttpServer();
@@ -80,7 +80,7 @@ server.listen(8080, "myhost.com", function (res, res_err) {
 
 To be notified when a request arrives you need to set a `link:jsdoc/http_server-HttpServer.html#requestHandler[requestHandler]`:
 
-[source,java]
+[source,js]
 ----
 
 var server = vertx.createHttpServer();
@@ -108,7 +108,7 @@ object.
 
 Here's a simple example of a server handling a request and replying with "hello world" to it.
 
-[source,java]
+[source,js]
 ----
 
 vertx.createHttpServer().requestHandler(function (request) {
@@ -168,7 +168,7 @@ values for the same key - this is because HTTP allows multiple header values wit
 
 It also has case-insensitive keys, that means you can do the following:
 
-[source,java]
+[source,js]
 ----
 
 var headers = request.headers();
@@ -228,7 +228,7 @@ body in memory before handing it to you, as that could cause the server to exhau
 To receive the body, you can use the `link:jsdoc/http_server_request-HttpServerRequest.html#handler[handler]`  on the request,
 this will get called every time a chunk of the request body arrives. Here's an example:
 
-[source,java]
+[source,js]
 ----
 
 request.handler(function (buffer) {
@@ -243,7 +243,7 @@ multiple times as data arrives from the network, depending on the size of the bo
 In some cases (e.g. if the body is small) you will want to aggregate the entire body in memory, so you could do
 the aggregation yourself as follows:
 
-[source,java]
+[source,js]
 ----
 var Buffer = require("vertx-js/buffer");
 
@@ -264,7 +264,7 @@ request.endHandler(function (v) {
 This is such a common case, that Vert.x provides a `link:jsdoc/http_server_request-HttpServerRequest.html#bodyHandler[bodyHandler]` to do this
 for you. The body handler is called once when all the body has been received:
 
-[source,java]
+[source,js]
 ----
 
 request.bodyHandler(function (totalBuffer) {
@@ -296,7 +296,7 @@ such a form *before* any of the body is read by calling `link:jsdoc/http_server_
 with true, and then you should retrieve the actual attributes using `link:jsdoc/http_server_request-HttpServerRequest.html#formAttributes[formAttributes]`
 once the entire body has been read:
 
-[source,java]
+[source,js]
 ----
 
 server.requestHandler(function (request) {
@@ -321,7 +321,7 @@ upload that arrives on the server.
 
 The object passed into the handler is a `link:jsdoc/http_server_file_upload-HttpServerFileUpload.html[HttpServerFileUpload]` instance.
 
-[source,java]
+[source,js]
 ----
 
 server.requestHandler(function (request) {
@@ -336,7 +336,7 @@ server.requestHandler(function (request) {
 File uploads can be large we don't provide the entire upload in a single buffer as that might result in memory
 exhaustion, instead, the upload data is received in chunks:
 
-[source,java]
+[source,js]
 ----
 
 request.uploadHandler(function (upload) {
@@ -353,7 +353,7 @@ detailed explanation.
 
 If you just want to upload the file to disk somewhere you can use `link:jsdoc/http_server_file_upload-HttpServerFileUpload.html#streamToFileSystem[streamToFileSystem]`:
 
-[source,java]
+[source,js]
 ----
 
 request.uploadHandler(function (upload) {
@@ -390,7 +390,7 @@ These can be invoked multiple times before the response is ended. They can be in
 
 With a single buffer:
 
-[source,java]
+[source,js]
 ----
 var response = request.response();
 response.write(buffer);
@@ -399,7 +399,7 @@ response.write(buffer);
 
 With a string. In this case the string will encoded using UTF-8 and the result written to the wire.
 
-[source,java]
+[source,js]
 ----
 var response = request.response();
 response.write("hello world!");
@@ -409,7 +409,7 @@ response.write("hello world!");
 With a string and an encoding. In this case the string will encoded using the specified encoding and the
 result written to the wire.
 
-[source,java]
+[source,js]
 ----
 var response = request.response();
 response.write("hello world!", "UTF-16");
@@ -433,7 +433,7 @@ This can be done in several ways:
 
 With no arguments, the response is simply ended.
 
-[source,java]
+[source,js]
 ----
 var response = request.response();
 response.write("hello world!");
@@ -444,7 +444,7 @@ response.end();
 It can also be called with a string or buffer in the same way `write` is called. In this case it's just the same as
 calling write with a string or buffer followed by calling end with no arguments. For example:
 
-[source,java]
+[source,js]
 ----
 var response = request.response();
 response.end("hello world!");
@@ -465,7 +465,7 @@ closed after an idle time, then you configure `link:dataobject/HttpServerOptions
 HTTP response headers can be added to the response by adding them directly to the
 `link:jsdoc/http_server_response-HttpServerResponse.html#headers[headers]`:
 
-[source,java]
+[source,js]
 ----
 var response = request.response();
 var headers = response.headers();
@@ -476,7 +476,7 @@ headers.set("other-header", "wibble");
 
 Or you can use `link:jsdoc/http_server_response-HttpServerResponse.html#putHeader[putHeader]`
 
-[source,java]
+[source,js]
 ----
 var response = request.response();
 response.putHeader("content-type", "text/html").putHeader("other-header", "wibble");
@@ -494,7 +494,7 @@ being streamed to a client and the total size is not known in advance.
 
 You put the HTTP response into chunked mode as follows:
 
-[source,java]
+[source,js]
 ----
 var response = request.response();
 response.setChunked(true);
@@ -509,7 +509,7 @@ the final chunk of the response.
 
 To add trailers to the response, add them directly to the `link:jsdoc/http_server_response-HttpServerResponse.html#trailers[trailers]`.
 
-[source,java]
+[source,js]
 ----
 var response = request.response();
 response.setChunked(true);
@@ -520,7 +520,7 @@ trailers.set("X-wibble", "woobble").set("X-quux", "flooble");
 
 Or use `link:jsdoc/http_server_response-HttpServerResponse.html#putTrailer[putTrailer]`.
 
-[source,java]
+[source,js]
 ----
 var response = request.response();
 response.setChunked(true);
@@ -544,7 +544,7 @@ files, but may be slower for small files.
 
 Here's a very simple web server that serves files from the file system using sendFile:
 
-[source,java]
+[source,js]
 ----
 vertx.createHttpServer().requestHandler(function (request) {
   var file = "";
@@ -579,7 +579,7 @@ Here's an example which echoes the request body back in the response for any PUT
 It uses a pump for the body, so it will work even if the HTTP request body is much larger than can fit in memory
 at any one time:
 
-[source,java]
+[source,js]
 ----
 var Pump = require("vertx-js/pump");
 vertx.createHttpServer().requestHandler(function (request) {
@@ -622,7 +622,7 @@ Be aware that compression may be able to reduce network traffic but is more CPU-
 
 You create an `link:jsdoc/http_client-HttpClient.html[HttpClient]` instance with default options as follows:
 
-[source,java]
+[source,js]
 ----
 var client = vertx.createHttpClient();
 
@@ -630,7 +630,7 @@ var client = vertx.createHttpClient();
 
 If you want to configure options for the client, you create it as follows:
 
-[source,java]
+[source,js]
 ----
 var options = {
   "keepAlive" : false
@@ -647,7 +647,7 @@ The http client is very flexible and there are various ways you can make request
 Often you want to make many requests to the same host/port with an http client. To avoid you repeating the host/port
 every time you make a request you can configure the client with a default host/port:
 
-[source,java]
+[source,js]
 ----
 // Set the default host
 var options = {
@@ -664,7 +664,7 @@ client.getNow("/some-uri", function (response) {
 Alternatively if you find yourself making lots of requests to different host/ports with the same client you can
 simply specify the host/port when doing the request.
 
-[source,java]
+[source,js]
 ----
 var client = vertx.createHttpClient();
 
@@ -693,7 +693,7 @@ The simplest way to do this with the Vert.x http client is using the methods pre
 These methods create the http request and send it in a single method call and allow you to provide a handler that will be
 called with the http response when it comes back.
 
-[source,java]
+[source,js]
 ----
 var client = vertx.createHttpClient();
 
@@ -716,7 +716,7 @@ At other times you don't know the request method you want to send until run-time
 general purpose request methods such as `link:jsdoc/http_client-HttpClient.html#request[request]` which allow you to specify
 the HTTP method at run-time:
 
-[source,java]
+[source,js]
 ----
 var client = vertx.createHttpClient();
 
@@ -743,7 +743,7 @@ which can be used to write to the request body or write headers.
 
 Here are some examples of writing a POST request with a body:
 
-[source,java]
+[source,js]
 ----
 var client = vertx.createHttpClient();
 
@@ -776,7 +776,7 @@ client.post("some-uri", function (response) {
 
 Methods exist to write strings in UTF-8 encoding and in any specific encoding and to write buffers:
 
-[source,java]
+[source,js]
 ----
 var Buffer = require("vertx-js/buffer");
 
@@ -797,7 +797,7 @@ request.write(buffer);
 If you are just writing a single string or buffer to the HTTP request you can write it and end the request in a
 single call to the `end` function.
 
-[source,java]
+[source,js]
 ----
 var Buffer = require("vertx-js/buffer");
 
@@ -831,7 +831,7 @@ up-front.
 
 You can write headers to a request using the `link:jsdoc/http_client_request-HttpClientRequest.html#headers[headers]` multi-map as follows:
 
-[source,java]
+[source,js]
 ----
 
 // Write some headers using the headers() multimap
@@ -847,7 +847,7 @@ entries. Http headers allow more than one value for a specific key.
 
 You can also write headers using `link:jsdoc/http_client_request-HttpClientRequest.html#putHeader[putHeader]`
 
-[source,java]
+[source,js]
 ----
 
 // Write some headers using the putHeader method
@@ -869,7 +869,7 @@ as complete.
 
 Requests can be ended in several ways. With no arguments the request is simply ended:
 
-[source,java]
+[source,js]
 ----
 request.end();
 
@@ -878,7 +878,7 @@ request.end();
 Or a string or buffer can be provided in the call to `end`. This is like calling `write` with the string or buffer
 before calling `end` with no arguments
 
-[source,java]
+[source,js]
 ----
 var Buffer = require("vertx-js/buffer");
 // End the request with a string
@@ -902,7 +902,7 @@ You put the HTTP request into chunked mode using `link:jsdoc/http_client_request
 In chunked mode each call to write will cause a new chunk to be written to the wire. In chunked mode there is
 no need to set the `Content-Length` of the request up-front.
 
-[source,java]
+[source,js]
 ----
 
 request.setChunked(true);
@@ -928,7 +928,7 @@ If the request does not return any data within the timeout period an exception w
 You can handle exceptions corresponding to a request by setting an exception handler on the `link:jsdoc/http_client_request-HttpClientRequest.html[HttpClientRequest]`
 instance:
 
-[source,java]
+[source,js]
 ----
 
 var request = client.post("some-uri", function (response) {
@@ -951,7 +951,7 @@ Instead of providing a response handler in the call to create the client request
 not provide a handler when the request is created and set it later on the request object itself, using
 `link:jsdoc/http_client_request-HttpClientRequest.html#handler[handler]`, for example:
 
-[source,java]
+[source,js]
 ----
 
 var request = client.post("some-uri");
@@ -968,7 +968,7 @@ you can pump to it from any `link:jsdoc/read_stream-ReadStream.html[ReadStream]`
 
 For, example, you could pump a file on disk to a http request body as follows:
 
-[source,java]
+[source,js]
 ----
 var Pump = require("vertx-js/pump");
 
@@ -989,7 +989,7 @@ the request methods or by setting a handler directly on the `link:jsdoc/http_cli
 You can query the status code and the status message of the response with `link:jsdoc/http_client_response-HttpClientResponse.html#statusCode[statusCode]`
 and `link:jsdoc/http_client_response-HttpClientResponse.html#statusMessage[statusMessage]`.
 
-[source,java]
+[source,js]
 ----
 
 client.getNow("some-uri", function (response) {
@@ -1014,7 +1014,7 @@ Http responses can contain headers. Use `link:jsdoc/http_client_response-HttpCli
 
 The object returned is a `link:jsdoc/multi_map-MultiMap.html[MultiMap]` as HTTP headers can contain multiple values for single keys.
 
-[source,java]
+[source,js]
 ----
 
 var contentType = response.headers().get("content-type");
@@ -1038,7 +1038,7 @@ might be waiting a long time, or run out of memory for large responses.
 As parts of the response body arrive, the `link:jsdoc/http_client_response-HttpClientResponse.html#handler[handler]` is called with
 a `link:jsdoc/buffer-Buffer.html[Buffer]` representing the piece of the body:
 
-[source,java]
+[source,js]
 ----
 
 client.getNow("some-uri", function (response) {
@@ -1053,7 +1053,7 @@ client.getNow("some-uri", function (response) {
 If you know the response body is not very large and want to aggregate it all in memory before handling it, you can
 either aggregate it yourself:
 
-[source,java]
+[source,js]
 ----
 var Buffer = require("vertx-js/buffer");
 
@@ -1079,7 +1079,7 @@ client.getNow("some-uri", function (response) {
 Or you can use the convenience `link:jsdoc/http_client_response-HttpClientResponse.html#bodyHandler[bodyHandler]` which
 is called with the entire body when the response has been fully read:
 
-[source,java]
+[source,js]
 ----
 
 client.getNow("some-uri", function (response) {
@@ -1126,7 +1126,7 @@ This is used in conjunction with `link:jsdoc/http_client_request-HttpClientReque
 
 Here's an example:
 
-[source,java]
+[source,js]
 ----
 
 var request = client.put("some-uri", function (response) {
@@ -1240,7 +1240,7 @@ on the server instance.
 When a WebSocket connection is made to the server, the handler will be called, passing in an instance of
 `link:jsdoc/server_web_socket-ServerWebSocket.html[ServerWebSocket]`.
 
-[source,java]
+[source,js]
 ----
 
 server.websocketHandler(function (websocket) {
@@ -1251,7 +1251,7 @@ server.websocketHandler(function (websocket) {
 
 You can choose to reject the WebSocket by calling `link:jsdoc/server_web_socket-ServerWebSocket.html#reject[reject]`.
 
-[source,java]
+[source,js]
 ----
 
 server.websocketHandler(function (websocket) {
@@ -1268,7 +1268,7 @@ server.websocketHandler(function (websocket) {
 The second way of handling WebSockets is to handle the HTTP Upgrade request that was sent from the client, and
 call `link:jsdoc/http_server_request-HttpServerRequest.html#upgrade[upgrade]` on the server request.
 
-[source,java]
+[source,js]
 ----
 
 server.requestHandler(function (request) {
@@ -1300,7 +1300,7 @@ providing a handler.
 
 The handler will be called with an instance of `link:jsdoc/web_socket-WebSocket.html[WebSocket]` when the connection has been made:
 
-[source,java]
+[source,js]
 ----
 client.websocket("/some-uri", function (websocket) {
   console.log("Connected!");
@@ -1313,7 +1313,7 @@ client.websocket("/some-uri", function (websocket) {
 If you wish to write a single binary WebSocket message containing a single WebSocket frame to the WebSocket (a
 common case) the simplest way to do this is to use `link:jsdoc/web_socket-WebSocket.html#writeMessage[writeMessage]`:
 
-[source,java]
+[source,js]
 ----
 var Buffer = require("vertx-js/buffer");
 // Write a simple message
@@ -1342,7 +1342,7 @@ to the WebSocket using `link:jsdoc/web_socket-WebSocket.html#writeFrame[writeFra
 
 Here's an example for binary frames:
 
-[source,java]
+[source,js]
 ----
 var WebSocketFrame = require("vertx-js/web_socket_frame");
 
@@ -1366,7 +1366,7 @@ To read frames from a WebSocket you use the `link:jsdoc/web_socket-WebSocket.htm
 The frame handler will be called with instances of `link:jsdoc/web_socket_frame-WebSocketFrame.html[WebSocketFrame]` when a frame arrives,
 for example:
 
-[source,java]
+[source,js]
 ----
 
 websocket.frameHandler(function (frame) {

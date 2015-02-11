@@ -6,7 +6,7 @@ Vert.x allows you to easily write non blocking TCP clients and servers.
 
 The simplest way to create a TCP server, using all default options is as follows:
 
-[source,java]
+[source,js]
 ----
 
 var server = vertx.createNetServer();
@@ -18,7 +18,7 @@ var server = vertx.createNetServer();
 If you don't want the default, a server can be configured by passing in a `link:dataobject/NetServerOptions.html[NetServerOptions]`
 instance when creating it:
 
-[source,java]
+[source,js]
 ----
 
 var options = {
@@ -35,7 +35,7 @@ alternatives.
 
 To tell the server to listen at the host and port as specified in the options:
 
-[source,java]
+[source,js]
 ----
 
 var server = vertx.createNetServer();
@@ -45,7 +45,7 @@ server.listen();
 
 Or to specify the host and port in the call to listen, ignoring what is configured in the options:
 
-[source,java]
+[source,js]
 ----
 
 var server = vertx.createNetServer();
@@ -62,7 +62,7 @@ listen has returned.
 If you want to be notified when the server is actually listening you can provide a handler to the `listen` call.
 For example:
 
-[source,java]
+[source,js]
 ----
 
 var server = vertx.createNetServer();
@@ -82,7 +82,7 @@ If `0` is used as the listening port, the server will find an unused random port
 
 To find out the real port the server is listening on you can call `link:jsdoc/net_server-NetServer.html#actualPort[actualPort]`.
 
-[source,java]
+[source,js]
 ----
 
 var server = vertx.createNetServer();
@@ -100,7 +100,7 @@ server.listen(0, "localhost", function (res, res_err) {
 
 To be notified when a connection is made you need to set a `link:jsdoc/net_server-NetServer.html#connectHandler[connectHandler]`:
 
-[source,java]
+[source,js]
 ----
 
 var server = vertx.createNetServer();
@@ -122,7 +122,7 @@ socket.
 This handler will be called with an instance of `link:jsdoc/buffer-Buffer.html[Buffer]` every time data is received on
 the socket.
 
-[source,java]
+[source,js]
 ----
 
 var server = vertx.createNetServer();
@@ -138,7 +138,7 @@ server.connectHandler(function (socket) {
 
 You write to a socket using one of `link:jsdoc/net_socket-NetSocket.html#write[write]`.
 
-[source,java]
+[source,js]
 ----
 var Buffer = require("vertx-js/buffer");
 
@@ -163,7 +163,7 @@ Write operations are asynchronous and may not occur until some time after the ca
 If you want to be notified when a socket is closed, you can set a `link:jsdoc/net_socket-NetSocket.html#closeHandler[closeHandler]`
 on it:
 
-[source,java]
+[source,js]
 ----
 
 socket.closeHandler(function (v) {
@@ -199,7 +199,7 @@ can be retrieved using `link:jsdoc/net_socket-NetSocket.html#remoteAddress[remot
 Files can be written to the socket directly using `link:jsdoc/net_socket-NetSocket.html#sendFile[sendFile]`. This can be a very
 efficient way to send files, as it can be handled by the OS kernel directly where supported by the operating system.
 
-[source,java]
+[source,js]
 ----
 
 socket.sendFile("myfile.dat");
@@ -231,7 +231,7 @@ If you want to be notified when the actual close has completed then you can pass
 
 This handler will then be called when the close has fully completed.
 
-[source,java]
+[source,js]
 ----
 
 server.close(function (res, res_err) {
@@ -260,7 +260,7 @@ In order to utilise more cores of your server you will need to deploy more insta
 
 You can instantiate more instances programmatically in your code:
 
-[source,java]
+[source,js]
 ----
 
 // Create a few instances so we can utilise cores
@@ -285,7 +285,7 @@ on the command line:
 
 or when programmatically deploying your verticle
 
-[source,java]
+[source,js]
 ----
 
 var options = {
@@ -315,7 +315,7 @@ Consequently Vert.x TCP servers can scale over available cores while each instan
 
 The simplest way to create a TCP client, using all default options is as follows:
 
-[source,java]
+[source,js]
 ----
 
 var client = vertx.createNetClient();
@@ -327,7 +327,7 @@ var client = vertx.createNetClient();
 If you don't want the default, a client can be configured by passing in a `link:dataobject/NetClientOptions.html[NetClientOptions]`
 instance when creating it:
 
-[source,java]
+[source,js]
 ----
 
 var options = {
@@ -343,7 +343,7 @@ To make a connection to a server you use `link:jsdoc/net_client-NetClient.html#c
 specifying the port and host of the server and a handler that will be called with a result containing the
 `link:jsdoc/net_socket-NetSocket.html[NetSocket]` when connection is successful or with a failure if connection failed.
 
-[source,java]
+[source,js]
 ----
 
 var options = {
@@ -370,7 +370,7 @@ This is configured with `link:dataobject/NetClientOptions.html#setReconnectInter
 NOTE: Currently Vert.x will not attempt to reconnect if a connection fails, reconnect attempts and interval
 only apply to creating initial connections.
 
-[source,java]
+[source,js]
 ----
 
 var options = {
@@ -412,7 +412,7 @@ utility which ships with the JDK.
 
 The password for the key store should also be provided:
 
-[source,java]
+[source,js]
 ----
 var options = {
   "ssl" : true,
@@ -427,7 +427,7 @@ var server = vertx.createNetServer(options);
 
 Alternatively you can read the key store yourself as a buffer and provide that directly:
 
-[source,java]
+[source,js]
 ----
 var myKeyStoreAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/server-keystore.jks");
 var jksOptions = {
@@ -445,7 +445,7 @@ var server = vertx.createNetServer(options);
 Key/certificate in PKCS#12 format (http://en.wikipedia.org/wiki/PKCS_12), usually with the `.pfx`  or the `.p12`
 extension can also be loaded in a similar fashion than JKS key stores:
 
-[source,java]
+[source,js]
 ----
 var options = {
   "ssl" : true,
@@ -460,7 +460,7 @@ var server = vertx.createNetServer(options);
 
 Buffer configuration is also supported:
 
-[source,java]
+[source,js]
 ----
 var myKeyStoreAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/server-keystore.pfx");
 var pfxOptions = {
@@ -477,7 +477,7 @@ var server = vertx.createNetServer(options);
 
 Another way of providing server private key and certificate separately using `.pem` files.
 
-[source,java]
+[source,js]
 ----
 var options = {
   "ssl" : true,
@@ -492,7 +492,7 @@ var server = vertx.createNetServer(options);
 
 Buffer configuration is also supported:
 
-[source,java]
+[source,js]
 ----
 var myKeyAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/server-key.pem");
 var myCertAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/server-cert.pem");
@@ -521,7 +521,7 @@ utility which ships with the JDK.
 
 The password for the trust store should also be provided:
 
-[source,java]
+[source,js]
 ----
 var options = {
   "ssl" : true,
@@ -537,7 +537,7 @@ var server = vertx.createNetServer(options);
 
 Alternatively you can read the trust store yourself as a buffer and provide that directly:
 
-[source,java]
+[source,js]
 ----
 var myTrustStoreAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/truststore.jks");
 var options = {
@@ -555,7 +555,7 @@ var server = vertx.createNetServer(options);
 Certificate authority in PKCS#12 format (http://en.wikipedia.org/wiki/PKCS_12), usually with the `.pfx`  or the `.p12`
 extension can also be loaded in a similar fashion than JKS trust stores:
 
-[source,java]
+[source,js]
 ----
 var options = {
   "ssl" : true,
@@ -571,7 +571,7 @@ var server = vertx.createNetServer(options);
 
 Buffer configuration is also supported:
 
-[source,java]
+[source,js]
 ----
 var myTrustStoreAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/truststore.pfx");
 var options = {
@@ -588,7 +588,7 @@ var server = vertx.createNetServer(options);
 
 Another way of providing server certificate authority using a list `.pem` files.
 
-[source,java]
+[source,js]
 ----
 var options = {
   "ssl" : true,
@@ -605,7 +605,7 @@ var server = vertx.createNetServer(options);
 
 Buffer configuration is also supported:
 
-[source,java]
+[source,js]
 ----
 var myCaAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/server-ca.pfx");
 var options = {
@@ -633,7 +633,7 @@ If the `link:jsdoc/client_options_base-ClientOptionsBase.html#setTrustAll[trustA
 trust all server certificates. The connection will still be encrypted but this mode is vulnerable to 'man in the middle' attacks. I.e. you can't
 be sure who you are connecting to. Use this with caution. Default value is false.
 
-[source,java]
+[source,js]
 ----
 var options = {
   "ssl" : true,
@@ -655,7 +655,7 @@ trust store location is set by using the function `link:dataobject/JksOptions.ht
 `link:dataobject/JksOptions.html[jks options]`. If a server presents a certificate during connection which is not
 in the client trust store, the connection attempt will not succeed.
 
-[source,java]
+[source,js]
 ----
 var options = {
   "ssl" : true,
@@ -670,7 +670,7 @@ var client = vertx.createNetClient(options);
 
 Buffer configuration is also supported:
 
-[source,java]
+[source,js]
 ----
 var myTrustStoreAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/truststore.jks");
 var options = {
@@ -687,7 +687,7 @@ var client = vertx.createNetClient(options);
 Certificate authority in PKCS#12 format (http://en.wikipedia.org/wiki/PKCS_12), usually with the `.pfx`  or the `.p12`
 extension can also be loaded in a similar fashion than JKS trust stores:
 
-[source,java]
+[source,js]
 ----
 var options = {
   "ssl" : true,
@@ -702,7 +702,7 @@ var client = vertx.createNetClient(options);
 
 Buffer configuration is also supported:
 
-[source,java]
+[source,js]
 ----
 var myTrustStoreAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/truststore.pfx");
 var options = {
@@ -718,7 +718,7 @@ var client = vertx.createNetClient(options);
 
 Another way of providing server certificate authority using a list `.pem` files.
 
-[source,java]
+[source,js]
 ----
 var options = {
   "ssl" : true,
@@ -734,7 +734,7 @@ var client = vertx.createNetClient(options);
 
 Buffer configuration is also supported:
 
-[source,java]
+[source,js]
 ----
 var myTrustStoreAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/ca-cert.pem");
 var options = {
@@ -759,7 +759,7 @@ Again it's just a regular Java key store. The client keystore location is set by
 `link:dataobject/JksOptions.html#setPath[path]` on the
 `link:dataobject/JksOptions.html[jks options]`.
 
-[source,java]
+[source,js]
 ----
 var options = {
   "ssl" : true,
@@ -774,7 +774,7 @@ var client = vertx.createNetClient(options);
 
 Buffer configuration is also supported:
 
-[source,java]
+[source,js]
 ----
 var myKeyStoreAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/client-keystore.jks");
 var jksOptions = {
@@ -792,7 +792,7 @@ var client = vertx.createNetClient(options);
 Key/certificate in PKCS#12 format (http://en.wikipedia.org/wiki/PKCS_12), usually with the `.pfx`  or the `.p12`
 extension can also be loaded in a similar fashion than JKS key stores:
 
-[source,java]
+[source,js]
 ----
 var options = {
   "ssl" : true,
@@ -807,7 +807,7 @@ var client = vertx.createNetClient(options);
 
 Buffer configuration is also supported:
 
-[source,java]
+[source,js]
 ----
 var myKeyStoreAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/client-keystore.pfx");
 var pfxOptions = {
@@ -824,7 +824,7 @@ var client = vertx.createNetClient(options);
 
 Another way of providing server private key and certificate separately using `.pem` files.
 
-[source,java]
+[source,js]
 ----
 var options = {
   "ssl" : true,
@@ -839,7 +839,7 @@ var client = vertx.createNetClient(options);
 
 Buffer configuration is also supported:
 
-[source,java]
+[source,js]
 ----
 var myKeyAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/client-key.pem");
 var myCertAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/client-cert.pem");
@@ -863,7 +863,7 @@ Trust can be configured to use a certificate revocation list (CRL) for revoked c
 longer be trusted. The `link:dataobject/NetClientOptions.html#addCrlPath[crlPath]` configures
 the crl list to use:
 
-[source,java]
+[source,js]
 ----
 var options = {
   "ssl" : true,
@@ -878,7 +878,7 @@ var client = vertx.createNetClient(options);
 
 Buffer configuration is also supported:
 
-[source,java]
+[source,js]
 ----
 var myCrlAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/crl.pem");
 var options = {

@@ -48,7 +48,7 @@ So how do you get an instance?
 
 If you're embedding Vert.x then you simply create an instance as follows:
 
-[source,java]
+[source,js]
 ----
 var Vertx = require("vertx-js/vertx");
 var vertx = Vertx.vertx();
@@ -64,7 +64,7 @@ require, for example, isolation between the event bus or different groups of ser
 
 When creating a Vertx object you can also specify options if the defaults aren't right for you:
 
-[source,java]
+[source,js]
 ----
 var Vertx = require("vertx-js/vertx");
 var vertx = Vertx.vertx({
@@ -90,7 +90,7 @@ You may have noticed that in the previous examples a *fluent* API was used.
 
 A fluent API is where multiple methods calls can be chained together. For example:
 
-[source,java]
+[source,js]
 ----
 request.response().putHeader("Content-Type", "text/plain").write("some text").end();
 
@@ -102,7 +102,7 @@ Chaining calls like this allows you to write code that's a little bit less verbo
 like the fluent approach *we don't force you* to do it that way, you can happily ignore it if you prefer and write
 your code like this:
 
-[source,java]
+[source,js]
 ----
 var response = request.response();
 response.putHeader("Content-Type", "text/plain");
@@ -127,9 +127,9 @@ Some example events are:
 You handle events by providing _handlers_ to the Vert.x APIs. For example to receive a timer event every second you
 would do:
 
-[source,java]
+[source,js]
 ----
-vertx.setTimer(1000, function (id) {
+vertx.setPeriodic(1000, function (id) {
   // This handler will get called every second
   console.log("timer fired!");
 });
@@ -138,7 +138,7 @@ vertx.setTimer(1000, function (id) {
 
 Or to receive an HTTP request:
 
-[source,java]
+[source,js]
 ----
 // Respond to each http request with "Hello World"
 server.requestHandler(function (request) {
@@ -276,7 +276,7 @@ from doing any other useful work. So how can you do this?
 It's done by calling `link:jsdoc/vertx-Vertx.html#executeBlocking[executeBlocking]` specifying both the blocking code to execute and a
 result handler to be called back asynchronous when the blocking code has been executed.
 
-[source,java]
+[source,js]
 ----
 vertx.executeBlocking(function (future) {
   // Call some blocking API that takes a significant amount of time to return
@@ -351,7 +351,7 @@ directly while on an event loop.
 
 If you want to deploy a verticle as a worker verticle you do that with `link:dataobject/DeploymentOptions.html#setWorker[setWorker]`.
 
-[source,java]
+[source,js]
 ----
 var options = {
   "worker" : true
@@ -396,7 +396,7 @@ This allows you to deploy verticles written in any language from any other langu
 
 Here's an example of deploying some different types of verticles:
 
-[source,java]
+[source,js]
 ----
 
 // Deploy a Java verticle - the name is the fully qualified class name of the verticle class
@@ -443,7 +443,7 @@ Verticle deployment is asynchronous and may complete some time after the call to
 
 If you want to be notified when deployment is complete you can deploy specifying a completion handler:
 
-[source,java]
+[source,js]
 ----
 vertx.deployVerticle("com.mycompany.MyOrderProcessorVerticle", function (res, res_err) {
   if ((res != null)) {
@@ -465,7 +465,7 @@ Deployments can be undeployed with `link:jsdoc/vertx-Vertx.html#undeploy[undeplo
 
 Un-deployment is itself asynchronous so if you want to be notified when un-deployment is complete you can deploy specifying a completion handler:
 
-[source,java]
+[source,js]
 ----
 vertx.undeploy(deploymentID, function (res, res_err) {
   if ((res != null)) {
@@ -482,7 +482,7 @@ vertx.undeploy(deploymentID, function (res, res_err) {
 When deploying a verticle using a verticle name, you can specify the number of verticle instances that you
 want to deploy:
 
-[source,java]
+[source,js]
 ----
 var options = {
   "instances" : 16
@@ -498,7 +498,7 @@ and multiple cores on your machine, so you want to deploy multiple instances to 
 
 Configuration in the form of JSON can be passed to a verticle at deployment time:
 
-[source,java]
+[source,js]
 ----
 var config = {
   "name" : "tim",
@@ -536,7 +536,7 @@ other things.
 
 Here's an example of using an isolation group to isolate a verticle deployment.
 
-[source,java]
+[source,js]
 ----
 var options = {
   "isolationGroup" : "mygroup"
@@ -620,7 +620,7 @@ A one shot timer calls an event handler after a certain delay, expressed in mill
 
 To set a timer to fire once you use `link:jsdoc/vertx-Vertx.html#setTimer[setTimer]` method passing in the delay and a handler
 
-[source,java]
+[source,js]
 ----
 var timerID = vertx.setTimer(1000, function (id) {
   console.log("And one second later this is printed");
@@ -642,7 +642,7 @@ The return value of `setPeriodic` is a unique timer id (long). This can be later
 
 The argument passed into the timer event handler is also the unique timer id:
 
-[source,java]
+[source,js]
 ----
 var timerID = vertx.setPeriodic(1000, function (id) {
   console.log("And every second this is printed");
@@ -656,7 +656,7 @@ console.log("First this is printed");
 
 To cancel a periodic timer, call `link:jsdoc/vertx-Vertx.html#cancelTimer[cancelTimer]` specifying the timer id. For example:
 
-[source,java]
+[source,js]
 ----
 vertx.cancelTimer(timerID);
 

@@ -6,7 +6,7 @@ and even `link:jsdoc/vertx-Vertx.html[Vertx]` itself.
 
 By default Vert.x does not record any metrics. Instead it provides an SPI for others to implement like https://github.com/vert-x3/vertx-metrics[vertx-metrics]
 which can be added to the classpath. Once added, you can enable metrics by doing the following:
-[source,java]
+[source,js]
 ----
 var Vertx = require("vertx-js/vertx");
 var vertx = Vertx.vertx({
@@ -20,7 +20,7 @@ var vertx = Vertx.vertx({
 Once enabled, you can retrieve metrics from any `link:jsdoc/measured-Measured.html[Measured]` object which provides
 a map of the metric name to the data, represented by a `link:jsdoc/json_object-JsonObject.html[JsonObject]`. So for example if we were to print
 out all metrics for a particular Vert.x instance:
-[source,java]
+[source,js]
 ----
 var metrics = vertx.metrics();
 metrics.forEach(function (metric, name) {
@@ -37,7 +37,7 @@ without having to know the details of the naming scheme of every metric (somethi
 
 Since `link:jsdoc/http_server-HttpServer.html[HttpServer]` implements `link:jsdoc/measured-Measured.html[Measured]`, you can easily grab all metrics
 that are specific for that particular http server.
-[source,java]
+[source,js]
 ----
 var server = vertx.createHttpServer();
 // set up server

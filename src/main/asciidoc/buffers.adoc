@@ -16,7 +16,7 @@ Here are some examples of creating buffers:
 
 Create a new empty buffer:
 
-[source,java]
+[source,js]
 ----
 var Buffer = require("vertx-js/buffer");
 var buff = Buffer.buffer();
@@ -25,7 +25,7 @@ var buff = Buffer.buffer();
 
 Create a buffer from a String. The String will be encoded in the buffer using UTF-8.
 
-[source,java]
+[source,js]
 ----
 var Buffer = require("vertx-js/buffer");
 var buff = Buffer.buffer("some string");
@@ -34,7 +34,7 @@ var buff = Buffer.buffer("some string");
 
 Create a buffer from a String: The String will be encoded using the specified encoding, e.g:
 
-[source,java]
+[source,js]
 ----
 var Buffer = require("vertx-js/buffer");
 var buff = Buffer.buffer("some string", "UTF-16");
@@ -49,7 +49,7 @@ more efficient than the buffer automatically resizing multiple times as data is 
 
 Note that buffers created this way *are empty*. It does not create a buffer filled with zeros up to the specified size.
 
-[source,java]
+[source,js]
 ----
 var Buffer = require("vertx-js/buffer");
 var buff = Buffer.buffer(10000);
@@ -69,7 +69,7 @@ Append methods exist for appending various different types.
 
 The return value of the  methods is the buffer itself, so these can be chained:
 
-[source,java]
+[source,js]
 ----
 var Buffer = require("vertx-js/buffer");
 var buff = Buffer.buffer();
@@ -88,7 +88,7 @@ represents the position in the buffer where to start writing the data.
 
 The buffer will always expand as necessary to accommodate the data.
 
-[source,java]
+[source,js]
 ----
 var Buffer = require("vertx-js/buffer");
 var buff = Buffer.buffer();
@@ -103,7 +103,7 @@ buff.setString(0, "hello");
 Data is read from a buffer using the  methods. Get methods exist for various datatypes.
 The first argument to these methods is an index in the buffer from where to get the data.
 
-[source,java]
+[source,js]
 ----
 var Buffer = require("vertx-js/buffer");
 var buff = Buffer.buffer();

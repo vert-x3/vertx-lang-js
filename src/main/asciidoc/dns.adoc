@@ -7,7 +7,7 @@ this Vert.x offers it's own API for DNS resolution which is fully asynchronous.
 
 To obtain a DnsClient instance you will create a new via the Vertx instance.
 
-[source,java]
+[source,js]
 ----
 var client = vertx.createDnsClient(53, "10.0.0.1");
 
@@ -24,7 +24,7 @@ so it behaves the same way as you may be used from when using "nslookup" on your
 
 To lookup the A / AAAA record for "vertx.io" you would typically use it like:
 
-[source,java]
+[source,js]
 ----
 var client = vertx.createDnsClient(53, "10.0.0.1");
 client.lookup("vertx.io", function (ar, ar_err) {
@@ -44,7 +44,7 @@ the same way as you may be used from when using "nslookup" on your operation sys
 
 To lookup the A record for "vertx.io" you would typically use it like:
 
-[source,java]
+[source,js]
 ----
 var client = vertx.createDnsClient(53, "10.0.0.1");
 client.lookup4("vertx.io", function (ar, ar_err) {
@@ -59,12 +59,12 @@ client.lookup4("vertx.io", function (ar, ar_err) {
 
 === lookup6
 
-Try to lookup the AAAA (ipv5) record for a given name. The first which is returned will be used, so it behaves the
+Try to lookup the AAAA (ipv6) record for a given name. The first which is returned will be used, so it behaves the
 same way as you may be used from when using "nslookup" on your operation system.
 
 To lookup the A record for "vertx.io" you would typically use it like:
 
-[source,java]
+[source,js]
 ----
 var client = vertx.createDnsClient(53, "10.0.0.1");
 client.lookup6("vertx.io", function (ar, ar_err) {
@@ -84,7 +84,7 @@ systems.
 
 To lookup all the A records for "vertx.io" you would typically do:
 
-[source,java]
+[source,js]
 ----
 var client = vertx.createDnsClient(53, "10.0.0.1");
 client.resolveA("vertx.io", function (ar, ar_err) {
@@ -107,7 +107,7 @@ operation systems.
 
 To lookup all the AAAAA records for "vertx.io" you would typically do:
 
-[source,java]
+[source,js]
 ----
 var client = vertx.createDnsClient(53, "10.0.0.1");
 client.resolveAAAA("vertx.io", function (ar, ar_err) {
@@ -130,7 +130,7 @@ systems.
 
 To lookup all the CNAME records for "vertx.io" you would typically do:
 
-[source,java]
+[source,js]
 ----
 var client = vertx.createDnsClient(53, "10.0.0.1");
 client.resolveCNAME("vertx.io", function (ar, ar_err) {
@@ -153,7 +153,7 @@ emails for a given domain.
 
 To lookup all the MX records for "vertx.io" you would typically do:
 
-[source,java]
+[source,js]
 ----
 var client = vertx.createDnsClient(53, "10.0.0.1");
 client.resolveMX("vertx.io", function (ar, ar_err) {
@@ -174,7 +174,7 @@ means MX records with smaller priority coming first in the List.
 
 The `link:jsdoc/mx_record-MxRecord.html[MxRecord]` allows you to access the priority and the name of the MX record by offer methods for it like:
 
-[source,java]
+[source,js]
 ----
 todo
 ----
@@ -185,7 +185,7 @@ Try to resolve all TXT records for a given name. TXT records are often used to d
 
 To resolve all the TXT records for "vertx.io" you could use something along these lines:
 
-[source,java]
+[source,js]
 ----
 var client = vertx.createDnsClient(53, "10.0.0.1");
 client.resolveTXT("vertx.io", function (ar, ar_err) {
@@ -208,7 +208,7 @@ for a given domain.
 
 To resolve all the NS records for "vertx.io" you could use something along these lines:
 
-[source,java]
+[source,js]
 ----
 var client = vertx.createDnsClient(53, "10.0.0.1");
 client.resolveNS("vertx.io", function (ar, ar_err) {
@@ -231,7 +231,7 @@ hostname of services. Some protocols need this extra informations.
 
 To lookup all the SRV records for "vertx.io" you would typically do:
 
-[source,java]
+[source,js]
 ----
 var client = vertx.createDnsClient(53, "10.0.0.1");
 client.resolveSRV("vertx.io", function (ar, ar_err) {
@@ -252,7 +252,7 @@ with smaller priority coming first in the List.
 
 The SrvRecord allows you to access all informations contained in the SRV record itself:
 
-[source,java]
+[source,js]
 ----
 todo
 ----
@@ -265,7 +265,7 @@ Try to resolve the PTR record for a given name. The PTR record maps an ipaddress
 
 To resolve the PTR record for the ipaddress 10.0.0.1 you would use the PTR notion of "1.0.0.10.in-addr.arpa"
 
-[source,java]
+[source,js]
 ----
 var client = vertx.createDnsClient(53, "10.0.0.1");
 client.resolvePTR("1.0.0.10.in-addr.arpa", function (ar, ar_err) {
@@ -286,7 +286,7 @@ just pass in the ipaddress and not a valid PTR query string.
 
 To do a reverse lookup for the ipaddress 10.0.0.1 do something similar like this:
 
-[source,java]
+[source,js]
 ----
 var client = vertx.createDnsClient(53, "10.0.0.1");
 client.reverseLookup("10.0.0.1", function (ar, ar_err) {
