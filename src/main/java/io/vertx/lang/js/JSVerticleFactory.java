@@ -73,6 +73,7 @@ public class JSVerticleFactory implements VerticleFactory {
     }
 
     private ScriptObjectMirror exports;
+    private ScriptObjectMirror future;
 
     private boolean functionExists(String functionName) {
       Object som = exports.getMember(functionName);
@@ -94,12 +95,15 @@ public class JSVerticleFactory implements VerticleFactory {
       synchronized (newCount) {
         engine.put("__verticle", this);
         exports = (ScriptObjectMirror) engine.eval("require('" + verticleName + "');");
+        future = (ScriptObjectMirror) engine.eval("require('vertx-js/future');");
 
         if (functionExists(VERTX_START_FUNCTION)) {
           exports.callMember(VERTX_START_FUNCTION);
           startFuture.complete();
         } else if (functionExists(VERTX_START_ASYNC_FUNCTION)) {
-          exports.callMember(VERTX_START_ASYNC_FUNCTION, startFuture);
+          Object wrappedFuture = future.newObject(startFuture);
+          exports.callMember(VERTX_START_ASYNC_FUNCTION, wrappedFuture);
+          ScriptObjectMirror a = null;
         } else {
           // If there's no vertStart function and this is the first time this module has been deployed, then the
           // script will have now been run as the require was executed so we don't want to execute it again.
@@ -122,7 +126,8 @@ public class JSVerticleFactory implements VerticleFactory {
         exports.callMember(VERTX_STOP_FUNCTION);
         stopFuture.complete();
       } else if (functionExists(VERTX_STOP_ASYNC_FUNCTION)) {
-        exports.callMember(VERTX_STOP_ASYNC_FUNCTION, stopFuture);
+        Object wrappedFuture = future.newObject(stopFuture);
+        exports.callMember(VERTX_STOP_ASYNC_FUNCTION, wrappedFuture);
       } else {
         stopFuture.complete();
       }
