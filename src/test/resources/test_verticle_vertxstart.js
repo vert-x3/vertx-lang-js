@@ -14,8 +14,6 @@
  *  You may elect to redistribute this code under either of these licenses.
  */
 
-console.log("in verticle");
-
 // Verticle with an explicit vertxStart method
 
 vertx.eventBus().send("fooaddressinit", "blah")

@@ -12,8 +12,6 @@ function testAsyncStartStop() {
   var start = Date.now();
   vertx.deployVerticle("js:async_test_verticle", function(deploymentID, err) {
 
-    console.log(err);
-
     Assert.assertNotNull(deploymentID);
     Assert.assertNull(err);
     Assert.assertTrue(Date.now() - start > 1000);

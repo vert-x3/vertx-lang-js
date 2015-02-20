@@ -38,7 +38,17 @@ public class RequireTest extends JSTestBase {
   }
 
   @Test
-  public void testBrokenModule() throws Exception {
+  public void testBrokenModuleSyntaxError() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testBrokenModuleTypeErrorInMainBody() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testBrokenModuleTypeErrorInFunction() throws Exception {
     runTest();
   }
 

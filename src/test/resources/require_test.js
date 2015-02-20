@@ -28,11 +28,41 @@ function testRequireNotFound() {
   }
 }
 
-function testBrokenModule() {
+function testBrokenModuleSyntaxError() {
   try {
-    require("brokenmodule");
+    require("brokenmodule_syntaxerror");
+    Assert.fail();
   } catch (e) {
-    Assert.assertEquals("Cannot load module brokenmodule", e.message);
+    // FIXME - Nashorn issue where syntax error is not reported properly from line in eval.
+    // So we just have to log the error to stderr in npm-jvm.js for now
+    //Assert.assertTrue(e.message.contains("brokenmodule_syntaxerror.js@0:5:2 Expected ; but found ar"));
+    //Assert.assertEquals("brokenmodule_syntaxerror.js", e.fileName);
+    //Assert.assertEquals(5, e.lineNumber, 0);
+    Assert.assertTrue(e instanceof SyntaxError);
+  }
+}
+
+function testBrokenModuleTypeErrorInMainBody() {
+  try {
+    var blah = require("brokenmodule_typeerror");
+    Assert.fail();
+  } catch (e) {
+    Assert.assertTrue(e.message.startsWith("234 has no such function \"substr\""));
+    Assert.assertEquals("brokenmodule_typeerror.js", e.fileName);
+    Assert.assertEquals(6, e.lineNumber, 0);
+    Assert.assertTrue(e instanceof TypeError);
+  }
+}
+
+function testBrokenModuleTypeErrorInFunction() {
+  try {
+    var blah = require("brokenmodule_typeerror2");
+    blah();
+    Assert.fail();
+  } catch (e) {
+    Assert.assertTrue(e.message.startsWith("234 has no such function \"substr\""));
+    Assert.assertEquals(9, e.lineNumber, 0);
+    Assert.assertTrue(e instanceof TypeError);
   }
 }
 

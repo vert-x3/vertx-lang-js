@@ -36,4 +36,14 @@ public class DeployTest extends JSTestBase {
     runTest();
   }
 
+  @Test
+  public void testErrorInVerticle() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testSyntaxErrorInVerticle() throws Exception {
+    runTest();
+  }
+
 }
