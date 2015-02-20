@@ -121,9 +121,10 @@ function testErrorInVerticle() {
   vertx.deployVerticle("js:brokenmodule_typeerror", function(depID, err) {
     Assert.assertNull(depID);
     Assert.assertNotNull(err);
+    console.log(err.message);
 
-    Assert.assertTrue(err.message.equals("TypeError: 234 has no such function \"substr\" in brokenmodule_typeerror.js at line number 6"));
-    Assert.assertEquals("brokenmodule_typeerror.js", err.fileName);
+    Assert.assertTrue(err.message.equals("TypeError: 234 has no such function \"substr\" in src/test/resources/brokenmodule_typeerror.js at line number 6"));
+    Assert.assertEquals("src/test/resources/brokenmodule_typeerror.js", err.fileName);
     Assert.assertEquals(6, err.lineNumber, 0);
 
     latch.countDown();

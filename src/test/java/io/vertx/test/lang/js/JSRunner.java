@@ -1,9 +1,10 @@
 package io.vertx.test.lang.js;
 
+import io.vertx.lang.js.ClasspathFileResolver;
+
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import java.io.File;
 import java.net.URL;
 
 /**
@@ -18,7 +19,6 @@ public class JSRunner {
       System.out.println("message:" + e.getMessage());
       System.out.println("fileName:" + e.getFileName());
       System.out.println("lineNumber:" + e.getLineNumber());
-
     }
   }
 
@@ -38,28 +38,16 @@ public class JSRunner {
     load(scriptName, engine);
   }
 
-
-
   private void load(String scriptName, ScriptEngine engine) throws ScriptException {
 
-    // This is a hack to get Nashorn debugging working, as it doesn't work if the script is in the target directory
-    // which it will be when running in the IDE as IntelliJ copies
-    // src/main/resources and src/test/resources to target/classes during make!!
-
-    String file = "src/main/resources/" + scriptName;
-    File f = new File(file);
-    if (!f.exists()) {
-      file = "src/test/resources/" + scriptName;
-      f = new File(file);
-      if (!f.exists()) {
-        URL url = getClass().getClassLoader().getResource(scriptName);
-        if (url == null) {
-          throw new IllegalStateException("Cannot find " + scriptName + " on classpath");
-        }
-        file = url.getFile();
+    String file = ClasspathFileResolver.resolveFilename(scriptName);
+    if (file == null) {
+      URL url = getClass().getClassLoader().getResource(scriptName);
+      if (url == null) {
+        throw new IllegalStateException("Cannot find " + scriptName + " on classpath");
       }
+      file = url.getFile();
     }
-
     engine.eval("load('" + file + "');");
 
   }

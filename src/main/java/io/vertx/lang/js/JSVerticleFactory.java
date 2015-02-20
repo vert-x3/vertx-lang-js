@@ -34,6 +34,12 @@ import java.util.Scanner;
  */
 public class JSVerticleFactory implements VerticleFactory {
 
+  static {
+    ClasspathFileResolver.init();
+  }
+
+  private static final String JVM_NPM = "vertx-js/util/jvm-npm.js";
+
   private Vertx vertx;
   private ScriptEngine engine;
   private ScriptObjectMirror futureJSClass;
@@ -110,17 +116,20 @@ public class JSVerticleFactory implements VerticleFactory {
       if (engine == null) {
         throw new IllegalStateException("Cannot find Nashorn JavaScript engine - maybe you are not running with Java 8 or later?");
       }
-      URL url = getClass().getClassLoader().getResource("vertx-js/util/jvm-npm.js");
+
+      URL url = getClass().getClassLoader().getResource(JVM_NPM);
       if (url == null) {
-        throw new IllegalStateException("Cannot find vertx/util/jvm-npm.js on classpath");
+        throw new IllegalStateException("Cannot find " + JVM_NPM + " on classpath");
       }
       try (Scanner scanner = new Scanner(url.openStream(), "UTF-8").useDelimiter("\\A")) {
         String jvmNpm = scanner.next();
-        engine.put(ScriptEngine.FILENAME, "jvm-npm.js");
+        String jvmNpmPath = ClasspathFileResolver.resolveFilename(JVM_NPM);
+        jvmNpm += "\n//# sourceURL=" + jvmNpmPath;
         engine.eval(jvmNpm);
       } catch (Exception e) {
-        throw new IllegalStateException("Failed to load vertx/jvm-npm.js", e);
+        throw new IllegalStateException(e);
       }
+
       try {
         futureJSClass = (ScriptObjectMirror) engine.eval("require('vertx-js/future');");
         // Put the globals in

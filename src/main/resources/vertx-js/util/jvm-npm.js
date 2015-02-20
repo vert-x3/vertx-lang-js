@@ -19,9 +19,11 @@
 module = (typeof module == 'undefined') ? {} : module;
 
 (function () {
-  var System = java.lang.System,
-    Scanner = java.util.Scanner,
-    File = java.io.File;
+  var System = java.lang.System;
+  var Scanner = java.util.Scanner;
+  var File = java.io.File;
+
+  var resolver = Packages.io.vertx.lang.js.ClasspathFileResolver;
 
   NativeRequire = (typeof NativeRequire === 'undefined') ? {} : NativeRequire;
   if (typeof require === 'function' && !NativeRequire.require) {
@@ -57,17 +59,26 @@ module = (typeof module == 'undefined') ? {} : module;
   Module._load = function _load(file, modParent, core, main) {
     var module = new Module(file, modParent, core);
     var __FILENAME__ = module.filename;
-    var body = readFile(module.filename, module.core),
-      dir = new File(module.filename).getParent();
+    var body = readFile(module.filename, module.core);
+    var dir = new File(module.filename).getParent();
 
-    var moduleFunc = "function(exports, module, require, __filename, __dirname){ " + body + "\n}\n//# sourceURL=" + file;
+    var sourceURL = resolver.resolveFilename(file);
+    if (!sourceURL) {
+      sourceURL = file;
+    }
+
+    var moduleFunc =
+      "function(exports, module, require, __filename, __dirname){ " + body + "\n}\n//# sourceURL=" + sourceURL;
 
     try {
       var func = eval(moduleFunc);
     } catch (ex) {
       if (ex instanceof SyntaxError) {
 
+        // WARNING! Large pile of Yak hair ahead!
+
         // This is a pain!
+
         // If there is a syntax error in the module the exception is set to up to reflect where the eval
         // was invoked NOT the actual syntax error - we can get the information on the real file and line number
         // by poking around in the referenced nashorn exception and cause
@@ -118,9 +129,13 @@ module = (typeof module == 'undefined') ? {} : module;
       file = file.path;
       core = true;
     }
-    if (useCache && Require.cache[file]) {
-      return Require.cache[file];
-    } else if (file.endsWith('.js')) {
+    if (useCache) {
+      var cached = Require.cache[file];
+      if (cached) {
+        return cached;
+      }
+    }
+    if (file.endsWith('.js')) {
       return Module._load(file, modParent, core);
     } else if (file.endsWith('.json')) {
       return loadJSON(file);
@@ -131,7 +146,7 @@ module = (typeof module == 'undefined') ? {} : module;
     var roots = findRoots(modParent);
     for (var i = 0; i < roots.length; ++i) {
       var root = roots[i];
-      var result = resolveCoreModule(id, root) ||
+      var result = resolveClasspathModule(id, root) ||
         resolveAsFile(id, root, '.js') ||
         resolveAsFile(id, root, '.json') ||
         resolveAsDirectory(id, root) ||
@@ -248,7 +263,7 @@ module = (typeof module == 'undefined') ? {} : module;
     }
   }
 
-  function resolveCoreModule(id, root) {
+  function resolveClasspathModule(id, root) {
     var name = normalizeName(id);
     var classloader = java.lang.Thread.currentThread().getContextClassLoader();
     var is = classloader.getResourceAsStream(name);
@@ -273,7 +288,6 @@ module = (typeof module == 'undefined') ? {} : module;
     } else {
       input = new File(filename);
     }
-    // TODO: I think this is not very efficient
     var scanner = new Scanner(input);
     var res = scanner.useDelimiter("\\A").next();
     scanner.close();
