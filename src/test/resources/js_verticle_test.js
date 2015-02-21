@@ -112,7 +112,42 @@ function testDeployMultipleInstancesWithVertxStart() {
   vertx.deployVerticle("js:test_verticle_vertxstart", {instances: 3});
   Assert.assertTrue(latch.await(2, TimeUnit.MINUTES));
   Assert.assertEquals(numInstances, count, 0);
-  Assert.assertEquals(1, initCount, 0);
+  Assert.assertEquals(numInstances, initCount, 0);
+}
+
+function testErrorInVerticle() {
+  var vertx = Vertx.vertx();
+  var latch = new CountDownLatch(1);
+  vertx.deployVerticle("js:brokenmodule_typeerror", function(depID, err) {
+    Assert.assertNull(depID);
+    Assert.assertNotNull(err);
+    console.log(err.message);
+
+    Assert.assertTrue(err.message.equals("TypeError: 234 has no such function \"substr\" in src/test/resources/brokenmodule_typeerror.js at line number 6"));
+    Assert.assertEquals("src/test/resources/brokenmodule_typeerror.js", err.fileName);
+    Assert.assertEquals(6, err.lineNumber, 0);
+
+    latch.countDown();
+  });
+  Assert.assertTrue(latch.await(2, TimeUnit.MINUTES));
+}
+
+function testSyntaxErrorInVerticle() {
+  var vertx = Vertx.vertx();
+  var latch = new CountDownLatch(1);
+  vertx.deployVerticle("js:brokenmodule_syntaxerror", function(depID, err) {
+
+    Assert.assertNull(depID);
+    Assert.assertNotNull(err);
+
+    // FIXME - currently broken-  Nashorn issue
+    //Assert.assertTrue(err.message.startsWith("SyntaxError: 234 has no such function \"substr\" in brokenmodule_typeerror.js at line number 6"));
+    //Assert.assertEquals("brokenmodule_syntaxerror.js", err.fileName);
+    //Assert.assertEquals(5, err.lineNumber, 0);
+
+    latch.countDown();
+  });
+  Assert.assertTrue(latch.await(2, TimeUnit.MINUTES));
 }
 
 if (typeof this[testName] === 'undefined') {

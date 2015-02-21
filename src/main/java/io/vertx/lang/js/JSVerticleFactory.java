@@ -27,18 +27,22 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.net.URL;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
 public class JSVerticleFactory implements VerticleFactory {
 
+  static {
+    ClasspathFileResolver.init();
+  }
+
+  private static final String JVM_NPM = "vertx-js/util/jvm-npm.js";
+
   private Vertx vertx;
   private ScriptEngine engine;
+  private ScriptObjectMirror futureJSClass;
 
   @Override
   public void init(Vertx vertx) {
@@ -56,15 +60,12 @@ public class JSVerticleFactory implements VerticleFactory {
     return new JSVerticle(VerticleFactory.removePrefix(verticleName));
   }
 
-  private final Map<String, AtomicInteger> deployCounts = new ConcurrentHashMap<>();
-
   public class JSVerticle extends AbstractVerticle {
 
     private static final String VERTX_START_FUNCTION = "vertxStart";
     private static final String VERTX_START_ASYNC_FUNCTION = "vertxStartAsync";
     private static final String VERTX_STOP_FUNCTION = "vertxStop";
     private static final String VERTX_STOP_ASYNC_FUNCTION = "vertxStopAsync";
-    private static final String VERTX_START_FUNCTION_IMPLICIT = "__vertxRunModule";
 
     private final String verticleName;
 
@@ -73,7 +74,6 @@ public class JSVerticleFactory implements VerticleFactory {
     }
 
     private ScriptObjectMirror exports;
-    private ScriptObjectMirror future;
 
     private boolean functionExists(String functionName) {
       Object som = exports.getMember(functionName);
@@ -83,40 +83,15 @@ public class JSVerticleFactory implements VerticleFactory {
     @Override
     public void start(Future<Void> startFuture) throws Exception {
 
-      AtomicInteger newCount = new AtomicInteger();
-      AtomicInteger count = deployCounts.putIfAbsent(verticleName, newCount);
-      if (count != null) {
-        newCount = count;
-      }
-      int cnt = newCount.incrementAndGet();
-      boolean firstTime = cnt == 1; // First time this module has been deployed
-      // We need to synchronize to make sure the same script doesn't get required concurrently (e.g.
-      // if multiple instances are deployed) this can lead to race conditions and failures
-      synchronized (newCount) {
-        engine.put("__verticle", this);
-        exports = (ScriptObjectMirror) engine.eval("require('" + verticleName + "');");
-        future = (ScriptObjectMirror) engine.eval("require('vertx-js/future');");
-
-        if (functionExists(VERTX_START_FUNCTION)) {
-          exports.callMember(VERTX_START_FUNCTION);
-          startFuture.complete();
-        } else if (functionExists(VERTX_START_ASYNC_FUNCTION)) {
-          Object wrappedFuture = future.newObject(startFuture);
-          exports.callMember(VERTX_START_ASYNC_FUNCTION, wrappedFuture);
-          ScriptObjectMirror a = null;
-        } else {
-          // If there's no vertStart function and this is the first time this module has been deployed, then the
-          // script will have now been run as the require was executed so we don't want to execute it again.
-          // If it's not the first time, then the require will be cached so the script won't be run on the require
-          // so we need to run it using the function reference to the script body that we add to the exports object
-          if (!firstTime) {
-            if (!functionExists(VERTX_START_FUNCTION_IMPLICIT)) {
-              throw new IllegalStateException("exports object overwritten in " + verticleName);
-            }
-            exports.callMember(VERTX_START_FUNCTION_IMPLICIT);
-          }
-          startFuture.complete();
-        }
+      exports = (ScriptObjectMirror) engine.eval("require.noCache('" + verticleName + "');");
+      if (functionExists(VERTX_START_FUNCTION)) {
+        exports.callMember(VERTX_START_FUNCTION);
+        startFuture.complete();
+      } else if (functionExists(VERTX_START_ASYNC_FUNCTION)) {
+        Object wrappedFuture = futureJSClass.newObject(startFuture);
+        exports.callMember(VERTX_START_ASYNC_FUNCTION, wrappedFuture);
+      } else {
+        startFuture.complete();
       }
     }
 
@@ -126,7 +101,7 @@ public class JSVerticleFactory implements VerticleFactory {
         exports.callMember(VERTX_STOP_FUNCTION);
         stopFuture.complete();
       } else if (functionExists(VERTX_STOP_ASYNC_FUNCTION)) {
-        Object wrappedFuture = future.newObject(stopFuture);
+        Object wrappedFuture = futureJSClass.newObject(stopFuture);
         exports.callMember(VERTX_STOP_ASYNC_FUNCTION, wrappedFuture);
       } else {
         stopFuture.complete();
@@ -141,29 +116,32 @@ public class JSVerticleFactory implements VerticleFactory {
       if (engine == null) {
         throw new IllegalStateException("Cannot find Nashorn JavaScript engine - maybe you are not running with Java 8 or later?");
       }
-      URL url = getClass().getClassLoader().getResource("vertx-js/util/jvm-npm.js");
+
+      URL url = getClass().getClassLoader().getResource(JVM_NPM);
       if (url == null) {
-        throw new IllegalStateException("Cannot find vertx/util/jvm-npm.js on classpath");
+        throw new IllegalStateException("Cannot find " + JVM_NPM + " on classpath");
       }
       try (Scanner scanner = new Scanner(url.openStream(), "UTF-8").useDelimiter("\\A")) {
-        String requireJS = scanner.next();
-        engine.put(ScriptEngine.FILENAME, "jvm-npm.js");
-        engine.eval(requireJS);
+        String jvmNpm = scanner.next();
+        String jvmNpmPath = ClasspathFileResolver.resolveFilename(JVM_NPM);
+        jvmNpm += "\n//# sourceURL=" + jvmNpmPath;
+        engine.eval(jvmNpm);
       } catch (Exception e) {
-        throw new IllegalStateException("Failed to load vertx/jvm-npm.js", e);
+        throw new IllegalStateException(e);
       }
+
       try {
+        futureJSClass = (ScriptObjectMirror) engine.eval("require('vertx-js/future');");
         // Put the globals in
         engine.put("__jvertx", vertx);
-        // As a temporary hack we also put the engine itself in, this allows us to set script name from JS
-        // which we need to do until # sourceURL = is supported so we can name evals
-        engine.put("__engine", engine);
-        engine.eval("var Vertx = require('vertx-js/vertx'); var vertx = new Vertx(__jvertx); var console = require('vertx-js/util/console');");
-        engine.eval("var setTimeout = function(callback,delay) { return vertx.setTimer(delay, callback); };");
-        engine.eval("var clearTimeout = function(id) { vertx.cancelTimer(id); };");
-        engine.eval("var setInterval = function(callback, delay) { return vertx.setPeriodic(delay, callback); };");
-        engine.eval("var clearInterval = clearTimeout;");
-        engine.eval("var parent = this, global = this;");
+        String globs =
+          "var Vertx = require('vertx-js/vertx'); var vertx = new Vertx(__jvertx); var console = require('vertx-js/util/console');" +
+          "var setTimeout = function(callback,delay) { return vertx.setTimer(delay, callback); };" +
+          "var clearTimeout = function(id) { vertx.cancelTimer(id); };" +
+          "var setInterval = function(callback, delay) { return vertx.setPeriodic(delay, callback); };" +
+          "var clearInterval = clearTimeout;" +
+          "var parent = this; var global = this;";
+        engine.eval(globs);
       } catch (ScriptException e) {
         throw new IllegalStateException("Failed to eval: " + e.getMessage(), e);
       }
