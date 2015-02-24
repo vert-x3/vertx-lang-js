@@ -17,7 +17,9 @@ var fs = vertx.fileSystem();
 // Copy file from foo.txt to bar.txt
 fs.copy("foo.txt", "bar.txt", function (res, res_err) {
   if ((res != null)) {
+    // Copied ok!
   } else {
+    // Something went wrong
   };
 });
 
@@ -59,6 +61,7 @@ fileSystem.open("myfile.txt", options, function (res, res_err) {
   if ((res != null)) {
     var file = res;
   } else {
+    // Something went wrong!
   };
 });
 

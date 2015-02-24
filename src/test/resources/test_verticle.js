@@ -37,6 +37,21 @@ if (typeof global !== 'object') {
   throw "No global";
 }
 
+var proc = process;
+if (java.lang.System.getProperty('vertx.disableNodeJSProcessENV') == null) {
+  if (typeof proc !== 'object') {
+    throw "No process object";
+  }
+  var env = proc.env;
+  if (typeof env !== 'object') {
+    throw "No env object";
+  }
+} else {
+  if (typeof proc !== 'undefined') {
+    throw "proc shouldn't be there!";
+  }
+}
+
 exports.vertxStop = function() {
   vertx.eventBus().send("testComplete", "foo");
 }

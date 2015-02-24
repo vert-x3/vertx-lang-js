@@ -150,6 +150,19 @@ function testSyntaxErrorInVerticle() {
   Assert.assertTrue(latch.await(2, TimeUnit.MINUTES));
 }
 
+function testGlobals() {
+  var vertx = Vertx.vertx();
+  var latch = new CountDownLatch(1);
+  vertx.deployVerticle("js:test_verticle", function(deploymentID, err) {
+
+    Assert.assertNotNull(deploymentID);
+    Assert.assertNull(err);
+    latch.countDown();
+  });
+
+  Assert.assertTrue(latch.await(2, TimeUnit.MINUTES));
+}
+
 if (typeof this[testName] === 'undefined') {
   throw "No such test: " + testName;
 }

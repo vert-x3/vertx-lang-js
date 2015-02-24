@@ -85,6 +85,7 @@ To be notified when a request arrives you need to set a `link:jsdoc/http_server-
 
 var server = vertx.createHttpServer();
 server.requestHandler(function (request) {
+  // Handle the request in here
 });
 
 ----
@@ -1258,6 +1259,7 @@ server.websocketHandler(function (websocket) {
   if (websocket.path() == "/myapi") {
     websocket.reject();
   } else {
+    // Do something
   };
 });
 

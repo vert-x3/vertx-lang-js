@@ -89,6 +89,7 @@ var socket = vertx.createDatagramSocket({
 socket.listen(1234, "0.0.0.0", function (asyncResult, asyncResult_err) {
   if ((asyncResult != null)) {
     socket.handler(function (packet) {
+      // Do something with the packet
     });
   } else {
     console.log("Listen failed" + asyncResult_err);
@@ -157,6 +158,7 @@ var socket = vertx.createDatagramSocket({
 socket.listen(1234, "0.0.0.0", function (asyncResult, asyncResult_err) {
   if ((asyncResult != null)) {
     socket.handler(function (packet) {
+      // Do something with the packet
     });
 
     // join the multicast group
@@ -185,6 +187,7 @@ var socket = vertx.createDatagramSocket({
 socket.listen(1234, "0.0.0.0", function (asyncResult, asyncResult_err) {
   if ((asyncResult != null)) {
     socket.handler(function (packet) {
+      // Do something with the packet
     });
 
     // join the multicast group

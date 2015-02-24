@@ -105,6 +105,7 @@ To be notified when a connection is made you need to set a `link:jsdoc/net_serve
 
 var server = vertx.createNetServer();
 server.connectHandler(function (socket) {
+  // Handle the connection in here
 });
 
 ----

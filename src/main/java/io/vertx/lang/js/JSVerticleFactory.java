@@ -38,6 +38,16 @@ public class JSVerticleFactory implements VerticleFactory {
     ClasspathFileResolver.init();
   }
 
+  /**
+   * By default we will add an empty `process` global with an `env` property which contains the environment
+   * variables - this allows Vert.x to work well with libraries such as React which expect to run on Node.js
+   * and expect to have this global set, and which fail when it is not set.
+   * To disable this then provide a system property with this name and set to any value.
+   */
+  public static final String DISABLE_NODEJS_PROCESS_ENV_PROP_NAME = "vertx.disableNodeJSProcessENV";
+
+  private static final boolean ADD_NODEJS_PROCESS_ENV = System.getProperty(DISABLE_NODEJS_PROCESS_ENV_PROP_NAME) == null;
+
   private static final String JVM_NPM = "vertx-js/util/jvm-npm.js";
 
   private Vertx vertx;
@@ -141,6 +151,9 @@ public class JSVerticleFactory implements VerticleFactory {
           "var setInterval = function(callback, delay) { return vertx.setPeriodic(delay, callback); };" +
           "var clearInterval = clearTimeout;" +
           "var parent = this; var global = this;";
+        if (ADD_NODEJS_PROCESS_ENV) {
+          globs += "var process = {}; process.env=java.lang.System.getenv();";
+        }
         engine.eval(globs);
       } catch (ScriptException e) {
         throw new IllegalStateException("Failed to eval: " + e.getMessage(), e);

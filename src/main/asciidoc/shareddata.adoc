@@ -68,6 +68,7 @@ sd.getClusterWideMap("mymap", function (res, res_err) {
   if ((res != null)) {
     var map = res;
   } else {
+    // Something went wrong!
   };
 });
 
@@ -85,7 +86,9 @@ The actual put is asynchronous and the handler is notified once it is complete:
 
 map.put("foo", "bar", function (resPut, resPut_err) {
   if ((resPut != null)) {
+    // Successfully put the value
   } else {
+    // Something went wrong!
   };
 });
 
@@ -106,6 +109,7 @@ map.get("foo", function (resGet, resGet_err) {
     // Successfully got the value
     var val = resGet;
   } else {
+    // Something went wrong!
   };
 });
 
@@ -149,6 +153,7 @@ sd.getLock("mylock", function (res, res_err) {
       lock.release()});
 
   } else {
+    // Something went wrong
   };
 });
 
@@ -165,6 +170,7 @@ sd.getLockWithTimeout("mylock", 10000, function (res, res_err) {
     var lock = res;
 
   } else {
+    // Failed to get lock
   };
 });
 
@@ -184,6 +190,7 @@ sd.getCounter("mycounter", function (res, res_err) {
   if ((res != null)) {
     var counter = res;
   } else {
+    // Something went wrong!
   };
 });
 

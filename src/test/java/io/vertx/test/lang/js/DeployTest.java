@@ -46,4 +46,9 @@ public class DeployTest extends JSTestBase {
     runTest();
   }
 
+  @Test
+  public void testGlobals() throws Exception {
+    runTest();
+  }
+
 }
