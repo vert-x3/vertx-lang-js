@@ -212,7 +212,7 @@ utils.convReturnTypeUnknown(@includeNamed{templ})
 	@if{static == method.staticMethod}
 @{ind}/**\n
 @if{method.doc != null}
-@{renderDocToHtml(ind, method.doc)}
+@{renderDocToHtml(ind, method.doc, renderLinkToHtml)}
 @end{}\n
 @{ind} @{static ? ("@memberof module:" + genModuleName(type)) : "@public" }\n
 @foreach{param: method.params}@{ind} @param @{param.name} {@{genJSDocType(param.type)}} @if{param.description != null}@{param.description} @end{}@end{"\n"}\n
