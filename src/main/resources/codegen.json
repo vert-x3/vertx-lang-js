@@ -4,9 +4,5 @@
     "kind": "class",
     "fileName": "'resources/' + type.raw.moduleName + '-js/' + helper.convertCamelCaseToUnderscores(type.raw.simpleName) + '.js'",
     "templateFileName": "vertx-js/template/js.templ"
-  }, {
-    "kind": "dataObject",
-    "fileName": "'asciidoc/dataobject/' + type.raw.simpleName + '.adoc'",
-    "templateFileName": "vertx-js/template/dataobject.templ"
   } ]
 }

@@ -21,15 +21,16 @@
  options.setPfxKeyCertOptions(new PfxOptions().setValue(store).setPassword("foo"));
  </pre>
 ++++
+'''
 
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
 |===
-|Name | Type | Description
+^|Name | Type ^| Description
 
-|password
-|String
-| Set the password
-
-|path
-|String
-| Set the path
-|===
+|`password`
+|`String`
+|_Set the password_
+|`path`
+|`String`
+|_Set the path_|===

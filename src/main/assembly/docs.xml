@@ -9,11 +9,11 @@
     <fileSets>
         <fileSet>
             <directory>${asciidoc.dir}</directory>
-            <outputDirectory>/asciidoc</outputDirectory>
+            <outputDirectory>/</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>${project.build.directory}/docs/jsdoc</directory>
-            <outputDirectory>/jsdoc</outputDirectory>
+            <directory>${project.build.directory}/docs/js/jsdoc</directory>
+            <outputDirectory>/js/jsdoc</outputDirectory>
         </fileSet>
     </fileSets>
 </assembly>

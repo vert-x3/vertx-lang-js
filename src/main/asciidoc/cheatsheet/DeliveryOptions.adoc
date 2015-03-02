@@ -6,15 +6,16 @@
  Delivery options allow to configure delivery timeout and message codec name, and to provide any headers
  that you wish to send with the message.
 ++++
+'''
 
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
 |===
-|Name | Type | Description
+^|Name | Type ^| Description
 
-|sendTimeout
-|Number
-| Set the send timeout.
-
-|codecName
-|String
-| Set the codec name.
-|===
+|`sendTimeout`
+|`Number`
+|_Set the send timeout._
+|`codecName`
+|`String`
+|_Set the codec name._|===

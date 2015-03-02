@@ -107,7 +107,7 @@ The first argument to these methods is an index in the buffer from where to get 
 ----
 var Buffer = require("vertx-js/buffer");
 var buff = Buffer.buffer();
-for (var i = 0;i < buff.length();4) {
+for (var i = 0; i < buff.length(); 4) {
   console.log("int value at " + i + " is " + buff.getInt(i));
 };
 

@@ -184,7 +184,7 @@
               </processors>
               <optionMap>
                 <outputDirectory>${project.basedir}/src/main</outputDirectory>
-                <docgen.output>${asciidoc.dir}</docgen.output>
+                <docgen.output>${asciidoc.dir}/js</docgen.output>
               </optionMap>
               <sourceDirectory>${project.build.directory}/sources/vertx-core</sourceDirectory>
             </configuration>
@@ -206,7 +206,7 @@
               </processors>
               <optionMap>
                 <outputDirectory>${project.basedir}/src/main</outputDirectory>
-                <docgen.output>${asciidoc.dir}</docgen.output>
+                <docgen.output>${asciidoc.dir}/js</docgen.output>
               </optionMap>
               <sourceDirectory>src/main/docoverride</sourceDirectory>
             </configuration>
@@ -256,7 +256,7 @@
               <directoryRoots>
                 <directoryRoot>${basedir}/src/main/resources/vertx-js</directoryRoot>
               </directoryRoots>
-              <outputDirectory>${project.build.directory}/docs/jsdoc</outputDirectory>
+              <outputDirectory>${project.build.directory}/docs/js/jsdoc</outputDirectory>
             </configuration>
           </execution>
         </executions>
@@ -277,6 +277,7 @@
               <backend>html</backend>
               <doctype>book</doctype>
               <preserveDirectories>true</preserveDirectories>
+              <relativeBaseDir>true</relativeBaseDir>
             </configuration>
           </execution>
         </executions>

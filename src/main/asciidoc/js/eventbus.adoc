@@ -150,7 +150,7 @@ on the +MessageConsumer+ object.
 [source,js]
 ----
 consumer.completionHandler(function (res, res_err) {
-  if ((res != null)) {
+  if (res_err == null) {
     console.log("The handler registration has reached all nodes");
   } else {
     console.log("Registration failed!");
@@ -169,7 +169,7 @@ be notified when this is complete use `link:jsdoc/message_consumer-MessageConsum
 [source,js]
 ----
 consumer.unregister(function (res, res_err) {
-  if ((res != null)) {
+  if (res_err == null) {
     console.log("The handler un-registration has reached all nodes");
   } else {
     console.log("Un-registration failed!");
@@ -207,7 +207,7 @@ eventBus.send("news.uk.sport", "Yay! Someone kicked a ball");
 ==== Setting headers on messages
 
 Messages sent over the event bus can also contain headers. This can be specified by providing a
-`link:dataobject/DeliveryOptions.html[DeliveryOptions]` when sending or publishing:
+`link:../cheatsheet/DeliveryOptions.html[DeliveryOptions]` when sending or publishing:
 
 [source,js]
 ----
@@ -252,7 +252,7 @@ The sender:
 [source,js]
 ----
 eventBus.send("news.uk.sport", "Yay! Someone kicked a ball across a patch of grass", function (ar, ar_err) {
-  if ((ar != null)) {
+  if (ar_err == null) {
     console.log("Received reply: " + ar.body());
   };
 });
@@ -264,7 +264,7 @@ consisting of multiple rounds.
 
 ==== Sending with timeouts
 
-When sending a message with a reply handler you can specify a timeout in the `link:dataobject/DeliveryOptions.html[DeliveryOptions]`.
+When sending a message with a reply handler you can specify a timeout in the `link:../cheatsheet/DeliveryOptions.html[DeliveryOptions]`.
 
 If a reply is not received within that time, the reply handler will be called with a failure.
 
@@ -297,7 +297,7 @@ var Vertx = require("vertx-js/vertx");
 var options = {
 };
 Vertx.clusteredVertx(options, function (res, res_err) {
-  if ((res != null)) {
+  if (res_err == null) {
     var vertx = res;
     var eventBus = vertx.eventBus();
     console.log("We now have a clustered event bus: " + eventBus);

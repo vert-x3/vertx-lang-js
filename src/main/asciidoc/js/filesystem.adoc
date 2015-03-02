@@ -16,7 +16,7 @@ var fs = vertx.fileSystem();
 
 // Copy file from foo.txt to bar.txt
 fs.copy("foo.txt", "bar.txt", function (res, res_err) {
-  if ((res != null)) {
+  if (res_err == null) {
     // Copied ok!
   } else {
     // Something went wrong
@@ -58,7 +58,7 @@ You open an `link:jsdoc/async_file-AsyncFile.html[AsyncFile]` as follows:
 var options = {
 };
 fileSystem.open("myfile.txt", options, function (res, res_err) {
-  if ((res != null)) {
+  if (res_err == null) {
     var file = res;
   } else {
     // Something went wrong!

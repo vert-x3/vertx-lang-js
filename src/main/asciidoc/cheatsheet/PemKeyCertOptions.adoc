@@ -43,15 +43,16 @@
  options.setPemKeyCertOptions(new PemKeyCertOptions().setKeyValue(key).setCertValue(cert));
  </pre>
 ++++
+'''
 
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
 |===
-|Name | Type | Description
+^|Name | Type ^| Description
 
-|keyPath
-|String
-| Set the path to the key file
-
-|certPath
-|String
-| Set the path to the certificate
-|===
+|`keyPath`
+|`String`
+|_Set the path to the key file_
+|`certPath`
+|`String`
+|_Set the path to the certificate_|===

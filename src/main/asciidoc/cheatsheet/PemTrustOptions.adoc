@@ -31,11 +31,13 @@
  options.setPemTrustOptions(new PemTrustOptions().addCertValue(cert));
  </pre>
 ++++
+'''
 
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
 |===
-|Name | Type | Description
+^|Name | Type ^| Description
 
-|certPaths
-|Array of String
-| Add a certificate path
-|===
+|`certPaths`
+|`Array of String`
+|_Add a certificate path_|===

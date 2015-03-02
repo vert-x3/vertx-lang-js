@@ -21,7 +21,7 @@ function renderSource(elt, source) {
 function toTypeLink(elt) {
     var annotation = java.lang.Thread.currentThread().getContextClassLoader().loadClass("io.vertx.codegen.annotations.DataObject");
     if (elt.getAnnotation(annotation) != null) {
-      return "dataobject/" + elt.getSimpleName().toString() + ".html";
+      return "../cheatsheet/" + elt.getSimpleName().toString() + ".html";
     } else {
       var caseType = java.lang.Thread.currentThread().getContextClassLoader().loadClass("io.vertx.codegen.Case");
       var camel = caseType.getField("CAMEL").get(null);

@@ -15,7 +15,7 @@ var server = vertx.createNetServer();
 
 === Configuring a TCP server
 
-If you don't want the default, a server can be configured by passing in a `link:dataobject/NetServerOptions.html[NetServerOptions]`
+If you don't want the default, a server can be configured by passing in a `link:../cheatsheet/NetServerOptions.html[NetServerOptions]`
 instance when creating it:
 
 [source,js]
@@ -67,7 +67,7 @@ For example:
 
 var server = vertx.createNetServer();
 server.listen(1234, "localhost", function (res, res_err) {
-  if ((res != null)) {
+  if (res_err == null) {
     console.log("Server is now listening!");
   } else {
     console.log("Failed to bind!");
@@ -87,7 +87,7 @@ To find out the real port the server is listening on you can call `link:jsdoc/ne
 
 var server = vertx.createNetServer();
 server.listen(0, "localhost", function (res, res_err) {
-  if ((res != null)) {
+  if (res_err == null) {
     console.log("Server is now listening on actual port: " + server.actualPort());
   } else {
     console.log("Failed to bind!");
@@ -236,7 +236,7 @@ This handler will then be called when the close has fully completed.
 ----
 
 server.close(function (res, res_err) {
-  if ((res != null)) {
+  if (res_err == null) {
     console.log("Server is now closed");
   } else {
     console.log("close failed");
@@ -266,7 +266,7 @@ You can instantiate more instances programmatically in your code:
 
 // Create a few instances so we can utilise cores
 
-for (var i = 0;i < 10;i++) {
+for (var i = 0; i < 10; i++) {
   var server = vertx.createNetServer();
   server.connectHandler(function (socket) {
     socket.handler(function (buffer) {
@@ -325,7 +325,7 @@ var client = vertx.createNetClient();
 
 === Configuring a TCP client
 
-If you don't want the default, a client can be configured by passing in a `link:dataobject/NetClientOptions.html[NetClientOptions]`
+If you don't want the default, a client can be configured by passing in a `link:../cheatsheet/NetClientOptions.html[NetClientOptions]`
 instance when creating it:
 
 [source,js]
@@ -352,7 +352,7 @@ var options = {
 };
 var client = vertx.createNetClient(options);
 client.connect(4321, "localhost", function (res, res_err) {
-  if ((res != null)) {
+  if (res_err == null) {
     console.log("Connected!");
     var socket = res;
   } else {
@@ -365,8 +365,8 @@ client.connect(4321, "localhost", function (res, res_err) {
 === Configuring connection attempts
 
 A client can be configured to automatically retry connecting to the server in the event that it cannot connect.
-This is configured with `link:dataobject/NetClientOptions.html#setReconnectInterval[setReconnectInterval]` and
-`link:dataobject/NetClientOptions.html#setReconnectAttempts[setReconnectAttempts]`.
+This is configured with `link:../cheatsheet/NetClientOptions.html#setReconnectInterval[setReconnectInterval]` and
+`link:../cheatsheet/NetClientOptions.html#setReconnectAttempts[setReconnectAttempts]`.
 
 NOTE: Currently Vert.x will not attempt to reconnect if a connection fails, reconnect attempts and interval
 only apply to creating initial connections.
@@ -391,12 +391,12 @@ TCP clients and servers can be configured to use http://en.wikipedia.org/wiki/Tr
 - earlier versions of TLS were known as SSL.
 
 The APIs of the servers and clients are identical whether or not SSL/TLS is used, and it's enabled by configuring
-the `link:dataobject/NetClientOptions.html[NetClientOptions]` or `link:dataobject/NetServerOptions.html[NetServerOptions]` instances used
+the `link:../cheatsheet/NetClientOptions.html[NetClientOptions]` or `link:../cheatsheet/NetServerOptions.html[NetServerOptions]` instances used
 to create the servers or clients.
 
 ==== Enabling SSL/TLS on the server
 
-SSL/TLS is enabled with  `link:dataobject/NetServerOptions.html#setSsl[ssl]`.
+SSL/TLS is enabled with  `link:../cheatsheet/NetServerOptions.html#setSsl[ssl]`.
 
 By default it is disabled.
 
@@ -652,8 +652,8 @@ Likewise server configuration, the client trust can be configured in several way
 The first method is by specifying the location of a Java trust-store which contains the certificate authority.
 
 It is just a standard Java key store, the same as the key stores on the server side. The client
-trust store location is set by using the function `link:dataobject/JksOptions.html#setPath[path]` on the
-`link:dataobject/JksOptions.html[jks options]`. If a server presents a certificate during connection which is not
+trust store location is set by using the function `link:../cheatsheet/JksOptions.html#setPath[path]` on the
+`link:../cheatsheet/JksOptions.html[jks options]`. If a server presents a certificate during connection which is not
 in the client trust store, the connection attempt will not succeed.
 
 [source,js]
@@ -757,8 +757,8 @@ connecting. The client can be configured in several ways:
 
 The first method is by specifying the location of a Java key-store which contains the key and certificate.
 Again it's just a regular Java key store. The client keystore location is set by using the function
-`link:dataobject/JksOptions.html#setPath[path]` on the
-`link:dataobject/JksOptions.html[jks options]`.
+`link:../cheatsheet/JksOptions.html#setPath[path]` on the
+`link:../cheatsheet/JksOptions.html[jks options]`.
 
 [source,js]
 ----
@@ -861,7 +861,7 @@ Keep in mind that pem configuration, the private key is not crypted.
 ==== Revoking certificate authorities
 
 Trust can be configured to use a certificate revocation list (CRL) for revoked certificates that should no
-longer be trusted. The `link:dataobject/NetClientOptions.html#addCrlPath[crlPath]` configures
+longer be trusted. The `link:../cheatsheet/NetClientOptions.html#addCrlPath[crlPath]` configures
 the crl list to use:
 
 [source,js]
