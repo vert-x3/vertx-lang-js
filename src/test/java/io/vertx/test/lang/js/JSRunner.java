@@ -5,6 +5,8 @@ import io.vertx.lang.js.ClasspathFileResolver;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+
+import java.io.File;
 import java.net.URL;
 
 /**
@@ -47,6 +49,9 @@ public class JSRunner {
         throw new IllegalStateException("Cannot find " + scriptName + " on classpath");
       }
       file = url.getFile();
+    }
+    if (File.separatorChar != '/') {
+      file = file.replace(File.separatorChar, '/');
     }
     engine.eval("load('" + file + "');");
 
