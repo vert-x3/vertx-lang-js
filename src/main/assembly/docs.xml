@@ -12,7 +12,7 @@
             <outputDirectory>/</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>${project.build.directory}/docs/js/jsdoc</directory>
+            <directory>${project.build.directory}/docs/vertx-core/js/jsdoc</directory>
             <outputDirectory>/js/jsdoc</outputDirectory>
         </fileSet>
     </fileSets>

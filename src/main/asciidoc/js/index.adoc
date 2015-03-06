@@ -686,8 +686,6 @@ include::datagrams.adoc[]
 
 include::dns.adoc[]
 
-include::metrics.adoc[]
-
 [[streams]]
 include::streams.adoc[]
 
@@ -696,6 +694,13 @@ include::parsetools.adoc[]
 == Thread safety
 
 Notes on thread safety of Vert.x objects
+
+== Metrics SPI
+
+By default Vert.x does not record any metrics. Instead it provides an SPI for others to implement which can be added
+to the classpath. The metrics SPI is an advanced feature which allows implementers to capture events from Vert.x in
+order to gather metrics. For more information on this, please consult the
+`link:jsdoc/vertx_metrics-VertxMetrics.html[API Documentation]`.
 
 == Clustering
 
