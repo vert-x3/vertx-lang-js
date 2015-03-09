@@ -349,7 +349,7 @@ Worker verticles are designed for calling blocking code, as they won't block any
 If you don't want to use a worker verticle to run blocking code, you can also run <<blocking_code, inline blocking code>>
 directly while on an event loop.
 
-If you want to deploy a verticle as a worker verticle you do that with `link:../cheatsheet/DeploymentOptions.html#setWorker[setWorker]`.
+If you want to deploy a verticle as a worker verticle you do that with `link:../cheatsheet/DeploymentOptions.html#worker[worker]`.
 
 [source,js]
 ----
@@ -549,7 +549,7 @@ vertx.deployVerticle("com.mycompany.MyIsolatedVerticle", options);
 Isolation groups are identified by a name, and the name can be used between different deployments if you want them
 to share an isolated class-loader.
 
-Extra classpath entries can also be provided with `link:../cheatsheet/DeploymentOptions.html#setExtraClasspath[setExtraClasspath]` so they
+Extra classpath entries can also be provided with `link:../cheatsheet/DeploymentOptions.html#extraClasspath[extraClasspath]` so they
 can locate resources that are isolated to them.
 
 === High Availability

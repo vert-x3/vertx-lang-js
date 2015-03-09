@@ -242,18 +242,18 @@ socket.blockMulticastGroup("230.0.0.1", "10.0.0.2", function (asyncResult, async
 When creating a `link:jsdoc/datagram_socket-DatagramSocket.html[DatagramSocket]` there are multiple properties you can set to
 change it's behaviour with the `link:../cheatsheet/DatagramSocketOptions.html[DatagramSocketOptions]` object. Those are listed here:
 
-- `link:../cheatsheet/DatagramSocketOptions.html#setSendBufferSize[setSendBufferSize]` Sets the send buffer size in bytes.
-- `link:../cheatsheet/DatagramSocketOptions.html#setReceiveBufferSize[setReceiveBufferSize]` Sets the TCP receive buffer size
+- `link:../cheatsheet/DatagramSocketOptions.html#sendBufferSize[sendBufferSize]` Sets the send buffer size in bytes.
+- `link:../cheatsheet/DatagramSocketOptions.html#receiveBufferSize[receiveBufferSize]` Sets the TCP receive buffer size
 in bytes.
-- `link:../cheatsheet/DatagramSocketOptions.html#setReuseAddress[setReuseAddress]` If true then addresses in TIME_WAIT
+- `link:../cheatsheet/DatagramSocketOptions.html#reuseAddress[reuseAddress]` If true then addresses in TIME_WAIT
 state can be reused after they have been closed.
-- `link:../cheatsheet/DatagramSocketOptions.html#setTrafficClass[setTrafficClass]`
-- `link:../cheatsheet/DatagramSocketOptions.html#setBroadcast[setBroadcast]` Sets or clears the SO_BROADCAST socket
+- `link:../cheatsheet/DatagramSocketOptions.html#trafficClass[trafficClass]`
+- `link:../cheatsheet/DatagramSocketOptions.html#broadcast[broadcast]` Sets or clears the SO_BROADCAST socket
 option. When this option is set, Datagram (UDP) packets may be sent to a local interface's broadcast address.
-- `link:../cheatsheet/DatagramSocketOptions.html#setMulticastNetworkInterface[setMulticastNetworkInterface]` Sets or clears
+- `link:../cheatsheet/DatagramSocketOptions.html#multicastNetworkInterface[multicastNetworkInterface]` Sets or clears
 the IP_MULTICAST_LOOP socket option. When this option is set, multicast packets will also be received on the
 local interface.
-- `link:../cheatsheet/DatagramSocketOptions.html#setMulticastTimeToLive[setMulticastTimeToLive]` Sets the IP_MULTICAST_TTL socket
+- `link:../cheatsheet/DatagramSocketOptions.html#multicastTimeToLive[multicastTimeToLive]` Sets the IP_MULTICAST_TTL socket
 option. TTL stands for "Time to Live," but in this context it specifies the number of IP hops that a packet is
 allowed to go through, specifically for multicast traffic. Each router or gateway that forwards a packet decrements
 the TTL. If the TTL is decremented to 0 by a router, it will not be forwarded.

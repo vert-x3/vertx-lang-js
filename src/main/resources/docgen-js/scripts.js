@@ -18,10 +18,21 @@ function renderSource(elt, source) {
     }
 }
 
+function isDataObject(elt) {
+  var annotation = java.lang.Thread.currentThread().getContextClassLoader().loadClass("io.vertx.codegen.annotations.DataObject");
+  while (elt != null) {
+    var kind = elt.getKind().name();
+    if (kind === "CLASS" || kind === "INTERFACE") {
+      return elt.getAnnotation(annotation);
+    }
+    elt = elt.getEnclosingElement();
+  }
+  return false;
+}
+
 function toTypeLink(elt, coordinate) {
-    var annotation = java.lang.Thread.currentThread().getContextClassLoader().loadClass("io.vertx.codegen.annotations.DataObject");
     var baseLink;
-    if (elt.getAnnotation(annotation) != null) {
+    if (isDataObject(elt)) {
       if (coordinate == null) {
         baseLink = "../";
       } else {
@@ -43,9 +54,23 @@ function toTypeLink(elt, coordinate) {
 
 function toMethodLink(elt, coordinate) {
     var typeElt = elt.getEnclosingElement();
-    return toTypeLink(typeElt, coordinate) + '#' + elt.getSimpleName();
+    var baseLink =  toTypeLink(typeElt, coordinate);
+    if (baseLink.indexOf("cheatsheet") != -1) {
+      return baseLink + '#' + java.beans.Introspector.decapitalize(elt.getSimpleName().toString().substring(3));
+    } else {
+      return baseLink + '#' + elt.getSimpleName();
+    }
 }
 
 function toConstructorLink(elt, coordinate) {
     return "todo";
+}
+
+function resolveLabel(elt, label) {
+  if (isDataObject(elt)) {
+    if (elt.getKind().name() === "METHOD") {
+      return java.beans.Introspector.decapitalize(elt.getSimpleName().toString().substring(3));
+    }
+  }
+  return label;
 }

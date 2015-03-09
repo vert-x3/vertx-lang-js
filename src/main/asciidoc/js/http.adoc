@@ -459,7 +459,7 @@ You can close the underlying TCP connection with `link:jsdoc/http_server_respons
 Non keep-alive connections will be automatically closed by Vert.x when the response is ended.
 
 Keep-alive connections are not automatically closed by Vert.x by default. If you want keep-alive connections to be
-closed after an idle time, then you configure `link:../cheatsheet/HttpServerOptions.html#setIdleTimeout[setIdleTimeout]`.
+closed after an idle time, then you configure `link:../cheatsheet/HttpServerOptions.html#idleTimeout[idleTimeout]`.
 
 ==== Setting response headers
 
@@ -607,7 +607,7 @@ If the client does not support HTTP compression the responses are sent back with
 
 This allows to handle Client that support HTTP Compression and those that not support it at the same time.
 
-To enable compression use can configure it with `link:../cheatsheet/HttpServerOptions.html#setCompressionSupported[setCompressionSupported]`.
+To enable compression use can configure it with `link:../cheatsheet/HttpServerOptions.html#compressionSupported[compressionSupported]`.
 
 By default compression is not enabled.
 
@@ -1168,7 +1168,7 @@ If the body of the response was compressed via gzip it will include for example 
 
  Content-Encoding: gzip
 
-To enable compression set `link:../cheatsheet/HttpClientOptions.html#setTryUseCompression[setTryUseCompression]` on the options
+To enable compression set `link:../cheatsheet/HttpClientOptions.html#tryUseCompression[tryUseCompression]` on the options
 used when creating the client.
 
 By default compression is disabled.
@@ -1180,12 +1180,12 @@ connections when you're making multiple requests to the same server.
 
 The http client supports pooling of connections, allowing you to reuse connections between requests.
 
-For pooling to work, keep alive must be true using `link:../cheatsheet/HttpClientOptions.html#setKeepAlive[setKeepAlive]`
+For pooling to work, keep alive must be true using `link:../cheatsheet/HttpClientOptions.html#keepAlive[keepAlive]`
 on the options used when configuring the client. The default value is true.
 
 When keep alive is enabled. Vert.x will add a `Connection: Keep-Alive` header to each HTTP request sent.
 
-The maximum number of connections to pool *for each server* is configured using `link:../cheatsheet/HttpClientOptions.html#setMaxPoolSize[setMaxPoolSize]`
+The maximum number of connections to pool *for each server* is configured using `link:../cheatsheet/HttpClientOptions.html#maxPoolSize[maxPoolSize]`
 
 When making a request with pooling enabled, Vert.x will create a new connection if there are less than the maximum number of
 connections already created for that server, otherwise it will add the request to a queue.
@@ -1203,7 +1203,7 @@ The client also supports pipe-lining of requests on a connection.
 Pipe-lining means another request is sent on the same connection before the response from the preceding one has
 returned. Pipe-lining is not appropriate for all requests.
 
-To enable pipe-lining, it must be enabled using `link:../cheatsheet/HttpClientOptions.html#setPipelining[setPipelining]`.
+To enable pipe-lining, it must be enabled using `link:../cheatsheet/HttpClientOptions.html#pipelining[pipelining]`.
 By default pipe-lining is disabled.
 
 When pipe-lining is enabled requests will be written to connections without waiting for previous responses to return.
@@ -1326,7 +1326,7 @@ websocket.writeMessage(buffer);
 ----
 
 If the websocket message is larger than the maximum websocket frame size as configured with
-`link:../cheatsheet/HttpClientOptions.html#setMaxWebsocketFrameSize[setMaxWebsocketFrameSize]`
+`link:../cheatsheet/HttpClientOptions.html#maxWebsocketFrameSize[maxWebsocketFrameSize]`
 then Vert.x will split it into multiple WebSocket frames before sending it on the wire.
 
 ==== Writing frames to WebSockets
