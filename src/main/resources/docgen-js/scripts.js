@@ -18,27 +18,34 @@ function renderSource(elt, source) {
     }
 }
 
-function toTypeLink(elt) {
+function toTypeLink(elt, coordinate) {
     var annotation = java.lang.Thread.currentThread().getContextClassLoader().loadClass("io.vertx.codegen.annotations.DataObject");
+    var baseLink;
     if (elt.getAnnotation(annotation) != null) {
-      return "../cheatsheet/" + elt.getSimpleName().toString() + ".html";
+      if (coordinate == null) {
+        baseLink = "../";
+      } else {
+        baseLink = "../../" + coordinate.getArtifactId() + "/"
+      }
+      return baseLink + "cheatsheet/" + elt.getSimpleName().toString() + ".html";
     } else {
+      if (coordinate == null) {
+        baseLink = "";
+      } else {
+        baseLink = "../../" + coordinate.getArtifactId() + "/js/"
+      }
       var caseType = java.lang.Thread.currentThread().getContextClassLoader().loadClass("io.vertx.codegen.Case");
       var camel = caseType.getField("CAMEL").get(null);
       var snake = caseType.getField("SNAKE").get(null);
-      return "jsdoc/" + snake.format(camel.parse(elt.getSimpleName().toString())) + "-" + elt.getSimpleName() + ".html";
+      return baseLink + "jsdoc/" + snake.format(camel.parse(elt.getSimpleName().toString())) + "-" + elt.getSimpleName() + ".html";
     }
 }
 
-function toMethodLink(elt) {
+function toMethodLink(elt, coordinate) {
     var typeElt = elt.getEnclosingElement();
-    return toTypeLink(typeElt) + '#' + elt.getSimpleName();
+    return toTypeLink(typeElt, coordinate) + '#' + elt.getSimpleName();
 }
 
-function toConstructorLink(elt) {
-    return "todo";
-}
-
-function toFieldLink(elt) {
+function toConstructorLink(elt, coordinate) {
     return "todo";
 }
