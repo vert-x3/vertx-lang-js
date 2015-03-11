@@ -2,7 +2,7 @@ var Assert = org.junit.Assert;
 
 var TestInterface = require('testmodel-js/test_interface');
 var RefedInterface1 = require('testmodel-js/refed_interface1');
-var ConcreteHandlerUserType = require('testmodel-js/concrete_handler_user_type');
+var Factory = require('testmodel-js/factory');
 
 var obj = new TestInterface(new Packages.io.vertx.codegen.testmodel.TestInterfaceImpl());
 var refed_obj = new RefedInterface1(new Packages.io.vertx.codegen.testmodel.RefedInterface1Impl());
@@ -672,18 +672,27 @@ function testMethodWithHandlerAsyncResultUserTypes() {
   Assert.assertEquals(1, count, 0);
 }
 
-function testMethodWithConcreteHandlerUserTypesSubtype() {
+function testMethodWithConcreteHandlerUserTypeSubtype() {
   var count = 0;
-  obj.methodWithConcreteHandlerUserTypesSubtype(ConcreteHandlerUserType.createConcrete(function(refedObj) {
+  obj.methodWithConcreteHandlerUserTypeSubtype(Factory.createConcreteHandlerUserType(function(refedObj) {
     Assert.assertEquals("echidnas", refedObj.getString());
     count++;
   }));
   Assert.assertEquals(1, count, 0);
 }
 
-function testMethodWithAbstractHandlerUserTypesSubtype() {
+function testMethodWithAbstractHandlerUserTypeSubtype() {
   var count = 0;
-  obj.methodWithAbstractHandlerUserTypesSubtype(ConcreteHandlerUserType.createAbstract(function(refedObj) {
+  obj.methodWithAbstractHandlerUserTypeSubtype(Factory.createAbstractHandlerUserType(function(refedObj) {
+    Assert.assertEquals("echidnas", refedObj.getString());
+    count++;
+  }));
+  Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithConcreteHandlerUserTypeSubtypeExtension() {
+  var count = 0;
+  obj.methodWithConcreteHandlerUserTypeSubtypeExtension(Factory.createConcreteHandlerUserTypeExtension(function(refedObj) {
     Assert.assertEquals("echidnas", refedObj.getString());
     count++;
   }));

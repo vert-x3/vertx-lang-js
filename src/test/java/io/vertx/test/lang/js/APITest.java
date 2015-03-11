@@ -84,12 +84,12 @@ public class APITest extends JSTestBase {
   }
 
   @Test
-  public void testMethodWithConcreteHandlerUserTypesSubtype() throws Exception {
+  public void testMethodWithConcreteHandlerUserTypeSubtype() throws Exception {
     runTest();
   }
 
   @Test
-  public void testMethodWithAbstractHandlerUserTypesSubtype() throws Exception {
+  public void testMethodWithAbstractHandlerUserTypeSubtype() throws Exception {
     runTest();
   }
 
