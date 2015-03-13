@@ -947,7 +947,7 @@ function testMethodWithGenericReturn() {
 function testFluentMethod() {
   var ret = obj.fluentMethod("bar");
   ret.fluentMethod("bar");
-  Assert.assertSame(obj, ret);
+  Assert.assertTrue(obj === ret);
 }
 
 function testStaticFactoryMethod() {
@@ -961,9 +961,9 @@ function testMethodWithCachedReturn() {
   Assert.assertTrue(typeof ret === 'object');
   Assert.assertEquals("bar", ret.getString());
   var ret2 = obj.methodWithCachedReturn("bar");
-  Assert.assertSame(ret, ret2);
+  Assert.assertTrue(ret === ret2);
   var ret3 = obj.methodWithCachedReturn("bar");
-  Assert.assertSame(ret2, ret3);
+  Assert.assertTrue(ret2 === ret3);
 }
 
 function testJsonReturns() {
