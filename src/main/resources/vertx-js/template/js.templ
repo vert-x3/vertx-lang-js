@@ -87,7 +87,12 @@ function(ar) {\n
 @{paramName}
 		@else{}
 function(jVal) {\n
-@{ind}    @{paramName}(@includeNamed{'convReturn'; templ='basicVal'; returnType=param.type.args[0]});\n
+@{ind}    var event = @includeNamed{'convReturn'; templ='basicVal'; returnType=param.type.args[0]};\n
+@{ind}    if (typeof @{paramName} === 'function') {\n
+@{ind}       @{paramName}(event);\n
+@{ind}    } else {\n
+@{ind}       @{paramName}.handle(event);\n
+@{ind}    }\n
 @{ind}  }
 		@end{}
 	@else{param.type.kind == CLASS_JSON_OBJECT}
@@ -255,7 +260,7 @@ utils.convReturnTypeUnknown(@includeNamed{templ})
 					@else{param.type.kind == CLASS_JSON_ARRAY || param.type.kind == CLASS_LIST || param.type.kind == CLASS_SET}
 						typeof __args[@{cnt}] === 'object' && __args[@{cnt++}] instanceof Array
 					@else{param.type.kind == CLASS_HANDLER}
-						typeof __args[@{cnt++}] === 'function'
+						(typeof __args[@{cnt}] === 'function' || (typeof __args[@{cnt}] === 'object' && __args[@{cnt}]._jdel && __args[@{cnt++}].handle != null))
 					@else{param.type.kind == CLASS_OBJECT}
 						@code{cnt++}
 						true
