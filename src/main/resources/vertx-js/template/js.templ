@@ -91,7 +91,7 @@ function(jVal) {\n
 @{ind}    if (typeof @{paramName} === 'function') {\n
 @{ind}       @{paramName}(event);\n
 @{ind}    } else {\n
-@{ind}       @{paramName}.handle(event);\n
+@{ind}       @{paramName}._handler(event);\n
 @{ind}    }\n
 @{ind}  }
 		@end{}
@@ -260,7 +260,7 @@ utils.convReturnTypeUnknown(@includeNamed{templ})
 					@else{param.type.kind == CLASS_JSON_ARRAY || param.type.kind == CLASS_LIST || param.type.kind == CLASS_SET}
 						typeof __args[@{cnt}] === 'object' && __args[@{cnt++}] instanceof Array
 					@else{param.type.kind == CLASS_HANDLER}
-						(typeof __args[@{cnt}] === 'function' || (typeof __args[@{cnt}] === 'object' && __args[@{cnt}]._jdel && __args[@{cnt++}].handle != null))
+						(typeof __args[@{cnt}] === 'function' || (typeof __args[@{cnt}] === 'object' && __args[@{cnt++}]._handler))
 					@else{param.type.kind == CLASS_OBJECT}
 						@code{cnt++}
 						true
@@ -363,6 +363,12 @@ var @{ifaceSimpleName} = function(j_val) {\n\n
 @comment{"Call out to actually generate the method, we only consider non static methods here"}
 @includeNamed{'genMethod';static=false;ind="  "}
 
+@end{}
+
+@comment{"Handler subtypes provides a _handler function for calling the handler"}
+
+@if{handlerSuperType != null}
+  this._handler = this.handle;\n
 @end{}
 
 @comment{"Each object has a _jdel function which gives access to the underlying Java object"}
