@@ -674,28 +674,34 @@ function testMethodWithHandlerAsyncResultUserTypes() {
 
 function testMethodWithConcreteHandlerUserTypeSubtype() {
   var count = 0;
-  obj.methodWithConcreteHandlerUserTypeSubtype(Factory.createConcreteHandlerUserType(function(refedObj) {
+  var handler = Factory.createConcreteHandlerUserType(function (refedObj) {
     Assert.assertEquals("echidnas", refedObj.getString());
     count++;
-  }));
-  Assert.assertEquals(1, count, 0);
+  });
+  obj.methodWithHandlerUserTypes(handler);
+  obj.methodWithConcreteHandlerUserTypeSubtype(handler);
+  Assert.assertEquals(2, count, 0);
 }
 
 function testMethodWithAbstractHandlerUserTypeSubtype() {
   var count = 0;
-  obj.methodWithAbstractHandlerUserTypeSubtype(Factory.createAbstractHandlerUserType(function(refedObj) {
+  var handler = Factory.createAbstractHandlerUserType(function (refedObj) {
     Assert.assertEquals("echidnas", refedObj.getString());
     count++;
-  }));
-  Assert.assertEquals(1, count, 0);
+  });
+  obj.methodWithHandlerUserTypes(handler);
+  obj.methodWithAbstractHandlerUserTypeSubtype(handler);
+  Assert.assertEquals(2, count, 0);
 }
 
 function testMethodWithConcreteHandlerUserTypeSubtypeExtension() {
   var count = 0;
-  obj.methodWithConcreteHandlerUserTypeSubtypeExtension(Factory.createConcreteHandlerUserTypeExtension(function(refedObj) {
+  var handler = Factory.createConcreteHandlerUserTypeExtension(function (refedObj) {
     Assert.assertEquals("echidnas", refedObj.getString());
     count++;
-  }));
+  });
+  obj.methodWithHandlerUserTypes(handler);
+  obj.methodWithConcreteHandlerUserTypeSubtypeExtension(handler);
   Assert.assertEquals(1, count, 0);
 }
 

@@ -75,8 +75,8 @@ function testCachedRequires() {
   var testMod1 = require("test_mod_cached_require");
   var testMod2 = require("test_mod_cached_require");
   var testMod3 = require("test_mod_cached_require");
-  Assert.assertSame(testMod1, testMod2);
-  Assert.assertSame(testMod2, testMod3);
+  Assert.assertTrue(testMod1 === testMod2);
+  Assert.assertTrue(testMod2 === testMod3);
 }
 
 function testRequireNPMModule() {
