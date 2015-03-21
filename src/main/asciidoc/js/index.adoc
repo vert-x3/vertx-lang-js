@@ -538,12 +538,7 @@ Here's an example of using an isolation group to isolate a verticle deployment.
 
 [source,js]
 ----
-var options = {
-  "isolationGroup" : "mygroup"
-};
-options.extraClasspath = Java.type("java.util.Arrays").asList("lib/jars/some-library.jar");
-vertx.deployVerticle("com.mycompany.MyIsolatedVerticle", options);
-
+todo
 ----
 
 Isolation groups are identified by a name, and the name can be used between different deployments if you want them

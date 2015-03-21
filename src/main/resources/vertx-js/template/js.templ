@@ -51,7 +51,16 @@
 @comment{"===================================="}
 
 @declare{'genMethodCall'}
-@if{static}J@{ifaceSimpleName}@else{}j_@{ifaceName}@end{}.@{method.name}(
+@if{static}J@{ifaceSimpleName}@else{}j_@{ifaceName}@end{}["@{method.name}(
+	@foreach{param: method.params}
+		@if{param.type instanceof io.vertx.codegen.TypeInfo$Parameterized}
+			@{param.type.raw.name}
+		@else{param.type instanceof io.vertx.codegen.TypeInfo$Variable}
+			java.lang.Object
+		@else{}
+			@{param.type.name}
+		@end{}
+	@end{","})"](
 	@code{pcnt=0;}
 	@foreach{param: method.params}
 		@code{argName='__args[' + (pcnt++) + ']';}
