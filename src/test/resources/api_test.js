@@ -3,6 +3,8 @@ var Assert = org.junit.Assert;
 var TestInterface = require('testmodel-js/test_interface');
 var RefedInterface1 = require('testmodel-js/refed_interface1');
 var Factory = require('testmodel-js/factory');
+var SubInterface = require('acme-js/sub_interface');
+var MyInterface = require('acme-js/my_interface');
 
 var obj = new TestInterface(new Packages.io.vertx.codegen.testmodel.TestInterfaceImpl());
 var refed_obj = new RefedInterface1(new Packages.io.vertx.codegen.testmodel.RefedInterface1Impl());
@@ -1362,6 +1364,14 @@ function testMethodWithMapParams() {
   obj.methodWithMapParams({foo: "bar", eek: "wibble"}, {foo: 2, eek: 3}, {foo:12, eek:13}, {foo:1234, eek:1345},
     {foo: 123, eek: 456}, {foo: {foo: "bar"}, eek: {eek: "wibble"}}, {foo: ["foo"], eek: ["blah"]},
     {foo: refed_obj.setString("foo"), eek: refed_obj2.setString("bar")});
+}
+
+function testCustomModule() {
+  var my = MyInterface.create();
+  var testInterface = my.method();
+  testInterface.methodWithBasicParams(123, 12345, 1234567, 1265615234, 12.345, 12.34566, true, 'X', 'foobar');
+  var sub = my.sub();
+  Assert.assertEquals("olleh", sub.reverse("hello"));
 }
 
 if (typeof this[testName] === 'undefined') {

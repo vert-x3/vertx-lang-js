@@ -86,6 +86,14 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-codegen</artifactId>
+      <!-- Remove that -> dependencies -->
+      <version>${stack.version}</version>
+      <classifier>tck</classifier>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-codegen</artifactId>
       <classifier>sources</classifier>
       <scope>test</scope>
     </dependency>
@@ -286,7 +294,7 @@
         <artifactId>maven-assembly-plugin</artifactId>
         <executions>
           <execution>
-            <id>assemble-docs</id>
+            <id>package-docs</id>
             <phase>package</phase>
             <goals>
               <goal>single</goal>

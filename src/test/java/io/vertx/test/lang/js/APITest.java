@@ -465,4 +465,9 @@ public class APITest extends JSTestBase {
   public void testThrowableReturn() throws Exception {
     runTest();
   }
+
+  @Test
+  public void testCustomModule() throws Exception {
+    runTest();
+  }
 }
