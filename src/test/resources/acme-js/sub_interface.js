@@ -39,7 +39,7 @@ var SubInterface = function(j_val) {
   this.reverse = function(s) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'string') {
-      return j_subInterface.reverse(s);
+      return j_subInterface["reverse(java.lang.String)"](s);
     } else utils.invalidArgs();
   };
 
