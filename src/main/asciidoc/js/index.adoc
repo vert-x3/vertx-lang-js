@@ -511,9 +511,16 @@ vertx.deployVerticle("com.mycompany.MyOrderProcessorVerticle", options);
 
 ----
 
-This configuration is then available via the `link:jsdoc/context-Context.html[Context]` object.
+This configuration is then available via the `link:jsdoc/context-Context.html[Context]` object:
 
-TODO
+[source,js]
+----
+
+var config = Vertx.currentContext().config();
+// or
+var config = vertx.getOrCreateContext().config();
+
+----
 
 
 === Accessing environment variables in a Verticle
