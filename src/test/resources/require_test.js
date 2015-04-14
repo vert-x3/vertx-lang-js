@@ -84,6 +84,11 @@ function testRequireNPMModule() {
   Assert.assertEquals("hello from testmod1", testMod1);
 }
 
+function testRequireNPMModuleUsingNodePath() {
+  var testMod1 = require("testmod1");
+  Assert.assertEquals("hello from testmod1", testMod1);
+}
+
 if (typeof this[testName] === 'undefined') {
   throw "No such test: " + testName;
 }

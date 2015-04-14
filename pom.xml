@@ -119,6 +119,9 @@
               <additionalClasspathElement>${project.build.testSourceDirectory}</additionalClasspathElement>
               <additionalClasspathElement>${project.basedir}/src/main/resources</additionalClasspathElement>
             </additionalClasspathElements>
+            <environmentVariables>
+              <NODE_PATH>src/test/npm</NODE_PATH>
+            </environmentVariables>
           </configuration>
         </plugin>
         <plugin>

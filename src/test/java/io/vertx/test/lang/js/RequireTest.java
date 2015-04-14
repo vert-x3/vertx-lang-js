@@ -67,4 +67,9 @@ public class RequireTest extends JSTestBase {
     runTest();
   }
 
+  @Test
+  public void testRequireNPMModuleUsingNodePath() throws Exception {
+    runTest();
+  }
+
 }
