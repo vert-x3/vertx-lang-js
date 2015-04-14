@@ -192,10 +192,29 @@
               </systemProperties>
               <processors>
                 <processor>io.vertx.codegen.CodeGenProcessor</processor>
-                <processor>io.vertx.docgen.DocGenProcessor</processor>
               </processors>
               <optionMap>
                 <outputDirectory>${project.basedir}/src/main</outputDirectory>
+              </optionMap>
+              <sourceDirectory>${project.build.directory}/sources/vertx-core</sourceDirectory>
+            </configuration>
+          </execution>
+
+          <!-- We have to run the annotation processor again to process doc overrides -->
+          <execution>
+            <id>docgen-docs</id>
+            <goals>
+              <goal>process</goal>
+            </goals>
+            <phase>prepare-package</phase>
+            <configuration>
+              <systemProperties>
+                <java.util.logging.SimpleFormatter.format>%4$s: %3$s - %5$s %6$s%n</java.util.logging.SimpleFormatter.format>
+              </systemProperties>
+              <processors>
+                <processor>io.vertx.docgen.DocGenProcessor</processor>
+              </processors>
+              <optionMap>
                 <docgen.output>${asciidoc.dir}/js</docgen.output>
               </optionMap>
               <sourceDirectory>${project.build.directory}/sources/vertx-core</sourceDirectory>
@@ -208,7 +227,7 @@
             <goals>
               <goal>process</goal>
             </goals>
-            <phase>generate-sources</phase>
+            <phase>prepare-package</phase>
             <configuration>
               <systemProperties>
                 <java.util.logging.SimpleFormatter.format>%4$s: %3$s - %5$s %6$s%n</java.util.logging.SimpleFormatter.format>
@@ -217,7 +236,6 @@
                 <processor>io.vertx.docgen.DocGenProcessor</processor>
               </processors>
               <optionMap>
-                <outputDirectory>${project.basedir}/src/main</outputDirectory>
                 <docgen.output>${asciidoc.dir}/js</docgen.output>
               </optionMap>
               <sourceDirectory>src/main/docoverride</sourceDirectory>

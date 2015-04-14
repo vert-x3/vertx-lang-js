@@ -37,9 +37,9 @@ Blah, blah
 
 JAVASCRIPT MOFO!
 
-Verticle classes must implement the `link:../../vertx-core/js/jsdoc/verticle-Verticle.html[Verticle]` interface.
+Verticle classes must implement the Verticle interface.
 
-They can implement it directly if you like but usually it's easier to extend the abstract class `link:../../vertx-core/js/jsdoc/abstract_verticle-AbstractVerticle.html[AbstractVerticle]`.
+They can implement it directly if you like but usually it's easier to extend the abstract class AbstractVerticle.
 
 Here's an example verticle:
 
