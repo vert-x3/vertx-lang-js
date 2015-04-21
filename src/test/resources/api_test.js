@@ -196,6 +196,12 @@ function testMethodWithUserTypes() {
 }
 
 function testObjectParam() {
+  obj.methodWithObjectParam('null', null);
+  obj.methodWithObjectParam('string', 'wibble');
+  obj.methodWithObjectParam('true', true);
+  obj.methodWithObjectParam('false', false);
+  obj.methodWithObjectParam('long', 123);
+  obj.methodWithObjectParam('double', 123.456);
   var jsonObj = {
     foo: "hello",
     bar: 123
