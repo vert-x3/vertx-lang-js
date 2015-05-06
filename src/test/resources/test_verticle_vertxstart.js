@@ -16,7 +16,7 @@
 
 // Verticle with an explicit vertxStart method
 
-vertx.eventBus().send("fooaddressinit", "blah")
+vertx.eventBus().send("fooaddressinit", "blah");
 
 function vertxStart() {
   vertx.eventBus().send("fooaddress", "blah")

@@ -93,26 +93,17 @@ function testDeployMultipleInstances() {
 
 function testDeployMultipleInstancesWithVertxStart() {
   var vertx = Vertx.vertx();
-  var latch = new CountDownLatch(1);
-  var numInstances = 3;
-  var count = 0;
-  var initCount = 0;
+  var latch1 = new CountDownLatch(3);
+  var latch2 = new CountDownLatch(3);
   vertx.eventBus().consumer("fooaddressinit", function(msg) {
-    initCount++;
+    latch1.countDown();
   });
   vertx.eventBus().consumer("fooaddress", function(msg) {
-    count++;
-    if (count == numInstances) {
-      // End on a timer to allow any further messages to arrive
-      vertx.setTimer(500, function() {
-        latch.countDown();
-      });
-    }
+    latch2.countDown();
   });
   vertx.deployVerticle("js:test_verticle_vertxstart", {instances: 3});
-  Assert.assertTrue(latch.await(2, TimeUnit.MINUTES));
-  Assert.assertEquals(numInstances, count, 0);
-  Assert.assertEquals(numInstances, initCount, 0);
+  Assert.assertTrue(latch1.await(2, TimeUnit.MINUTES));
+  Assert.assertTrue(latch2.await(2, TimeUnit.MINUTES));
 }
 
 function testErrorInVerticle() {
