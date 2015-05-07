@@ -551,10 +551,9 @@ vertx.createHttpServer().requestHandler(function (request) {
   var file = "";
   if (request.path() == "/") {
     file = "index.html";
-  } else {
-    if (!request.path().contains("..")) {
-      file = request.path();
-    }};
+  } else if (!request.path().contains("..")) {
+    file = request.path();
+  };
   request.response().sendFile("web/" + file);
 }).listen(8080);
 
