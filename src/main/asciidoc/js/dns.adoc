@@ -176,7 +176,9 @@ The `link:jsdoc/mx_record-MxRecord.html[MxRecord]` allows you to access the prio
 
 [source,js]
 ----
-Code not translatable
+record.priority();
+record.name();
+
 ----
 
 === resolveTXT
@@ -250,11 +252,18 @@ client.resolveSRV("vertx.io", function (ar, ar_err) {
 Be aware that the List will contain the SrvRecords sorted by the priority of them, which means SrvRecords
 with smaller priority coming first in the List.
 
-The SrvRecord allows you to access all informations contained in the SRV record itself:
+The `link:jsdoc/srv_record-SrvRecord.html[SrvRecord]` allows you to access all informations contained in the SRV record itself:
 
 [source,js]
 ----
-Code not translatable
+record.priority();
+record.name();
+record.weight();
+record.port();
+record.protocol();
+record.service();
+record.target();
+
 ----
 
 Please refer to the API docs for the exact details.

@@ -136,6 +136,16 @@ utils.convParamListJsonArray = function(arr) {
   return newarr;
 }
 
+utils.convParamListDataObject = function(arr, constructor) {
+  var len = arr.length;
+  var newarr = [];
+  for (var i = 0; i < len; i++) {
+    var elem = arr[i];
+    newarr[i] = constructor(new JsonObject(JSON.stringify(elem)));
+  }
+  return newarr;
+}
+
 utils.convParamSetJsonObject = function(arr) {
   return new ListConverterSet(utils.convParamListJsonObject(arr));
 }
@@ -144,6 +154,9 @@ utils.convParamSetJsonArray = function(arr) {
   return new ListConverterSet(utils.convParamListJsonArray(arr));
 }
 
+utils.convParamSetDataObject = function(arr, constructor) {
+  return new ListConverterSet(utils.convParamListDataObject(arr, constructor));
+}
 
 
 // Return conversion
@@ -200,6 +213,19 @@ utils.convReturnListSetVertxGen = function(jList, constructorFunction) {
     var obj = Object.create(constructorFunction.prototype, {});
     constructorFunction.apply(obj, [jVertxGen]);
     arr[pos++] = obj;
+  }
+  return arr;
+};
+
+// Convert a list/set containing data object return
+utils.convReturnListSetDataObject = function(jList) {
+  var arr = [];
+  arr.length = jList.size();
+  var iter = jList.iterator();
+  var pos = 0;
+  while (iter.hasNext()) {
+    var elem = iter.next();
+    arr[pos++] = elem != null ? JSON.parse(elem.toJson().encode()) : null;
   }
   return arr;
 };

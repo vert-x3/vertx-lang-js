@@ -381,7 +381,10 @@ NOTE: Deploying Verticle *instances* is Java only.
 
 [source,java]
 ----
-Code not translatable
+
+var myVerticle = new (Java.type("examples.CoreExamples.MyVerticle"))();
+vertx.deployVerticle(myVerticle);
+
 ----
 
 You can also deploy verticles by specifying the verticle *name*.

@@ -124,6 +124,8 @@ utils.convParamListVertxGen(@{paramName})
 utils.convParamListJsonObject(@{paramName})
 		@else{param.type.args[0].kind == CLASS_JSON_ARRAY}
 utils.convParamListJsonArray(@{paramName})
+		@else{param.type.args[0].kind == CLASS_DATA_OBJECT}
+utils.convParamListDataObject(@{paramName}, function(json) { return new @{param.type.args[0].simpleName}(json); })
 		@else{}
 @{paramName}
 		@end{}
@@ -140,6 +142,8 @@ utils.convParamSetVertxGen(@{paramName})
 utils.convParamSetJsonObject(@{paramName})
 		@else{param.type.args[0].kind == CLASS_JSON_ARRAY}
 utils.convParamSetJsonArray(@{paramName})
+		@else{param.type.args[0].kind == CLASS_DATA_OBJECT}
+utils.convParamSetDataObject(@{paramName}, function(json) { return new @{param.type.args[0].simpleName}(json); })
 		@else{}
 utils.convParamSetBasicOther(@{paramName})
 		@end{}
@@ -181,6 +185,8 @@ ar.result()
 		@code{elementType=returnType.args[0]}
 		@if{elementType.kind.json}
 utils.convReturnListSetJson(@includeNamed{templ})
+		@else{elementType.kind == CLASS_DATA_OBJECT}
+utils.convReturnListSetDataObject(@includeNamed{templ})
 		@else{elementType.kind == CLASS_API}
 utils.convReturnListSetVertxGen(@includeNamed{templ}, @{elementType.raw.simpleName})
 		@else{}
@@ -190,6 +196,8 @@ utils.convReturnListSetVertxGen(@includeNamed{templ}, @{elementType.raw.simpleNa
 		@code{elementType=returnType.args[0]}
 		@if{elementType.kind.json}
 utils.convReturnListSetJson(@includeNamed{templ})
+		@else{elementType.kind == CLASS_DATA_OBJECT}
+utils.convReturnListSetDataObject(@includeNamed{templ})
 		@else{elementType.kind == CLASS_API}
 utils.convReturnListSetVertxGen(@includeNamed{templ}, @{elementType.raw.simpleName})
 		@else{}
