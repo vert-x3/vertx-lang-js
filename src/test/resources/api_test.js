@@ -661,6 +661,64 @@ function testMethodWithHandlerAsyncResultSetNullJsonArray() {
     Assert.assertEquals(1, count, 0);
 }
 
+function testMethodWithHandlerListDataObject() {
+  var count = 0;
+  obj.methodWithHandlerAsyncResultListDataObject(function(listDataObject) {
+    Assert.assertTrue(typeof listDataObject === 'object');
+    Assert.assertTrue(typeof listDataObject[0] === 'object');
+    Assert.assertTrue(listDataObject[0] instanceof Object);
+    Assert.assertEquals("String 1", listDataObject[0].foo);
+    Assert.assertEquals(1, listDataObject[0].bar, 0);
+    Assert.assertEquals(1.1, listDataObject[0].wibble, 0);
+    Assert.assertTrue(typeof listDataObject[1] === 'object');
+    Assert.assertTrue(listDataObject[1] instanceof Object);
+    Assert.assertEquals("String 2", listDataObject[1].foo);
+    Assert.assertEquals(2, listDataObject[1].bar, 0);
+    Assert.assertEquals(2.2, listDataObject[1].wibble, 0);
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerNullListDataObject() {
+  var count = 0;
+  obj.methodWithHandlerAsyncResultListNullDataObject(function(listDataObject) {
+    Assert.assertTrue(typeof listDataObject === 'object');
+    Assert.assertNull(listDataObject[0]);
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerSetDataObject() {
+  var count = 0;
+  obj.methodWithHandlerAsyncResultSetDataObject(function(setDataObject) {
+    Assert.assertTrue(typeof setDataObject === 'object');
+    Assert.assertTrue(typeof setDataObject[0] === 'object');
+    Assert.assertTrue(setDataObject[0] instanceof Object);
+    Assert.assertEquals("String 1", setDataObject[0].foo);
+    Assert.assertEquals(1, setDataObject[0].bar, 0);
+    Assert.assertEquals(1.1, setDataObject[0].wibble, 0);
+    Assert.assertTrue(typeof setDataObject[1] === 'object');
+    Assert.assertTrue(setDataObject[1] instanceof Object);
+    Assert.assertEquals("String 2", setDataObject[1].foo);
+    Assert.assertEquals(2, setDataObject[1].bar, 0);
+    Assert.assertEquals(2.2, setDataObject[1].wibble, 0);
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerNullSetDataObject() {
+  var count = 0;
+  obj.methodWithHandlerAsyncResultSetNullDataObject(function(setDataObject) {
+    Assert.assertTrue(typeof setDataObject === 'object');
+    Assert.assertNull(setDataObject[0]);
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
 function testMethodWithHandlerAsyncResultListDataObject() {
   var count = 0;
   obj.methodWithHandlerAsyncResultListDataObject(function(listDataObject, err) {

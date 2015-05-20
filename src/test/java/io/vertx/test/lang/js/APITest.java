@@ -194,6 +194,26 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testMethodWithHandlerNullListDataObject() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerListDataObject() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerSetDataObject() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerNullSetDataObject() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMethodWithHandlerAsyncResultListVertxGen() throws Exception {
     runTest();
   }
