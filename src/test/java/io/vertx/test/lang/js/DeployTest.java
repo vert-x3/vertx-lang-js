@@ -51,4 +51,8 @@ public class DeployTest extends JSTestBase {
     runTest();
   }
 
+  @Test
+  public void testVerticleGlobalIsolation() throws Exception {
+    runTest();
+  }
 }
