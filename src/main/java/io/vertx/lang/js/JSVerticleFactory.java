@@ -23,9 +23,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.spi.VerticleFactory;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
+import javax.script.*;
 import java.net.URL;
 import java.util.Scanner;
 
@@ -49,10 +47,21 @@ public class JSVerticleFactory implements VerticleFactory {
   private static final boolean ADD_NODEJS_PROCESS_ENV = System.getProperty(DISABLE_NODEJS_PROCESS_ENV_PROP_NAME) == null;
 
   private static final String JVM_NPM = "vertx-js/util/jvm-npm.js";
+  private static final String VERTICLE_GLOBALS = "vertx-js/util/verticle_globals.js";
+  private static final String NODE_JS_PROCESS_ENV = "vertx-js/util/verticle_nodejs_process.js";
 
   private Vertx vertx;
+
+  /** A single Script Engine is used for all Verticles, but each verticle is provided with its own Script Context to
+   *  provide the required level of isolation between verticles. This has a very low memory overhead, good performance
+   *  and good isolation.
+   */
   private ScriptEngine engine;
-  private ScriptObjectMirror futureJSClass;
+  private ScriptContext defCtx; // the default context for the Script Engine - contains the core JS objects.
+
+  private CompiledScript jvmNpmScriptCompiled; // a pre-compiled version of the JVM-NPM library
+  private CompiledScript globalScriptCompiled; // a pre-compiled version of the VertX defined globals
+  private CompiledScript nodeJSProcessScriptCompiled; // a pre-compiled version of the nodeJS Process script
 
   @Override
   public void init(Vertx vertx) {
@@ -79,6 +88,10 @@ public class JSVerticleFactory implements VerticleFactory {
 
     private final String verticleName;
 
+    private ScriptObjectMirror futureJSClass;
+
+    private SimpleScriptContext verticleScriptContext;
+
     private JSVerticle(String verticleName) {
       this.verticleName = verticleName;
     }
@@ -90,19 +103,65 @@ public class JSVerticleFactory implements VerticleFactory {
       return som != null && !som.toString().equals("undefined");
     }
 
+    private void initializeScriptContext() {
+
+      // Create a new Script Context for the Verticle (a global per verticle)
+      verticleScriptContext = new SimpleScriptContext();
+
+      // Copy the bindings from the default engine context into the verticle
+      verticleScriptContext.setBindings(defCtx.getBindings( ScriptContext.ENGINE_SCOPE), ScriptContext.ENGINE_SCOPE);
+
+      // Place the vertx object onto the context for all the 'required' functions
+      Bindings bindings = new SimpleBindings();
+      bindings.put("__jvertx", vertx);
+
+      // Add the bindings to our Verticle context
+      verticleScriptContext.setBindings(bindings, ScriptContext.ENGINE_SCOPE);
+
+      try {
+        // Install the JVM NPM component to the context
+        jvmNpmScriptCompiled.eval(verticleScriptContext);
+
+        // Retrieve a future object to use for the Verticle initialisation
+        futureJSClass = (ScriptObjectMirror) engine.eval("require('vertx-js/future');", verticleScriptContext);
+
+        globalScriptCompiled.eval(verticleScriptContext);
+
+        if (ADD_NODEJS_PROCESS_ENV) {
+          nodeJSProcessScriptCompiled.eval(verticleScriptContext);
+        }
+
+      } catch (ScriptException e) {
+        throw new IllegalStateException("Failed to eval: " + e.getMessage(), e);
+      }
+    }
+
     @Override
     public void start(Future<Void> startFuture) throws Exception {
+      vertx.executeBlocking(future -> {
+        initializeScriptContext();
 
-      exports = (ScriptObjectMirror) engine.eval("require.noCache('" + verticleName + "');");
-      if (functionExists(VERTX_START_FUNCTION)) {
-        exports.callMember(VERTX_START_FUNCTION);
-        startFuture.complete();
-      } else if (functionExists(VERTX_START_ASYNC_FUNCTION)) {
-        Object wrappedFuture = futureJSClass.newObject(startFuture);
-        exports.callMember(VERTX_START_ASYNC_FUNCTION, wrappedFuture);
-      } else {
-        startFuture.complete();
-      }
+        try {
+          exports = (ScriptObjectMirror) engine.eval("require.noCache('" + verticleName + "');", verticleScriptContext);
+
+        } catch (Exception ex) {
+          startFuture.fail(ex);
+        }
+
+        future.complete();
+      }, res -> {
+        if (res.succeeded()) {
+          if (functionExists(VERTX_START_FUNCTION)) {
+            exports.callMember(VERTX_START_FUNCTION);
+            startFuture.complete();
+          } else if (functionExists(VERTX_START_ASYNC_FUNCTION)) {
+            Object wrappedFuture = futureJSClass.newObject(startFuture);
+            exports.callMember(VERTX_START_ASYNC_FUNCTION, wrappedFuture);
+          } else {
+            startFuture.complete();
+          }
+        }
+      });
     }
 
     @Override
@@ -120,44 +179,49 @@ public class JSVerticleFactory implements VerticleFactory {
   }
 
   private synchronized void init() {
+
+    ScriptEngineManager mgr = new ScriptEngineManager();
+    engine = mgr.getEngineByName("nashorn");
+
     if (engine == null) {
-      ScriptEngineManager mgr = new ScriptEngineManager();
-      engine = mgr.getEngineByName("nashorn");
-      if (engine == null) {
-        throw new IllegalStateException("Cannot find Nashorn JavaScript engine - maybe you are not running with Java 8 or later?");
-      }
+      throw new IllegalStateException("Cannot find Nashorn JavaScript engine - maybe you are not running with Java 8 or later?");
+    }
 
-      URL url = getClass().getClassLoader().getResource(JVM_NPM);
-      if (url == null) {
-        throw new IllegalStateException("Cannot find " + JVM_NPM + " on classpath");
-      }
-      try (Scanner scanner = new Scanner(url.openStream(), "UTF-8").useDelimiter("\\A")) {
-        String jvmNpm = scanner.next();
-        String jvmNpmPath = ClasspathFileResolver.resolveFilename(JVM_NPM);
-        jvmNpm += "\n//# sourceURL=" + jvmNpmPath;
-        engine.eval(jvmNpm);
-      } catch (Exception e) {
-        throw new IllegalStateException(e);
-      }
+    // Get the default context for the script engine
+    defCtx = engine.getContext();
 
-      try {
-        futureJSClass = (ScriptObjectMirror) engine.eval("require('vertx-js/future');");
-        // Put the globals in
-        engine.put("__jvertx", vertx);
-        String globs =
-          "var Vertx = require('vertx-js/vertx'); var vertx = new Vertx(__jvertx); var console = require('vertx-js/util/console');" +
-          "var setTimeout = function(callback,delay) { return vertx.setTimer(delay, callback); };" +
-          "var clearTimeout = function(id) { vertx.cancelTimer(id); };" +
-          "var setInterval = function(callback, delay) { return vertx.setPeriodic(delay, callback); };" +
-          "var clearInterval = clearTimeout;" +
-          "var parent = this; var global = this;";
-        if (ADD_NODEJS_PROCESS_ENV) {
-          globs += "var process = {}; process.env=java.lang.System.getenv();";
-        }
-        engine.eval(globs);
-      } catch (ScriptException e) {
-        throw new IllegalStateException("Failed to eval: " + e.getMessage(), e);
-      }
+    // Compile the JVM NPM and Global Object scripts for re-use in the Verticles
+    jvmNpmScriptCompiled = compileClassPathResource(JVM_NPM);
+    globalScriptCompiled = compileClassPathResource(VERTICLE_GLOBALS);
+
+    if (ADD_NODEJS_PROCESS_ENV) {
+      nodeJSProcessScriptCompiled = compileClassPathResource(NODE_JS_PROCESS_ENV);
+    }
+  }
+
+  /**
+   * Compiles a class path resource for later re-use from within the Scripting Engine. Currently doesn't impact Nashorn
+   * execution too much, but may in the future. Means that the script needs only to be parsed once.
+   *
+   * @param resourceName The classpath uri to load the script from.
+   * @return A compiled script which can be re-used from the Verticle Instances
+   */
+  private CompiledScript compileClassPathResource(String resourceName) throws IllegalStateException{
+    URL resourceURL = getClass().getClassLoader().getResource(resourceName);
+    if (resourceURL == null) {
+      throw new IllegalStateException("Cannot find " + resourceName + " on classpath");
+    }
+
+    try (Scanner scanner = new Scanner(resourceURL.openStream(), "UTF-8").useDelimiter("\\A")) {
+      String resourceBody = scanner.next();
+      String resourcePath = ClasspathFileResolver.resolveFilename(resourceName);
+      resourceBody += "\n//# sourceURL=" + resourcePath;
+
+      // Compile code and return
+      return ((Compilable) engine).compile(resourceBody);
+
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
     }
   }
 

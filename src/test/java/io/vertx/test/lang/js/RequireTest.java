@@ -72,4 +72,9 @@ public class RequireTest extends JSTestBase {
     runTest();
   }
 
+  @Test
+  public void testMultipleConcurrentRequires() throws Exception {
+    runTest();
+  }
+
 }
