@@ -154,6 +154,21 @@ function testGlobals() {
   Assert.assertTrue(latch.await(2, TimeUnit.MINUTES));
 }
 
+function testVerticleGlobal() {
+  var vertx = Vertx.vertx();
+  var latch = new CountDownLatch(1);
+  vertx.deployVerticle("js:test_verticle_global", function(deploymentID, err) {
+
+    // This should fail to deploy
+    Assert.assertNull(deploymentID);
+    Assert.assertNotNull(err);
+    Assert.assertTrue(err.message.equals("ReferenceError: \"x\" is not defined in src/test/resources/test_verticle_global.js at line number 6"));
+    latch.countDown();
+  });
+
+  Assert.assertTrue(latch.await(2, TimeUnit.MINUTES));
+}
+
 if (typeof this[testName] === 'undefined') {
   throw "No such test: " + testName;
 }
