@@ -48,7 +48,7 @@ function testBrokenModuleTypeErrorInMainBody() {
     Assert.fail();
   } catch (e) {
     Assert.assertTrue(e.message.startsWith("234 has no such function \"substr\""));
-    Assert.assertEquals("src/test/resources/brokenmodule_typeerror.js", e.fileName);
+    Assert.assertTrue(e.fileName.contains("brokenmodule_typeerror.js"));
     Assert.assertEquals(6, e.lineNumber, 0);
     Assert.assertTrue(e instanceof TypeError);
   }
