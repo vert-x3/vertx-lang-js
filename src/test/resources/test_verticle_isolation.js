@@ -11,7 +11,7 @@
  */
 var counter = 0,// Internal, private counter limited to the Verticle scope by require
   period = Math.floor((Math.random() * 200) + 1) + 50;// Just to stagger the Verticles updating between 50ms and 250ms intervals.
-  x = 0; // Example of an accidental leak, but could be in any included NPM module (without isolation could be any include
+  var x = 0; // Example of an accidental leak, but could be in any included NPM module (without isolation could be any include
          // by any Verticle deployed in the same JVM). Will be global for all Verticle instances if Isolation is not correct.
 
 var reportIterations = 10;

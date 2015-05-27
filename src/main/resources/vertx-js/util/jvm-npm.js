@@ -16,6 +16,8 @@
 // Since we intend to use the Function constructor.
 /* jshint evil: true */
 
+
+
 module = (typeof module == 'undefined') ? {} : module;
 
 (function () {
@@ -24,6 +26,7 @@ module = (typeof module == 'undefined') ? {} : module;
   var File = java.io.File;
 
   var resolver = Packages.io.vertx.lang.js.ClasspathFileResolver;
+  var verticleFactoryClass = Packages.io.vertx.lang.js.JSVerticleFactory;
 
   NativeRequire = (typeof NativeRequire === 'undefined') ? {} : NativeRequire;
   if (typeof require === 'function' && !NativeRequire.require) {
@@ -68,7 +71,7 @@ module = (typeof module == 'undefined') ? {} : module;
     }
 
     var moduleFunc =
-      "function(exports, module, require, __filename, __dirname){ " + body + "\n}\n//# sourceURL=" + sourceURL;
+      "function(exports, module, require, __filename, __dirname){ \"use strict\";" + body + "\n}\n//# sourceURL=" + sourceURL;
 
     try {
       var func = eval(moduleFunc);
@@ -103,12 +106,14 @@ module = (typeof module == 'undefined') ? {} : module;
   };
 
   function Require(id, modParent) {
-    return doRequire(id, modParent, true);
+    return synchronizedDoRequire(id, modParent, true);
   }
 
   function RequireNoCache(id, modParent) {
-    return doRequire(id, modParent, false);
+    return synchronizedDoRequire(id, modParent, false);
   }
+
+  var synchronizedDoRequire = Java.synchronized(doRequire, verticleFactoryClass);
 
   function doRequire(id, modParent, useCache) {
     var core, native, file = Require.resolve(id, modParent);
