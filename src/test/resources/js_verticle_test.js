@@ -154,32 +154,19 @@ function testGlobals() {
   Assert.assertTrue(latch.await(2, TimeUnit.MINUTES));
 }
 
-/**
- * Tests that Verticles do not pollute each others global name space, potentially modifying state across multiple threads
- * which the verticles or their supporting libraries were not expecting (e.g. NPM modules or even JVM NPM itself are not
- * designed with this as a possibility as Node is inherently single threaded).
- *
- * See the associated 'test_verticle_isolation.js' file for more information.
- */
-function testVerticleGlobalIsolation() {
-  var numberOfInstances = 10;
-
+function testVerticleGlobal() {
   var vertx = Vertx.vertx();
-  var latch1 = new CountDownLatch(numberOfInstances);
-  var passed = true;
+  var latch = new CountDownLatch(1);
+  vertx.deployVerticle("js:test_verticle_global", function(deploymentID, err) {
 
-  vertx.eventBus().consumer("test_verticle_isolation", function(msg) {
-    latch1.countDown();
-    if (msg.body() ==  "fail") {
-      passed = false;
-    }
+    // This should fail to deploy
+    Assert.assertNull(deploymentID);
+    Assert.assertNotNull(err);
+    Assert.assertTrue(err.message.equals("ReferenceError: \"x\" is not defined in src/test/resources/test_verticle_global.js at line number 6"));
+    latch.countDown();
   });
 
-  vertx.deployVerticle("js:test_verticle_isolation", {instances: numberOfInstances});
-
-  Assert.assertTrue(latch1.await(1, TimeUnit.MINUTES));
-
-  Assert.assertTrue(passed);
+  Assert.assertTrue(latch.await(2, TimeUnit.MINUTES));
 }
 
 if (typeof this[testName] === 'undefined') {
