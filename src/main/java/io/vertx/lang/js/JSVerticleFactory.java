@@ -93,7 +93,15 @@ public class JSVerticleFactory implements VerticleFactory {
     @Override
     public void start(Future<Void> startFuture) throws Exception {
 
-      exports = (ScriptObjectMirror) engine.eval("require.noCache('" + verticleName + "');");
+      /*
+      NOTE:
+      When we deploy a verticle we use require.noCache as each verticle instance must have the module evaluated.
+      Also we run verticles in JS strict mode (with "use strict") -this means they cannot declare globals
+      and other restrictions. We do this for isolation.
+      However when doing a normal 'require' from inside a verticle we do not use strict mode as many JavaScript
+      modules are written poorly and would fail to run otherwise.
+       */
+      exports = (ScriptObjectMirror) engine.eval("require.noCache('" + verticleName + "', null, true);");
       if (functionExists(VERTX_START_FUNCTION)) {
         exports.callMember(VERTX_START_FUNCTION);
         startFuture.complete();

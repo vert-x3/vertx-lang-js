@@ -16,7 +16,11 @@
 // Since we intend to use the Function constructor.
 /* jshint evil: true */
 
-
+/*
+ NOTE:
+ This is an adapted version of jvm-npm.js from the project
+ https://github.com/nodyn/jvm-npm
+ */
 
 module = (typeof module == 'undefined') ? {} : module;
 
@@ -59,7 +63,7 @@ module = (typeof module == 'undefined') ? {} : module;
     }.bind(this);
   }
 
-  Module._load = function _load(file, modParent, core, main) {
+  Module._load = function _load(file, modParent, core, main, strict) {
     var module = new Module(file, modParent, core);
     var __FILENAME__ = module.filename;
     var body = readFile(module.filename, module.core);
@@ -70,8 +74,9 @@ module = (typeof module == 'undefined') ? {} : module;
       sourceURL = file;
     }
 
-    var moduleFunc =
-      "function(exports, module, require, __filename, __dirname){ \"use strict\";" + body + "\n}\n//# sourceURL=" + sourceURL;
+    var moduleFunc = strict ?
+      "function(exports, module, require, __filename, __dirname){\"use strict\";" + body + "\n}\n//# sourceURL=" + sourceURL :
+      "function(exports, module, require, __filename, __dirname){" + body + "\n}\n//# sourceURL=" + sourceURL;
 
     try {
       var func = eval(moduleFunc);
@@ -105,17 +110,17 @@ module = (typeof module == 'undefined') ? {} : module;
     return module.exports;
   };
 
-  function Require(id, modParent) {
-    return synchronizedDoRequire(id, modParent, true);
+  function Require(id, modParent, strict) {
+    return synchronizedDoRequire(id, modParent, true, strict);
   }
 
-  function RequireNoCache(id, modParent) {
-    return synchronizedDoRequire(id, modParent, false);
+  function RequireNoCache(id, modParent, strict) {
+    return synchronizedDoRequire(id, modParent, false, strict);
   }
 
   var synchronizedDoRequire = Java.synchronized(doRequire, verticleFactoryClass);
 
-  function doRequire(id, modParent, useCache) {
+  function doRequire(id, modParent, useCache, strict) {
     var core, native, file = Require.resolve(id, modParent);
 
     if (!file) {
@@ -141,7 +146,7 @@ module = (typeof module == 'undefined') ? {} : module;
       }
     }
     if (file.endsWith('.js')) {
-      return Module._load(file, modParent, core);
+      return Module._load(file, modParent, core, null, strict);
     } else if (file.endsWith('.json')) {
       return loadJSON(file);
     }
