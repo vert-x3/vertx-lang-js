@@ -1,6 +1,8 @@
 vertx-js
 ========
 
+[![Build Status](https://vertx.ci.cloudbees.com/buildStatus/icon?job=vert.x3-lang-js)](https://vertx.ci.cloudbees.com/view/vert.x-3/job/vert.x3-lang-js/)
+
 TODO:
 
 1. Test that vertice is deployed as common JS module and has all the correct fields (module, exports etc)
