@@ -232,7 +232,7 @@ utils.convReturnTypeUnknown(@includeNamed{templ})
 @{renderDocToHtml(ind, method.doc, renderLinkToHtml)}
 @end{}\n
 @{ind} @{static ? ("@memberof module:" + genModuleName(type)) : "@public" }\n
-@foreach{param: method.params}@{ind} @param @{param.name} {@{genJSDocType(param.type)}} @if{param.description != null}@{param.description} @end{}@end{"\n"}\n
+@foreach{param: method.params}@{ind} @param @{param.name} {@{genJSDocType(param.type)}} @if{param.description != null}@{renderTokensToHtml("", param.description.tokens, renderLinkToHtml, "")} @end{}@end{"\n"}\n
 @if{!method.returnType.name.equals("void")}
 @{ind} @return {@{genJSDocType(method.returnType)}}@if{method.returnDescription != null} @{method.returnDescription}@end{}\n
 @end{}
