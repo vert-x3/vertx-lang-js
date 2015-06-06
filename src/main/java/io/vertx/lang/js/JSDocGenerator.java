@@ -49,7 +49,13 @@ public class JSDocGenerator implements DocGenerator {
 
   @Override
   public String resolveTypeLink(TypeElement elt, Coordinate coordinate) {
-    TypeInfo type = factory.create(elt.asType());
+    TypeInfo type;
+    try {
+      type = factory.create(elt.asType());
+    } catch (Exception e) {
+      System.out.println("Could not resolve doc likn for type " + elt.getQualifiedName());
+      return null;
+    }
     if (type.getKind() == ClassKind.DATA_OBJECT) {
       String baselink;
       if (coordinate == null) {
