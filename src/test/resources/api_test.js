@@ -997,6 +997,11 @@ function testVertxGenReturn() {
   Assert.assertTrue(ret._jdel);
 }
 
+function testVertxGenNullReturn() {
+  var ret = obj.methodWithVertxGenNullReturn();
+  Assert.assertNull(ret);
+}
+
 function testAbstractVertxGenReturn() {
   var ret = obj.methodWithAbstractVertxGenReturn();
   Assert.assertEquals("abstractchaffinch", ret.getString());

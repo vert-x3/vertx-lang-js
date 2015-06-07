@@ -210,7 +210,7 @@ utils.convReturnJson(@includeNamed{templ})
 	@else{returnType.kind.basic}
 @includeNamed{templ}
 	@else{returnType.kind == CLASS_API}
-new @{returnType.raw.simpleName}(@includeNamed{templ})
+utils.convReturnVertxGen(@includeNamed{templ}, @{returnType.raw.simpleName})
 	@else{returnType.kind == CLASS_ENUM}
 (@includeNamed{templ}).toString()
 	@else{returnType.kind == CLASS_DATA_OBJECT}

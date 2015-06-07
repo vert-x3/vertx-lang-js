@@ -41,7 +41,7 @@ var MyInterface = function(j_val) {
   this.sub = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      return new SubInterface(j_myInterface["sub()"]());
+      return utils.convReturnVertxGen(j_myInterface["sub()"](), SubInterface);
     } else utils.invalidArgs();
   };
 
@@ -54,7 +54,7 @@ var MyInterface = function(j_val) {
   this.method = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      return new TestInterface(j_myInterface["method()"]());
+      return utils.convReturnVertxGen(j_myInterface["method()"](), TestInterface);
     } else utils.invalidArgs();
   };
 
@@ -73,7 +73,7 @@ var MyInterface = function(j_val) {
 MyInterface.create = function() {
   var __args = arguments;
   if (__args.length === 0) {
-    return new MyInterface(JMyInterface["create()"]());
+    return utils.convReturnVertxGen(JMyInterface["create()"](), MyInterface);
   } else utils.invalidArgs();
 };
 

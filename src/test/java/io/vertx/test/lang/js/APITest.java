@@ -374,6 +374,11 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testVertxGenNullReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testAbstractVertxGenReturn() throws Exception {
     runTest();
   }

@@ -201,6 +201,17 @@ utils.convReturnListSetJson = function(jList) {
   return arr;
 };
 
+// Convert a VertxGen return value
+utils.convReturnVertxGen = function(jdel, constructorFunction) {
+  if (jdel != null) {
+    // A bit of jiggery pokery to create the object given a reference to the constructor function
+    var obj = Object.create(constructorFunction.prototype, {});
+    constructorFunction.apply(obj, [jdel]);
+    return obj;
+  }
+  return null;
+}
+
 // Convert a list/set containing VertxGen return
 utils.convReturnListSetVertxGen = function(jList, constructorFunction) {
   var arr = [];
