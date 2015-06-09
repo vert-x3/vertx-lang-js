@@ -46,7 +46,48 @@ Let's see a couple of examples using asynchronous methods:
 
 [source,js]
 ----
-Code not translatable
+var Vertx = require("vertx-js/vertx");
+var Buffer = require("vertx-js/buffer");
+var vertx = Vertx.vertx();
+
+// Read a file
+vertx.fileSystem().readFile("target/classes/readme.txt", function (result, result_err) {
+  if (result_err == null) {
+    console.log(result);
+  } else {
+    console.error("Oh oh ..." + result_err);
+  }
+});
+
+// Copy a file
+vertx.fileSystem().copy("target/classes/readme.txt", "target/classes/readme2.txt", function (result, result_err) {
+  if (result_err == null) {
+    console.log("File copied");
+  } else {
+    console.error("Oh oh ..." + result_err);
+  }
+});
+
+// Write a file
+vertx.fileSystem().writeFile("target/classes/hello.txt", Buffer.buffer("Hello"), function (result, result_err) {
+  if (result_err == null) {
+    console.log("File written");
+  } else {
+    console.error("Oh oh ..." + result_err);
+  }
+});
+
+// Check existence and delete
+vertx.fileSystem().exists("target/classes/junk.txt", function (result, result_err) {
+  if (result_err == null && result) {
+    vertx.fileSystem().delete("target/classes/junk.txt", function (r, r_err) {
+      console.log("File deleted");
+    });
+  } else {
+    console.error("Oh oh ... - cannot delete the file: " + result_err);
+  }
+});
+
 ----
 
 === Asynchronous files
@@ -90,7 +131,29 @@ Here is an example of random access writes:
 
 [source,js]
 ----
-Code not translatable
+var Vertx = require("vertx-js/vertx");
+var Buffer = require("vertx-js/buffer");
+var vertx = Vertx.vertx();
+vertx.fileSystem().open("target/classes/hello.txt", {
+}, function (result, result_err) {
+  if (result_err == null) {
+    var file = result;
+    var buff = Buffer.buffer("foo");
+    for (var i = 0; i < 5; i++) {
+      file.write(buff, buff.length() * i, function (ar, ar_err) {
+        if (ar_err == null) {
+          console.log("Written ok!");
+          // etc
+        } else {
+          console.error("Failed to write: " + ar_err);
+        }
+      });
+    }
+  } else {
+    console.error("Cannot open file " + result_err);
+  }
+});
+
 ----
 
 ==== Random access reads
@@ -111,7 +174,28 @@ Here's an example of random access reads:
 
 [source,js]
 ----
-Code not translatable
+var Vertx = require("vertx-js/vertx");
+var Buffer = require("vertx-js/buffer");
+var vertx = Vertx.vertx();
+vertx.fileSystem().open("target/classes/les_miserables.txt", {
+}, function (result, result_err) {
+  if (result_err == null) {
+    var file = result;
+    var buff = Buffer.buffer(1000);
+    for (var i = 0; i < 10; i++) {
+      file.read(buff, i * 100, i * 100, 100, function (ar, ar_err) {
+        if (ar_err == null) {
+          console.log("Read ok!");
+        } else {
+          console.error("Failed to write: " + ar_err);
+        }
+      });
+    }
+  } else {
+    console.error("Cannot open file " + result_err);
+  }
+});
+
 ----
 
 ==== Opening Options
@@ -144,7 +228,25 @@ copy the content to another `AsyncFile`:
 
 [source,js]
 ----
-Code not translatable
+var Vertx = require("vertx-js/vertx");
+var Pump = require("vertx-js/pump");
+var vertx = Vertx.vertx();
+var output = vertx.fileSystem().openBlocking("target/classes/plagiary.txt", {
+});
+
+vertx.fileSystem().open("target/classes/les_miserables.txt", {
+}, function (result, result_err) {
+  if (result_err == null) {
+    var file = result;
+    Pump.pump(file, output).start();
+    file.endHandler(function (r) {
+      console.log("Copy done");
+    });
+  } else {
+    console.error("Cannot open file " + result_err);
+  }
+});
+
 ----
 
 You can also use the _pump_ to write file content into HTTP responses, or more generally in any
