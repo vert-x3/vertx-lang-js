@@ -17,7 +17,7 @@
 /**
  * ==== Message Codecs
  *
- * Message codecs are available exclusively with the Java api.
+ * Message codecs are available exclusively with the Java API.
  */
 @Document(fileName = "override/eventbus.adoc")
 package docoverride.eventbus;
