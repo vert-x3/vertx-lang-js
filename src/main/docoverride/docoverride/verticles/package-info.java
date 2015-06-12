@@ -92,7 +92,7 @@
  * [source, javascript]
  * ----
  * exports.vertxStartAsync = function(startFuture) {
- *  vertx.deployVerticle("verticle.js", function(res) {
+ *  vertx.deployVerticle("verticle.js", function(res, err) {
  *    if (err) {
  *      startFuture.fail();
  *    } else {
