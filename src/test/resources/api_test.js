@@ -476,6 +476,21 @@ function testMethodWithHandlerListNullJsonObject() {
     Assert.assertEquals(1, count, 0);
 }
 
+function testMethodWithHandlerListComplexJsonObject() {
+  var count = 0;
+  obj.methodWithHandlerListComplexJsonObject(function(listJsonObject) {
+    Assert.assertTrue(typeof listJsonObject === 'object');
+    Assert.assertTrue(typeof listJsonObject[0] === 'object');
+    Assert.assertTrue(typeof listJsonObject[0].outer === 'object');
+    Assert.assertEquals("tartan", listJsonObject[0].outer.socks);
+    Assert.assertTrue(listJsonObject[0].list instanceof Array);
+    Assert.assertEquals("yellow", listJsonObject[0].list[0]);
+    Assert.assertEquals("blue", listJsonObject[0].list[1]);
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
 function testMethodWithHandlerAsyncResultListJsonObject() {
   var count = 0;
   obj.methodWithHandlerAsyncResultListJsonObject(function(listJsonObject, err) {
@@ -485,6 +500,22 @@ function testMethodWithHandlerAsyncResultListJsonObject() {
     Assert.assertEquals("stilton", listJsonObject[0].cheese);
     Assert.assertTrue(typeof listJsonObject[1] === 'object');
     Assert.assertEquals("tartan", listJsonObject[1].socks);
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerAsyncResultListComplexJsonObject() {
+  var count = 0;
+  obj.methodWithHandlerAsyncResultListComplexJsonObject(function(listJsonObject, err) {
+    Assert.assertNull(err);
+    Assert.assertTrue(typeof listJsonObject === 'object');
+    Assert.assertTrue(typeof listJsonObject[0] === 'object');
+    Assert.assertTrue(typeof listJsonObject[0].outer === 'object');
+    Assert.assertEquals("tartan", listJsonObject[0].outer.socks);
+    Assert.assertTrue(listJsonObject[0].list instanceof Array);
+    Assert.assertEquals("yellow", listJsonObject[0].list[0]);
+    Assert.assertEquals("blue", listJsonObject[0].list[1]);
     count++;
   });
   Assert.assertEquals(1, count, 0);
@@ -524,6 +555,21 @@ function testMethodWithHandlerSetNullJsonObject() {
     Assert.assertEquals(1, count, 0);
 }
 
+function testMethodWithHandlerSetComplexJsonObject() {
+  var count = 0;
+  obj.methodWithHandlerSetComplexJsonObject(function(setJsonObject) {
+    Assert.assertTrue(typeof setJsonObject === 'object');
+    Assert.assertTrue(typeof setJsonObject[0] === 'object');
+    Assert.assertTrue(typeof setJsonObject[0].outer === 'object');
+    Assert.assertEquals("tartan", setJsonObject[0].outer.socks);
+    Assert.assertTrue(setJsonObject[0].list instanceof Array);
+    Assert.assertEquals("yellow", setJsonObject[0].list[0]);
+    Assert.assertEquals("blue", setJsonObject[0].list[1]);
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
 function testMethodWithHandlerAsyncResultSetJsonObject() {
   var count = 0;
   obj.methodWithHandlerAsyncResultSetJsonObject(function(setJsonObject, err) {
@@ -547,6 +593,22 @@ function testMethodWithHandlerAsyncResultSetNullJsonObject() {
         count++;
     });
     Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerAsyncResultSetComplexJsonObject() {
+  var count = 0;
+  obj.methodWithHandlerAsyncResultSetComplexJsonObject(function(setJsonObject, err) {
+    Assert.assertNull(err);
+    Assert.assertTrue(typeof setJsonObject === 'object');
+    Assert.assertTrue(typeof setJsonObject[0] === 'object');
+    Assert.assertTrue(typeof setJsonObject[0].outer === 'object');
+    Assert.assertEquals("tartan", setJsonObject[0].outer.socks);
+    Assert.assertTrue(setJsonObject[0].list instanceof Array);
+    Assert.assertEquals("yellow", setJsonObject[0].list[0]);
+    Assert.assertEquals("blue", setJsonObject[0].list[1]);
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
 }
 
 function testMethodWithHandlerListJsonArray() {
@@ -574,6 +636,21 @@ function testMethodWithHandlerListNullJsonArray() {
         count++;
     });
     Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerListComplexJsonArray() {
+  var count = 0;
+  obj.methodWithHandlerListComplexJsonArray(function(listJsonArray) {
+    Assert.assertTrue(typeof listJsonArray === 'object');
+    Assert.assertTrue(listJsonArray[0] instanceof Array);
+    Assert.assertTrue(typeof listJsonArray[0][0] === 'object');
+    Assert.assertEquals("hello", listJsonArray[0][0].foo);
+    Assert.assertTrue(listJsonArray[1] instanceof Array);
+    Assert.assertTrue(typeof listJsonArray[1][0] === 'object');
+    Assert.assertEquals("bye", listJsonArray[1][0].bar);
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
 }
 
 function testMethodWithHandlerAsyncResultListJsonArray() {
@@ -605,6 +682,22 @@ function testMethodWithHandlerAsyncResultListNullJsonArray() {
     Assert.assertEquals(1, count, 0);
 }
 
+function testMethodWithHandlerAsyncResultListComplexJsonArray() {
+  var count = 0;
+  obj.methodWithHandlerAsyncResultListComplexJsonArray(function(listJsonArray, err) {
+    Assert.assertNull(err);
+    Assert.assertTrue(typeof listJsonArray === 'object');
+    Assert.assertTrue(listJsonArray[0] instanceof Array);
+    Assert.assertTrue(typeof listJsonArray[0][0] === 'object');
+    Assert.assertEquals("hello", listJsonArray[0][0].foo);
+    Assert.assertTrue(listJsonArray[1] instanceof Array);
+    Assert.assertTrue(typeof listJsonArray[1][0] === 'object');
+    Assert.assertEquals("bye", listJsonArray[1][0].bar);
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
 function testMethodWithHandlerSetJsonArray() {
   var count = 0;
   obj.methodWithHandlerSetJsonArray(function(setJsonArray) {
@@ -630,6 +723,21 @@ function testMethodWithHandlerSetNullJsonArray() {
         count++;
     });
     Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerSetComplexJsonArray() {
+  var count = 0;
+  obj.methodWithHandlerSetComplexJsonArray(function(setJsonArray) {
+    Assert.assertTrue(typeof setJsonArray === 'object');
+    Assert.assertTrue(setJsonArray[0] instanceof Array);
+    Assert.assertTrue(typeof setJsonArray[0][0] === 'object');
+    Assert.assertEquals("hello", setJsonArray[0][0].foo);
+    Assert.assertTrue(setJsonArray[1] instanceof Array);
+    Assert.assertTrue(typeof setJsonArray[1][0] === 'object');
+    Assert.assertEquals("bye", setJsonArray[1][0].bar);
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
 }
 
 function testMethodWithHandlerAsyncResultSetJsonArray() {
@@ -659,6 +767,22 @@ function testMethodWithHandlerAsyncResultSetNullJsonArray() {
         count++;
     });
     Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerAsyncResultSetComplexJsonArray() {
+  var count = 0;
+  obj.methodWithHandlerAsyncResultSetComplexJsonArray(function(setJsonArray, err) {
+    Assert.assertNull(err);
+    Assert.assertTrue(typeof setJsonArray === 'object');
+    Assert.assertTrue(setJsonArray[0] instanceof Array);
+    Assert.assertTrue(typeof setJsonArray[0][0] === 'object');
+    Assert.assertEquals("hello", setJsonArray[0][0].foo);
+    Assert.assertTrue(setJsonArray[1] instanceof Array);
+    Assert.assertTrue(typeof setJsonArray[1][0] === 'object');
+    Assert.assertEquals("bye", setJsonArray[1][0].bar);
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
 }
 
 function testMethodWithHandlerListDataObject() {
@@ -935,6 +1059,17 @@ function testMethodWithGenericHandler() {
         count++;
     });
     Assert.assertEquals(1, count, 0);
+  count = 0;
+  obj.methodWithGenericHandler("JsonObjectComplex", function(res) {
+    Assert.assertTrue(typeof res === 'object');
+    Assert.assertTrue(typeof res.outer === 'object');
+    Assert.assertEquals("hello", res.outer.foo);
+    Assert.assertTrue(res.bar instanceof Array);
+    Assert.assertEquals("this", res.bar[0]);
+    Assert.assertEquals("that", res.bar[1]);
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
 }
 
 function testMethodWithGenericHandlerAsyncResult() {
@@ -958,6 +1093,18 @@ function testMethodWithGenericHandlerAsyncResult() {
         Assert.assertEquals("hello", res.foo);
         Assert.assertEquals(123, res.bar, 0);
         count++;
+    });
+    Assert.assertEquals(1, count, 0);
+    count = 0;
+    obj.methodWithGenericHandlerAsyncResult("JsonObjectComplex", function (res, err) {
+      Assert.assertNull(err);
+      Assert.assertTrue(typeof res === 'object');
+      Assert.assertTrue(typeof res.outer === 'object');
+      Assert.assertEquals("hello", res.outer.foo);
+      Assert.assertTrue(res.bar instanceof Array);
+      Assert.assertEquals("this", res.bar[0]);
+      Assert.assertEquals("that", res.bar[1]);
+      count++;
     });
     Assert.assertEquals(1, count, 0);
     count = 0;
@@ -1006,6 +1153,15 @@ function testAbstractVertxGenReturn() {
   var ret = obj.methodWithAbstractVertxGenReturn();
   Assert.assertEquals("abstractchaffinch", ret.getString());
   Assert.assertTrue(ret._jdel);
+}
+
+function testMapComplexJsonArrayReturn() {
+  var map = obj.methodWithMapComplexJsonArrayReturn(function() {});
+  Assert.assertTrue(typeof map === 'object');
+  var complex = map["foo"];
+  Assert.assertTrue(complex instanceof Array);
+  Assert.assertEquals("hello", complex[0].foo);
+  Assert.assertEquals("bye", complex[1].bar);
 }
 
 function testOverloadedMethods() {
@@ -1117,6 +1273,22 @@ function testNullJsonReturns() {
     Assert.assertNull(ret)
 }
 
+function testComplexJsonReturns() {
+  var ret = obj.methodWithComplexJsonObjectReturn();
+  assertTrue(typeof ret === 'object');
+  assertTrue(typeof ret.outer === 'object');
+  assertEquals("tartan", ret.outer.socks);
+  assertTrue(ret.list instanceof Array);
+  assertEquals("yellow", ret.list[0]);
+  assertEquals("blue", ret.list[0]);
+  ret = obj.methodWithComplexJsonArrayReturn();
+  assertTrue(ret instanceof Array);
+  assertTrue(typeof ret[0] === 'object');
+  assertEquals("hello", ret[0].foo);
+  assertTrue(typeof ret[1] === 'object');
+  assertEquals("bye", ret[1].bar);
+}
+
 function testJsonParams() {
   var jsonObject = {
     cat: "lion",
@@ -1162,6 +1334,28 @@ function testNullJsonHandlerParams() {
     Assert.assertEquals(2, count, 0);
 }
 
+function testComplexJsonHandlerParams() {
+  var count = 0;
+  obj.methodWithHandlerComplexJson(function(jsonObject) {
+    Assert.assertTrue(typeof jsonObject === 'object');
+    Assert.assertTrue(typeof jsonObject.outer === 'object');
+    Assert.assertEquals("tartan", jsonObject.outer.socks);
+    Assert.assertTrue(jsonObject.list instanceof Array);
+    Assert.assertEquals("yellow", jsonObject.list[0]);
+    Assert.assertEquals("blue", jsonObject.list[1]);
+    count++;
+  }, function(jsonArray) {
+    Assert.assertTrue(jsonArray instanceof Array);
+    Assert.assertTrue(jsonArray[0] instanceof Array);
+    Assert.assertTrue(typeof jsonArray[0][0] === 'object');
+    Assert.assertEquals("hello", jsonArray[0][0].foo);
+    Assert.assertTrue(typeof jsonArray[1][0] === 'object');
+    Assert.assertEquals("bye", jsonArray[1][0].bar);
+    count++;
+  });
+  Assert.assertEquals(2, count, 0);
+}
+
 function testJsonHandlerAsyncResultParams() {
 
   var count = 0;
@@ -1177,6 +1371,30 @@ function testJsonHandlerAsyncResultParams() {
     Assert.assertTrue(jsonArray instanceof Array)
     Assert.assertEquals("socks", jsonArray[0]);
     Assert.assertEquals("shoes", jsonArray[1]);
+    count++;
+  });
+  Assert.assertEquals(2, count, 0);
+}
+
+function testComplexJsonHandlerAsyncResultParams() {
+  var count = 0;
+  obj.methodWithHandlerAsyncResultComplexJsonObject(function(jsonObject, err) {
+    Assert.assertNull(err);
+    Assert.assertTrue(typeof jsonObject === 'object');
+    Assert.assertTrue(typeof jsonObject.outer === 'object');
+    Assert.assertEquals("tartan", jsonObject.outer.socks);
+    Assert.assertTrue(jsonObject.list instanceof Array);
+    Assert.assertEquals("yellow", jsonObject.list[0]);
+    Assert.assertEquals("blue", jsonObject.list[1]);
+    count++;
+  });
+  obj.methodWithHandlerAsyncResultComplexJsonArray(function(jsonArray, err) {
+    Assert.assertNull(err);
+    Assert.assertTrue(jsonArray instanceof Array);
+    Assert.assertTrue(typeof jsonArray[0] === 'object');
+    Assert.assertEquals("hello", jsonArray[0].foo);
+    Assert.assertTrue(typeof jsonArray[1] === 'object');
+    Assert.assertEquals("bye", jsonArray[1].bar);
     count++;
   });
   Assert.assertEquals(2, count, 0);
@@ -1353,6 +1571,18 @@ function testMapJsonObjectReturn() {
   });
 }
 
+function testMapComplexJsonObjectReturn() {
+  var map = obj.methodWithMapComplexJsonObjectReturn(function() {});
+  Assert.assertTrue(typeof map === 'object');
+  var complex = map["foo"];
+  Assert.assertTrue(typeof complex === 'object');
+  Assert.assertTrue(typeof complex.outer === 'object');
+  Assert.assertEquals("tartan", complex.outer.socks);
+  Assert.assertTrue(complex.list instanceof Array);
+  Assert.assertEquals("yellow", complex.list[0]);
+  Assert.assertEquals("blue", complex.list[1]);
+}
+
 function testMapJsonArrayReturn() {
   var map = obj.methodWithMapJsonArrayReturn(function() {});
   Assert.assertTrue(typeof map === 'object');
@@ -1400,6 +1630,19 @@ function testListJsonObjectReturn() {
   Assert.assertEquals("eek", obj2.blah);
 }
 
+function testListComplexJsonObjectReturn() {
+  var list = obj.methodWithListComplexJsonObjectReturn();
+  Assert.assertTrue(typeof list === 'object');
+  Assert.assertTrue(list instanceof Array);
+  var json1 = list[0];
+  Assert.assertTrue(typeof json1 === 'object');
+  Assert.assertTrue(typeof json1.outer === 'object');
+  Assert.assertEquals("tartan", json1.outer.socks);
+  Assert.assertTrue(json1.list instanceof Array);
+  Assert.assertEquals("yellow", json1.list[0]);
+  Assert.assertEquals("blue", json1.list[1]);
+}
+
 function testListJsonArrayReturn() {
   var list = obj.methodWithListJsonArrayReturn();
   Assert.assertTrue(typeof list === 'object');
@@ -1410,6 +1653,18 @@ function testListJsonArrayReturn() {
   Assert.assertTrue(arr2 instanceof Array);
   Assert.assertEquals("foo", arr1[0]);
   Assert.assertEquals("blah", arr2[0]);
+}
+
+function testListComplexJsonArrayReturn() {
+  var list = obj.methodWithListComplexJsonArrayReturn();
+  Assert.assertTrue(typeof list === 'object');
+  Assert.assertTrue(list instanceof Array);
+  var json1 = list[0];
+  Assert.assertTrue(json1 instanceof Array);
+  Assert.assertEquals("hello", json1[0].foo);
+  var json2 = list[1];
+  Assert.assertTrue(json2 instanceof Array);
+  Assert.assertEquals("bye", json2[0].bar);
 }
 
 function testListVertxGenReturn() {
@@ -1451,6 +1706,16 @@ function testSetJsonObjectReturn() {
   Assert.assertEquals("eek", obj2.blah);
 }
 
+function testSetComplexJsonObjectReturn() {
+  var list = obj.methodWithSetComplexJsonObjectReturn();
+  Assert.assertTrue(typeof list === 'object');
+  Assert.assertTrue(list instanceof Array);
+  var obj1 = list[0];
+  Assert.assertEquals("tartan", obj1.outer.socks);
+  Assert.assertEquals("yellow", obj1.list[0]);
+  Assert.assertEquals("blue", obj1.list[1]);
+}
+
 function testSetJsonArrayReturn() {
   var list = obj.methodWithSetJsonArrayReturn();
   Assert.assertTrue(typeof list === 'object');
@@ -1461,6 +1726,16 @@ function testSetJsonArrayReturn() {
   Assert.assertTrue(arr2 instanceof Array);
   Assert.assertEquals("foo", arr1[0]);
   Assert.assertEquals("blah", arr2[0]);
+}
+
+function testSetComplexJsonArrayReturn() {
+  var _set = obj.methodWithSetComplexJsonArrayReturn();
+  var arr1 = _set[0];
+  var arr2 = _set[1];
+  Assert.assertTrue(arr1 instanceof Array);
+  Assert.assertTrue(arr2 instanceof Array);
+  Assert.assertEquals("hello", arr1[0].foo);
+  Assert.assertEquals("bye", arr2[0].bar);
 }
 
 function testSetVertxGenReturn() {

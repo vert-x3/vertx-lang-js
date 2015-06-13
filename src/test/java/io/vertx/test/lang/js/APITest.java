@@ -164,12 +164,22 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testMethodWithHandlerListComplexJsonObject() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMethodWithHandlerSetJsonObject() throws Exception {
     runTest();
   }
 
   @Test
   public void testMethodWithHandlerSetNullJsonObject() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerSetComplexJsonObject() throws Exception {
     runTest();
   }
 
@@ -184,12 +194,22 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testMethodWithHandlerListComplexJsonArray() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMethodWithHandlerSetJsonArray() throws Exception {
     runTest();
   }
 
   @Test
   public void testMethodWithHandlerSetNullJsonArray() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerSetComplexJsonArray() throws Exception {
     runTest();
   }
 
@@ -239,6 +259,11 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testMethodWithHandlerAsyncResultListComplexJsonObject() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMethodWithHandlerAsyncResultListNullJsonObject() throws Exception {
     runTest();
   }
@@ -254,6 +279,11 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testMethodWithHandlerAsyncResultSetComplexJsonObject() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMethodWithHandlerAsyncResultListJsonArray() throws Exception {
     runTest();
   }
@@ -264,12 +294,22 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testMethodWithHandlerAsyncResultListComplexJsonArray() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMethodWithHandlerAsyncResultSetJsonArray() throws Exception {
     runTest();
   }
 
   @Test
   public void testMethodWithHandlerAsyncResultSetNullJsonArray() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerAsyncResultSetComplexJsonArray() throws Exception {
     runTest();
   }
 
@@ -331,12 +371,22 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testComplexJsonHandlerParams() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testJsonHandlerAsyncResultParams() throws Exception {
     runTest();
   }
 
   @Test
   public void testNullJsonHandlerAsyncResultParams() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testComplexJsonHandlerAsyncResultParams() throws Exception {
     runTest();
   }
 
@@ -380,6 +430,11 @@ public class APITest extends JSTestBase {
 
   @Test
   public void testAbstractVertxGenReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMapComplexJsonArrayReturn() throws Exception {
     runTest();
   }
 
@@ -446,6 +501,11 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testMapComplexJsonObjectReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMapJsonArrayReturn() throws Exception {
     runTest();
   }
@@ -476,7 +536,17 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testListComplexJsonObjectReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testListJsonArrayReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testListComplexJsonArrayReturn() throws Exception {
     runTest();
   }
 
@@ -501,7 +571,17 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testSetComplexJsonObjectReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testSetJsonArrayReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testSetComplexJsonArrayReturn() throws Exception {
     runTest();
   }
 
