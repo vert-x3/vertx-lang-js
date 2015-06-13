@@ -289,7 +289,16 @@ vertx.executeBlocking(function (future) {
 
 ----
 
+By default, if executeBlocking is called several times from the same context (e.g. the same verticle instance) then
+the different executeBlocking are executed _serially_ (i.e. one after another).
+
+If you don't care about ordering you can call `link:jsdoc/vertx-Vertx.html#executeBlocking[executeBlocking]`
+specifying `false` as the argument to `ordered`. In this case any executeBlocking may be executed in parallel
+on the worker pool.
+
 An alternative way to run blocking code is to use a <<worker_verticles, worker verticle>>
+
+A worker verticle is always executed with a thread from the worker pool.
 
 == Verticles
 
@@ -498,38 +507,7 @@ vertx.deployVerticle("com.mycompany.MyOrderProcessorVerticle", options);
 This is useful for scaling easily across multiple cores. For example you might have a web-server verticle to deploy
 and multiple cores on your machine, so you want to deploy multiple instances to take utilise all the cores.
 
-=== Passing configuration to a verticle
-
-Configuration in the form of JSON can be passed to a verticle at deployment time:
-
-[source,js]
-----
-var config = {
-  "name" : "tim",
-  "directory" : "/blah"
-};
-var options = {
-  "config" : config
-};
-vertx.deployVerticle("com.mycompany.MyOrderProcessorVerticle", options);
-
-----
-
-This configuration is then available via the `link:jsdoc/context-Context.html[Context]` object or directly using the
-`config` method. The configuration is returned as a JSON object so you can
-retrieve data as follows:
-
-[source,js]
-----
-Code not translatable
-----
-
-=== Accessing environment variables in a Verticle
-
-Environment variables and system properties are accessible from a verticle by following the Java way. To retrieve
-system properties, use `System.getProperty`
-(or `System.getProperty`). You can also retrieve the
-environment variables using `System.getenv`.
+include::override/verticle-configuration.adoc[]
 
 === Verticle Isolation Groups
 

@@ -20,7 +20,7 @@ function testStopCalled() {
       // Verticle will send a message if vertxStop is called
       Assert.assertEquals("foo", msg.body());
       latch.countDown();
-    })
+    });
 
     vertx.undeploy(deploymentID, function (v, err) {
       Assert.assertNull(v);
