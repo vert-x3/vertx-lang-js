@@ -1,0 +1,11 @@
+# Nashorn JavaScript implementation for Vert.x
+
+image:https://vertx.ci.cloudbees.com/buildStatus/icon?job=vert.x3-lang-js["Build Status",link="https://vertx.ci.cloudbees.com/view/vert.x-3/job/vert.x3-lang-js/"]
+
+This project provides the JavaScript API implementation for Vert.x using the Nashorn JavaScript engine built into Java 8.
+
+As with all Vert.x 3 language implementations they are generated from a Java API using templates - this allows us to
+maintain just the canonical Java APIs which is a lot less work than maintaining them manually.
+
+This project provides a verticle factory implementation which knows how to deploy verticles with the prefix, or file
+extensionm `js`.
