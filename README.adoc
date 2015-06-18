@@ -8,4 +8,4 @@ As with all Vert.x 3 language implementations they are generated from a Java API
 maintain just the canonical Java APIs which is a lot less work than maintaining them manually.
 
 This project provides a verticle factory implementation which knows how to deploy verticles with the prefix, or file
-extensionm `js`.
+extension `js`.
