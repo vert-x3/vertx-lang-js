@@ -153,12 +153,15 @@ public class JSVerticleFactory implements VerticleFactory {
         // Put the globals in
         engine.put("__jvertx", vertx);
         String globs =
-          "var Vertx = require('vertx-js/vertx'); var vertx = new Vertx(__jvertx); var console = require('vertx-js/util/console');" +
+          "var Vertx = require('vertx-js/vertx'); var vertx = new Vertx(__jvertx);" +
+          "var context = Vertx.currentContext();" +
+          "var console = require('vertx-js/util/console');" +
           "var setTimeout = function(callback,delay) { return vertx.setTimer(delay, callback); };" +
           "var clearTimeout = function(id) { vertx.cancelTimer(id); };" +
           "var setInterval = function(callback, delay) { return vertx.setPeriodic(delay, callback); };" +
           "var clearInterval = clearTimeout;" +
-          "var parent = this; var global = this;";
+          "var parent = this;" +
+          "var global = this;";
         if (ADD_NODEJS_PROCESS_ENV) {
           globs += "var process = {}; process.env=java.lang.System.getenv();";
         }
