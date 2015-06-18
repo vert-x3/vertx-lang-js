@@ -24,6 +24,12 @@
 
 module = (typeof module == 'undefined') ? {} : module;
 
+// Java.synchronized is used in jvm-npm.js to synchronize concurrent access to require but this is only available in
+// JDK 8u45 or later. So, if not there, just throw an error.
+if (typeof Java.synchronized == 'undefined') {
+  throw "Please update your java virtual machine, Java 1.8.0_45+ is required by the vert.x JavaScript support";
+}
+
 (function () {
   var System = java.lang.System;
   var Scanner = java.util.Scanner;

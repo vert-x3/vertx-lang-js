@@ -18,7 +18,10 @@
  * === Writing Verticles
  *
  * JavaScript verticles are implemented either as http://wiki.commonjs.org/wiki/Modules/1.1[CommonJS modules] or
- * https://www.npmjs.com/[NPM] modules
+ * https://www.npmjs.com/[NPM] modules.
+ *
+ * IMPORTANT: JavaScript support requires Java 1.8.0_45+. You can check your Java version with `java -version`. Please
+ * update if needed.
  *
  * Here's an example JavaScript verticle written as a CommonJS module.
  *
