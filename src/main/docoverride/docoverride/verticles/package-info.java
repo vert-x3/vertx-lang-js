@@ -28,7 +28,7 @@
  * JavaScript verticles will have the following globals pre-set as a convenience:
  *
  * * +vertx+ - A reference to the Vertx object
- * * +console+ A reference to the <<console, console>> object
+ * * +console+ A reference to the <<The console, console>> object
  *
  * [source, javascript]
  * ----
