@@ -14,4 +14,8 @@ public abstract class JSTestBase {
   protected void runTest() throws Exception {
     new JSRunner().run(getTestFile(), getMethodName());
   }
+  
+  protected void runTest(String testName) throws Exception {
+    new JSRunner().run(getTestFile(), testName);
+  }
 }

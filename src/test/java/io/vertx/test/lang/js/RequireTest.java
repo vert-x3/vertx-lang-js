@@ -71,10 +71,27 @@ public class RequireTest extends JSTestBase {
   public void testRequireNPMModuleUsingNodePath() throws Exception {
     runTest();
   }
+  
+  @Test
+  public void testRequireNPMModuleUsingClassPath() throws Exception {
+  	class TestThread extends Thread {
+  		public String result;
+  		public void run() {
+  			try {
+  				runTest("testRequireNPMModuleUsingClassPath");
+  				result = "PASS";
+  			} catch (Throwable t) { result = t.getMessage(); }
+  		}
+  	}
+  	TestThread test = new TestThread();
+  	test.setContextClassLoader(new java.net.URLClassLoader(new java.net.URL[] { new java.io.File("src/test/npm/zip/my_npm_module.zip").toURI().toURL() }));
+  	test.start();
+  	test.join();
+  	org.junit.Assert.assertEquals("PASS", test.result);
+  }
 
   @Test
   public void testMultipleConcurrentRequires() throws Exception {
     runTest();
   }
-
 }

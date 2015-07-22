@@ -89,6 +89,11 @@ function testRequireNPMModuleUsingNodePath() {
   Assert.assertEquals("hello from testmod1", testMod1);
 }
 
+function testRequireNPMModuleUsingClassPath() {
+  var my_npm_verticle = require("my_npm_module.js");
+  Assert.assertEquals("Hello vertx", my_npm_verticle);
+}
+
 /**
  * Test multiple verticle deployment with the Verticle requesting a require.
  *
