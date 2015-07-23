@@ -590,9 +590,13 @@ public class APITest extends JSTestBase {
     runTest();
   }
 
-
   @Test
   public void testThrowableReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testThrowableParam() throws Exception {
     runTest();
   }
 
