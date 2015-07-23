@@ -12,6 +12,7 @@ var VertxGenConverterMap = Java.type("io.vertx.lang.js.VertxGenConverterMap");
 var LongConverterMap = Java.type("io.vertx.lang.js.LongConverterMap");
 var ShortConverterMap = Java.type("io.vertx.lang.js.ShortConverterMap");
 var ByteConverterMap = Java.type("io.vertx.lang.js.ByteConverterMap");
+var ThrowableConverter = Java.type("io.vertx.lang.js.ThrowableConverter");
 
 var utils = {};
 
@@ -41,6 +42,11 @@ utils.convParamTypeUnknown = function(param) {
   return param;
 };
 
+utils.convParamThrowable = function(err) {
+  return ThrowableConverter.catchAndReturnThrowable(function() {
+    throw err;
+  });
+};
 
 utils.convParamListLong = function(arr) {
   return asList(Java.to(arr, LongArrayType));
@@ -158,7 +164,6 @@ utils.convParamSetDataObject = function(arr, constructor) {
   return new ListConverterSet(utils.convParamListDataObject(arr, constructor));
 }
 
-
 // Return conversion
 
 // This is used to convert the return value from any Generic method where we don't know the actual type
@@ -168,6 +173,14 @@ utils.convReturnTypeUnknown = function(ret) {
     return JSON.parse(ret.encode());
   } else {
     return ret;
+  }
+};
+
+utils.convReturnThrowable = function(ret) {
+  try {
+    throw ret;
+  } catch (e) {
+    return e;
   }
 };
 
