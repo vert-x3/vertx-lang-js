@@ -215,7 +215,7 @@ close or when the JVM is shutdown with `link:../cheatsheet/OpenOptions.html#dele
 ==== Flushing data to underlying storage.
 
 In the `OpenOptions`, you can enable/disable the automatic synchronisation of the content on every write using
-`link:../cheatsheet/OpenOptions.html#DSync[DSync]`. In that case, you can manually flush any writes from the OS
+`link:../cheatsheet/OpenOptions.html#dsync[dsync]`. In that case, you can manually flush any writes from the OS
 cache by calling the `link:jsdoc/async_file-AsyncFile.html#flush[flush]` method.
 
 This method can also be called with an handler which will be called when the flush is complete.
