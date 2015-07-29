@@ -225,6 +225,14 @@ utils.convReturnVertxGen = function(jdel, constructorFunction) {
   return null;
 }
 
+// Convert a DataObject return value
+utils.convReturnDataObject = function(dataObject) {
+  if (dataObject != null) {
+    return utils.convReturnJson(dataObject.toJson());
+  }
+  return null;
+}
+
 // Convert a list/set containing VertxGen return
 utils.convReturnListSetVertxGen = function(jList, constructorFunction) {
   var arr = [];

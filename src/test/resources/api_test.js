@@ -1155,6 +1155,19 @@ function testAbstractVertxGenReturn() {
   Assert.assertTrue(ret._jdel);
 }
 
+function testDataObjectReturn() {
+  var ret = obj.methodWithDataObjectReturn();
+  Assert.assertTrue(typeof ret === 'object');
+  Assert.assertEquals("foo", ret.foo);
+  Assert.assertEquals(123, ret.bar, 0);
+  Assert.assertEquals(0.0, ret.wibble, 0);
+}
+
+function testDataObjectNullReturn() {
+  var ret = obj.methodWithDataObjectNullReturn();
+  Assert.assertNull(ret);
+}
+
 function testMapComplexJsonArrayReturn() {
   var map = obj.methodWithMapComplexJsonArrayReturn(function() {});
   Assert.assertTrue(typeof map === 'object');

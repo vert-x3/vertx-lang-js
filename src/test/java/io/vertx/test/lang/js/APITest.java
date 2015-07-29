@@ -434,6 +434,16 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testDataObjectReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testDataObjectNullReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMapComplexJsonArrayReturn() throws Exception {
     runTest();
   }
