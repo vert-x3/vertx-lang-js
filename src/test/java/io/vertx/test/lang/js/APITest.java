@@ -556,6 +556,11 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testListDataObjectReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testSetStringReturn() throws Exception {
     runTest();
   }
@@ -587,6 +592,11 @@ public class APITest extends JSTestBase {
 
   @Test
   public void testSetVertxGenReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testSetDataObjectReturn() throws Exception {
     runTest();
   }
 
