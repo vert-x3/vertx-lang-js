@@ -140,7 +140,6 @@ if (typeof Java.synchronized == 'undefined') {
       }
       throw new Error("Cannot find module " + id);
     }
-
     if (file.core) {
       file = file.path;
       core = true;
@@ -245,7 +244,8 @@ if (typeof Java.synchronized == 'undefined') {
     var base = [root, 'node_modules'].join('/');
     return resolveAsFile(id, base) ||
       resolveAsDirectory(id, base) ||
-      (root ? resolveAsNodeModule(id, new File(root).getParent()) : false);
+      (root ? resolveAsNodeModule(id, new File(root).getParent()) : false) ||
+      resolveAsClasspathNodeModule(id);
   }
 
   function resolveAsDirectory(id, root) {
@@ -286,6 +286,18 @@ if (typeof Java.synchronized == 'undefined') {
     if (is) {
       return {path: name, core: true};
     }
+  }
+  
+  function resolveAsClasspathNodeModule(name) {
+    name = 'node_modules/' + name;
+    var main = name + '/index.js';
+    var classloader = java.lang.Thread.currentThread().getContextClassLoader();
+    if (classloader.getResource(name + '/package.json')) {
+      var package = JSON.parse(readFile(name + '/package.json', true));
+      if (package.main) main = name + '/' + package.main;
+    }
+    main = main.replace(/\.\//g,'');
+    if (classloader.getResource(main)) return {path: main, core: true};
   }
 
   function normalizeName(fileName, ext) {
