@@ -59,6 +59,16 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testListOfDataObjectsParam() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testSetOfDataObjectsParam() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testNullDataObjectParam() throws Exception {
     runTest();
   }

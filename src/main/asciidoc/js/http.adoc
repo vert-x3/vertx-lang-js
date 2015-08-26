@@ -569,6 +569,51 @@ WARNING: If you're going to write web servers directly using Vert.x be careful t
 path to access files outside the directory from which you want to serve them. It may be safer instead to use
 Vert.x Web.
 
+When there is a need to serve just a segment of a file, say starting from a given byte, you can achieve this by doing:
+
+[source,js]
+----
+vertx.createHttpServer().requestHandler(function (request) {
+  var offset = 0;
+  try {
+    offset = Java.type("java.lang.Long").parseLong(request.getParam("start"));
+  } catch(err) {
+    // error handling...
+  }
+
+
+  var end = Java.type("java.lang.Long").MAX_VALUE;
+  try {
+    end = Java.type("java.lang.Long").parseLong(request.getParam("end"));
+  } catch(err) {
+    // error handling...
+  }
+
+
+  request.response().sendFile("web/mybigfile.txt", offset, end);
+}).listen(8080);
+
+----
+
+You are not required to supply the length if you want to send a file starting from an offset until the end, in this
+case you can just do:
+
+[source,js]
+----
+vertx.createHttpServer().requestHandler(function (request) {
+  var offset = 0;
+  try {
+    offset = Java.type("java.lang.Long").parseLong(request.getParam("start"));
+  } catch(err) {
+    // error handling...
+  }
+
+
+  request.response().sendFile("web/mybigfile.txt", offset);
+}).listen(8080);
+
+----
+
 ==== Pumping responses
 
 The server response is a `link:jsdoc/write_stream-WriteStream.html[WriteStream]` instance so you can pump to it from any
@@ -1212,7 +1257,9 @@ The http client supports pooling of connections, allowing you to reuse connectio
 For pooling to work, keep alive must be true using `link:../cheatsheet/HttpClientOptions.html#keepAlive[keepAlive]`
 on the options used when configuring the client. The default value is true.
 
-When keep alive is enabled. Vert.x will add a `Connection: Keep-Alive` header to each HTTP request sent.
+When keep alive is enabled. Vert.x will add a `Connection: Keep-Alive` header to each HTTP/1.0 request sent.
+When keep alive is disabled. Vert.x will add a `Connection: Close` header to each HTTP/1.1 request sent to signal
+that the connection will be closed after completion of the response.
 
 The maximum number of connections to pool *for each server* is configured using `link:../cheatsheet/HttpClientOptions.html#maxPoolSize[maxPoolSize]`
 

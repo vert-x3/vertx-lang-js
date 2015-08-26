@@ -220,6 +220,38 @@ function testDataObjectParam() {
   obj.methodWithDataObjectParam(dataObject);
 }
 
+function testListOfDataObjectsParam() {
+  var dataObjects = [
+    {
+      foo: "hello",
+      bar: 123,
+      wibble: 1.23
+    },
+    {
+      foo: "world",
+      bar: 123,
+      wibble: 1.23
+    }
+  ];
+  obj.methodWithListOfDataObjectsParam(dataObjects);
+}
+
+function testSetOfDataObjectsParam() {
+  var dataObjects = [
+    {
+      foo: "hello",
+      bar: 123,
+      wibble: 1.23
+    },
+    {
+      foo: "world",
+      bar: 123,
+      wibble: 1.23
+    }
+  ];
+  obj.methodWithSetOfDataObjectsParam(dataObjects);
+}
+
 function testNullDataObjectParam() {
   obj.methodWithNullDataObjectParam(null);
 }
