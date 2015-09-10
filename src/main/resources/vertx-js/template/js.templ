@@ -5,7 +5,7 @@
 
 @code{
   def genModuleName(moduleType) {
-    return moduleType.raw.moduleName + "-js/" + helper.convertCamelCaseToUnderscores(moduleType.raw.simpleName);
+    return moduleType.raw.moduleName + "-js/" + CASE_CAMEL.to(CASE_SNAKE, moduleType.raw.simpleName);
   }
 }
 
