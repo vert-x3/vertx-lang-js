@@ -15,7 +15,7 @@ var server = vertx.createNetServer();
 
 === Configuring a TCP server
 
-If you don't want the default, a server can be configured by passing in a `link:../cheatsheet/NetServerOptions.html[NetServerOptions]`
+If you don't want the default, a server can be configured by passing in a `link:../dataobjects.html#NetServerOptions[NetServerOptions]`
 instance when creating it:
 
 [source,js]
@@ -325,7 +325,7 @@ var client = vertx.createNetClient();
 
 === Configuring a TCP client
 
-If you don't want the default, a client can be configured by passing in a `link:../cheatsheet/NetClientOptions.html[NetClientOptions]`
+If you don't want the default, a client can be configured by passing in a `link:../dataobjects.html#NetClientOptions[NetClientOptions]`
 instance when creating it:
 
 [source,js]
@@ -365,8 +365,8 @@ client.connect(4321, "localhost", function (res, res_err) {
 === Configuring connection attempts
 
 A client can be configured to automatically retry connecting to the server in the event that it cannot connect.
-This is configured with `link:../cheatsheet/NetClientOptions.html#reconnectInterval[reconnectInterval]` and
-`link:../cheatsheet/NetClientOptions.html#reconnectAttempts[reconnectAttempts]`.
+This is configured with `link:../dataobjects.html#NetClientOptions#setReconnectInterval[reconnectInterval]` and
+`link:../dataobjects.html#NetClientOptions#setReconnectAttempts[reconnectAttempts]`.
 
 NOTE: Currently Vert.x will not attempt to reconnect if a connection fails, reconnect attempts and interval
 only apply to creating initial connections.
@@ -391,12 +391,12 @@ TCP clients and servers can be configured to use http://en.wikipedia.org/wiki/Tr
 - earlier versions of TLS were known as SSL.
 
 The APIs of the servers and clients are identical whether or not SSL/TLS is used, and it's enabled by configuring
-the `link:../cheatsheet/NetClientOptions.html[NetClientOptions]` or `link:../cheatsheet/NetServerOptions.html[NetServerOptions]` instances used
+the `link:../dataobjects.html#NetClientOptions[NetClientOptions]` or `link:../dataobjects.html#NetServerOptions[NetServerOptions]` instances used
 to create the servers or clients.
 
 ==== Enabling SSL/TLS on the server
 
-SSL/TLS is enabled with  `link:../cheatsheet/NetServerOptions.html#ssl[ssl]`.
+SSL/TLS is enabled with  `link:../dataobjects.html#NetServerOptions#setSsl[ssl]`.
 
 By default it is disabled.
 
@@ -630,7 +630,7 @@ To enable SSL on a NetClient the function setSSL(true) is called.
 
 ==== Client trust configuration
 
-If the `link:../cheatsheet/ClientOptionsBase.html#trustAll[trustALl]` is set to true on the client, then the client will
+If the `link:../dataobjects.html#ClientOptionsBase#setTrustAll[trustALl]` is set to true on the client, then the client will
 trust all server certificates. The connection will still be encrypted but this mode is vulnerable to 'man in the middle' attacks. I.e. you can't
 be sure who you are connecting to. Use this with caution. Default value is false.
 
@@ -644,7 +644,7 @@ var client = vertx.createNetClient(options);
 
 ----
 
-If `link:../cheatsheet/ClientOptionsBase.html#trustAll[trustAll]` is not set then a client trust store must be
+If `link:../dataobjects.html#ClientOptionsBase#setTrustAll[trustAll]` is not set then a client trust store must be
 configured and should contain the certificates of the servers that the client trusts.
 
 Likewise server configuration, the client trust can be configured in several ways:
@@ -652,8 +652,8 @@ Likewise server configuration, the client trust can be configured in several way
 The first method is by specifying the location of a Java trust-store which contains the certificate authority.
 
 It is just a standard Java key store, the same as the key stores on the server side. The client
-trust store location is set by using the function `link:../cheatsheet/JksOptions.html#path[path]` on the
-`link:../cheatsheet/JksOptions.html[jks options]`. If a server presents a certificate during connection which is not
+trust store location is set by using the function `link:../dataobjects.html#JksOptions#setPath[path]` on the
+`link:../dataobjects.html#JksOptions[jks options]`. If a server presents a certificate during connection which is not
 in the client trust store, the connection attempt will not succeed.
 
 [source,js]
@@ -757,8 +757,8 @@ connecting. The client can be configured in several ways:
 
 The first method is by specifying the location of a Java key-store which contains the key and certificate.
 Again it's just a regular Java key store. The client keystore location is set by using the function
-`link:../cheatsheet/JksOptions.html#path[path]` on the
-`link:../cheatsheet/JksOptions.html[jks options]`.
+`link:../dataobjects.html#JksOptions#setPath[path]` on the
+`link:../dataobjects.html#JksOptions[jks options]`.
 
 [source,js]
 ----
@@ -861,7 +861,7 @@ Keep in mind that pem configuration, the private key is not crypted.
 ==== Revoking certificate authorities
 
 Trust can be configured to use a certificate revocation list (CRL) for revoked certificates that should no
-longer be trusted. The `link:../cheatsheet/NetClientOptions.html#crlPath[crlPath]` configures
+longer be trusted. The `link:../dataobjects.html#NetClientOptions#addCrlPath[crlPath]` configures
 the crl list to use:
 
 [source,js]
@@ -914,4 +914,4 @@ var server = vertx.createNetServer(options);
 
 ----
 
-Cipher suite can be specified on the `link:../cheatsheet/NetServerOptions.html[NetServerOptions]` or `link:../cheatsheet/NetClientOptions.html[NetClientOptions]` configuration.
+Cipher suite can be specified on the `link:../dataobjects.html#NetServerOptions[NetServerOptions]` or `link:../dataobjects.html#NetClientOptions[NetClientOptions]` configuration.

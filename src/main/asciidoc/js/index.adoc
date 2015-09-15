@@ -75,7 +75,7 @@ var vertx = Vertx.vertx({
 
 ----
 
-The `link:../cheatsheet/VertxOptions.html[VertxOptions]` object has many settings and allows you to configure things like clustering,
+The `link:../dataobjects.html#VertxOptions[VertxOptions]` object has many settings and allows you to configure things like clustering,
 high availability, pool sizes and various other settings. The Javadoc describes all the settings in detail.
 
 === Creating a clustered Vert.x object
@@ -255,7 +255,7 @@ some time. If you see warnings like these in your logs, then you should investig
 Vert.x will also provide stack traces to pinpoint exactly where the blocking is occurring.
 
 If you want to turn of these warnings or change the settings, you can do that in the
-`link:../cheatsheet/VertxOptions.html[VertxOptions]` object before creating the Vertx object.
+`link:../dataobjects.html#VertxOptions[VertxOptions]` object before creating the Vertx object.
 
 [[blocking_code]]
 == Running blocking code
@@ -361,7 +361,7 @@ Worker verticles are designed for calling blocking code, as they won't block any
 If you don't want to use a worker verticle to run blocking code, you can also run <<blocking_code, inline blocking code>>
 directly while on an event loop.
 
-If you want to deploy a verticle as a worker verticle you do that with `link:../cheatsheet/DeploymentOptions.html#worker[worker]`.
+If you want to deploy a verticle as a worker verticle you do that with `link:../dataobjects.html#DeploymentOptions#setWorker[worker]`.
 
 [source,js]
 ----
@@ -523,7 +523,7 @@ This might be the case, for example, if you want to deploy two different version
 in the same Vert.x instance, or if you have two different verticles which use different versions of the same jar library.
 
 When using an isolation group you provide a list of the class names that you want isolated using
-`link:../cheatsheet/DeploymentOptions.html#isolatedClasses[isolatedClasses]`-  an entry can be a fully qualified
+`link:../dataobjects.html#DeploymentOptions#setIsolatedClasses[isolatedClasses]`-  an entry can be a fully qualified
 classname such as `com.mycompany.myproject.engine.MyClass` or it can be a wildcard which will match any classes in a package and any
 sub-packages, e.g. `com.mycompany.myproject.*` would match any classes in the package `com.mycompany.myproject` or
 any sub-packages.
@@ -531,7 +531,7 @@ any sub-packages.
 Please note that _only_ the classes that match will be isolated - any other classes will be loaded by the current
 class loader.
 
-Extra classpath entries can also be provided with `link:../cheatsheet/DeploymentOptions.html#extraClasspath[extraClasspath]` so if
+Extra classpath entries can also be provided with `link:../dataobjects.html#DeploymentOptions#setExtraClasspath[extraClasspath]` so if
 you want to load classes or resources that aren't already present on the main classpath you can add this.
 
 WARNING: Use this feature with caution. Class-loaders can be a can of worms, and can make debugging difficult, amongst
@@ -1022,7 +1022,7 @@ of the Vert.x installation contains your cluster manager jar.
 If you are using Vert.x from a Maven or Gradle project just add the cluster manager jar as a dependency of your project.
 
 You can also specify cluster managers programmatically if embedding Vert.x using
-`link:../cheatsheet/VertxOptions.html#clusterManager[clusterManager]`.
+`link:../dataobjects.html#VertxOptions#setClusterManager[clusterManager]`.
 
 == Logging
 

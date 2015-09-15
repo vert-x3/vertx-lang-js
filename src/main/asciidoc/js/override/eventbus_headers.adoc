@@ -3,7 +3,7 @@
 Messages sent over the event bus can also contain headers.
 
 This can be specified by providing a `headers` object
-inside the `link:../../vertx-core/cheatsheet/DeliveryOptions.html[DeliveryOptions]` object when sending or publishing:
+inside the `link:../../vertx-core/dataobjects.html#DeliveryOptions[DeliveryOptions]` object when sending or publishing:
 
 [source,javascript]
 ----

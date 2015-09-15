@@ -200,22 +200,22 @@ vertx.fileSystem().open("target/classes/les_miserables.txt", {
 
 ==== Opening Options
 
-When opening an `AsyncFile`, you pass an `link:../cheatsheet/OpenOptions.html[OpenOptions]` instance.
+When opening an `AsyncFile`, you pass an `link:../dataobjects.html#OpenOptions[OpenOptions]` instance.
 These options describe the behavior of the file access. For instance, you can configure the file permissions with the
-`link:../cheatsheet/OpenOptions.html#read[read]`, `link:../cheatsheet/OpenOptions.html#write[write]`
-and `link:../cheatsheet/OpenOptions.html#perms[perms]` methods.
+`link:../dataobjects.html#OpenOptions#setRead[read]`, `link:../dataobjects.html#OpenOptions#setWrite[write]`
+and `link:../dataobjects.html#OpenOptions#setPerms[perms]` methods.
 
 You can also configure the behavior if the open file already exists with
-`link:../cheatsheet/OpenOptions.html#createNew[createNew]` and
-`link:../cheatsheet/OpenOptions.html#truncateExisting[truncateExisting]`.
+`link:../dataobjects.html#OpenOptions#setCreateNew[createNew]` and
+`link:../dataobjects.html#OpenOptions#setTruncateExisting[truncateExisting]`.
 
 You can also mark the file to be deleted on
-close or when the JVM is shutdown with `link:../cheatsheet/OpenOptions.html#deleteOnClose[deleteOnClose]`.
+close or when the JVM is shutdown with `link:../dataobjects.html#OpenOptions#setDeleteOnClose[deleteOnClose]`.
 
 ==== Flushing data to underlying storage.
 
 In the `OpenOptions`, you can enable/disable the automatic synchronisation of the content on every write using
-`link:../cheatsheet/OpenOptions.html#dsync[dsync]`. In that case, you can manually flush any writes from the OS
+`link:../dataobjects.html#OpenOptions#setDsync[dsync]`. In that case, you can manually flush any writes from the OS
 cache by calling the `link:jsdoc/async_file-AsyncFile.html#flush[flush]` method.
 
 This method can also be called with an handler which will be called when the flush is complete.

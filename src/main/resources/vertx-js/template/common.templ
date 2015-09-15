@@ -13,7 +13,12 @@
         if (label.length() == 0) {
           label = rawType.simpleName;
         }
-        return "<a href=\"../../cheatsheet/" + rawType.simpleName + ".html\">" + label + "</a>";
+        return "<a href=\"../../dataobjects.html#" + rawType.simpleName + "\">" + label + "</a>";
+      } else if (rawType.kind == CLASS_ENUM && rawType.gen) {
+        if (label.length() == 0) {
+          label = rawType.simpleName;
+        }
+        return "<a href=\"../../enums.html#" + rawType.simpleName + "\">" + label + "</a>";
       } else {
         if (label.length() > 0) {
           label = "[" + label + "] ";
