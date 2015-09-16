@@ -65,6 +65,11 @@ public class JSVerticleFactory implements VerticleFactory {
   }
 
   @Override
+  public boolean blockingCreate() {
+    return true;
+  }
+
+  @Override
   public Verticle createVerticle(String verticleName, ClassLoader classLoader) throws Exception {
     init();
     return new JSVerticle(VerticleFactory.removePrefix(verticleName));
