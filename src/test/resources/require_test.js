@@ -20,6 +20,11 @@ function testRequireInDirectoryWithExtension() {
   Assert.assertEquals("socks", testMod);
 }
 
+function testRequireRelative() {
+  var testMod = require("somedir/../somedir/./test_mod3");
+  Assert.assertEquals("socks", testMod);
+}
+
 function testRequireNotFound() {
   try {
     require("nosuchmodule");
