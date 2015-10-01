@@ -33,6 +33,11 @@ public class RequireTest extends JSTestBase {
   }
 
   @Test
+  public void testRequireRelative() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testRequireNotFound() throws Exception {
     runTest();
   }

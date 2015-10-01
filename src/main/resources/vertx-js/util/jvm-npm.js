@@ -281,6 +281,7 @@ if (typeof Java.synchronized == 'undefined') {
 
   function resolveClasspathModule(id, root) {
     var name = normalizeName(id);
+    name = resolveRelative(name, root);
     var classloader = java.lang.Thread.currentThread().getContextClassLoader();
     var is = classloader.getResourceAsStream(name);
     if (is) {
@@ -306,6 +307,34 @@ if (typeof Java.synchronized == 'undefined') {
       return fileName;
     }
     return fileName + extension;
+  }
+
+  function isRelative(path) {
+    return path[0] === '.' && (path[1] === '/' || (path[1] === '.' && path[2] === '/'));
+  }
+
+  /**
+   * Code loosely based on the getNormalizedParts() function from the
+   * TypeScript compiler released under the Apache License 2.0
+   * https://github.com/Microsoft/TypeScript
+   */
+  function resolveRelative(path, root) {
+    if (!isRelative(path)) {
+      return path;
+    }
+    var parts = (root + '/' + path).split('/');
+    var absolute = [];
+    for (var i = 0; i < parts.length; ++i) {
+      var p = parts[i];
+      if (p !== '' && p !== '.') {
+        if (p == '..' && absolute.length > 0 && absolute[absolute.length - 1] !== '..') {
+          absolute.pop();
+        } else {
+          absolute.push(p);
+        }
+      }
+    }
+    return absolute.join("/");
   }
 
   function readFile(filename, core) {
