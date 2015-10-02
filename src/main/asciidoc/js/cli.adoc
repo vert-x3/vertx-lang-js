@@ -1,0 +1,224 @@
+Vert.x Core provides an API for parsing command line arguments passed to programs.
+
+It's also able to print help
+messages detailing the options available for a command line tool. Even if such features are far from
+the Vert.x core topics, this API is used in the `Launcher` class that you can use in _fat-jar_
+and in the `vertx` command line tools. In addition, it's polyglot (can be used from any supported language) and is
+used in Vert.x Shell.
+
+Vert.x CLI provides a model to describe your command line interface, but also a parser. This parser supports
+different types of syntax:
+
+* POSIX like options (ie. `tar -zxvf foo.tar.gz`)
+* GNU like long options (ie. `du --human-readable --max-depth=1`)
+* Java like properties (ie. `java -Djava.awt.headless=true -Djava.net.useSystemProxies=true Foo`)
+* Short options with value attached (ie. `gcc -O2 foo.c`)
+* Long options with single hyphen (ie. `ant -projecthelp`)
+
+Using the CLI api is a 3-steps process:
+
+1. The definition of the command line interface
+2. The parsing of the user command line
+3. The query / interrogation
+
+=== Definition Stage
+
+Each command line interface must define the set of options and arguments that will be used. It also requires a
+name. The CLI API uses the `link:../dataobjects.html#Option[Option]` and `link:../dataobjects.html#Argument[Argument]` classes to
+describe options and arguments:
+
+[source,js]
+----
+var CLI = require("vertx-js/cli");
+var cli = CLI.create("copy").setSummary("A command line interface to copy files.").addOption({
+  "longName" : "directory",
+  "shortName" : "R",
+  "description" : "enables directory support",
+  "flag" : true
+}).addArgument({
+  "index" : 0,
+  "description" : "The source",
+  "argName" : "source"
+}).addArgument({
+  "index" : 0,
+  "description" : "The destination",
+  "argName" : "target"
+});
+
+----
+
+As you can see, you can create a new `link:jsdoc/cli-CLI.html[CLI]` using
+`link:jsdoc/cli-CLI.html#create[CLI.create]`. The passed string is the name of the CLI. Once created you
+can set the summary and description. The summary is intended to be short (one line), while the description can
+contain more details. Each option and argument are also added on the `CLI` object using the
+`link:jsdoc/cli-CLI.html#addArgument[addArgument]` and
+`link:jsdoc/cli-CLI.html#addOption[addOption]` methods.
+
+==== Options
+
+An `link:../dataobjects.html#Option[Option]` is a command line parameter identified by a _key_ present in the user command
+line. Options must have at least a long name or a short name. Long name are generally used using a `--` prefix,
+while short names are used with a single `-`. Options can get a description displayed in the usage (see below).
+Options can receive 0, 1 or several values. An option receiving 0 values is a `flag`, and must be declared using
+`link:../dataobjects.html#Option#setFlag[flag]`. By default, options receive a single value, however, you can
+configure the option to receive several values using `link:../dataobjects.html#Option#setMultiValued[multiValued]`:
+
+[source,js]
+----
+var CLI = require("vertx-js/cli");
+var cli = CLI.create("some-name").setSummary("A command line interface illustrating the options valuation.").addOption({
+  "longName" : "flag",
+  "shortName" : "f",
+  "flag" : true,
+  "description" : "a flag"
+}).addOption({
+  "longName" : "single",
+  "shortName" : "s",
+  "description" : "a single-valued option"
+}).addOption({
+  "longName" : "multiple",
+  "shortName" : "m",
+  "multiValued" : true,
+  "description" : "a multi-valued option"
+});
+
+----
+
+Options can be marked as mandatory. A mandatory option not set in the user command line throws an exception during
+the parsing:
+
+[source,js]
+----
+var CLI = require("vertx-js/cli");
+var cli = CLI.create("some-name").addOption({
+  "longName" : "mandatory",
+  "required" : true,
+  "description" : "a mandatory option"
+});
+
+----
+
+Non-mandatory options can have a _default value_. This value would be used if the user does not set the option in
+the command line:
+
+[source,js]
+----
+var CLI = require("vertx-js/cli");
+var cli = CLI.create("some-name").addOption({
+  "longName" : "optional",
+  "defaultValue" : "hello",
+  "description" : "an optional option with a default value"
+});
+
+----
+
+An option can be _hidden_ using the `link:../dataobjects.html#Option#setHidden[hidden]` method. Hidden option are
+not listed in the usage, but can still be used in the user command line (for power-users).
+
+Options can also be instantiated from their JSON form.
+
+==== Arguments
+
+Unlike options, arguments do not have a _key_ and are identified by their _index_. For example, in
+`java com.acme.Foo`, `com.acme.Foo` is an argument.
+
+Arguments do not have a name, there are identified using a mandatory 0-based index. The first parameter has the
+index `0`:
+
+[source,js]
+----
+var CLI = require("vertx-js/cli");
+var cli = CLI.create("some-name").addArgument({
+  "index" : 0,
+  "description" : "the first argument",
+  "argName" : "arg1"
+}).addArgument({
+  "index" : 1,
+  "description" : "the second argument",
+  "argName" : "arg2"
+});
+
+----
+
+The `argName` is optional and used in the usage message.
+
+As options, `link:../dataobjects.html#Argument[Argument]` can:
+
+* be hidden using `link:../dataobjects.html#Argument#setHidden[hidden]`
+* be mandatory using `link:../dataobjects.html#Argument#setRequired[required]`
+* have a default value using `link:../dataobjects.html#Argument#setDefaultValue[defaultValue]`
+
+Arguments can also be instantiated from their JSON form.
+
+==== Usage generation
+
+Once your `link:jsdoc/cli-CLI.html[CLI]` instance is configured, you can generate the _usage_ message:
+
+[source,js]
+----
+var CLI = require("vertx-js/cli");
+var cli = CLI.create("copy").setSummary("A command line interface to copy files.").addOption({
+  "longName" : "directory",
+  "shortName" : "R",
+  "description" : "enables directory support",
+  "flag" : true
+}).addArgument({
+  "index" : 0,
+  "description" : "The source",
+  "argName" : "source"
+}).addArgument({
+  "index" : 0,
+  "description" : "The destination",
+  "argName" : "target"
+});
+
+var builder = new (Java.type("java.lang.StringBuilder"))();
+cli.usage(builder);
+
+----
+
+It generates an usage message like this one:
+
+[source]
+----
+Usage: copy [-R] source target
+
+A command line interface to copy files.
+
+  -R,--directory   enables directory support
+----
+
+If you need to tune the usage message, check the `UsageMessageFormatter` class.
+
+=== Parsing Stage
+
+Once your `link:jsdoc/cli-CLI.html[CLI]` instance is configured, you can parse the user command line to evaluate
+each option and argument:
+
+[source,js]
+----
+var commandLine = cli.parse(userCommandLineArguments);
+
+----
+
+The `link:jsdoc/cli-CLI.html#parse[parse]` method returns a `link:jsdoc/command_line-CommandLine.html[CommandLine]`
+object containing the values. By default, it validates the user command line and checks that each mandatory options
+and arguments have been set as well as the number of values received by each option. You can disable the
+validation by passing `false` as second parameter of `link:jsdoc/cli-CLI.html#parse[parse]`.
+This is useful if you want to check an argument or option is present even if the parsed command line is invalid.
+
+=== Query / Interrogation Stage
+
+Once parsed, you can retrieve the values of the options and arguments from the
+`link:jsdoc/command_line-CommandLine.html[CommandLine]` object returned by the `link:jsdoc/cli-CLI.html#parse[parse]`
+method:
+
+[source,js]
+----
+var commandLine = cli.parse(userCommandLineArguments);
+var opt = commandLine.getOptionValue("my-option");
+var flag = commandLine.isFlagEnabled("my-flag");
+var arg0 = commandLine.getArgumentValue(0);
+
+----
+
