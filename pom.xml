@@ -240,6 +240,10 @@
               </processors>
               <optionMap>
                 <docgen.output>${asciidoc.dir}/js</docgen.output>
+
+                <maven.groupId>${project.groupId}</maven.groupId>
+                <maven.artifactId>${project.artifactId}</maven.artifactId>
+                <maven.version>${project.version}</maven.version>
               </optionMap>
               <sourceDirectory>src/main/docoverride</sourceDirectory>
             </configuration>
@@ -311,11 +315,6 @@
               <doctype>book</doctype>
               <preserveDirectories>true</preserveDirectories>
               <relativeBaseDir>true</relativeBaseDir>
-              <attributes>
-                <maven-groupId>${project.groupId}</maven-groupId>
-                <maven-artifactId>${project.artifactId}</maven-artifactId>
-                <maven-version>${project.version}</maven-version>
-              </attributes>
             </configuration>
           </execution>
         </executions>
