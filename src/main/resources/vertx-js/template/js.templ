@@ -1,52 +1,3 @@
-@includeNamed{"common.templ"}
-
-@comment{"Generate the module name of a type"}
-@comment{"===================================="}
-
-@code{
-  def genModuleName(moduleType) {
-    return moduleType.raw.moduleName + "-js/" + CASE_CAMEL.to(CASE_SNAKE, moduleType.raw.simpleName);
-  }
-}
-
-@comment{"Generate the JSDoc type of a type"}
-@comment{"===================================="}
-
-@comment{"TODO : add missing types"}
-@code{
-  def genJSDocType(type) {
-    if (type.kind == CLASS_STRING) {
-      return 'string';
-    } else if (type.kind == CLASS_PRIMITIVE || type.kind == CLASS_BOXED_PRIMITIVE) {
-      if (type.simpleName == 'boolean' || type.simpleName == 'Boolean') {
-        return 'boolean';
-      } else if (type.simpleName == 'char' || type.simpleName == 'Character') {
-        return 'string';
-      } else {
-        return 'number';
-      }
-    } else if (type.kind == CLASS_JSON_OBJECT) {
-      return 'Object';
-    } else if (type.kind == CLASS_DATA_OBJECT) {
-      return 'Object';
-    } else if (type.kind == CLASS_ENUM) {
-      return 'Object';
-    } else if (type.kind == CLASS_API) {
-      return type.raw.simpleName;
-    } else if (type.kind.collection) {
-      return 'Array.<' + genJSDocType(type.args[0]) + '>';
-    } else if (type.kind == CLASS_MAP) {
-      return 'Object.<string, ' + genJSDocType(type.args[1]) + '>';
-    } else if (type.kind == CLASS_OBJECT) {
-      return 'Object';
-    } else if (type.kind == CLASS_HANDLER) {
-      return 'function';
-    } else {
-      return 'todo';
-    }
-  }
-}
-
 @comment{"Generate a call to a Java API method"}
 @comment{"===================================="}
 
@@ -66,116 +17,6 @@
 		@code{argName='__args[' + (pcnt++) + ']';}
 		@includeNamed{'convParam'}
 	@end{", "})
-@end{}
-
-@comment{"Generate the code that converts a parameter from JavaScript to Java to call a Java API method"}
-@comment{"============================================================================================="}
-
-@declare{'convParam'}
-	@code{paramName = overloaded ? argName : param.name;}
-	@if{param.type.kind == CLASS_HANDLER}
-		@if{param.type.args[0].kind == CLASS_ASYNC_RESULT}
-			@if{param.type.args[0].args[0].name == "java.lang.Void"}
-function(ar) {\n
-@{ind}    if (ar.succeeded()) {\n
-@{ind}      @{paramName}(null, null);\n
-@{ind}    } else {\n
-@{ind}      @{paramName}(null, ar.cause());\n
-@{ind}    }\n
-@{ind}  }
-			@else{}
-function(ar) {\n
-@{ind}    if (ar.succeeded()) {\n
-@{ind}      @{paramName}(@includeNamed{'convReturn'; templ='arVal'; returnType=param.type.args[0].args[0]}, null);\n
-@{ind}    } else {\n
-@{ind}      @{paramName}(null, ar.cause());\n
-@{ind}    }\n
-@{ind}  }
-			@end{}
-		@else{param.type.args[0].name == "java.lang.Void"}
-@{paramName}
-		@else{}
-function(jVal) {\n
-@{ind}    @{paramName}(@includeNamed{'convReturn'; templ='basicVal'; returnType=param.type.args[0]});\n
-@{ind}  }
-		@end{}
-	@else{param.type.kind == CLASS_JSON_OBJECT}
-utils.convParamJsonObject(@{paramName})
-	@else{param.type.kind == CLASS_JSON_ARRAY}
-utils.convParamJsonArray(@{paramName})
-	@else{param.dataObject}
-@{paramName} != null ? new @{param.type.simpleName}(new JsonObject(JSON.stringify(@{paramName}))) : null
-	@else{param.type.kind == CLASS_ENUM}
-@{param.type.name}.valueOf(@{argName})
-	@else{param.type.kind == CLASS_OBJECT}
-utils.convParamTypeUnknown(@{paramName})
-	@else{param.type.kind.basic}
-@{paramName}
-	@else{param.type.kind == CLASS_THROWABLE}
-utils.convParamThrowable(@{paramName})
-	@else{param.type.kind == CLASS_LIST}
-		@if{param.type.args[0].name == 'long' || param.type.args[0].name == 'java.lang.Long'}
-utils.convParamListLong(@{paramName})
-		@else{param.type.args[0].name == 'short' || param.type.args[0].name == 'java.lang.Short'}
-utils.convParamListShort(@{paramName})
-		@else{param.type.args[0].name == 'byte' || param.type.args[0].name == 'java.lang.Byte'}
-utils.convParamListByte(@{paramName})
-		@else{param.type.args[0].kind == CLASS_API}
-utils.convParamListVertxGen(@{paramName})
-		@else{param.type.args[0].kind == CLASS_JSON_OBJECT}
-utils.convParamListJsonObject(@{paramName})
-		@else{param.type.args[0].kind == CLASS_JSON_ARRAY}
-utils.convParamListJsonArray(@{paramName})
-		@else{param.type.args[0].kind == CLASS_DATA_OBJECT}
-utils.convParamListDataObject(@{paramName}, function(json) { return new @{param.type.args[0].simpleName}(json); })
-		@else{}
-@{paramName}
-		@end{}
-	@else{param.type.kind == CLASS_SET}
-		@if{param.type.args[0].name == 'long' || param.type.args[0].name == 'java.lang.Long'}
-utils.convParamSetLong(@{paramName})
-		@else{param.type.args[0].name == 'short' || param.type.args[0].name == 'java.lang.Short'}
-utils.convParamSetShort(@{paramName})
-		@else{param.type.args[0].name == 'byte' || param.type.args[0].name == 'java.lang.Byte'}
-utils.convParamSetByte(@{paramName})
-		@else{param.type.args[0].kind == CLASS_API}
-utils.convParamSetVertxGen(@{paramName})
-		@else{param.type.args[0].kind == CLASS_JSON_OBJECT}
-utils.convParamSetJsonObject(@{paramName})
-		@else{param.type.args[0].kind == CLASS_JSON_ARRAY}
-utils.convParamSetJsonArray(@{paramName})
-		@else{param.type.args[0].kind == CLASS_DATA_OBJECT}
-utils.convParamSetDataObject(@{paramName}, function(json) { return new @{param.type.args[0].simpleName}(json); })
-		@else{}
-utils.convParamSetBasicOther(@{paramName})
-		@end{}
-	@else{param.type.kind == CLASS_MAP}
-		@if{param.type.args[1].name == 'long' || param.type.args[1].name == 'java.lang.Long'}
-utils.convParamMapLong(@{paramName})
-		@else{param.type.args[1].name == 'short' || param.type.args[1].name == 'java.lang.Short'}
-utils.convParamMapShort(@{paramName})
-		@else{param.type.args[1].name == 'byte' || param.type.args[1].name == 'java.lang.Byte'}
-utils.convParamMapByte(@{paramName})
-		@else{param.type.args[1].kind == CLASS_API}
-utils.convParamMapVertxGen(@{paramName})
-		@else{param.type.args[1].kind == CLASS_JSON_OBJECT}
-utils.convParamMapJsonObject(@{paramName})
-		@else{param.type.args[1].kind == CLASS_JSON_ARRAY}
-utils.convParamMapJsonArray(@{paramName})
-		@else{}
-@{paramName}
-		@end{}
-	@else{}
-@{paramName}._jdel
-	@end{}
-@end{}
-
-@declare{'basicVal'}
-jVal
-@end{}
-
-@declare{'arVal'}
-ar.result()
 @end{}
 
 @comment{"Generate the code that converts a Java return to the corresponding JavaScript value"}
@@ -225,67 +66,8 @@ utils.convReturnTypeUnknown(@includeNamed{templ})
 	@end{}
 @end{}
 
-@comment{"Generate a JavaScript Method"}
-@comment{"============================"}
 
-@declare{'genMethod'}
-	@code{methodList = methodsByName.get(methodName); overloaded = methodList.size() > 1; method = methodList.get(methodList.size() - 1);}
-	@if{static == method.staticMethod}
-@{ind}/**\n
-@if{method.doc != null}
-@{renderDocToHtml(ind, method.doc, renderLinkToHtml)}
-@end{}\n
-@{ind} @{static ? ("@memberof module:" + genModuleName(type)) : "@public" }\n
-@foreach{param: method.params}@{ind} @param @{param.name} {@{genJSDocType(param.type)}} @if{param.description != null}@{renderTokensToHtml("", param.description.tokens, renderLinkToHtml, "")} @end{}@end{"\n"}\n
-@if{!method.returnType.name.equals("void")}
-@{ind} @return {@{genJSDocType(method.returnType)}}@if{method.returnDescription != null} @{renderTokensToHtml("", method.returnDescription.tokens, renderLinkToHtml, "")}@end{}\n
-@end{}
-@{ind} */\n
-@{ind}@if{static}@{ifaceSimpleName}@else{}this@end{}.@{methodName} =
-		@if{overloaded}
-		 function() {\n
-		@else{}
-		 function(@foreach{param: method.params}@{param.name}@end{", "}) {\n
-		@end{}
-			@code{mcnt = 0;}
-@{ind}  var __args = arguments;\n
-			@foreach{method: methodList}
-@{ind}@if{mcnt == 0}  if@else{}else if@end{} (__args.length === @{method.params.size()}
-				@code{mcnt++;}
-				@code{cnt = 0;}
-				@if{method.params.size() > 0} && @end{}
-				@foreach{param: method.params}
-					@if{param.type.kind == CLASS_PRIMITIVE || param.type.kind == CLASS_BOXED_PRIMITIVE}
-					typeof __args[@{cnt++}] ===
-						@if{param.type.name == 'long' || param.type.name == 'java.lang.Long' ||
-								param.type.name == 'int'  || param.type.name == 'java.lang.Integer' ||
-								param.type.name == 'short' || param.type.name == 'java.lang.Short' ||
-								param.type.name == 'float' || param.type.name == 'java.lang.Float' ||
-								param.type.name == 'double' || param.type.name == 'java.lang.Double' ||
-								param.type.name == 'byte' || param.type.name == 'java.lang.Byte'}
-							'number'
-						@else{param.type.name == 'boolean' || param.type.name == 'java.lang.Boolean'}
-							'boolean'
-						@else{param.type.name == 'char' || param.type.name == 'java.lang.Character'}
-							'string'
-						@end{}
-					@else{param.type.kind == CLASS_STRING || param.type.kind == CLASS_ENUM}
-					typeof __args[@{cnt++}] === 'string'
-					@else{param.type.kind == CLASS_API}
-						typeof __args[@{cnt}] === 'object' && __args[@{cnt++}]._jdel
-					@else{param.type.kind == CLASS_JSON_ARRAY || param.type.kind == CLASS_LIST || param.type.kind == CLASS_SET}
-						typeof __args[@{cnt}] === 'object' && __args[@{cnt++}] instanceof Array
-					@else{param.type.kind == CLASS_HANDLER}
-						typeof __args[@{cnt++}] === 'function'
-					@else{param.type.kind == CLASS_OBJECT}
-						@code{cnt++}
-						true
-					@else{param.type.kind == CLASS_THROWABLE}
-						typeof __args[@{cnt++}] === 'object'
-					@else{}
-						typeof __args[@{cnt++}] === 'object'
-					@end{}
-				@end{' && '}) {\n
+@declare{'genMethodAdapter'}
 				@if{!method.returnType.name.equals("void")}
 					@if{method.fluent}
 @{ind}    @includeNamed{'genMethodCall'};\n
@@ -305,11 +87,9 @@ utils.convReturnTypeUnknown(@includeNamed{templ})
 				@else{}
 @{ind}    @includeNamed{'genMethodCall'};\n
 				@end{}
-@{ind}  }
-			@end{} else utils.invalidArgs();\n
-@{ind}};\n\n
-	@end{}
 @end{}
+
+@includeNamed{"common.templ"}
 
 @comment{"This is where the generation starts"}
 @comment{"==================================="}
@@ -335,21 +115,20 @@ utils.convReturnTypeUnknown(@includeNamed{templ})
 /** @module @{genModuleName(type)} */\n
 
 var utils = require('vertx-js/util/utils');\n
-@foreach{referencedType : referencedTypes}
-@code{refedType=referencedType.simpleName;}
+	@foreach{referencedType : referencedTypes}
+	@code{refedType=referencedType.simpleName;}
 var @{refedType} = require('@{genModuleName(referencedType)}');\n
-@end{}
+	@end{}
 \n
-
-@comment{"The top level vars for the module"}
-
+	@comment{"The top level vars for the module"}
 var io = Packages.io;\n
 var JsonObject = io.vertx.core.json.JsonObject;\n
 var J@{ifaceSimpleName} = @{type.raw.name};\n
-@foreach{dataObjectType: referencedDataObjectTypes}
+	@foreach{dataObjectType: referencedDataObjectTypes}
 var @{dataObjectType.simpleName} = @{dataObjectType};\n
-@end{}
+	@end{}
 \n
+
 @code{ifaceName = helper.decapitaliseFirstLetter(ifaceSimpleName)}
 
 @comment{"The main comment"}
@@ -379,7 +158,7 @@ var @{ifaceSimpleName} = function(j_val) {\n\n
 @foreach{methodName:methodsByName.keySet()}
 
 @comment{"Call out to actually generate the method, we only consider non static methods here"}
-@includeNamed{'genMethod';static=false;ind="  "}
+@includeNamed{'genMethod';static=false;ind="  ";methodFilter=null}
 
 @end{}
 
@@ -397,14 +176,9 @@ var @{ifaceSimpleName} = function(j_val) {\n\n
 @foreach{methodName:methodsByName.keySet()}
 
 @comment{"Call out to generate the static method"}
-@includeNamed{'genMethod';static=true;ind=""}
+@includeNamed{'genMethod';static=true;ind="";methodFilter=null}
 
 @end{}
 
 // We export the Constructor function\n
 module.exports = @{ifaceSimpleName};
-
-
-
-
-
