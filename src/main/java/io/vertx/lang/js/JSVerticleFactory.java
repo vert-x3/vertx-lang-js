@@ -159,7 +159,6 @@ public class JSVerticleFactory implements VerticleFactory {
         engine.put("__jvertx", vertx);
         String globs =
           "var Vertx = require('vertx-js/vertx'); var vertx = new Vertx(__jvertx);" +
-          "var context = Vertx.currentContext();" +
           "var console = require('vertx-js/util/console');" +
           "var setTimeout = function(callback,delay) { return vertx.setTimer(delay, callback); };" +
           "var clearTimeout = function(id) { vertx.cancelTimer(id); };" +

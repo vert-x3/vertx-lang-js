@@ -13,10 +13,6 @@ if (typeof vertx !== 'object') {
   throw "No vertx global";
 }
 
-if (typeof context !== 'object') {
-  throw "No context global";
-}
-
 if (typeof setTimeout !== 'function') {
   throw "No setTimeout global";
 }
