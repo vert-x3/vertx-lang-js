@@ -28,6 +28,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>
@@ -51,11 +53,17 @@ public class ClasspathFileResolver {
     if (enabled) {
       if (DEBUG_JS_SOURCE_DIR.exists()) {
         Vertx vertx = Vertx.vertx();
+        CountDownLatch latch = new CountDownLatch(1);
         vertx.fileSystem().deleteRecursive(DEBUG_JS_SOURCE_DIR.getAbsolutePath(), true, res -> {
           if (res.failed()) {
             res.cause().printStackTrace();
           }
+          latch.countDown();
         });
+        try {
+          latch.await(30, TimeUnit.SECONDS);
+        } catch (InterruptedException ignore) {
+        }
         vertx.close();
       } else {
         DEBUG_JS_SOURCE_DIR.mkdirs();
