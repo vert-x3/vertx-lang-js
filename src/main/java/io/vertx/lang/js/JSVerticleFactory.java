@@ -57,6 +57,8 @@ public class JSVerticleFactory implements VerticleFactory {
   static {
     ClasspathFileResolver.init();
   }
+  
+  private static final Logger log = LoggerFactory.getLogger(JSVerticleFactory.class);
 
   /**
    * By default we will add an empty `process` global with an `env` property which contains the environment
@@ -68,11 +70,14 @@ public class JSVerticleFactory implements VerticleFactory {
   public static final String ENABLE_NODEJS_VERTICLES_PROP_NAME = "vertx.enableNodeJSVerticles";
 
   private static final boolean ADD_NODEJS_PROCESS_ENV = System.getProperty(DISABLE_NODEJS_PROCESS_ENV_PROP_NAME) == null;
-  private static final boolean ENABLE_NODEJS_VERTICLES = System.getProperty(ENABLE_NODEJS_VERTICLES_PROP_NAME) != null;
+  private static final boolean ENABLE_NODEJS_VERTICLES = System.getProperty(ENABLE_NODEJS_VERTICLES_PROP_NAME) != null && checkNodeJSDependencies();
 
+  private static final String DISABLING_NODEJS_VERTICLES = "Disabling resolution of node.js verticles";
+	private static final String APIGEE_TRIREME_MISSING = "io.apigee.trireme:trireme-core, io.apigee.trireme:trireme-kernel, io.apigee.trireme:trireme-node10src, io.apigee.trireme:trireme-node12src, io.apigee.trireme:trireme-crypto, io.apigee.trireme:trireme-util v0.8.6 required on the classpath";
+	private static final String COMMONS_IO_MISSING = "commons-io:commons-io v2.4 required on the classpath";
+	private static final String RHINO_MISSING = "org.mozilla:rhino v1.7.7 required on the classpath";
+	
   private static final String JVM_NPM = "vertx-js/util/jvm-npm.js";
-  
-  private static final Logger log = LoggerFactory.getLogger(JSVerticleFactory.class);
 
   private Vertx vertx;
   private ScriptEngine engine;
@@ -160,34 +165,13 @@ public class JSVerticleFactory implements VerticleFactory {
   
   public class NodeJSVerticle extends JSVerticle {
   	
-  	private static final String APIGEE_TRIREME_MISSING = "io.apigee.trireme:trireme-core, io.apigee.trireme:trireme-kernel, io.apigee.trireme:trireme-node10src, io.apigee.trireme:trireme-node12src, io.apigee.trireme:trireme-crypto, io.apigee.trireme:trireme-util v0.8.6 required on the classpath";
-  	private static final String COMMONS_IO_MISSING = "commons-io:commons-io v2.4 required on the classpath";
-  	private static final String RHINO_MISSING = "org.mozilla:rhino v1.7.7 required on the classpath";
-  	
-  	private final NodeEnvironment env;
-  	
+  	private final NodeEnvironment env;	
   	private final NodeScript script;
 
     private NodeJSVerticle(String verticleName, ClassLoader loader) throws Exception {
     	super(verticleName);
-    	try {
-    		env = new NodeEnvironment();
-    	} catch (NoClassDefFoundError err) {
-    		log.warn(APIGEE_TRIREME_MISSING, err);
-    		throw new IllegalStateException(APIGEE_TRIREME_MISSING, err);
-    	}
-      String normalizedVerticleName = null;
-      try {
-      	normalizedVerticleName = FilenameUtils.normalize(verticleName);
-      } catch (NoClassDefFoundError err) {
-      	log.warn(COMMONS_IO_MISSING, err);
-      	throw new IllegalStateException(COMMONS_IO_MISSING, err);
-  		}
-      String version = new ContextFactory().enterContext().getImplementationVersion();
-      if (! version.startsWith("Rhino 1.7.7 ")) {
-      	log.warn(RHINO_MISSING);
-      	throw new IllegalStateException(RHINO_MISSING);
-      }
+    	env = new NodeEnvironment();
+      String normalizedVerticleName = FilenameUtils.normalize(verticleName);
     	log.info("Starting NodeJSVerticle " + verticleName);
       String jar = ClasspathFileResolver.getJarPath(loader.getResource(normalizedVerticleName));
       Path path = new File(jar.substring(0, jar.lastIndexOf('.'))).toPath();
@@ -292,5 +276,33 @@ public class JSVerticleFactory implements VerticleFactory {
   	br.lines().forEach(line -> buf.append(line));
   	JsonObject json = new JsonObject(buf.toString());
   	return json.containsKey("engines") && json.getJsonObject("engines").containsKey("node");
+  }
+  
+  private static boolean checkNodeJSDependencies() {
+  	try {
+  		Class.forName("io.apigee.trireme.core.NodeEnvironment");
+  		Class.forName("io.apigee.trireme.core.NodeScript");
+  		Class.forName("io.apigee.trireme.core.ScriptFuture");
+  		Class.forName("io.apigee.trireme.core.ScriptStatus");
+  		Class.forName("io.apigee.trireme.core.ScriptStatusListener");  		
+  	} catch (ClassNotFoundException ex) {
+  		log.warn(APIGEE_TRIREME_MISSING);
+  		log.warn(DISABLING_NODEJS_VERTICLES);
+  		return false;
+  	}
+  	try {
+  		Class.forName("org.apache.commons.io.FilenameUtils");
+  	} catch (ClassNotFoundException ex) {
+  		log.warn(COMMONS_IO_MISSING);
+  		log.warn(DISABLING_NODEJS_VERTICLES);  
+  		return false;
+  	}
+    String version = new ContextFactory().enterContext().getImplementationVersion();
+    if (! version.startsWith("Rhino 1.7.7 ")) {
+    	log.warn(RHINO_MISSING);
+    	log.warn(DISABLING_NODEJS_VERTICLES);
+    	return false;
+  	}
+    return true;
   }
 }
