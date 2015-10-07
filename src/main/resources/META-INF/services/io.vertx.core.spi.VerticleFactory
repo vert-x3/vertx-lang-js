@@ -1,1 +1,2 @@
 io.vertx.lang.js.JSVerticleFactory
+io.vertx.lang.js.NodeJSServiceFactory
