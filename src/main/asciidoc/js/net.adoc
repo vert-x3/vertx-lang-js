@@ -526,7 +526,7 @@ The password for the trust store should also be provided:
 ----
 var options = {
   "ssl" : true,
-  "clientAuthRequired" : true,
+  "clientAuth" : 'REQUIRED',
   "trustStoreOptions" : {
     "path" : "/path/to/your/truststore.jks",
     "password" : "password-of-your-truststore"
@@ -543,7 +543,7 @@ Alternatively you can read the trust store yourself as a buffer and provide that
 var myTrustStoreAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/truststore.jks");
 var options = {
   "ssl" : true,
-  "clientAuthRequired" : true,
+  "clientAuth" : 'REQUIRED',
   "trustStoreOptions" : {
     "value" : myTrustStoreAsABuffer,
     "password" : "password-of-your-truststore"
@@ -560,7 +560,7 @@ extension can also be loaded in a similar fashion than JKS trust stores:
 ----
 var options = {
   "ssl" : true,
-  "clientAuthRequired" : true,
+  "clientAuth" : 'REQUIRED',
   "pfxTrustOptions" : {
     "path" : "/path/to/your/truststore.pfx",
     "password" : "password-of-your-truststore"
@@ -577,7 +577,7 @@ Buffer configuration is also supported:
 var myTrustStoreAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/truststore.pfx");
 var options = {
   "ssl" : true,
-  "clientAuthRequired" : true,
+  "clientAuth" : 'REQUIRED',
   "pfxTrustOptions" : {
     "value" : myTrustStoreAsABuffer,
     "password" : "password-of-your-truststore"
@@ -593,7 +593,7 @@ Another way of providing server certificate authority using a list `.pem` files.
 ----
 var options = {
   "ssl" : true,
-  "clientAuthRequired" : true,
+  "clientAuth" : 'REQUIRED',
   "pemTrustOptions" : {
     "certPaths" : [
       "/path/to/your/server-ca.pem"
@@ -611,7 +611,7 @@ Buffer configuration is also supported:
 var myCaAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/server-ca.pfx");
 var options = {
   "ssl" : true,
-  "clientAuthRequired" : true,
+  "clientAuth" : 'REQUIRED',
   "pemTrustOptions" : {
     "certValues" : [
       myCaAsABuffer
