@@ -19,17 +19,27 @@ package io.vertx.lang.js;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxException;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.JarURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>
@@ -118,4 +128,59 @@ public class ClasspathFileResolver {
       return null;
     }
   }
+  
+	public static void unzip(URL url) throws IOException {
+		JarURLConnection connection = (JarURLConnection) url.openConnection();
+		JarFile jar = connection.getJarFile();
+		Path path = new File(jar.getName()).toPath();
+		unzip(jar, path.getParent() == null ? path : path.getParent());
+	}	
+	
+	public static void unzip(JarFile jar, Path dest) throws IOException {
+		dest = dest.resolve(jar.getName().substring(0, jar.getName().lastIndexOf('.')));
+		if (Files.exists(dest)) rmdir(dest);
+		Files.createDirectories(dest);
+		Enumeration<JarEntry> entries = jar.entries();
+		while (entries.hasMoreElements()) {
+			JarEntry e = entries.nextElement();
+			if (e.isDirectory()) {
+				Path path = dest.resolve(e.getName());
+				if (Files.exists(path) && !Files.isDirectory(path)) Files.delete(path);
+				Files.createDirectories(path);
+			}
+			else {
+				InputStream is = new BufferedInputStream(jar.getInputStream(e));
+				Files.copy(is, dest.resolve(e.getName()), StandardCopyOption.REPLACE_EXISTING);
+				is.close();
+			}
+    }
+	}
+	
+	public static void rmdir(Path directory) throws IOException {
+    Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
+      @Override
+      public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+          Files.delete(file);
+          return FileVisitResult.CONTINUE;
+      }
+  
+      @Override
+      public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+          Files.delete(dir);
+          return FileVisitResult.CONTINUE;
+      }
+    });
+	}
+	
+	public static String getJarPath(URL url) throws IOException {
+		JarURLConnection connection = (JarURLConnection) url.openConnection();
+		JarFile jar = connection.getJarFile();
+		return jar.getName();
+	}
+	
+	public static JarEntry getJarEntry(URL url, String name) throws IOException {
+		JarURLConnection connection = (JarURLConnection) url.openConnection();
+		JarFile jar = connection.getJarFile();
+		return jar.getJarEntry(name);
+	}
 }

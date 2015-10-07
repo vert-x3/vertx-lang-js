@@ -77,10 +77,55 @@
       <version>2.2.6.Final</version>
       <scope>provided</scope>
     </dependency>
+  	<dependency>
+   	  <groupId>io.apigee.trireme</groupId>
+   	  <artifactId>trireme-core</artifactId>
+   	  <version>0.8.6</version>
+  	</dependency>
+  	<dependency>
+   	  <groupId>io.apigee.trireme</groupId>
+   	  <artifactId>trireme-kernel</artifactId>
+   	  <version>0.8.6</version>
+  	</dependency>
+  	<dependency>
+   	  <groupId>io.apigee.trireme</groupId>
+   	  <artifactId>trireme-node10src</artifactId>
+   	  <version>0.8.6</version>
+  	</dependency>
+  	<dependency>
+   	  <groupId>io.apigee.trireme</groupId>
+   	  <artifactId>trireme-node12src</artifactId>
+   	  <version>0.8.6</version>
+  	</dependency>
+  	<dependency>
+   	  <groupId>io.apigee.trireme</groupId>
+   	  <artifactId>trireme-crypto</artifactId>
+   	  <version>0.8.6</version>
+  	</dependency>
+  	<dependency>
+   	  <groupId>io.apigee.trireme</groupId>
+   	  <artifactId>trireme-util</artifactId>
+   	  <version>0.8.6</version>
+  	</dependency>
+	<dependency>
+	  <groupId>org.mozilla</groupId>
+	  <artifactId>rhino</artifactId>
+	  <version>1.7.7</version>
+	</dependency>
+	<dependency>
+	  <groupId>commons-io</groupId>
+	  <artifactId>commons-io</artifactId>
+	  <version>2.4</version>
+	</dependency>	
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-unit</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -114,6 +159,7 @@
           <configuration>
             <systemPropertyVariables>
               <java.util.logging.SimpleFormatter.format>%4$s: %3$s - %5$s %6$s%n</java.util.logging.SimpleFormatter.format>
+              <vertx.enableNodeJSVerticles>true</vertx.enableNodeJSVerticles>
             </systemPropertyVariables>
             <additionalClasspathElements>
               <additionalClasspathElement>${project.build.testSourceDirectory}</additionalClasspathElement>

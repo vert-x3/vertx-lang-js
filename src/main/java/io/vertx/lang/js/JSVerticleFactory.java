@@ -16,18 +16,38 @@
 
 package io.vertx.lang.js;
 
+import io.apigee.trireme.core.NodeEnvironment;
+import io.apigee.trireme.core.NodeScript;
+import io.apigee.trireme.core.ScriptFuture;
+import io.apigee.trireme.core.ScriptStatus;
+import io.apigee.trireme.core.ScriptStatusListener;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
+import io.vertx.core.impl.IsolatingClassLoader;
+import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.core.spi.VerticleFactory;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+
+import org.apache.commons.io.FilenameUtils;
+import org.mozilla.javascript.ContextFactory;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Scanner;
+import java.util.jar.JarEntry;
 
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>
@@ -37,6 +57,8 @@ public class JSVerticleFactory implements VerticleFactory {
   static {
     ClasspathFileResolver.init();
   }
+  
+  private static final Logger log = LoggerFactory.getLogger(JSVerticleFactory.class);
 
   /**
    * By default we will add an empty `process` global with an `env` property which contains the environment
@@ -45,9 +67,16 @@ public class JSVerticleFactory implements VerticleFactory {
    * To disable this then provide a system property with this name and set to any value.
    */
   public static final String DISABLE_NODEJS_PROCESS_ENV_PROP_NAME = "vertx.disableNodeJSProcessENV";
+  public static final String ENABLE_NODEJS_VERTICLES_PROP_NAME = "vertx.enableNodeJSVerticles";
 
   private static final boolean ADD_NODEJS_PROCESS_ENV = System.getProperty(DISABLE_NODEJS_PROCESS_ENV_PROP_NAME) == null;
+  private static final boolean ENABLE_NODEJS_VERTICLES = System.getProperty(ENABLE_NODEJS_VERTICLES_PROP_NAME) != null && checkNodeJSDependencies();
 
+  private static final String DISABLING_NODEJS_VERTICLES = "Disabling resolution of node.js verticles";
+	private static final String APIGEE_TRIREME_MISSING = "io.apigee.trireme:trireme-core, io.apigee.trireme:trireme-kernel, io.apigee.trireme:trireme-node10src, io.apigee.trireme:trireme-node12src, io.apigee.trireme:trireme-crypto, io.apigee.trireme:trireme-util v0.8.6 required on the classpath";
+	private static final String COMMONS_IO_MISSING = "commons-io:commons-io v2.4 required on the classpath";
+	private static final String RHINO_MISSING = "org.mozilla:rhino v1.7.7 required on the classpath";
+	
   private static final String JVM_NPM = "vertx-js/util/jvm-npm.js";
 
   private Vertx vertx;
@@ -72,6 +101,8 @@ public class JSVerticleFactory implements VerticleFactory {
   @Override
   public Verticle createVerticle(String verticleName, ClassLoader classLoader) throws Exception {
     init();
+    if (ENABLE_NODEJS_VERTICLES && IsolatingClassLoader.class.isAssignableFrom(classLoader.getClass()) && isNodeJS(classLoader))
+    	return new NodeJSVerticle(VerticleFactory.removePrefix(verticleName), classLoader);
     return new JSVerticle(VerticleFactory.removePrefix(verticleName));
   }
 
@@ -82,7 +113,7 @@ public class JSVerticleFactory implements VerticleFactory {
     private static final String VERTX_STOP_FUNCTION = "vertxStop";
     private static final String VERTX_STOP_ASYNC_FUNCTION = "vertxStopAsync";
 
-    private final String verticleName;
+    protected final String verticleName;
 
     private JSVerticle(String verticleName) {
       this.verticleName = verticleName;
@@ -131,6 +162,45 @@ public class JSVerticleFactory implements VerticleFactory {
       }
     }
   }
+  
+  public class NodeJSVerticle extends JSVerticle {
+  	
+  	private final NodeEnvironment env;	
+  	private final NodeScript script;
+
+    private NodeJSVerticle(String verticleName, ClassLoader loader) throws Exception {
+    	super(verticleName);
+    	env = new NodeEnvironment();
+      String normalizedVerticleName = FilenameUtils.normalize(verticleName);
+    	log.info("Starting NodeJSVerticle " + verticleName);
+      String jar = ClasspathFileResolver.getJarPath(loader.getResource(normalizedVerticleName));
+      Path path = new File(jar.substring(0, jar.lastIndexOf('.'))).toPath();
+      StringBuffer buf = new StringBuffer();
+      Files.readAllLines(path.resolve(normalizedVerticleName)).forEach(line -> buf.append(line));
+      log.info("Resolving " + path.resolve(normalizedVerticleName).toString());
+      script = env.createScript(verticleName, path.resolve(normalizedVerticleName).toFile(), null);
+    }
+    
+    @Override
+    public void start(Future<Void> startFuture) throws Exception {
+      ScriptFuture status = script.execute();
+      // Wait for the script to complete
+      status.setListener(new ScriptStatusListener() {
+				@Override
+        public void onComplete(NodeScript script, ScriptStatus status) {
+					log.info("Execution status for " + verticleName + ": " + status.getExitCode());
+					if (status.hasCause()) log.info("Cause:" + status.getCause().toString());
+        }
+      });
+      startFuture.complete();
+    }
+    
+    @Override
+    public void stop(Future<Void> stopFuture) throws Exception {
+    	script.close();
+    	stopFuture.complete();
+    }
+  }
 
   private synchronized void init() {
     if (engine == null) {
@@ -175,5 +245,64 @@ public class JSVerticleFactory implements VerticleFactory {
       }
     }
   }
-
+  
+  private boolean isNodeJS(ClassLoader loader) {
+    URL url = loader.getResource("package.json");
+  	if (url == null) return false;
+    else if (hasNodeModules(url) || hasEngines(loader)) {
+    	try {
+    		ClasspathFileResolver.unzip(url);
+    	} catch (IOException ex) {
+    		return false;
+    	}
+    	return true;
+  	} else return false;
+}
+  
+  private boolean hasNodeModules(URL url) {
+  	JarEntry modules = null;
+  	try {
+  		modules = ClasspathFileResolver.getJarEntry(url, "node_modules");
+  	} catch (IOException ex) {
+  		log.warn(ex.toString());
+  		return false;
+  	}
+  	return modules != null && (modules.isDirectory() || modules.getSize() == 0);
+  }
+  
+  private boolean hasEngines(ClassLoader loader) {
+    StringBuilder buf = new StringBuilder();
+  	BufferedReader br = new BufferedReader(new InputStreamReader(loader.getResourceAsStream("package.json")));
+  	br.lines().forEach(line -> buf.append(line));
+  	JsonObject json = new JsonObject(buf.toString());
+  	return json.containsKey("engines") && json.getJsonObject("engines").containsKey("node");
+  }
+  
+  private static boolean checkNodeJSDependencies() {
+  	try {
+  		Class.forName("io.apigee.trireme.core.NodeEnvironment");
+  		Class.forName("io.apigee.trireme.core.NodeScript");
+  		Class.forName("io.apigee.trireme.core.ScriptFuture");
+  		Class.forName("io.apigee.trireme.core.ScriptStatus");
+  		Class.forName("io.apigee.trireme.core.ScriptStatusListener");  		
+  	} catch (ClassNotFoundException ex) {
+  		log.warn(APIGEE_TRIREME_MISSING);
+  		log.warn(DISABLING_NODEJS_VERTICLES);
+  		return false;
+  	}
+  	try {
+  		Class.forName("org.apache.commons.io.FilenameUtils");
+  	} catch (ClassNotFoundException ex) {
+  		log.warn(COMMONS_IO_MISSING);
+  		log.warn(DISABLING_NODEJS_VERTICLES);  
+  		return false;
+  	}
+    String version = new ContextFactory().enterContext().getImplementationVersion();
+    if (! version.startsWith("Rhino 1.7.7 ")) {
+    	log.warn(RHINO_MISSING);
+    	log.warn(DISABLING_NODEJS_VERTICLES);
+    	return false;
+  	}
+    return true;
+  }
 }
