@@ -59,7 +59,7 @@ utils.convReturnJson(@includeNamed{templ})
 	@else{returnType.kind == CLASS_API}
 utils.convReturnVertxGen(@includeNamed{templ}, @{returnType.raw.simpleName})
 	@else{returnType.kind == CLASS_ENUM}
-(@includeNamed{templ}).toString()
+utils.convReturnEnum(@includeNamed{templ})
 	@else{returnType.kind == CLASS_DATA_OBJECT}
 utils.convReturnDataObject(@includeNamed{templ})
 	@else{returnType.kind == CLASS_THROWABLE}

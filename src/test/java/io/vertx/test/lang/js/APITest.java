@@ -69,11 +69,6 @@ public class APITest extends JSTestBase {
   }
 
   @Test
-  public void testNullDataObjectParam() throws Exception {
-    runTest();
-  }
-
-  @Test
   public void testMethodWithHandlerListAndSet() throws Exception {
     runTest();
   }
@@ -657,6 +652,111 @@ public class APITest extends JSTestBase {
 
   @Test
   public void testCustomModule() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableInteger() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableBoolean() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableString() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableJsonArray() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableJsonObject() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableApi() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableDataObject() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableEnum() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testListNullableString() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testGenericNullableTypeVariable() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableHandler() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableListInteger() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableListBoolean() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableListString() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableListJsonObject() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableListJsonArray() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableListApi() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableListDataObject() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableListEnum() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableSetString() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableMapString() throws Exception {
     runTest();
   }
 }

@@ -77,7 +77,7 @@ utils.convParamSetByte = function(arr) {
 }
 
 utils.convParamListVertxGen = function(arr) {
-  return new VertxGenConverterList(arr);
+  return arr == null ? null : new VertxGenConverterList(arr);
 }
 
 utils.convParamSetVertxGen = function(arr) {
@@ -123,43 +123,59 @@ utils.convParamMapJsonArray = function(arr) {
 }
 
 utils.convParamListJsonObject = function(arr) {
-  var len = arr.length;
-  var newarr = [];
-  for (var i = 0; i < len; i++) {
-    var elem = arr[i];
-    newarr[i] = new JsonObject(JSON.stringify(elem));
+  if (arr) {
+    var len = arr.length;
+    var newarr = [];
+    for (var i = 0; i < len; i++) {
+      var elem = arr[i];
+      newarr[i] = new JsonObject(JSON.stringify(elem));
+    }
+    return newarr;
+  } else {
+    return null;
   }
-  return newarr;
 }
 
 utils.convParamListJsonArray = function(arr) {
-  var len = arr.length;
-  var newarr = [];
-  for (var i = 0; i < len; i++) {
-    var elem = arr[i];
-    newarr[i] = new JsonArray(JSON.stringify(elem));
+  if (arr) {
+    var len = arr.length;
+    var newarr = [];
+    for (var i = 0; i < len; i++) {
+      var elem = arr[i];
+      newarr[i] = new JsonArray(JSON.stringify(elem));
+    }
+    return newarr;
+  } else {
+    return null;
   }
-  return newarr;
 }
 
 utils.convParamListDataObject = function(arr, constructor) {
-  var len = arr.length;
-  var newarr = [];
-  for (var i = 0; i < len; i++) {
-    var elem = arr[i];
-    newarr[i] = constructor(new JsonObject(JSON.stringify(elem)));
+  if (arr) {
+    var len = arr.length;
+    var newarr = [];
+    for (var i = 0; i < len; i++) {
+      var elem = arr[i];
+      newarr[i] = constructor(new JsonObject(JSON.stringify(elem)));
+    }
+    return newarr;
+  } else {
+    return null;
   }
-  return newarr;
 }
 
 utils.convParamListEnum = function(arr, constructor) {
-  var len = arr.length;
-  var newarr = [];
-  for (var i = 0; i < len; i++) {
-    var elem = arr[i];
-    newarr[i] = constructor(elem);
+  if (arr) {
+    var len = arr.length;
+    var newarr = [];
+    for (var i = 0; i < len; i++) {
+      var elem = arr[i];
+      newarr[i] = constructor(elem);
+    }
+    return newarr;
+  } else {
+    return null;
   }
-  return newarr;
 }
 
 utils.convParamSetJsonObject = function(arr) {
@@ -209,11 +225,14 @@ utils.convReturnJson = function(param) {
  Note that this involves copying - so best to avoid Set in the API!
  */
 utils.convReturnSet = function(jSet) {
-  return new java.util.ArrayList(jSet);
+  return jSet != null ? new java.util.ArrayList(jSet) : null;
 };
 
 // Convert a list/set containing json return
 utils.convReturnListSetJson = function(jList) {
+  if (jList == null) {
+    return null;
+  }
   var arr = [];
   arr.length = jList.size();
   var iter = jList.iterator();
@@ -239,6 +258,10 @@ utils.convReturnVertxGen = function(jdel, constructorFunction) {
   return null;
 }
 
+utils.convReturnEnum = function(jVal) {
+  return jVal != null ? jVal.toString() : null;
+}
+
 // Convert a DataObject return value
 utils.convReturnDataObject = function(dataObject) {
   if (dataObject != null) {
@@ -249,44 +272,56 @@ utils.convReturnDataObject = function(dataObject) {
 
 // Convert a list/set containing VertxGen return
 utils.convReturnListSetVertxGen = function(jList, constructorFunction) {
-  var arr = [];
-  arr.length = jList.size();
-  var iter = jList.iterator();
-  var pos = 0;
-  while (iter.hasNext()) {
-    var jVertxGen = iter.next();
-    // A bit of jiggery pokery to create the object given a reference to the constructor function
-    var obj = Object.create(constructorFunction.prototype, {});
-    constructorFunction.apply(obj, [jVertxGen]);
-    arr[pos++] = obj;
+  if (jList) {
+    var arr = [];
+    arr.length = jList.size();
+    var iter = jList.iterator();
+    var pos = 0;
+    while (iter.hasNext()) {
+      var jVertxGen = iter.next();
+      // A bit of jiggery pokery to create the object given a reference to the constructor function
+      var obj = Object.create(constructorFunction.prototype, {});
+      constructorFunction.apply(obj, [jVertxGen]);
+      arr[pos++] = obj;
+    }
+    return arr;
+  } else {
+    return null;
   }
-  return arr;
 };
 
 // Convert a list/set containing data object return
 utils.convReturnListSetDataObject = function(jList) {
-  var arr = [];
-  arr.length = jList.size();
-  var iter = jList.iterator();
-  var pos = 0;
-  while (iter.hasNext()) {
-    var elem = iter.next();
-    arr[pos++] = elem != null ? JSON.parse(elem.toJson().encode()) : null;
+  if (jList) {
+    var arr = [];
+    arr.length = jList.size();
+    var iter = jList.iterator();
+    var pos = 0;
+    while (iter.hasNext()) {
+      var elem = iter.next();
+      arr[pos++] = elem != null ? JSON.parse(elem.toJson().encode()) : null;
+    }
+    return arr;
+  } else {
+    return null;
   }
-  return arr;
 };
 
 // Convert a list/set containing enum return
 utils.convReturnListSetEnum = function(jList) {
-  var arr = [];
-  arr.length = jList.size();
-  var iter = jList.iterator();
-  var pos = 0;
-  while (iter.hasNext()) {
-    var elem = iter.next();
-    arr[pos++] = elem != null ? elem.toString() : null;
+  if (jList) {
+    var arr = [];
+    arr.length = jList.size();
+    var iter = jList.iterator();
+    var pos = 0;
+    while (iter.hasNext()) {
+      var elem = iter.next();
+      arr[pos++] = elem != null ? elem.toString() : null;
+    }
+    return arr;
+  } else {
+    return null;
   }
-  return arr;
 };
 
 // Convert a map return

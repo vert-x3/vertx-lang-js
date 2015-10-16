@@ -94,7 +94,7 @@
 	@if{param.type.kind == CLASS_HANDLER}
 		@if{param.type.args[0].kind == CLASS_ASYNC_RESULT}
 			@if{param.type.args[0].args[0].name == "java.lang.Void"}
-function(ar) {\n
+@if{param.nullable}@{paramName} == null ? null : @end{}function(ar) {\n
 @{ind}    if (ar.succeeded()) {\n
 @{ind}      @{paramName}(null, null);\n
 @{ind}    } else {\n
@@ -102,7 +102,7 @@ function(ar) {\n
 @{ind}    }\n
 @{ind}  }
 			@else{}
-function(ar) {\n
+@if{param.nullable}@{paramName} == null ? null : @end{}function(ar) {\n
 @{ind}    if (ar.succeeded()) {\n
 @{ind}      @{paramName}(@includeNamed{'convReturn'; templ='arVal'; returnType=param.type.args[0].args[0]}, null);\n
 @{ind}    } else {\n
@@ -113,7 +113,7 @@ function(ar) {\n
 		@else{param.type.args[0].name == "java.lang.Void"}
 @{paramName}
 		@else{}
-function(jVal) {\n
+@if{param.nullable}@{paramName} == null ? null : @end{}function(jVal) {\n
 @{ind}    @{paramName}(@includeNamed{'convReturn'; templ='basicVal'; returnType=param.type.args[0]});\n
 @{ind}  }
 		@end{}
@@ -124,7 +124,7 @@ utils.convParamJsonArray(@{paramName})
 	@else{param.dataObject}
 @{paramName} != null ? new @{param.type.simpleName}(new JsonObject(JSON.stringify(@{paramName}))) : null
 	@else{param.type.kind == CLASS_ENUM}
-@{param.type.name}.valueOf(@{argName})
+@if{param.nullable}@{argName} == null ? null : @end{}@{param.type.name}.valueOf(@{argName})
 	@else{param.type.kind == CLASS_OBJECT}
 utils.convParamTypeUnknown(@{paramName})
 	@else{param.type.kind.basic}
@@ -169,7 +169,7 @@ utils.convParamSetDataObject(@{paramName}, function(json) { return new @{param.t
 		@else{param.type.args[0].kind == CLASS_ENUM}
 utils.convParamSetEnum(@{paramName}, function(val) { return Packages.@{param.type.args[0].name}.valueOf(val); })
 		@else{}
-utils.convParamSetBasicOther(@{paramName})
+@if{param.nullable}@{paramName} == null ? null : @end{}utils.convParamSetBasicOther(@{paramName})
 		@end{}
 	@else{param.type.kind == CLASS_MAP}
 		@if{param.type.args[1].name == 'long' || param.type.args[1].name == 'java.lang.Long'}
@@ -188,7 +188,7 @@ utils.convParamMapJsonArray(@{paramName})
 @{paramName}
 		@end{}
 	@else{}
-@{paramName}._jdel
+@if{param.nullable}@{paramName} == null ? null : @end{}@{paramName}._jdel
 	@end{}
 @end{}
 
@@ -241,35 +241,43 @@ ar.result()
 				@if{method.params.size() > 0} && @end{}
 				@foreach{param: method.params}
 					@if{param.type.kind == CLASS_PRIMITIVE || param.type.kind == CLASS_BOXED_PRIMITIVE}
-					typeof __args[@{cnt++}] ===
-						@if{param.type.name == 'long' || param.type.name == 'java.lang.Long' ||
-								param.type.name == 'int'  || param.type.name == 'java.lang.Integer' ||
-								param.type.name == 'short' || param.type.name == 'java.lang.Short' ||
-								param.type.name == 'float' || param.type.name == 'java.lang.Float' ||
-								param.type.name == 'double' || param.type.name == 'java.lang.Double' ||
-								param.type.name == 'byte' || param.type.name == 'java.lang.Byte'}
-							'number'
-						@else{param.type.name == 'boolean' || param.type.name == 'java.lang.Boolean'}
-							'boolean'
-						@else{param.type.name == 'char' || param.type.name == 'java.lang.Character'}
-							'string'
-						@end{}
+						@if{param.nullable}(@end{}
+						typeof __args[@{cnt}] ===
+							@if{param.type.name == 'long' || param.type.name == 'java.lang.Long' ||
+									param.type.name == 'int'  || param.type.name == 'java.lang.Integer' ||
+									param.type.name == 'short' || param.type.name == 'java.lang.Short' ||
+									param.type.name == 'float' || param.type.name == 'java.lang.Float' ||
+									param.type.name == 'double' || param.type.name == 'java.lang.Double' ||
+									param.type.name == 'byte' || param.type.name == 'java.lang.Byte'}
+								'number'
+							@else{param.type.name == 'boolean' || param.type.name == 'java.lang.Boolean'}
+								'boolean'
+							@else{param.type.name == 'char' || param.type.name == 'java.lang.Character'}
+								'string'
+							@end{}
+						@if{param.nullable} || __args[@{cnt}] == null)@end{}
 					@else{param.type.kind == CLASS_STRING || param.type.kind == CLASS_ENUM}
-					typeof __args[@{cnt++}] === 'string'
+						@if{param.nullable}(@end{}
+						typeof __args[@{cnt}] === 'string'
+						@if{param.nullable} || __args[@{cnt}] == null)@end{}
 					@else{param.type.kind == CLASS_API}
-						typeof __args[@{cnt}] === 'object' && __args[@{cnt++}]._jdel
+						typeof __args[@{cnt}] === 'object' && @if{param.nullable}(__args[@{cnt}] == null || @end{}__args[@{cnt}]._jdel@if{param.nullable})@end{}
 					@else{param.type.kind == CLASS_JSON_ARRAY || param.type.kind == CLASS_LIST || param.type.kind == CLASS_SET}
-						typeof __args[@{cnt}] === 'object' && __args[@{cnt++}] instanceof Array
+						typeof __args[@{cnt}] === 'object' && @if{param.nullable}(@end{}__args[@{cnt}] instanceof Array@if{param.nullable} || __args[@{cnt}] == null)@end{}
 					@else{param.type.kind == CLASS_HANDLER}
-						typeof __args[@{cnt++}] === 'function'
+						@if{param.nullable}(@end{}
+							typeof __args[@{cnt}] === 'function'
+						@if{param.nullable} || __args[@{cnt}] == null)@end{}
 					@else{param.type.kind == CLASS_OBJECT}
-						@code{cnt++}
 						true
 					@else{param.type.kind == CLASS_THROWABLE}
-						typeof __args[@{cnt++}] === 'object'
+						typeof __args[@{cnt}] === 'object'
 					@else{}
-						typeof __args[@{cnt++}] === 'object'
+						@if{!param.nullable}(@end{}
+							typeof __args[@{cnt}] === 'object'
+						@if{!param.nullable} && __args[@{cnt}] != null)@end{}
 					@end{}
+					@code{cnt++}
 				@end{' && '}) {\n
 				@includeNamed{'genMethodAdapter'}
 @{ind}  }
