@@ -696,11 +696,6 @@ public class APITest extends JSTestBase {
   }
 
   @Test
-  public void testListNullableString() throws Exception {
-    runTest();
-  }
-
-  @Test
   public void testGenericNullableTypeVariable() throws Exception {
     runTest();
   }
@@ -757,6 +752,41 @@ public class APITest extends JSTestBase {
 
   @Test
   public void testNullableMapString() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testListNullableInteger() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testListNullableBoolean() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testListNullableString() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testListNullableJsonObject() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testListNullableJsonArray() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testListNullableApi() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testListNullableDataObject() throws Exception {
     runTest();
   }
 }

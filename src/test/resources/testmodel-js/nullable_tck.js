@@ -1412,6 +1412,120 @@ var NullableTCK = function(j_val) {
   /**
 
    @public
+   @param param {Array.<number>} 
+   */
+  this.methodWithListNullableIntegerParam = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
+      j_nullableTCK["methodWithListNullableIntegerParam(java.util.List)"](param);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   */
+  this.methodWithListNullableIntegerHandler = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_nullableTCK["methodWithListNullableIntegerHandler(io.vertx.core.Handler)"](function(jVal) {
+      handler(jVal);
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   */
+  this.methodWithListNullableIntegerHandlerAsyncResult = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_nullableTCK["methodWithListNullableIntegerHandlerAsyncResult(io.vertx.core.Handler)"](function(ar) {
+      if (ar.succeeded()) {
+        handler(ar.result(), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+
+   @return {Array.<number>}
+   */
+  this.methodWithListNullableIntegerReturn = function() {
+    var __args = arguments;
+    if (__args.length === 0) {
+      return j_nullableTCK["methodWithListNullableIntegerReturn()"]();
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param param {Array.<boolean>} 
+   */
+  this.methodWithListNullableBooleanParam = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
+      j_nullableTCK["methodWithListNullableBooleanParam(java.util.List)"](param);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   */
+  this.methodWithListNullableBooleanHandler = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_nullableTCK["methodWithListNullableBooleanHandler(io.vertx.core.Handler)"](function(jVal) {
+      handler(jVal);
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   */
+  this.methodWithListNullableBooleanHandlerAsyncResult = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_nullableTCK["methodWithListNullableBooleanHandlerAsyncResult(io.vertx.core.Handler)"](function(ar) {
+      if (ar.succeeded()) {
+        handler(ar.result(), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+
+   @return {Array.<boolean>}
+   */
+  this.methodWithListNullableBooleanReturn = function() {
+    var __args = arguments;
+    if (__args.length === 0) {
+      return j_nullableTCK["methodWithListNullableBooleanReturn()"]();
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
    @param param {Array.<string>} 
    */
   this.methodWithListNullableStringParam = function(param) {
@@ -1463,6 +1577,291 @@ var NullableTCK = function(j_val) {
     var __args = arguments;
     if (__args.length === 0) {
       return j_nullableTCK["methodWithListNullableStringReturn()"]();
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param param {Array.<Object>} 
+   */
+  this.methodWithListNullableJsonObjectParam = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
+      j_nullableTCK["methodWithListNullableJsonObjectParam(java.util.List)"](utils.convParamListJsonObject(param));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   */
+  this.methodWithListNullableJsonObjectHandler = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_nullableTCK["methodWithListNullableJsonObjectHandler(io.vertx.core.Handler)"](function(jVal) {
+      handler(utils.convReturnListSetJson(jVal));
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   */
+  this.methodWithListNullableJsonObjectHandlerAsyncResult = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_nullableTCK["methodWithListNullableJsonObjectHandlerAsyncResult(io.vertx.core.Handler)"](function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnListSetJson(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+
+   @return {Array.<Object>}
+   */
+  this.methodWithListNullableJsonObjectReturn = function() {
+    var __args = arguments;
+    if (__args.length === 0) {
+      return utils.convReturnListSetJson(j_nullableTCK["methodWithListNullableJsonObjectReturn()"]());
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param param {Array.<todo>} 
+   */
+  this.methodWithListNullableJsonArrayParam = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
+      j_nullableTCK["methodWithListNullableJsonArrayParam(java.util.List)"](utils.convParamListJsonArray(param));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   */
+  this.methodWithListNullableJsonArrayHandler = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_nullableTCK["methodWithListNullableJsonArrayHandler(io.vertx.core.Handler)"](function(jVal) {
+      handler(utils.convReturnListSetJson(jVal));
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   */
+  this.methodWithListNullableJsonArrayHandlerAsyncResult = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_nullableTCK["methodWithListNullableJsonArrayHandlerAsyncResult(io.vertx.core.Handler)"](function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnListSetJson(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+
+   @return {Array.<todo>}
+   */
+  this.methodWithListNullableJsonArrayReturn = function() {
+    var __args = arguments;
+    if (__args.length === 0) {
+      return utils.convReturnListSetJson(j_nullableTCK["methodWithListNullableJsonArrayReturn()"]());
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param param {Array.<RefedInterface1>} 
+   */
+  this.methodWithListNullableApiParam = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
+      j_nullableTCK["methodWithListNullableApiParam(java.util.List)"](utils.convParamListVertxGen(param));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   */
+  this.methodWithListNullableApiHandler = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_nullableTCK["methodWithListNullableApiHandler(io.vertx.core.Handler)"](function(jVal) {
+      handler(utils.convReturnListSetVertxGen(jVal, RefedInterface1));
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   */
+  this.methodWithListNullableApiHandlerAsyncResult = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_nullableTCK["methodWithListNullableApiHandlerAsyncResult(io.vertx.core.Handler)"](function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnListSetVertxGen(ar.result(), RefedInterface1), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+
+   @return {Array.<RefedInterface1>}
+   */
+  this.methodWithListNullableApiReturn = function() {
+    var __args = arguments;
+    if (__args.length === 0) {
+      return utils.convReturnListSetVertxGen(j_nullableTCK["methodWithListNullableApiReturn()"](), RefedInterface1);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param param {Array.<Object>} 
+   */
+  this.methodWithListNullableDataObjectParam = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
+      j_nullableTCK["methodWithListNullableDataObjectParam(java.util.List)"](utils.convParamListDataObject(param, function(json) { return new TestDataObject(json); }));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   */
+  this.methodWithListNullableDataObjectHandler = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_nullableTCK["methodWithListNullableDataObjectHandler(io.vertx.core.Handler)"](function(jVal) {
+      handler(utils.convReturnListSetDataObject(jVal));
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   */
+  this.methodWithListNullableDataObjectHandlerAsyncResult = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_nullableTCK["methodWithListNullableDataObjectHandlerAsyncResult(io.vertx.core.Handler)"](function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnListSetDataObject(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+
+   @return {Array.<Object>}
+   */
+  this.methodWithListNullableDataObjectReturn = function() {
+    var __args = arguments;
+    if (__args.length === 0) {
+      return utils.convReturnListSetDataObject(j_nullableTCK["methodWithListNullableDataObjectReturn()"]());
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param param {Array.<Object>} 
+   */
+  this.methodWithListNullableEnumParam = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
+      j_nullableTCK["methodWithListNullableEnumParam(java.util.List)"](utils.convParamListEnum(param, function(val) { return Packages.io.vertx.codegen.testmodel.TestEnum.valueOf(val); }));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   */
+  this.methodWithListNullableEnumHandler = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_nullableTCK["methodWithListNullableEnumHandler(io.vertx.core.Handler)"](function(jVal) {
+      handler(utils.convReturnListSetEnum(jVal));
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   */
+  this.methodWithListNullableEnumHandlerAsyncResult = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_nullableTCK["methodWithListNullableEnumHandlerAsyncResult(io.vertx.core.Handler)"](function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnListSetEnum(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+
+   @return {Array.<Object>}
+   */
+  this.methodWithListNullableEnumReturn = function() {
+    var __args = arguments;
+    if (__args.length === 0) {
+      return utils.convReturnListSetEnum(j_nullableTCK["methodWithListNullableEnumReturn()"]());
     } else throw new TypeError('function invoked with invalid arguments');
   };
 

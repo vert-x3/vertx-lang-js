@@ -128,7 +128,7 @@ utils.convParamListJsonObject = function(arr) {
     var newarr = [];
     for (var i = 0; i < len; i++) {
       var elem = arr[i];
-      newarr[i] = new JsonObject(JSON.stringify(elem));
+      newarr[i] = elem != null ? new JsonObject(JSON.stringify(elem)) : elem;
     }
     return newarr;
   } else {
@@ -142,7 +142,7 @@ utils.convParamListJsonArray = function(arr) {
     var newarr = [];
     for (var i = 0; i < len; i++) {
       var elem = arr[i];
-      newarr[i] = new JsonArray(JSON.stringify(elem));
+      newarr[i] = elem != null ? new JsonArray(JSON.stringify(elem)) : null;
     }
     return newarr;
   } else {
@@ -156,7 +156,7 @@ utils.convParamListDataObject = function(arr, constructor) {
     var newarr = [];
     for (var i = 0; i < len; i++) {
       var elem = arr[i];
-      newarr[i] = constructor(new JsonObject(JSON.stringify(elem)));
+      newarr[i] = elem != null ? constructor(new JsonObject(JSON.stringify(elem))) : null;
     }
     return newarr;
   } else {
@@ -280,9 +280,13 @@ utils.convReturnListSetVertxGen = function(jList, constructorFunction) {
     while (iter.hasNext()) {
       var jVertxGen = iter.next();
       // A bit of jiggery pokery to create the object given a reference to the constructor function
-      var obj = Object.create(constructorFunction.prototype, {});
-      constructorFunction.apply(obj, [jVertxGen]);
-      arr[pos++] = obj;
+      if (jVertxGen) {
+        var obj = Object.create(constructorFunction.prototype, {});
+        constructorFunction.apply(obj, [jVertxGen]);
+        arr[pos++] = obj;
+      } else {
+        arr[pos++] = null;
+      }
     }
     return arr;
   } else {

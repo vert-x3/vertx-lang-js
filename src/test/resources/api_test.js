@@ -2176,25 +2176,93 @@ function testNullableMapString() {
   checkMap(nullableTCK.methodWithNullableMapStringReturn(true));
 }
 
+function testListNullableInteger() {
+  testListNullable('Integer', [12345,null,54321], function(list) {
+    Assert.assertEquals(3, list.length, 0);
+    Assert.assertEquals(12345, list[0], 0);
+    Assert.assertEquals(null, list[1]);
+    Assert.assertEquals(54321, list[2], 0);
+  });
+}
+
+function testListNullableBoolean() {
+  testListNullable('Boolean', [true,null,false], function(list) {
+    Assert.assertEquals(3, list.length, 0);
+    Assert.assertEquals(true, list[0]);
+    Assert.assertEquals(null, list[1]);
+    Assert.assertEquals(false, list[2]);
+  });
+}
+
 function testListNullableString() {
-  var checkList = function(list) {
+  testListNullable('String', ["first",null,"third"], function(list) {
     Assert.assertEquals(3, list.length, 0);
     Assert.assertEquals("first", list[0]);
     Assert.assertEquals(null, list[1]);
     Assert.assertEquals("third", list[2]);
-  };
-  nullableTCK.methodWithListNullableStringParam(["first",null,"third"]);
+  });
+}
+
+function testListNullableJsonObject() {
+  testListNullable('JsonObject', [{"foo":"bar"},null,{"juu":3}], function(list) {
+    Assert.assertEquals("bar", list[0].foo);
+    Assert.assertEquals(null, list[1]);
+    Assert.assertEquals(3, list[2].juu, 0);
+  });
+}
+
+function testListNullableJsonArray() {
+  testListNullable('JsonArray', [["foo","bar"],null,["juu"]], function(list) {
+    Assert.assertEquals("foo", list[0][0]);
+    Assert.assertEquals("bar", list[0][1]);
+    Assert.assertEquals(null, list[1]);
+    Assert.assertEquals("juu", list[2][0]);
+  });
+}
+
+function testListNullableApi() {
+  refed_obj.setString('first');
+  refed_obj2.setString('third');
+  testListNullable('Api', [refed_obj,null,refed_obj2], function(list) {
+    Assert.assertEquals("first", list[0].getString());
+    Assert.assertNull(list[1]);
+    Assert.assertEquals("third", list[2].getString());
+  });
+}
+
+function testListNullableDataObject() {
+  testListNullable('DataObject', [{"foo":"first","bar":1,"wibble":1.1},null,{"foo":"third","bar":3,"wibble":3.3}], function(list) {
+    Assert.assertEquals("first", list[0].foo);
+    Assert.assertEquals(1, list[0].bar, 0);
+    Assert.assertEquals(1.1, list[0].wibble, 0);
+    Assert.assertNull(list[1]);
+    Assert.assertEquals("third", list[2].foo);
+    Assert.assertEquals(3, list[2].bar, 0);
+    Assert.assertEquals(3.3, list[2].wibble, 0);
+  });
+}
+
+function testListNullableEnum() {
+  testListNullable('Enum', ['TIM',null,'JULIEN'], function(list) {
+    Assert.assertEquals("TIM", list[0]);
+    Assert.assertNull(list[1]);
+    Assert.assertEquals("JULIEN", list[2]);
+  });
+}
+
+function testListNullable(type, expectedList, checkList) {
+  nullableTCK['methodWithListNullable' + type + 'Param'](expectedList);
   var count = 0;
-  nullableTCK.methodWithListNullableStringHandler(function(list) {
+  nullableTCK['methodWithListNullable' + type + 'Handler'](function(list) {
     checkList(list);
     count++;
   });
-  nullableTCK.methodWithListNullableStringHandlerAsyncResult(function(list, err) {
+  nullableTCK['methodWithListNullable' + type + 'HandlerAsyncResult'](function(list, err) {
     checkList(list);
     Assert.assertNull(err);
     count++;
   });
-  checkList(nullableTCK.methodWithListNullableStringReturn());
+  checkList(nullableTCK['methodWithListNullable' + type + 'Return']());
   Assert.assertEquals(2, count, 0);
 }
 
