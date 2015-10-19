@@ -811,7 +811,32 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testListNullableByte() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testListNullableShort() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testListNullableInteger() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testListNullableLong() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testListNullableFloat() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testListNullableDouble() throws Exception {
     runTest();
   }
 

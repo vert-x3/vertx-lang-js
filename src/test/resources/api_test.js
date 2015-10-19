@@ -2226,12 +2226,60 @@ function testNullableMapString() {
   checkMap(nullableTCK.methodWithNullableMapStringReturn(true));
 }
 
+function testListNullableByte() {
+  testListNullable('Byte', [12,null,24], function(list) {
+    Assert.assertEquals(3, list.length, 0);
+    Assert.assertEquals(12, list[0], 0);
+    Assert.assertEquals(null, list[1]);
+    Assert.assertEquals(24, list[2], 0);
+  });
+}
+
+function testListNullableShort() {
+  testListNullable('Short', [520,null,1040], function(list) {
+    Assert.assertEquals(3, list.length, 0);
+    Assert.assertEquals(520, list[0], 0);
+    Assert.assertEquals(null, list[1]);
+    Assert.assertEquals(1040, list[2], 0);
+  });
+}
+
 function testListNullableInteger() {
   testListNullable('Integer', [12345,null,54321], function(list) {
     Assert.assertEquals(3, list.length, 0);
     Assert.assertEquals(12345, list[0], 0);
     Assert.assertEquals(null, list[1]);
     Assert.assertEquals(54321, list[2], 0);
+  });
+}
+
+function testListNullableLong() {
+  testListNullable('Long', [123456789,null,987654321], function(list) {
+    Assert.assertEquals(3, list.length, 0);
+    Assert.assertEquals(Number(123456789), Number(list[0]), Number(0));
+    Assert.assertEquals(null, list[1]);
+    Assert.assertEquals(Number(987654321), Number(list[2]), Number(0));
+  });
+}
+
+function testListNullableFloat() {
+  // Todo make this pass, currently nashorn transforms to a List<Double> which can lead to class cast exceptions
+/*
+  testListNullable('Float', [1.1,null,3.3], function(list) {
+    Assert.assertEquals(3, list.length, 0);
+    Assert.assertEquals(1.1, list[0], 0);
+    Assert.assertEquals(null, list[1]);
+    Assert.assertEquals(3.3, list[2],0);
+  });
+*/
+}
+
+function testListNullableDouble() {
+  testListNullable('Double', [1.11,null,3.33], function(list) {
+    Assert.assertEquals(3, list.length, 0);
+    Assert.assertEquals(1.11, list[0], 0);
+    Assert.assertEquals(null, list[1]);
+    Assert.assertEquals(3.33, list[2],0);
   });
 }
 
@@ -2250,6 +2298,15 @@ function testListNullableString() {
     Assert.assertEquals("first", list[0]);
     Assert.assertEquals(null, list[1]);
     Assert.assertEquals("third", list[2]);
+  });
+}
+
+function testListNullableChar() {
+  testListNullable('Char', ["F",null,"R"], function(list) {
+    Assert.assertEquals(3, list.length, 0);
+    Assert.assertEquals("F", list[0]);
+    Assert.assertEquals(null, list[1]);
+    Assert.assertEquals("R", list[2]);
   });
 }
 
