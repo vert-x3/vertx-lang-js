@@ -656,7 +656,27 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testNullableByte() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableShort() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testNullableInteger() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableFloat() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableDouble() throws Exception {
     runTest();
   }
 
@@ -667,6 +687,11 @@ public class APITest extends JSTestBase {
 
   @Test
   public void testNullableString() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableChar() throws Exception {
     runTest();
   }
 

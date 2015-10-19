@@ -1921,8 +1921,28 @@ function testCustomModule() {
   Assert.assertEquals("olleh", sub.reverse("hello"));
 }
 
+function testNullableByte() {
+  testNullable('Byte', 67, function(val) { Assert.assertEquals(67, val, 0) });
+}
+
+function testNullableShort() {
+  testNullable('Short', 1024, function(val) { Assert.assertEquals(1024, val, 0) });
+}
+
 function testNullableInteger() {
   testNullable('Integer', 1234567, function(val) { Assert.assertEquals(1234567, val, 0) });
+}
+
+function testNullableLong() {
+  testNullable('Long', 9876543210, function(val) { Assert.assertEquals(9876543210, val, 0) });
+}
+
+function testNullableFloat() {
+  testNullable('Float', 3.14, function(val) { Assert.assertEquals(new Packages.java.lang.Float(3.14), val, new Packages.java.lang.Float(0.0)) });
+}
+
+function testNullableDouble() {
+  testNullable('Double', 3.1415926, function(val) { Assert.assertEquals(3.1415926, val, 0.0) });
 }
 
 function testNullableBoolean() {
@@ -1931,6 +1951,10 @@ function testNullableBoolean() {
 
 function testNullableString() {
   testNullable('String', 'the_string_value', function(val) { Assert.assertEquals('the_string_value', val) });
+}
+
+function testNullableChar() {
+  testNullable('Char', 'f', function(val) { Assert.assertEquals('f', "" + val) });
 }
 
 function testNullableJsonObject() {
