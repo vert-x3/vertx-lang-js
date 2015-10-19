@@ -801,7 +801,72 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testNullableSetByte() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableSetShort() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableSetInteger() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableSetLong() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableSetFloat() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableSetDouble() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableSetBoolean() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testNullableSetString() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableSetChar() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableSetJsonObject() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableSetJsonArray() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableSetApi() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableSetDataObject() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableSetEnum() throws Exception {
     runTest();
   }
 

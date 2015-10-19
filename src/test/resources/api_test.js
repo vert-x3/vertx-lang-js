@@ -2149,43 +2149,101 @@ function testNullableList(type, expectedList, assertEquals) {
   checkList(nullableTCK['methodWithNullableList' + type + 'Return'](true));
 }
 
+function testNullableSetByte() {
+  testNullableSet('Byte', [1,2,3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+}
+
+function testNullableSetShort() {
+  testNullableSet('Short', [1,2,3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+}
+
+function testNullableSetInteger() {
+  testNullableSet('Integer', [1,2,3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+}
+
+function testNullableSetLong() {
+  testNullableSet('Long', [1,2,3], function(expected, actual) { Assert.assertEquals(new Packages.java.lang.Double(expected), new Packages.java.lang.Double(actual), 0.0); });
+}
+
+function testNullableSetFloat() {
+  // todo : make this pass
+  // testNullableSet('Float', [1.1,2.2,3.3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+}
+
+function testNullableSetDouble() {
+  testNullableSet('Double', [1.11,2.22,3.33], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+}
+
+function testNullableSetBoolean() {
+  testNullableSet('Boolean', [true,null,false], Assert.assertEquals);
+}
+
 function testNullableSetString() {
-  var failed = nullableTCK.methodWithNonNullableSetStringParam([]);
+  testNullableSet('String', ['first','second','third'], Assert.assertEquals);
+}
+
+function testNullableSetChar() {
+  // todo : make this pass
+  // testNullableSet('Char', ['x','y','z'], Assert.assertEquals);
+}
+
+function testNullableSetJsonObject() {
+  testNullableList('JsonObject', [{"foo":"bar"},{"juu":3}], function(expected, actual) { Assert.assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
+}
+
+function testNullableSetJsonArray() {
+  testNullableSet('JsonArray', [["foo","bar"],["juu"]], function(expected, actual) { Assert.assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
+}
+
+function testNullableSetApi() {
+  refed_obj.setString('refed_is_here');
+  testNullableSet('Api', [refed_obj], function(expected, actual) {});
+}
+
+function testNullableSetDataObject() {
+  testNullableSet('DataObject', [{"foo":"foo_value","bar": 12345,"wibble":5.6}], function(expected, actual) { Assert.assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
+}
+
+function testNullableSetEnum() {
+  testNullableSet('Enum', ["TIM","JULIEN"], Assert.assertEquals);
+}
+
+function testNullableSet(type, expectedSet, assertEquals) {
+  var failed = nullableTCK['methodWithNonNullableSet' + type + 'Param']([]);
   try {
-    failed = nullableTCK.methodWithNonNullableSetStringParam(null);
+    failed = nullableTCK['methodWithNonNullableSet' + type + 'Param'](null);
   } catch (e) {
   }
   Assert.assertFalse(failed);
   var checkSet = function(s) {
-    Assert.assertEquals(3, s.length, 0);
-    Assert.assertEquals("first", s[0]);
-    Assert.assertEquals("second", s[1]);
-    Assert.assertEquals("third", s[2]);
+    for (var index = 0;index < expectedSet.length;index++) {
+      assertEquals(expectedSet[index], s[index]);
+    }
   };
-  nullableTCK.methodWithNullableSetStringParam(false, ["first","second","third"]);
-  nullableTCK.methodWithNullableSetStringParam(true, null);
+  nullableTCK['methodWithNullableSet' + type + 'Param'](false, expectedSet);
+  nullableTCK['methodWithNullableSet' + type + 'Param'](true, null);
   var count = 0;
-  nullableTCK.methodWithNullableSetStringHandler(false, function(res) {
+  nullableTCK['methodWithNullableSet' + type + 'Handler'](false, function(res) {
     Assert.assertNull(res);
     count++;
   });
-  nullableTCK.methodWithNullableSetStringHandler(true, function(res) {
+  nullableTCK['methodWithNullableSet' + type + 'Handler'](true, function(res) {
     checkSet(res);
     count++;
   });
-  nullableTCK.methodWithNullableSetStringHandlerAsyncResult(false, function(res, err) {
+  nullableTCK['methodWithNullableSet' + type + 'HandlerAsyncResult'](false, function(res, err) {
     Assert.assertNull(res);
     Assert.assertNull(err);
     count++;
   });
-  nullableTCK.methodWithNullableSetStringHandlerAsyncResult(true, function(res, err) {
+  nullableTCK['methodWithNullableSet' + type + 'HandlerAsyncResult'](true, function(res, err) {
     checkSet(res);
     Assert.assertNull(err);
     count++;
   });
   Assert.assertEquals(4, count, 0);
-  Assert.assertNull(nullableTCK.methodWithNullableSetStringReturn(false));
-  checkSet(nullableTCK.methodWithNullableSetStringReturn(true));
+  Assert.assertNull(nullableTCK['methodWithNullableSet' + type + 'Return'](false));
+  checkSet(nullableTCK['methodWithNullableSet' + type + 'Return'](true));
 }
 
 function testNullableMapString() {

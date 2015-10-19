@@ -61,19 +61,19 @@ utils.convParamListByte = function(arr) {
 }
 
 utils.convParamSetBasicOther = function(arr) {
-  return new ListConverterSet(arr);
+  return arr == null ? null : new ListConverterSet(arr);
 }
 
 utils.convParamSetLong = function(arr) {
-  return new JavaArraySetWrapper(Java.to(arr, LongArrayType));
+  return arr == null ? null : new JavaArraySetWrapper(Java.to(arr, LongArrayType));
 }
 
 utils.convParamSetShort = function(arr) {
-  return new JavaArraySetWrapper(Java.to(arr, ShortArrayType));
+  return arr == null ? null : new JavaArraySetWrapper(Java.to(arr, ShortArrayType));
 }
 
 utils.convParamSetByte = function(arr) {
-  return new JavaArraySetWrapper(Java.to(arr, ByteArrayType));
+  return arr == null ? null : new JavaArraySetWrapper(Java.to(arr, ByteArrayType));
 }
 
 utils.convParamListVertxGen = function(arr) {
@@ -81,7 +81,7 @@ utils.convParamListVertxGen = function(arr) {
 }
 
 utils.convParamSetVertxGen = function(arr) {
-  return new VertxGenConverterSet(arr);
+  return arr == null ? null : new VertxGenConverterSet(arr);
 }
 
 utils.convParamMapLong = function(arr) {
@@ -179,19 +179,19 @@ utils.convParamListEnum = function(arr, constructor) {
 }
 
 utils.convParamSetJsonObject = function(arr) {
-  return new ListConverterSet(utils.convParamListJsonObject(arr));
+  return arr == null ? null : new ListConverterSet(utils.convParamListJsonObject(arr));
 }
 
 utils.convParamSetJsonArray = function(arr) {
-  return new ListConverterSet(utils.convParamListJsonArray(arr));
+  return arr == null ? null : new ListConverterSet(utils.convParamListJsonArray(arr));
 }
 
 utils.convParamSetDataObject = function(arr, constructor) {
-  return new ListConverterSet(utils.convParamListDataObject(arr, constructor));
+  return arr == null ? null : new ListConverterSet(utils.convParamListDataObject(arr, constructor));
 }
 
 utils.convParamSetEnum = function(arr, constructor) {
-  return new ListConverterSet(utils.convParamListEnum(arr, constructor));
+  return arr == null ? null : new ListConverterSet(utils.convParamListEnum(arr, constructor));
 }
 
 // Return conversion
