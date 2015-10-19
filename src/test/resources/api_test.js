@@ -2175,7 +2175,7 @@ function testNullableSetDouble() {
 }
 
 function testNullableSetBoolean() {
-  testNullableSet('Boolean', [true,null,false], Assert.assertEquals);
+  testNullableSet('Boolean', [true,false], Assert.assertEquals);
 }
 
 function testNullableSetString() {
