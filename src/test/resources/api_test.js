@@ -2052,8 +2052,29 @@ function testGenericNullableTypeVariable() {
   Assert.assertEquals(null, nullableTCK.methodWithNullableTypeVariableReturn(false, "fizz2"));
 }
 
+function testNullableListByte() {
+  testNullableList('Byte', [1,2,3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+}
+
+function testNullableListShort() {
+  testNullableList('Short', [1,2,3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+}
+
 function testNullableListInteger() {
   testNullableList('Integer', [1,2,3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+}
+
+function testNullableListLong() {
+  testNullableList('Long', [1,2,3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+}
+
+function testNullableListFloat() {
+  // todo : make this pass
+  // testNullableList('Float', [1.1,2.2,3.3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+}
+
+function testNullableListDouble() {
+  testNullableList('Double', [1.11,2.22,3.33], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
 }
 
 function testNullableListBoolean() {
@@ -2062,6 +2083,11 @@ function testNullableListBoolean() {
 
 function testNullableListString() {
   testNullableList('String', ['first','second','third'], Assert.assertEquals);
+}
+
+function testNullableListChar() {
+  // todo : make this pass
+  // testNullableList('Char', ['x','y','z'], Assert.assertEquals);
 }
 
 function testNullableListJsonObject() {

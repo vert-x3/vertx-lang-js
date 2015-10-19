@@ -731,7 +731,27 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testNullableListByte() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableListShort() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testNullableListInteger() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableListFloat() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableListDouble() throws Exception {
     runTest();
   }
 
@@ -742,6 +762,11 @@ public class APITest extends JSTestBase {
 
   @Test
   public void testNullableListString() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableListChar() throws Exception {
     runTest();
   }
 

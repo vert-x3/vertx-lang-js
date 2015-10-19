@@ -53,11 +53,11 @@ utils.convParamListLong = function(arr) {
 }
 
 utils.convParamListShort = function(arr) {
-  return asList(Java.to(arr, ShortArrayType));
+  return arr == null ? null : asList(Java.to(arr, ShortArrayType));
 }
 
 utils.convParamListByte = function(arr) {
-  return asList(Java.to(arr, ByteArrayType));
+  return arr == null ? null: asList(Java.to(arr, ByteArrayType));
 }
 
 utils.convParamSetBasicOther = function(arr) {
