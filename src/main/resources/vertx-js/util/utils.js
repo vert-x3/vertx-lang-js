@@ -49,7 +49,7 @@ utils.convParamThrowable = function(err) {
 };
 
 utils.convParamListLong = function(arr) {
-  return asList(Java.to(arr, LongArrayType));
+  return arr == null ? null : asList(Java.to(arr, LongArrayType));
 }
 
 utils.convParamListShort = function(arr) {

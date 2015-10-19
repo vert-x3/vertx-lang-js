@@ -2065,7 +2065,7 @@ function testNullableListInteger() {
 }
 
 function testNullableListLong() {
-  testNullableList('Long', [1,2,3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  testNullableList('Long', [1,2,3], function(expected, actual) { Assert.assertEquals(new Packages.java.lang.Double(expected), new Packages.java.lang.Double(actual), 0.0); });
 }
 
 function testNullableListFloat() {
