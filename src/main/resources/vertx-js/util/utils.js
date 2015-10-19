@@ -85,41 +85,49 @@ utils.convParamSetVertxGen = function(arr) {
 }
 
 utils.convParamMapLong = function(arr) {
-  return new LongConverterMap(arr);
+  return arr == null ? null : new LongConverterMap(arr);
 }
 
 utils.convParamMapShort = function(arr) {
-  return new ShortConverterMap(arr);
+  return arr == null ? null : new ShortConverterMap(arr);
 }
 
 utils.convParamMapByte = function(arr) {
-  return new ByteConverterMap(arr);
+  return arr == null ? null : new ByteConverterMap(arr);
 }
 
 utils.convParamMapVertxGen = function(arr) {
-  return new VertxGenConverterMap(arr);
+  return arr == null ? null : new VertxGenConverterMap(arr);
 }
 
 utils.convParamMapJsonObject = function(arr) {
-  var newmap = {};
-  for (var key in arr) {
-    if (arr.hasOwnProperty(key)) {
-      var val = arr[key];
-      newmap[key] = new JsonObject(JSON.stringify(val));
+  if (arr) {
+    var newmap = {};
+    for (var key in arr) {
+      if (arr.hasOwnProperty(key)) {
+        var val = arr[key];
+        newmap[key] = new JsonObject(JSON.stringify(val));
+      }
     }
+    return newmap;
+  } else {
+    return null;
   }
-  return newmap;
 }
 
 utils.convParamMapJsonArray = function(arr) {
-  var newmap = {};
-  for (var key in arr) {
-    if (arr.hasOwnProperty(key)) {
-      var val = arr[key];
-      newmap[key] = new JsonArray(JSON.stringify(val));
+  if (arr) {
+    var newmap = {};
+    for (var key in arr) {
+      if (arr.hasOwnProperty(key)) {
+        var val = arr[key];
+        newmap[key] = new JsonArray(JSON.stringify(val));
+      }
     }
+    return newmap;
+  } else {
+    return null;
   }
-  return newmap;
 }
 
 utils.convParamListJsonObject = function(arr) {

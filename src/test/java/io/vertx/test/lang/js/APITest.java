@@ -871,7 +871,57 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testNullableMapByte() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableMapShort() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableMapInteger() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableMapLong() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableMapFloat() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableMapDouble() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableMapBoolean() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testNullableMapString() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableMapChar() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableMapJsonObject() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableMapJsonArray() throws Exception {
     runTest();
   }
 

@@ -3167,6 +3167,517 @@ var NullableTCK = function(j_val) {
    @param param {Array.<string>} 
    @return {boolean}
    */
+  this.methodWithNonNullableMapByteParam = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && (typeof __args[0] === 'object' && __args[0] != null)) {
+      return j_nullableTCK["methodWithNonNullableMapByteParam(java.util.Map)"](utils.convParamMapByte(param));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param expectNull {boolean} 
+   @param param {Array.<string>} 
+   */
+  this.methodWithNullableMapByteParam = function(expectNull, param) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'object') {
+      j_nullableTCK["methodWithNullableMapByteParam(boolean,java.util.Map)"](expectNull, utils.convParamMapByte(param));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableMapByteHandler = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableMapByteHandler(boolean,io.vertx.core.Handler)"](notNull, function(jVal) {
+      handler(utils.convReturnMap(jVal));
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableMapByteHandlerAsyncResult = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableMapByteHandlerAsyncResult(boolean,io.vertx.core.Handler)"](notNull, function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnMap(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @return {Array.<string>}
+   */
+  this.methodWithNullableMapByteReturn = function(notNull) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] ==='boolean') {
+      return utils.convReturnMap(j_nullableTCK["methodWithNullableMapByteReturn(boolean)"](notNull));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param param {Array.<string>} 
+   @return {boolean}
+   */
+  this.methodWithNonNullableMapShortParam = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && (typeof __args[0] === 'object' && __args[0] != null)) {
+      return j_nullableTCK["methodWithNonNullableMapShortParam(java.util.Map)"](utils.convParamMapShort(param));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param expectNull {boolean} 
+   @param param {Array.<string>} 
+   */
+  this.methodWithNullableMapShortParam = function(expectNull, param) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'object') {
+      j_nullableTCK["methodWithNullableMapShortParam(boolean,java.util.Map)"](expectNull, utils.convParamMapShort(param));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableMapShortHandler = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableMapShortHandler(boolean,io.vertx.core.Handler)"](notNull, function(jVal) {
+      handler(utils.convReturnMap(jVal));
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableMapShortHandlerAsyncResult = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableMapShortHandlerAsyncResult(boolean,io.vertx.core.Handler)"](notNull, function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnMap(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @return {Array.<string>}
+   */
+  this.methodWithNullableMapShortReturn = function(notNull) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] ==='boolean') {
+      return utils.convReturnMap(j_nullableTCK["methodWithNullableMapShortReturn(boolean)"](notNull));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param param {Array.<string>} 
+   @return {boolean}
+   */
+  this.methodWithNonNullableMapIntegerParam = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && (typeof __args[0] === 'object' && __args[0] != null)) {
+      return j_nullableTCK["methodWithNonNullableMapIntegerParam(java.util.Map)"](param);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param expectNull {boolean} 
+   @param param {Array.<string>} 
+   */
+  this.methodWithNullableMapIntegerParam = function(expectNull, param) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'object') {
+      j_nullableTCK["methodWithNullableMapIntegerParam(boolean,java.util.Map)"](expectNull, param);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableMapIntegerHandler = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableMapIntegerHandler(boolean,io.vertx.core.Handler)"](notNull, function(jVal) {
+      handler(utils.convReturnMap(jVal));
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableMapIntegerHandlerAsyncResult = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableMapIntegerHandlerAsyncResult(boolean,io.vertx.core.Handler)"](notNull, function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnMap(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @return {Array.<string>}
+   */
+  this.methodWithNullableMapIntegerReturn = function(notNull) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] ==='boolean') {
+      return utils.convReturnMap(j_nullableTCK["methodWithNullableMapIntegerReturn(boolean)"](notNull));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param param {Array.<string>} 
+   @return {boolean}
+   */
+  this.methodWithNonNullableMapLongParam = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && (typeof __args[0] === 'object' && __args[0] != null)) {
+      return j_nullableTCK["methodWithNonNullableMapLongParam(java.util.Map)"](utils.convParamMapLong(param));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param expectNull {boolean} 
+   @param param {Array.<string>} 
+   */
+  this.methodWithNullableMapLongParam = function(expectNull, param) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'object') {
+      j_nullableTCK["methodWithNullableMapLongParam(boolean,java.util.Map)"](expectNull, utils.convParamMapLong(param));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableMapLongHandler = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableMapLongHandler(boolean,io.vertx.core.Handler)"](notNull, function(jVal) {
+      handler(utils.convReturnMap(jVal));
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableMapLongHandlerAsyncResult = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableMapLongHandlerAsyncResult(boolean,io.vertx.core.Handler)"](notNull, function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnMap(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @return {Array.<string>}
+   */
+  this.methodWithNullableMapLongReturn = function(notNull) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] ==='boolean') {
+      return utils.convReturnMap(j_nullableTCK["methodWithNullableMapLongReturn(boolean)"](notNull));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param param {Array.<string>} 
+   @return {boolean}
+   */
+  this.methodWithNonNullableMapFloatParam = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && (typeof __args[0] === 'object' && __args[0] != null)) {
+      return j_nullableTCK["methodWithNonNullableMapFloatParam(java.util.Map)"](param);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param expectNull {boolean} 
+   @param param {Array.<string>} 
+   */
+  this.methodWithNullableMapFloatParam = function(expectNull, param) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'object') {
+      j_nullableTCK["methodWithNullableMapFloatParam(boolean,java.util.Map)"](expectNull, param);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableMapFloatHandler = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableMapFloatHandler(boolean,io.vertx.core.Handler)"](notNull, function(jVal) {
+      handler(utils.convReturnMap(jVal));
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableMapFloatHandlerAsyncResult = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableMapFloatHandlerAsyncResult(boolean,io.vertx.core.Handler)"](notNull, function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnMap(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @return {Array.<string>}
+   */
+  this.methodWithNullableMapFloatReturn = function(notNull) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] ==='boolean') {
+      return utils.convReturnMap(j_nullableTCK["methodWithNullableMapFloatReturn(boolean)"](notNull));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param param {Array.<string>} 
+   @return {boolean}
+   */
+  this.methodWithNonNullableMapDoubleParam = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && (typeof __args[0] === 'object' && __args[0] != null)) {
+      return j_nullableTCK["methodWithNonNullableMapDoubleParam(java.util.Map)"](param);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param expectNull {boolean} 
+   @param param {Array.<string>} 
+   */
+  this.methodWithNullableMapDoubleParam = function(expectNull, param) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'object') {
+      j_nullableTCK["methodWithNullableMapDoubleParam(boolean,java.util.Map)"](expectNull, param);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableMapDoubleHandler = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableMapDoubleHandler(boolean,io.vertx.core.Handler)"](notNull, function(jVal) {
+      handler(utils.convReturnMap(jVal));
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableMapDoubleHandlerAsyncResult = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableMapDoubleHandlerAsyncResult(boolean,io.vertx.core.Handler)"](notNull, function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnMap(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @return {Array.<string>}
+   */
+  this.methodWithNullableMapDoubleReturn = function(notNull) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] ==='boolean') {
+      return utils.convReturnMap(j_nullableTCK["methodWithNullableMapDoubleReturn(boolean)"](notNull));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param param {Array.<string>} 
+   @return {boolean}
+   */
+  this.methodWithNonNullableMapBooleanParam = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && (typeof __args[0] === 'object' && __args[0] != null)) {
+      return j_nullableTCK["methodWithNonNullableMapBooleanParam(java.util.Map)"](param);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param expectNull {boolean} 
+   @param param {Array.<string>} 
+   */
+  this.methodWithNullableMapBooleanParam = function(expectNull, param) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'object') {
+      j_nullableTCK["methodWithNullableMapBooleanParam(boolean,java.util.Map)"](expectNull, param);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableMapBooleanHandler = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableMapBooleanHandler(boolean,io.vertx.core.Handler)"](notNull, function(jVal) {
+      handler(utils.convReturnMap(jVal));
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableMapBooleanHandlerAsyncResult = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableMapBooleanHandlerAsyncResult(boolean,io.vertx.core.Handler)"](notNull, function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnMap(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @return {Array.<string>}
+   */
+  this.methodWithNullableMapBooleanReturn = function(notNull) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] ==='boolean') {
+      return utils.convReturnMap(j_nullableTCK["methodWithNullableMapBooleanReturn(boolean)"](notNull));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param param {Array.<string>} 
+   @return {boolean}
+   */
   this.methodWithNonNullableMapStringParam = function(param) {
     var __args = arguments;
     if (__args.length === 1 && (typeof __args[0] === 'object' && __args[0] != null)) {
@@ -3231,6 +3742,251 @@ var NullableTCK = function(j_val) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] ==='boolean') {
       return utils.convReturnMap(j_nullableTCK["methodWithNullableMapStringReturn(boolean)"](notNull));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param param {Array.<string>} 
+   @return {boolean}
+   */
+  this.methodWithNonNullableMapCharParam = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && (typeof __args[0] === 'object' && __args[0] != null)) {
+      return j_nullableTCK["methodWithNonNullableMapCharParam(java.util.Map)"](param);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param expectNull {boolean} 
+   @param param {Array.<string>} 
+   */
+  this.methodWithNullableMapCharParam = function(expectNull, param) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'object') {
+      j_nullableTCK["methodWithNullableMapCharParam(boolean,java.util.Map)"](expectNull, param);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableMapCharHandler = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableMapCharHandler(boolean,io.vertx.core.Handler)"](notNull, function(jVal) {
+      handler(utils.convReturnMap(jVal));
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableMapCharHandlerAsyncResult = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableMapCharHandlerAsyncResult(boolean,io.vertx.core.Handler)"](notNull, function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnMap(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @return {Array.<string>}
+   */
+  this.methodWithNullableMapCharReturn = function(notNull) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] ==='boolean') {
+      return utils.convReturnMap(j_nullableTCK["methodWithNullableMapCharReturn(boolean)"](notNull));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param param {Array.<string>} 
+   @return {boolean}
+   */
+  this.methodWithNonNullableMapJsonObjectParam = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && (typeof __args[0] === 'object' && __args[0] != null)) {
+      return j_nullableTCK["methodWithNonNullableMapJsonObjectParam(java.util.Map)"](utils.convParamMapJsonObject(param));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param expectNull {boolean} 
+   @param param {Array.<string>} 
+   */
+  this.methodWithNullableMapJsonObjectParam = function(expectNull, param) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'object') {
+      j_nullableTCK["methodWithNullableMapJsonObjectParam(boolean,java.util.Map)"](expectNull, utils.convParamMapJsonObject(param));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableMapJsonObjectHandler = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableMapJsonObjectHandler(boolean,io.vertx.core.Handler)"](notNull, function(jVal) {
+      handler(utils.convReturnMap(jVal));
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableMapJsonObjectHandlerAsyncResult = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableMapJsonObjectHandlerAsyncResult(boolean,io.vertx.core.Handler)"](notNull, function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnMap(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @return {Array.<string>}
+   */
+  this.methodWithNullableMapJsonObjectReturn = function(notNull) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] ==='boolean') {
+      return utils.convReturnMap(j_nullableTCK["methodWithNullableMapJsonObjectReturn(boolean)"](notNull));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param param {Array.<string>} 
+   @return {boolean}
+   */
+  this.methodWithNonNullableMapJsonArrayParam = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && (typeof __args[0] === 'object' && __args[0] != null)) {
+      return j_nullableTCK["methodWithNonNullableMapJsonArrayParam(java.util.Map)"](utils.convParamMapJsonArray(param));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param expectNull {boolean} 
+   @param param {Array.<string>} 
+   */
+  this.methodWithNullableMapJsonArrayParam = function(expectNull, param) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'object') {
+      j_nullableTCK["methodWithNullableMapJsonArrayParam(boolean,java.util.Map)"](expectNull, utils.convParamMapJsonArray(param));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableMapJsonArrayHandler = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableMapJsonArrayHandler(boolean,io.vertx.core.Handler)"](notNull, function(jVal) {
+      handler(utils.convReturnMap(jVal));
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableMapJsonArrayHandlerAsyncResult = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableMapJsonArrayHandlerAsyncResult(boolean,io.vertx.core.Handler)"](notNull, function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnMap(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @return {Array.<string>}
+   */
+  this.methodWithNullableMapJsonArrayReturn = function(notNull) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] ==='boolean') {
+      return utils.convReturnMap(j_nullableTCK["methodWithNullableMapJsonArrayReturn(boolean)"](notNull));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param param {Array.<string>} 
+   @return {boolean}
+   */
+  this.methodWithNonNullableMapApiParam = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && (typeof __args[0] === 'object' && __args[0] != null)) {
+      return j_nullableTCK["methodWithNonNullableMapApiParam(java.util.Map)"](utils.convParamMapVertxGen(param));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param expectNull {boolean} 
+   @param param {Array.<string>} 
+   */
+  this.methodWithNullableMapApiParam = function(expectNull, param) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'object') {
+      j_nullableTCK["methodWithNullableMapApiParam(boolean,java.util.Map)"](expectNull, utils.convParamMapVertxGen(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 

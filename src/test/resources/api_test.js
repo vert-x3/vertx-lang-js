@@ -2246,42 +2246,102 @@ function testNullableSet(type, expectedSet, assertEquals) {
   checkSet(nullableTCK['methodWithNullableSet' + type + 'Return'](true));
 }
 
+function testNullableMapByte() {
+  testNullableMap('Byte', [1,2,3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+}
+
+function testNullableMapShort() {
+  testNullableMap('Short', [1,2,3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+}
+
+function testNullableMapInteger() {
+  testNullableMap('Integer', [1,2,3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+}
+
+function testNullableMapLong() {
+  testNullableMap('Long', [1,2,3], function(expected, actual) { Assert.assertEquals(new Packages.java.lang.Double(expected), new Packages.java.lang.Double(actual), 0.0); });
+}
+
+function testNullableMapFloat() {
+  // todo : make this pass
+  // testNullableList('Float', [1.1,2.2,3.3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+}
+
+function testNullableMapDouble() {
+  testNullableMap('Double', [1.11,2.22,3.33], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+}
+
+function testNullableMapBoolean() {
+  testNullableMap('Boolean', [true,false,true], Assert.assertEquals);
+}
+
 function testNullableMapString() {
-  var failed = nullableTCK.methodWithNonNullableMapStringParam({});
+  testNullableMap('String', ['first','second','third'], Assert.assertEquals);
+}
+
+function testNullableMapChar() {
+  // todo : make this pass
+  // testNullableList('Char', ['x','y','z'], Assert.assertEquals);
+}
+
+function testNullableMapJsonObject() {
+  testNullableMap('JsonObject', [{"foo":"bar"},{"juu":3}], function(expected, actual) { Assert.assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
+}
+
+function testNullableMapJsonArray() {
+  testNullableMap('JsonArray', [["foo","bar"],["juu"]], function(expected, actual) { Assert.assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
+}
+
+function testNullableMap(type, expectedMap, assertEquals) {
+  testNullableMapIn(type, expectedMap, assertEquals);
+  testNullableMapOut(type, expectedMap, assertEquals);
+}
+
+function testNullableMapIn(type, expectedMap) {
+  var failed = nullableTCK['methodWithNonNullableMap' + type + 'Param']({});
   try {
-    failed = nullableTCK.methodWithNonNullableMapStringParam(null);
+    failed = nullableTCK['methodWithNonNullableMap' + type + 'Param'](null);
   } catch (e) {
   }
   Assert.assertFalse(failed);
+  var map = {};
+  for (var index = 0;index < expectedMap.length;index++) {
+    var key = "" + (index + 1);
+    map[key] = expectedMap[index];
+  }
+  nullableTCK['methodWithNullableMap' + type + 'Param'](false, map);
+  nullableTCK['methodWithNullableMap' + type + 'Param'](true, null);
+}
+
+function testNullableMapOut(type, expectedMap, assertEquals) {
   var checkMap = function(s) {
-    Assert.assertEquals("first", s["1"]);
-    Assert.assertEquals("second", s["2"]);
-    Assert.assertEquals("third", s["3"]);
+    for (var index = 0;index < expectedMap.length;index++) {
+      var key = "" + (index + 1);
+      assertEquals(expectedMap[index], s[key]);
+    }
   };
-  nullableTCK.methodWithNullableMapStringParam(false, {"1":"first","2":"second","3":"third"});
-  nullableTCK.methodWithNullableMapStringParam(true, null);
   var count = 0;
-  nullableTCK.methodWithNullableMapStringHandler(false, function(res) {
+  nullableTCK['methodWithNullableMap' + type + 'Handler'](false, function(res) {
     Assert.assertNull(res);
     count++;
   });
-  nullableTCK.methodWithNullableMapStringHandler(true, function(res) {
+  nullableTCK['methodWithNullableMap' + type + 'Handler'](true, function(res) {
     checkMap(res);
     count++;
   });
-  nullableTCK.methodWithNullableMapStringHandlerAsyncResult(false, function(res, err) {
+  nullableTCK['methodWithNullableMap' + type + 'HandlerAsyncResult'](false, function(res, err) {
     Assert.assertNull(res);
     Assert.assertNull(err);
     count++;
   });
-  nullableTCK.methodWithNullableMapStringHandlerAsyncResult(true, function(res, err) {
+  nullableTCK['methodWithNullableMap' + type + 'HandlerAsyncResult'](true, function(res, err) {
     checkMap(res);
     Assert.assertNull(err);
     count++;
   });
   Assert.assertEquals(4, count, 0);
-  Assert.assertNull(nullableTCK.methodWithNullableMapStringReturn(false));
-  checkMap(nullableTCK.methodWithNullableMapStringReturn(true));
+  Assert.assertNull(nullableTCK['methodWithNullableMap' + type + 'Return'](false));
+  checkMap(nullableTCK['methodWithNullableMap' + type + 'Return'](true));
 }
 
 function testListNullableByte() {
