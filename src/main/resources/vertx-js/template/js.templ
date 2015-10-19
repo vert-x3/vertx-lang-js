@@ -30,6 +30,8 @@
 utils.convReturnListSetJson(@includeNamed{templ})
 		@else{elementType.kind == CLASS_DATA_OBJECT}
 utils.convReturnListSetDataObject(@includeNamed{templ})
+		@else{elementType.kind == CLASS_ENUM}
+utils.convReturnListSetEnum(@includeNamed{templ})
 		@else{elementType.kind == CLASS_API}
 utils.convReturnListSetVertxGen(@includeNamed{templ}, @{elementType.raw.simpleName})
 		@else{}
@@ -41,6 +43,8 @@ utils.convReturnListSetVertxGen(@includeNamed{templ}, @{elementType.raw.simpleNa
 utils.convReturnListSetJson(@includeNamed{templ})
 		@else{elementType.kind == CLASS_DATA_OBJECT}
 utils.convReturnListSetDataObject(@includeNamed{templ})
+		@else{elementType.kind == CLASS_ENUM}
+utils.convReturnListSetEnum(@includeNamed{templ})
 		@else{elementType.kind == CLASS_API}
 utils.convReturnListSetVertxGen(@includeNamed{templ}, @{elementType.raw.simpleName})
 		@else{}

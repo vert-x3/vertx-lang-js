@@ -152,6 +152,16 @@ utils.convParamListDataObject = function(arr, constructor) {
   return newarr;
 }
 
+utils.convParamListEnum = function(arr, constructor) {
+  var len = arr.length;
+  var newarr = [];
+  for (var i = 0; i < len; i++) {
+    var elem = arr[i];
+    newarr[i] = constructor(elem);
+  }
+  return newarr;
+}
+
 utils.convParamSetJsonObject = function(arr) {
   return new ListConverterSet(utils.convParamListJsonObject(arr));
 }
@@ -162,6 +172,10 @@ utils.convParamSetJsonArray = function(arr) {
 
 utils.convParamSetDataObject = function(arr, constructor) {
   return new ListConverterSet(utils.convParamListDataObject(arr, constructor));
+}
+
+utils.convParamSetEnum = function(arr, constructor) {
+  return new ListConverterSet(utils.convParamListEnum(arr, constructor));
 }
 
 // Return conversion
@@ -258,6 +272,19 @@ utils.convReturnListSetDataObject = function(jList) {
   while (iter.hasNext()) {
     var elem = iter.next();
     arr[pos++] = elem != null ? JSON.parse(elem.toJson().encode()) : null;
+  }
+  return arr;
+};
+
+// Convert a list/set containing enum return
+utils.convReturnListSetEnum = function(jList) {
+  var arr = [];
+  arr.length = jList.size();
+  var iter = jList.iterator();
+  var pos = 0;
+  while (iter.hasNext()) {
+    var elem = iter.next();
+    arr[pos++] = elem != null ? elem.toString() : null;
   }
   return arr;
 };

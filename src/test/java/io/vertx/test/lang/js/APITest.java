@@ -339,11 +339,6 @@ public class APITest extends JSTestBase {
   }
 
   @Test
-  public void testMethodWithHandlerAsyncResultNullSetDataObject() throws Exception {
-    runTest();
-  }
-
-  @Test
   public void testMethodWithGenericParam() throws Exception {
     runTest();
   }
@@ -418,6 +413,26 @@ public class APITest extends JSTestBase {
 
   @Test
   public void testMethodWithMapParams() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerListEnum() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerSetEnum() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerAsyncResultListEnum() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerAsyncResultSetEnum() throws Exception {
     runTest();
   }
 
@@ -581,6 +596,11 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testListEnumReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testSetStringReturn() throws Exception {
     runTest();
   }
@@ -617,6 +637,11 @@ public class APITest extends JSTestBase {
 
   @Test
   public void testSetDataObjectReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testSetEnumReturn() throws Exception {
     runTest();
   }
 

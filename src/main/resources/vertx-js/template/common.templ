@@ -146,6 +146,8 @@ utils.convParamListJsonObject(@{paramName})
 utils.convParamListJsonArray(@{paramName})
 		@else{param.type.args[0].kind == CLASS_DATA_OBJECT}
 utils.convParamListDataObject(@{paramName}, function(json) { return new @{param.type.args[0].simpleName}(json); })
+		@else{param.type.args[0].kind == CLASS_ENUM}
+utils.convParamListEnum(@{paramName}, function(val) { return Packages.@{param.type.args[0].name}.valueOf(val); })
 		@else{}
 @{paramName}
 		@end{}
@@ -164,6 +166,8 @@ utils.convParamSetJsonObject(@{paramName})
 utils.convParamSetJsonArray(@{paramName})
 		@else{param.type.args[0].kind == CLASS_DATA_OBJECT}
 utils.convParamSetDataObject(@{paramName}, function(json) { return new @{param.type.args[0].simpleName}(json); })
+		@else{param.type.args[0].kind == CLASS_ENUM}
+utils.convParamSetEnum(@{paramName}, function(val) { return Packages.@{param.type.args[0].name}.valueOf(val); })
 		@else{}
 utils.convParamSetBasicOther(@{paramName})
 		@end{}

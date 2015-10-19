@@ -1149,6 +1149,50 @@ function testMethodWithGenericHandlerAsyncResult() {
     Assert.assertEquals(1, count, 0);
 }
 
+function testMethodWithHandlerListEnum() {
+  var count = 0;
+  obj.methodWithHandlerListEnum(function(listEnum) {
+    Assert.assertTrue(typeof listEnum === 'object');
+    Assert.assertEquals('TIM', listEnum[0]);
+    Assert.assertEquals('JULIEN', listEnum[1]);
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerSetEnum() {
+  var count = 0;
+  obj.methodWithHandlerListEnum(function(setEnum) {
+    Assert.assertTrue(typeof setEnum === 'object');
+    Assert.assertEquals('TIM', setEnum[0]);
+    Assert.assertEquals('JULIEN', setEnum[1]);
+    count++;
+  });
+  Assert.assertEquals(1, count, 0);
+}
+
+function testMethodWithHandlerAsyncResultListEnum() {
+  var count = 0;
+  obj.methodWithHandlerAsyncResultListEnum(function(listEnum, err) {
+    Assert.assertNull(err);
+    Assert.assertTrue(typeof listEnum === 'object');
+    Assert.assertEquals('TIM', listEnum[0]);
+    Assert.assertEquals('JULIEN', listEnum[1]);
+    count++;
+  });
+}
+
+function testMethodWithHandlerAsyncResultSetEnum() {
+  var count = 0;
+  obj.methodWithHandlerAsyncResultListEnum(function(setEnum, err) {
+    Assert.assertNull(err);
+    Assert.assertTrue(typeof setEnum === 'object');
+    Assert.assertEquals('TIM', setEnum[0]);
+    Assert.assertEquals('JULIEN', setEnum[1]);
+    count++;
+  });
+}
+
 function testBasicReturns() {
   var ret = obj.methodWithByteReturn();
   Assert.assertEquals(ret, 123, 0);
@@ -1741,6 +1785,13 @@ function testListDataObjectReturn() {
   Assert.assertEquals(2.2, listDataObject[1].wibble, 0);
 }
 
+function testListEnumReturn() {
+  var listEnum = obj.methodWithListEnumReturn();
+  Assert.assertTrue(typeof listEnum === 'object');
+  Assert.assertEquals("JULIEN", listEnum[0]);
+  Assert.assertEquals("TIM", listEnum[1]);
+}
+
 function testSetStringReturn() {
   var setString = obj.methodWithSetStringReturn();
   Assert.assertTrue(typeof setString === 'object');
@@ -1827,6 +1878,13 @@ function testSetDataObjectReturn() {
   Assert.assertEquals(2.2, setDataObject[1].wibble, 0);
 }
 
+function testSetEnumReturn() {
+  var setEnum = obj.methodWithSetEnumReturn();
+  Assert.assertTrue(typeof setEnum === 'object');
+  Assert.assertEquals("JULIEN", setEnum[0]);
+  Assert.assertEquals("TIM", setEnum[1]);
+}
+
 function testThrowableReturn() {
   var ret = obj.methodWithThrowableReturn("bogies");
   Assert.assertEquals("bogies", ret.getMessage());
@@ -1844,11 +1902,11 @@ function testThrowableParam(undefined) {
 
 // TODO should test more than just List<Long>
 function testMethodWithListParams() {
-  obj.methodWithListParams(["foo", "bar"], [2, 3], [12, 13], [1234, 1345], [123, 456], [{foo: "bar"}, {eek: "wibble"}], [["foo"], ["blah"]], [refed_obj.setString("foo"), refed_obj2.setString("bar")], [{"foo":"String 1","bar":1,"wibble":1.1}, {"foo":"String 2","bar": 2,"wibble": 2.2}]);
+  obj.methodWithListParams(["foo", "bar"], [2, 3], [12, 13], [1234, 1345], [123, 456], [{foo: "bar"}, {eek: "wibble"}], [["foo"], ["blah"]], [refed_obj.setString("foo"), refed_obj2.setString("bar")], [{"foo":"String 1","bar":1,"wibble":1.1}, {"foo":"String 2","bar": 2,"wibble": 2.2}], ["JULIEN","TIM"]);
 }
 
 function testMethodWithSetParams() {
-  obj.methodWithSetParams(["foo", "bar"], [2, 3], [12, 13], [1234, 1345], [123, 456], [{foo: "bar"}, {eek: "wibble"}], [["foo"], ["blah"]], [refed_obj.setString("foo"), refed_obj2.setString("bar")], [{"foo":"String 1","bar":1,"wibble":1.1}, {"foo":"String 2","bar": 2,"wibble": 2.2}]);
+  obj.methodWithSetParams(["foo", "bar"], [2, 3], [12, 13], [1234, 1345], [123, 456], [{foo: "bar"}, {eek: "wibble"}], [["foo"], ["blah"]], [refed_obj.setString("foo"), refed_obj2.setString("bar")], [{"foo":"String 1","bar":1,"wibble":1.1}, {"foo":"String 2","bar": 2,"wibble": 2.2}], ["JULIEN","TIM"]);
 }
 
 function testMethodWithMapParams() {
