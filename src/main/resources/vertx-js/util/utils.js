@@ -178,7 +178,7 @@ utils.convParamListEnum = function(arr, constructor) {
     var newarr = [];
     for (var i = 0; i < len; i++) {
       var elem = arr[i];
-      newarr[i] = constructor(elem);
+      newarr[i] = elem != null ? constructor(elem) : null;
     }
     return newarr;
   } else {

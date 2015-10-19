@@ -28,14 +28,18 @@ public class VertxGenConverterSet extends HashSet {
 
   public VertxGenConverterSet(List other) {
     for (Object entry: other) {
-      if (!(entry instanceof ScriptObjectMirror)) {
-        throw new IllegalArgumentException("Array does not contain objects");
-      }
-      ScriptObjectMirror mirror = (ScriptObjectMirror)entry;
-      if (mirror.hasMember("_jdel")) {
-        add(mirror.getMember("_jdel"));
+      if (entry == null) {
+        add(null);
       } else {
-        throw new IllegalArgumentException("Object in array is not @VertxGen object");
+        if (!(entry instanceof ScriptObjectMirror)) {
+          throw new IllegalArgumentException("Array does not contain objects");
+        }
+        ScriptObjectMirror mirror = (ScriptObjectMirror)entry;
+        if (mirror.hasMember("_jdel")) {
+          add(mirror.getMember("_jdel"));
+        } else {
+          throw new IllegalArgumentException("Object in array is not @VertxGen object");
+        }
       }
     }
   }

@@ -2491,6 +2491,153 @@ function testListNullable(type, expectedList, checkList) {
   Assert.assertEquals(2, count, 0);
 }
 
+function testSetNullableByte() {
+  testSetNullable('Byte', [12,null,24], function(s) {
+    Assert.assertEquals(3, s.length, 0);
+    Assert.assertEquals(12, s[0], 0);
+    Assert.assertEquals(null, s[1]);
+    Assert.assertEquals(24, s[2], 0);
+  });
+}
+
+function testSetNullableShort() {
+  testSetNullable('Short', [520,null,1040], function(s) {
+    Assert.assertEquals(3, s.length, 0);
+    Assert.assertEquals(520, s[0], 0);
+    Assert.assertEquals(null, s[1]);
+    Assert.assertEquals(1040, s[2], 0);
+  });
+}
+
+function testSetNullableInteger() {
+  testSetNullable('Integer', [12345,null,54321], function(s) {
+    Assert.assertEquals(3, s.length, 0);
+    Assert.assertEquals(12345, s[0], 0);
+    Assert.assertEquals(null, s[1]);
+    Assert.assertEquals(54321, s[2], 0);
+  });
+}
+
+function testSetNullableLong() {
+  testSetNullable('Long', [123456789,null,987654321], function(s) {
+    Assert.assertEquals(3, s.length, 0);
+    Assert.assertEquals(Number(123456789), Number(s[0]), Number(0));
+    Assert.assertEquals(null, s[1]);
+    Assert.assertEquals(Number(987654321), Number(s[2]), Number(0));
+  });
+}
+
+function testSetNullableFloat() {
+  // Todo make this pass, currently nashorn transforms to a Set<Double> which can lead to class cast exceptions
+  /*
+   testSetNullable('Float', [1.1,null,3.3], function(s) {
+   Assert.assertEquals(3, s.length, 0);
+   Assert.assertEquals(1.1, s[0], 0);
+   Assert.assertEquals(null, s[1]);
+   Assert.assertEquals(3.3, s[2],0);
+   });
+   */
+}
+
+function testSetNullableDouble() {
+  testSetNullable('Double', [1.11,null,3.33], function(s) {
+    Assert.assertEquals(3, s.length, 0);
+    Assert.assertEquals(1.11, s[0], 0);
+    Assert.assertEquals(null, s[1]);
+    Assert.assertEquals(3.33, s[2],0);
+  });
+}
+
+function testSetNullableBoolean() {
+  testSetNullable('Boolean', [true,null,false], function(s) {
+    Assert.assertEquals(3, s.length, 0);
+    Assert.assertEquals(true, s[0]);
+    Assert.assertEquals(null, s[1]);
+    Assert.assertEquals(false, s[2]);
+  });
+}
+
+function testSetNullableString() {
+  testSetNullable('String', ["first",null,"third"], function(s) {
+    Assert.assertEquals(3, s.length, 0);
+    Assert.assertEquals("first", s[0]);
+    Assert.assertEquals(null, s[1]);
+    Assert.assertEquals("third", s[2]);
+  });
+}
+
+function testSetNullableChar() {
+  testSetNullable('Char', ["F",null,"R"], function(s) {
+    Assert.assertEquals(3, s.length, 0);
+    Assert.assertEquals("F", s[0]);
+    Assert.assertEquals(null, s[1]);
+    Assert.assertEquals("R", s[2]);
+  });
+}
+
+function testSetNullableJsonObject() {
+  testSetNullable('JsonObject', [{"foo":"bar"},null,{"juu":3}], function(s) {
+    Assert.assertEquals("bar", s[0].foo);
+    Assert.assertEquals(null, s[1]);
+    Assert.assertEquals(3, s[2].juu, 0);
+  });
+}
+
+function testSetNullableJsonArray() {
+  testSetNullable('JsonArray', [["foo","bar"],null,["juu"]], function(s) {
+    Assert.assertEquals("foo", s[0][0]);
+    Assert.assertEquals("bar", s[0][1]);
+    Assert.assertEquals(null, s[1]);
+    Assert.assertEquals("juu", s[2][0]);
+  });
+}
+
+function testSetNullableApi() {
+  refed_obj.setString('first');
+  refed_obj2.setString('third');
+  testSetNullable('Api', [refed_obj,null,refed_obj2], function(s) {
+    Assert.assertEquals("first", s[0].getString());
+    Assert.assertNull(s[1]);
+    Assert.assertEquals("third", s[2].getString());
+  });
+}
+
+function testSetNullableDataObject() {
+  testSetNullable('DataObject', [{"foo":"first","bar":1,"wibble":1.1},null,{"foo":"third","bar":3,"wibble":3.3}], function(s) {
+    Assert.assertEquals("first", s[0].foo);
+    Assert.assertEquals(1, s[0].bar, 0);
+    Assert.assertEquals(1.1, s[0].wibble, 0);
+    Assert.assertNull(s[1]);
+    Assert.assertEquals("third", s[2].foo);
+    Assert.assertEquals(3, s[2].bar, 0);
+    Assert.assertEquals(3.3, s[2].wibble, 0);
+  });
+}
+
+function testSetNullableEnum() {
+  testSetNullable('Enum', ['TIM',null,'JULIEN'], function(s) {
+    Assert.assertEquals("TIM", s[0]);
+    Assert.assertNull(s[1]);
+    Assert.assertEquals("JULIEN", s[2]);
+  });
+}
+
+function testSetNullable(type, expectedList, checkSet) {
+  nullableTCK['methodWithSetNullable' + type + 'Param'](expectedList);
+  var count = 0;
+  nullableTCK['methodWithSetNullable' + type + 'Handler'](function(s) {
+    checkSet(s);
+    count++;
+  });
+  nullableTCK['methodWithSetNullable' + type + 'HandlerAsyncResult'](function(s, err) {
+    checkSet(s);
+    Assert.assertNull(err);
+    count++;
+  });
+  checkSet(nullableTCK['methodWithSetNullable' + type + 'Return']());
+  Assert.assertEquals(2, count, 0);
+}
+
 function testNullableHandler() {
   var count = 0;
   nullableTCK.methodWithNullableHandler(true, null);
