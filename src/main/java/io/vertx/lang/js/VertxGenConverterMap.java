@@ -29,14 +29,18 @@ public class VertxGenConverterMap extends HashMap<String, Object> {
 
   public VertxGenConverterMap(Map<String, Object> other) {
     for (Map.Entry<String, Object> entry: other.entrySet()) {
-      if (!(entry.getValue() instanceof ScriptObjectMirror)) {
-        throw new IllegalArgumentException("Array does not contain objects");
-      }
-      ScriptObjectMirror mirror = (ScriptObjectMirror)entry.getValue();
-      if (mirror.hasMember("_jdel")) {
-        put(entry.getKey(), mirror.getMember("_jdel"));
+      if (entry.getValue() == null) {
+        put(entry.getKey(), null);
       } else {
-        throw new IllegalArgumentException("Object in array is not @VertxGen object");
+        if (!(entry.getValue() instanceof ScriptObjectMirror)) {
+          throw new IllegalArgumentException("Array does not contain objects");
+        }
+        ScriptObjectMirror mirror = (ScriptObjectMirror)entry.getValue();
+        if (mirror.hasMember("_jdel")) {
+          put(entry.getKey(), mirror.getMember("_jdel"));
+        } else {
+          throw new IllegalArgumentException("Object in array is not @VertxGen object");
+        }
       }
     }
   }

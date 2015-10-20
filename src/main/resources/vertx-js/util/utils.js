@@ -106,7 +106,11 @@ utils.convParamMapJsonObject = function(arr) {
     for (var key in arr) {
       if (arr.hasOwnProperty(key)) {
         var val = arr[key];
-        newmap[key] = new JsonObject(JSON.stringify(val));
+        if (val) {
+          newmap[key] = new JsonObject(JSON.stringify(val));
+        } else {
+          newmap[key] = null;
+        }
       }
     }
     return newmap;
@@ -121,7 +125,11 @@ utils.convParamMapJsonArray = function(arr) {
     for (var key in arr) {
       if (arr.hasOwnProperty(key)) {
         var val = arr[key];
-        newmap[key] = new JsonArray(JSON.stringify(val));
+        if (val) {
+          newmap[key] = new JsonArray(JSON.stringify(val));
+        } else {
+          newmap[key] = null;
+        }
       }
     }
     return newmap;

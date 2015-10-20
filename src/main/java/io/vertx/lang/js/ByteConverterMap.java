@@ -27,7 +27,9 @@ public class ByteConverterMap extends HashMap<String, Object> {
   public ByteConverterMap(Map<String, Object> other) {
     for (Entry<String, Object> entry: other.entrySet()) {
       Object val = entry.getValue();
-      if (!(val instanceof Byte) && val instanceof Number) {
+      if (val == null) {
+        put(entry.getKey(), null);
+      } else if (!(val instanceof Byte) && val instanceof Number) {
         Number number = (Number)val;
         Byte b = number.byteValue();
         put(entry.getKey(), b);

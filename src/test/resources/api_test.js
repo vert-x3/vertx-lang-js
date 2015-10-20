@@ -2293,7 +2293,7 @@ function testNullableMapJsonArray() {
 }
 
 function testNullableMap(type, expectedMap, assertEquals) {
-  testNullableMapIn(type, expectedMap, assertEquals);
+  testNullableMapIn(type, expectedMap);
   testNullableMapOut(type, expectedMap, assertEquals);
 }
 
@@ -2636,6 +2636,99 @@ function testSetNullable(type, expectedList, checkSet) {
   });
   checkSet(nullableTCK['methodWithSetNullable' + type + 'Return']());
   Assert.assertEquals(2, count, 0);
+}
+
+function testMapNullableByte() {
+  testMapNullable('Byte', [12,null,24], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+}
+
+function testMapNullableShort() {
+  testMapNullable('Short', [520,null,1040], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+}
+
+function testMapNullableInteger() {
+  testMapNullable('Integer', [12345,null,54321], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+}
+
+function testMapNullableLong() {
+  testMapNullable('Long', [123456789,null,987654321], function(expected, actual) { Assert.assertEquals(new Packages.java.lang.Double(expected), new Packages.java.lang.Double(actual), 0.0); });
+}
+
+function testMapNullableFloat() {
+  // todo : make this pass
+  // testNullableList('Float', [1.1,2.2,3.3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+}
+
+function testMapNullableDouble() {
+  testMapNullable('Double', [1.11,null,3.33], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+}
+
+function testMapNullableBoolean() {
+  testMapNullable('Boolean', [true,null,false], Assert.assertEquals);
+}
+
+function testMapNullableString() {
+  testMapNullable('String', ['first',null,'third'], Assert.assertEquals);
+}
+
+function testMapNullableChar() {
+  // todo : make this pass
+  // testNullableList('Char', ['x','y','z'], Assert.assertEquals);
+}
+
+function testMapNullableJsonObject() {
+  testMapNullable('JsonObject', [{"foo":"bar"},null,{"juu":3}], function(expected, actual) { Assert.assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
+}
+
+function testMapNullableJsonArray() {
+  testMapNullable('JsonArray', [["foo","bar"],null,["juu"]], function(expected, actual) { Assert.assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
+}
+
+function testMapNullableApi() {
+  refed_obj.setString('first');
+  refed_obj2.setString('third');
+  testMapNullableIn('Api', [refed_obj,null,refed_obj2], function(expected, actual) { Assert.assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
+}
+
+function testMapNullable(type, expectedMap, assertEquals) {
+  testMapNullableIn(type, expectedMap);
+  testMapNullableOut(type, expectedMap, assertEquals);
+}
+
+function testMapNullableIn(type, expectedMap) {
+  var map = {};
+  for (var index = 0;index < expectedMap.length;index++) {
+    var key = "" + (index + 1);
+    map[key] = expectedMap[index];
+  }
+  nullableTCK['methodWithMapNullable' + type + 'Param'](map);
+}
+
+function testMapNullableOut(type, expectedMap, assertEquals) {
+  var checkMap = function(s) {
+    for (var index = 0;index < expectedMap.length;index++) {
+      var key = "" + (index + 1);
+      var expectedValue = expectedMap[index];
+      var actualValue = s[key];
+      if (expectedValue != null) {
+        assertEquals(expectedValue, actualValue);
+      } else {
+        Assert.assertNull(actualValue);
+      }
+    }
+  };
+  var count = 0;
+  nullableTCK['methodWithMapNullable' + type + 'Handler'](function(res) {
+    checkMap(res);
+    count++;
+  });
+  nullableTCK['methodWithMapNullable' + type + 'HandlerAsyncResult'](function(res, err) {
+    checkMap(res);
+    Assert.assertNull(err);
+    count++;
+  });
+  Assert.assertEquals(2, count, 0);
+  checkMap(nullableTCK['methodWithMapNullable' + type + 'Return']());
 }
 
 function testNullableHandler() {

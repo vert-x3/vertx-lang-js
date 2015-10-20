@@ -28,7 +28,9 @@ public class LongConverterMap extends HashMap<String, Object> {
   public LongConverterMap(Map<String, Object> other) {
     for (Entry<String, Object> entry: other.entrySet()) {
       Object val = entry.getValue();
-      if (!(val instanceof Long) && val instanceof Number) {
+      if (val == null) {
+        put(entry.getKey(), null);
+      } else if (!(val instanceof Long) && val instanceof Number) {
         Number number = (Number)val;
         Long l = number.longValue();
         put(entry.getKey(), l);

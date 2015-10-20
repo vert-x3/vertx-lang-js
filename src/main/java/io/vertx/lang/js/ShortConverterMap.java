@@ -27,7 +27,9 @@ public class ShortConverterMap extends HashMap<String, Object> {
   public ShortConverterMap(Map<String, Object> other) {
     for (Entry<String, Object> entry: other.entrySet()) {
       Object val = entry.getValue();
-      if (!(val instanceof Short) && val instanceof Number) {
+      if (val == null) {
+        put(entry.getKey(), null);
+      } else if (!(val instanceof Short) && val instanceof Number) {
         Number number = (Number)val;
         Short s = number.shortValue();
         put(entry.getKey(), s);
