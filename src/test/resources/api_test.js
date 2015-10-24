@@ -2057,19 +2057,19 @@ function testGenericNullableTypeVariable() {
 }
 
 function testNullableListByte() {
-  testNullableList('Byte', [1,2,3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  testNullableList('Byte', [12,24,-12], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
 }
 
 function testNullableListShort() {
-  testNullableList('Short', [1,2,3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  testNullableList('Short', [520,1040,-520], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
 }
 
 function testNullableListInteger() {
-  testNullableList('Integer', [1,2,3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  testNullableList('Integer', [12345,54321,-12345], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
 }
 
 function testNullableListLong() {
-  testNullableList('Long', [1,2,3], function(expected, actual) { Assert.assertEquals(new Packages.java.lang.Double(expected), new Packages.java.lang.Double(actual), 0.0); });
+  testNullableList('Long', [123456789,987654321,-123456789], function(expected, actual) { Assert.assertEquals(new Packages.java.lang.Double(expected), new Packages.java.lang.Double(actual), 0.0); });
 }
 
 function testNullableListFloat() {
@@ -2158,19 +2158,19 @@ function testNullableList(type, expectedList, assertEquals) {
 }
 
 function testNullableSetByte() {
-  testNullableSet('Byte', [1,2,3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  testNullableSet('Byte', [12,24,-12], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
 }
 
 function testNullableSetShort() {
-  testNullableSet('Short', [1,2,3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  testNullableSet('Short', [520,1040,-520], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
 }
 
 function testNullableSetInteger() {
-  testNullableSet('Integer', [1,2,3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  testNullableSet('Integer', [12345,54321,-12345], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
 }
 
 function testNullableSetLong() {
-  testNullableSet('Long', [1,2,3], function(expected, actual) { Assert.assertEquals(new Packages.java.lang.Double(expected), new Packages.java.lang.Double(actual), 0.0); });
+  testNullableSet('Long', [123456789,987654321,-123456789], function(expected, actual) { Assert.assertEquals(new Packages.java.lang.Double(expected), new Packages.java.lang.Double(actual), 0.0); });
 }
 
 function testNullableSetFloat() {
