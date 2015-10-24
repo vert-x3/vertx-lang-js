@@ -721,6 +721,11 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testNullableGenEnum() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testGenericNullableTypeVariable() throws Exception {
     runTest();
   }
@@ -801,6 +806,11 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testNullableListGenEnum() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testNullableSetByte() throws Exception {
     runTest();
   }
@@ -867,6 +877,11 @@ public class APITest extends JSTestBase {
 
   @Test
   public void testNullableSetEnum() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableSetGenEnum() throws Exception {
     runTest();
   }
 
@@ -991,6 +1006,11 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testListNullableGenEnum() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testSetNullableByte() throws Exception {
     runTest();
   }
@@ -1051,7 +1071,7 @@ public class APITest extends JSTestBase {
   }
 
   @Test
-  public void testSetNullableEnum() throws Exception {
+  public void testSetNullableGenEnum() throws Exception {
     runTest();
   }
 

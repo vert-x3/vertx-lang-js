@@ -1991,6 +1991,10 @@ function testNullableEnum() {
   testNullable('Enum', "TIM", function(enumVal) { Assert.assertEquals("TIM", enumVal); });
 }
 
+function testNullableGenEnum() {
+  testNullable('GenEnum', "MIKE", function(enumVal) { Assert.assertEquals("MIKE", enumVal); });
+}
+
 function testNullable(type, expected, check) {
   var failed = nullableTCK['methodWithNonNullable' + type + 'Param'](expected);
   try {
@@ -2111,6 +2115,10 @@ function testNullableListEnum() {
   testNullableList('Enum', ["TIM","JULIEN"], Assert.assertEquals);
 }
 
+function testNullableListGenEnum() {
+  testNullableList('GenEnum', ["BOB","LELAND"], Assert.assertEquals);
+}
+
 function testNullableList(type, expectedList, assertEquals) {
   var failed = nullableTCK['methodWithNonNullableList' + type + 'Param']([]);
   try {
@@ -2206,6 +2214,10 @@ function testNullableSetDataObject() {
 
 function testNullableSetEnum() {
   testNullableSet('Enum', ["TIM","JULIEN"], Assert.assertEquals);
+}
+
+function testNullableSetGenEnum() {
+  testNullableSet('GenEnum', ["BOB","LELAND"], Assert.assertEquals);
 }
 
 function testNullableSet(type, expectedSet, assertEquals) {
@@ -2475,6 +2487,14 @@ function testListNullableEnum() {
   });
 }
 
+function testListNullableGenEnum() {
+  testListNullable('GenEnum', ['BOB',null,'LELAND'], function(list) {
+    Assert.assertEquals("BOB", list[0]);
+    Assert.assertNull(list[1]);
+    Assert.assertEquals("LELAND", list[2]);
+  });
+}
+
 function testListNullable(type, expectedList, checkList) {
   nullableTCK['methodWithListNullable' + type + 'Param'](expectedList);
   var count = 0;
@@ -2619,6 +2639,14 @@ function testSetNullableEnum() {
     Assert.assertEquals("TIM", s[0]);
     Assert.assertNull(s[1]);
     Assert.assertEquals("JULIEN", s[2]);
+  });
+}
+
+function testSetNullableGenEnum() {
+  testSetNullable('GenEnum', ['BOB',null,'LELAND'], function(s) {
+    Assert.assertEquals("BOB", s[0]);
+    Assert.assertNull(s[1]);
+    Assert.assertEquals("LELAND", s[2]);
   });
 }
 

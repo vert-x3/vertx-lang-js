@@ -1057,6 +1057,79 @@ var NullableTCK = function(j_val) {
   /**
 
    @public
+   @param param {Object} 
+   @return {boolean}
+   */
+  this.methodWithNonNullableGenEnumParam = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'string') {
+      return j_nullableTCK["methodWithNonNullableGenEnumParam(io.vertx.codegen.testmodel.TestGenEnum)"](io.vertx.codegen.testmodel.TestGenEnum.valueOf(__args[0]));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param expectNull {boolean} 
+   @param param {Object} 
+   */
+  this.methodWithNullableGenEnumParam = function(expectNull, param) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && (typeof __args[1] === 'string' || __args[1] == null)) {
+      j_nullableTCK["methodWithNullableGenEnumParam(boolean,io.vertx.codegen.testmodel.TestGenEnum)"](expectNull, __args[1] == null ? null : io.vertx.codegen.testmodel.TestGenEnum.valueOf(__args[1]));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableGenEnumHandler = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableGenEnumHandler(boolean,io.vertx.core.Handler)"](notNull, function(jVal) {
+      handler(utils.convReturnEnum(jVal));
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableGenEnumHandlerAsyncResult = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableGenEnumHandlerAsyncResult(boolean,io.vertx.core.Handler)"](notNull, function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnEnum(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @return {Object}
+   */
+  this.methodWithNullableGenEnumReturn = function(notNull) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] ==='boolean') {
+      return utils.convReturnEnum(j_nullableTCK["methodWithNullableGenEnumReturn(boolean)"](notNull));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
    @param expectNull {boolean} 
    @param param {Object} 
    */
@@ -2142,6 +2215,79 @@ var NullableTCK = function(j_val) {
   /**
 
    @public
+   @param param {Array.<Object>} 
+   @return {boolean}
+   */
+  this.methodWithNonNullableListGenEnumParam = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
+      return j_nullableTCK["methodWithNonNullableListGenEnumParam(java.util.List)"](utils.convParamListEnum(param, function(val) { return Packages.io.vertx.codegen.testmodel.TestGenEnum.valueOf(val); }));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param expectNull {boolean} 
+   @param param {Array.<Object>} 
+   */
+  this.methodWithNullableListGenEnumParam = function(expectNull, param) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'object' && (__args[1] instanceof Array || __args[1] == null)) {
+      j_nullableTCK["methodWithNullableListGenEnumParam(boolean,java.util.List)"](expectNull, utils.convParamListEnum(param, function(val) { return Packages.io.vertx.codegen.testmodel.TestGenEnum.valueOf(val); }));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableListGenEnumHandler = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableListGenEnumHandler(boolean,io.vertx.core.Handler)"](notNull, function(jVal) {
+      handler(utils.convReturnListSetEnum(jVal));
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableListGenEnumHandlerAsyncResult = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableListGenEnumHandlerAsyncResult(boolean,io.vertx.core.Handler)"](notNull, function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnListSetEnum(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @return {Array.<Object>}
+   */
+  this.methodWithNullableListGenEnumReturn = function(notNull) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] ==='boolean') {
+      return utils.convReturnListSetEnum(j_nullableTCK["methodWithNullableListGenEnumReturn(boolean)"](notNull));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
    @param param {Array.<number>} 
    @return {boolean}
    */
@@ -3158,6 +3304,79 @@ var NullableTCK = function(j_val) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] ==='boolean') {
       return utils.convReturnListSetEnum(j_nullableTCK["methodWithNullableSetEnumReturn(boolean)"](notNull));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param param {Array.<Object>} 
+   @return {boolean}
+   */
+  this.methodWithNonNullableSetGenEnumParam = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
+      return j_nullableTCK["methodWithNonNullableSetGenEnumParam(java.util.Set)"](utils.convParamSetEnum(param, function(val) { return Packages.io.vertx.codegen.testmodel.TestGenEnum.valueOf(val); }));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param expectNull {boolean} 
+   @param param {Array.<Object>} 
+   */
+  this.methodWithNullableSetGenEnumParam = function(expectNull, param) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'object' && (__args[1] instanceof Array || __args[1] == null)) {
+      j_nullableTCK["methodWithNullableSetGenEnumParam(boolean,java.util.Set)"](expectNull, utils.convParamSetEnum(param, function(val) { return Packages.io.vertx.codegen.testmodel.TestGenEnum.valueOf(val); }));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableSetGenEnumHandler = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableSetGenEnumHandler(boolean,io.vertx.core.Handler)"](notNull, function(jVal) {
+      handler(utils.convReturnListSetEnum(jVal));
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @param handler {function} 
+   */
+  this.methodWithNullableSetGenEnumHandlerAsyncResult = function(notNull, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_nullableTCK["methodWithNullableSetGenEnumHandlerAsyncResult(boolean,io.vertx.core.Handler)"](notNull, function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnListSetEnum(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param notNull {boolean} 
+   @return {Array.<Object>}
+   */
+  this.methodWithNullableSetGenEnumReturn = function(notNull) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] ==='boolean') {
+      return utils.convReturnListSetEnum(j_nullableTCK["methodWithNullableSetGenEnumReturn(boolean)"](notNull));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -4791,6 +5010,63 @@ var NullableTCK = function(j_val) {
   /**
 
    @public
+   @param param {Array.<Object>} 
+   */
+  this.methodWithListNullableGenEnumParam = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
+      j_nullableTCK["methodWithListNullableGenEnumParam(java.util.List)"](utils.convParamListEnum(param, function(val) { return Packages.io.vertx.codegen.testmodel.TestGenEnum.valueOf(val); }));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   */
+  this.methodWithListNullableGenEnumHandler = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_nullableTCK["methodWithListNullableGenEnumHandler(io.vertx.core.Handler)"](function(jVal) {
+      handler(utils.convReturnListSetEnum(jVal));
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   */
+  this.methodWithListNullableGenEnumHandlerAsyncResult = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_nullableTCK["methodWithListNullableGenEnumHandlerAsyncResult(io.vertx.core.Handler)"](function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnListSetEnum(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+
+   @return {Array.<Object>}
+   */
+  this.methodWithListNullableGenEnumReturn = function() {
+    var __args = arguments;
+    if (__args.length === 0) {
+      return utils.convReturnListSetEnum(j_nullableTCK["methodWithListNullableGenEnumReturn()"]());
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
    @param param {Array.<number>} 
    */
   this.methodWithSetNullableByteParam = function(param) {
@@ -5583,6 +5859,63 @@ var NullableTCK = function(j_val) {
     var __args = arguments;
     if (__args.length === 0) {
       return utils.convReturnListSetEnum(j_nullableTCK["methodWithSetNullableEnumReturn()"]());
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param param {Array.<Object>} 
+   */
+  this.methodWithSetNullableGenEnumParam = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
+      j_nullableTCK["methodWithSetNullableGenEnumParam(java.util.Set)"](utils.convParamSetEnum(param, function(val) { return Packages.io.vertx.codegen.testmodel.TestGenEnum.valueOf(val); }));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   */
+  this.methodWithSetNullableGenEnumHandler = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_nullableTCK["methodWithSetNullableGenEnumHandler(io.vertx.core.Handler)"](function(jVal) {
+      handler(utils.convReturnListSetEnum(jVal));
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   */
+  this.methodWithSetNullableGenEnumHandlerAsyncResult = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_nullableTCK["methodWithSetNullableGenEnumHandlerAsyncResult(io.vertx.core.Handler)"](function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnListSetEnum(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+
+   @return {Array.<Object>}
+   */
+  this.methodWithSetNullableGenEnumReturn = function() {
+    var __args = arguments;
+    if (__args.length === 0) {
+      return utils.convReturnListSetEnum(j_nullableTCK["methodWithSetNullableGenEnumReturn()"]());
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
