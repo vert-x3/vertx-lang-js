@@ -726,7 +726,12 @@ public class APITest extends JSTestBase {
   }
 
   @Test
-  public void testGenericNullableTypeVariable() throws Exception {
+  public void testNullableTypeVariable() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testNullableObject() throws Exception {
     runTest();
   }
 

@@ -1193,6 +1193,19 @@ var NullableTCK = function(j_val) {
   /**
 
    @public
+   @param expectNull {boolean} 
+   @param param {Object} 
+   */
+  this.methodWithNullableObjectParam = function(expectNull, param) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && true) {
+      j_nullableTCK["methodWithNullableObjectParam(boolean,java.lang.Object)"](expectNull, utils.convParamTypeUnknown(param));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
    @param param {Array.<number>} 
    @return {boolean}
    */

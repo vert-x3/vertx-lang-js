@@ -2029,7 +2029,7 @@ function testNullable(type, expected, check) {
 }
 
 
-function testGenericNullableTypeVariable() {
+function testNullableTypeVariable() {
   nullableTCK.methodWithNullableTypeVariableParam(false, "whatever");
   nullableTCK.methodWithNullableTypeVariableParam(true, null);
   var count = 0;
@@ -2054,6 +2054,11 @@ function testGenericNullableTypeVariable() {
   Assert.assertEquals(4, count, 0);
   Assert.assertEquals("fizz1", nullableTCK.methodWithNullableTypeVariableReturn(true, "fizz1"));
   Assert.assertEquals(null, nullableTCK.methodWithNullableTypeVariableReturn(false, "fizz2"));
+}
+
+function testNullableObject() {
+  nullableTCK.methodWithNullableObjectParam(false, "object_param");
+  nullableTCK.methodWithNullableObjectParam(true, null);
 }
 
 function testNullableListByte() {
