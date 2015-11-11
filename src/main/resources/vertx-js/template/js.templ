@@ -4,9 +4,9 @@
 @declare{'genMethodCall'}
 @if{static}J@{ifaceSimpleName}@else{}j_@{ifaceName}@end{}["@{method.name}(
 	@foreach{param: method.params}
-		@if{param.type instanceof io.vertx.codegen.TypeInfo$Parameterized}
+		@if{param.type.parameterized}
 			@{param.type.raw.name}
-		@else{param.type instanceof io.vertx.codegen.TypeInfo$Variable}
+		@else{param.type.variable}
 			java.lang.Object
 		@else{}
 			@{param.type.name}

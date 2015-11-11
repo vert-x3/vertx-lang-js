@@ -1,8 +1,10 @@
 package io.vertx.lang.js;
 
 import io.vertx.codegen.Case;
-import io.vertx.codegen.ClassKind;
-import io.vertx.codegen.TypeInfo;
+import io.vertx.codegen.type.ClassKind;
+import io.vertx.codegen.type.EnumTypeInfo;
+import io.vertx.codegen.type.TypeInfo;
+import io.vertx.codegen.type.TypeMirrorFactory;
 import io.vertx.codetrans.CodeTranslator;
 import io.vertx.codetrans.lang.js.JavaScriptLang;
 import io.vertx.docgen.Coordinate;
@@ -20,13 +22,13 @@ import javax.lang.model.element.VariableElement;
  */
 public class JSDocGenerator implements DocGenerator {
 
-  private TypeInfo.Factory factory;
+  private TypeMirrorFactory factory;
   private CodeTranslator translator;
   private ProcessingEnvironment env;
 
   @Override
   public void init(ProcessingEnvironment processingEnv) {
-    factory = new TypeInfo.Factory(processingEnv.getElementUtils(), processingEnv.getTypeUtils());
+    factory = new TypeMirrorFactory(processingEnv.getElementUtils(), processingEnv.getTypeUtils());
     translator = new CodeTranslator(processingEnv);
     env = processingEnv;
   }
@@ -56,7 +58,7 @@ public class JSDocGenerator implements DocGenerator {
       System.out.println("Could not resolve doc link for type " + elt.getQualifiedName());
       return null;
     }
-    if (type.getKind() == ClassKind.ENUM && ((TypeInfo.Class.Enum) type).isGen()) {
+    if (type.getKind() == ClassKind.ENUM && ((EnumTypeInfo) type).isGen()) {
       String baselink;
       if (coordinate == null) {
         baselink = "../";
