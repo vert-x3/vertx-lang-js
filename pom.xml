@@ -293,7 +293,7 @@
               <directoryRoots>
                 <directoryRoot>${basedir}/src/main/resources/vertx-js</directoryRoot>
               </directoryRoots>
-              <outputDirectory>${project.build.directory}/docs/vertx-core/js/jsdoc</outputDirectory>
+              <outputDirectory>${project.build.directory}/docs/jsdoc</outputDirectory>
             </configuration>
           </execution>
         </executions>

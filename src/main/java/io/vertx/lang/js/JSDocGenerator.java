@@ -77,11 +77,7 @@ public class JSDocGenerator implements DocGenerator {
       return baselink + "dataobjects.html#" + elt.getSimpleName().toString();
     }
     if (type.getKind() == ClassKind.API) {
-      String baselink = "";
-      if (coordinate != null) {
-        baselink = "../../" + coordinate.getArtifactId() + "/js/";
-      }
-      return baselink + "jsdoc/" + Case.SNAKE.format(Case.CAMEL.parse(elt.getSimpleName().toString())) + "-" + elt.getSimpleName() + ".html";
+      return "../../jsdoc/" + Case.SNAKE.format(Case.CAMEL.parse(elt.getSimpleName().toString())) + "-" + elt.getSimpleName() + ".html";
     }
     return null;
   }

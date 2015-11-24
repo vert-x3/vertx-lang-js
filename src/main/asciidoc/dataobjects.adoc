@@ -458,7 +458,7 @@ Sets te arg name for this option.
 +++
 |[[choices]]`choices`|`Array of String`|
 +++
-Adds a choice to the list of values accepted by this option. If the value set by the user does not match once of these
+Sets the list of values accepted by this option. If the value set by the user does not match once of these
  values, a link exception is thrown.
 +++
 |[[defaultValue]]`defaultValue`|`String`|
@@ -493,6 +493,10 @@ Sets the long name of this option.
 +++
 Sets whether or not this option can receive several values.
 +++
+|[[name]]`name`|`String`|
++++
+@return the option name. It returns the long name if set, the short name otherwise. It cannot return <code>null</code> for valid option
++++
 |[[required]]`required`|`Boolean`|
 +++
 Sets whether or not this option is mandatory.
@@ -505,20 +509,6 @@ Sets the short name of this option.
 +++
 Sets whether or not this option can receive a value.
 +++
-|===
-
-[[TrustOptions]]
-== TrustOptions
-
-++++
- Certification authority configuration options.
-++++
-'''
-
-[cols=">25%,^25%,50%"]
-[frame="topbot"]
-|===
-^|Name | Type ^| Description
 |===
 
 [[NetServerOptions]]
@@ -797,20 +787,6 @@ Set whether the verticle(s) should be deployed as a multi-threaded worker vertic
 +++
 Set whether the verticle(s) should be deployed as a worker verticle
 +++
-|===
-
-[[KeyCertOptions]]
-== KeyCertOptions
-
-++++
- Key/cert configuration options.
-++++
-'''
-
-[cols=">25%,^25%,50%"]
-[frame="topbot"]
-|===
-^|Name | Type ^| Description
 |===
 
 [[PemKeyCertOptions]]
