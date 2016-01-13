@@ -292,6 +292,32 @@ function testMethodWithHandlerAsyncResultDataObjectFails() {
   Assert.assertEquals(1, count, 0);
 }
 
+function testMethodWithHandlerAsyncResultStringReturn() {
+  var succeedingHandler = obj.methodWithHandlerAsyncResultStringReturn("the-result", false);
+  succeedingHandler("the-result");
+  succeedingHandler("the-result", null);
+  var failed = false;
+  try {
+    succeedingHandler("not-expected");
+  }  catch (e) {
+    failed = true;
+  }
+  Assert.assertTrue(failed);
+  var failingHandler = obj.methodWithHandlerAsyncResultStringReturn("an-error", true);
+  try {
+    throw "an-error";
+  } catch (e) {
+    failingHandler("whatever", e);
+  }
+  failed = false;
+  try {
+    failingHandler("whatever");
+  } catch (e) {
+    failed = true;
+  }
+  Assert.assertTrue(failed);
+}
+
 function testMethodWithHandlerListAndSet() {
   var count = 0;
   obj.methodWithHandlerListAndSet(function(listString) {

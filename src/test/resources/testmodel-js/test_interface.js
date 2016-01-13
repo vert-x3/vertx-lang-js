@@ -331,6 +331,20 @@ var TestInterface = function(j_val) {
   /**
 
    @public
+   @param expected {string} 
+   @param fail {boolean} 
+   @return {function}
+   */
+  this.methodWithHandlerAsyncResultStringReturn = function(expected, fail) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] ==='boolean') {
+      return utils.convReturnHandlerAsyncResult(j_testInterface["methodWithHandlerAsyncResultStringReturn(java.lang.String,boolean)"](expected, fail), function(result) { return result; });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
    @param refed {RefedInterface1} 
    */
   this.methodWithUserTypes = function(refed) {
