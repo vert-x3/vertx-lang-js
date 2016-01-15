@@ -302,6 +302,76 @@ An alternative way to run blocking code is to use a <<worker_verticles, worker v
 
 A worker verticle is always executed with a thread from the worker pool.
 
+== Async coordination
+
+Coordination of multiple asynchronous results can be achieved with Vert.x `link:../../jsdoc/future-Future.html[futures]`.
+
+`link:../../jsdoc/composite_future-CompositeFuture.html#all[CompositeFuture.all]` takes several futures arguments (up to 6) and returns a future that is
+_succeeded_ when all the futures are and _failed_ otherwise:
+
+[source,js]
+----
+var Future = require("vertx-js/future");
+var CompositeFuture = require("vertx-js/composite_future");
+var httpServerFuture = Future.future();
+httpServer.listen(httpServerFuture.handler());
+
+var netServerFuture = Future.future();
+netServer.listen(netServerFuture.handler());
+
+CompositeFuture.all(httpServerFuture, netServerFuture).setHandler(function (ar, ar_err) {
+  if (ar_err == null) {
+    // All server started
+  } else {
+    // At least one server failed
+  }
+});
+
+----
+
+The handler returned by `link:../../jsdoc/future-Future.html#handler[handler]` completes the future.
+
+`link:../../jsdoc/composite_future-CompositeFuture.html#any[CompositeFuture.any]` takes several futures arguments (up to 6) and returns a future that is
+_failed_ when all the futures are and _succeeded_ otherwise:
+
+[source,js]
+----
+var Future = require("vertx-js/future");
+var CompositeFuture = require("vertx-js/composite_future");
+var future1 = Future.future();
+var future2 = Future.future();
+CompositeFuture.any(future1, future2).setHandler(function (ar, ar_err) {
+  if (ar_err == null) {
+    // At least one is succeeded
+  } else {
+    // All failed
+  }
+});
+
+----
+
+`link:../../jsdoc/future-Future.html#compose[compose]` can be used for chaining futures:
+
+[source,js]
+----
+var Future = require("vertx-js/future");
+var Buffer = require("vertx-js/buffer");
+
+var fs = vertx.fileSystem();
+
+var fut1 = Future.future();
+var fut2 = Future.future();
+
+fs.createFile("/foo", fut1.handler());
+fut1.compose(function (string) {
+  fs.writeFile("/foo", Buffer.buffer(), fut2.handler());
+}, fut2);
+fut2.compose(function (integer) {
+  fs.move("/foo", "/bar", startFuture.handler());
+}, startFuture);
+
+----
+
 == Verticles
 
 Vert.x comes with a simple, scalable, _actor-like_ deployment and concurrency model out of the box that

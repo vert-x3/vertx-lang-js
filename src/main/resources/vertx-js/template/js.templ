@@ -68,7 +68,7 @@ utils.convReturnThrowable(@includeNamed{templ})
 		@if{returnType.args[0].kind == CLASS_ASYNC_RESULT}
 utils.convReturnHandlerAsyncResult(@includeNamed{templ}, function(result) { return @includeNamed{'convParam';overloaded=false;param=new io.vertx.codegen.ParamInfo(0, "result", null, returnType.args[0].args[0])}; })
 		@else{}
-utils.convReturnTypeUnknown(@includeNamed{templ})  /* todo simple handler */
+utils.convReturnHandler(@includeNamed{templ}, function(result) { return @includeNamed{'convParam';overloaded=false;param=new io.vertx.codegen.ParamInfo(0, "result", null, returnType.args[0])}; })
 		@end{}
 	@else{}
 	@comment{'This will probably happen if the return type is generic'}

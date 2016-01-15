@@ -292,6 +292,29 @@ function testMethodWithHandlerAsyncResultDataObjectFails() {
   Assert.assertEquals(1, count, 0);
 }
 
+function testMethodWithHandlerStringReturn() {
+  var handler = obj.methodWithHandlerStringReturn("the-result");
+  handler("the-result");
+  var failed = false;
+  try {
+    handler("not-expected");
+  }  catch (e) {
+    failed = true;
+  }
+  Assert.assertTrue(failed);
+}
+
+function testMethodWithHandlerGenericReturn() {
+  var result;
+  var handler = obj.methodWithHandlerGenericReturn(function(res) {
+    result = res;
+  });
+  handler("the-result");
+  Assert.assertEquals(result, "the-result");
+  handler(obj);
+  Assert.assertEquals(result, obj);
+}
+
 function testMethodWithHandlerAsyncResultStringReturn() {
   var succeedingHandler = obj.methodWithHandlerAsyncResultStringReturn("the-result", false);
   succeedingHandler("the-result");
@@ -316,6 +339,19 @@ function testMethodWithHandlerAsyncResultStringReturn() {
     failed = true;
   }
   Assert.assertTrue(failed);
+}
+
+function testMethodWithHandlerAsyncResultGenericReturn() {
+  var result;
+  var succeedingHandler = obj.methodWithHandlerAsyncResultGenericReturn(function(res ,err) {
+    result = err != null ? err : res;
+  });
+  succeedingHandler("the-result");
+  Assert.assertEquals(result, "the-result");
+  succeedingHandler(null, "the-error");
+  Assert.assertEquals(result.getMessage(), "the-error");
+  succeedingHandler(obj);
+  Assert.assertEquals(result, obj);
 }
 
 function testMethodWithHandlerListAndSet() {

@@ -412,7 +412,7 @@ utils.convReturnMap = function(jMap) {
   }
 };
 
-// Convert a list/set containing enum return
+// Convert a Handler<AsyncResult> return
 utils.convReturnHandlerAsyncResult = function(handler, converter) {
   return function(result, err) {
     if (err == null) {
@@ -420,6 +420,13 @@ utils.convReturnHandlerAsyncResult = function(handler, converter) {
     } else {
       handler.handle(new FailedResult(err));
     }
+  }
+};
+
+// Convert a Handler return
+utils.convReturnHandler = function(handler, converter) {
+  return function(result) {
+    handler.handle(converter(result));
   }
 };
 
