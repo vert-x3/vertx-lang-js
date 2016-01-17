@@ -222,7 +222,8 @@ if (typeof Java.synchronized == 'undefined') {
     if (!modParent || !modParent.id) {
       return Require.root;
     }
-    var pathParts = modParent.id.split('/');
+    // The id is the path, so, the split must be system dependent.
+    var pathParts = modParent.id.split(File.separator);
     pathParts.pop();
     return pathParts.join('/');
   }
