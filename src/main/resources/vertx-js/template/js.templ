@@ -64,6 +64,12 @@ utils.convReturnEnum(@includeNamed{templ})
 utils.convReturnDataObject(@includeNamed{templ})
 	@else{returnType.kind == CLASS_THROWABLE}
 utils.convReturnThrowable(@includeNamed{templ})
+	@else{returnType.kind == CLASS_HANDLER}
+		@if{returnType.args[0].kind == CLASS_ASYNC_RESULT}
+utils.convReturnHandlerAsyncResult(@includeNamed{templ}, function(result) { return @includeNamed{'convParam';overloaded=false;param=new io.vertx.codegen.ParamInfo(0, "result", null, returnType.args[0].args[0])}; })
+		@else{}
+utils.convReturnHandler(@includeNamed{templ}, function(result) { return @includeNamed{'convParam';overloaded=false;param=new io.vertx.codegen.ParamInfo(0, "result", null, returnType.args[0])}; })
+		@end{}
 	@else{}
 	@comment{'This will probably happen if the return type is generic'}
 utils.convReturnTypeUnknown(@includeNamed{templ})

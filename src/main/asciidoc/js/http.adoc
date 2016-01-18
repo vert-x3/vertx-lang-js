@@ -656,7 +656,7 @@ To enable compression use can configure it with `link:../dataobjects.html#HttpSe
 
 By default compression is not enabled.
 
-When HTTP compression is enabled the server will check if the client incldes an `Accept-Encoding` header which
+When HTTP compression is enabled the server will check if the client includes an `Accept-Encoding` header which
 includes the supported compressions. Commonly used are deflate and gzip. Both are supported by Vert.x.
 
 If such a header is found the server will automatically compress the body of the response with one of the supported
@@ -1210,14 +1210,62 @@ request.continueHandler(function (v) {
 
 On the server side a Vert.x http server can be configured to automatically send back 100 Continue interim responses
 when it receives an `Expect: 100-Continue` header.
+
 This is done by setting the option `link:../dataobjects.html#HttpServerOptions#setHandle100ContinueAutomatically[handle100ContinueAutomatically]`.
 
 If you'd prefer to decide whether to send back continue responses manually, then this property should be set to
 `false` (the default), then you can inspect the headers and call `link:../../jsdoc/http_server_response-HttpServerResponse.html#writeContinue[writeContinue]`
-if you wish the client to continue sending the body or you can reject the request by sending back a failure status code
-if you don't want it to send the body. For example:
+to have the client continue sending the body:
 
+[source,js]
+----
 
+httpServer.requestHandler(function (request) {
+  if (request.getHeader("Expect").equalsIgnoreCase("100-Continue")) {
+
+    // Send a 100 continue response
+    request.response().writeContinue();
+
+    // The client should send the body when it receives the 100 response
+    request.bodyHandler(function (body) {
+      // Do something with body
+    });
+
+    request.endHandler(function (v) {
+      request.response().end();
+    });
+  }
+});
+
+----
+
+You can also reject the request by sending back a failure status code directly: in this case the body
+should either be ignored or the connection should be closed (100-Continue is a performance hint and
+cannot be a logical protocol constraint):
+
+[source,js]
+----
+
+httpServer.requestHandler(function (request) {
+  if (request.getHeader("Expect").equalsIgnoreCase("100-Continue")) {
+
+    //
+    var rejectAndClose = true;
+    if (rejectAndClose) {
+
+      // Reject with a failure code and close the connection
+      // this is probably best with persistent connection
+      request.response().setStatusCode(405).putHeader("Connection", "close").end();
+    } else {
+
+      // Reject with a failure code and ignore the body
+      // this may be appropriate if the body is small
+      request.response().setStatusCode(405).end();
+    }
+  }
+});
+
+----
 
 === Enabling compression on the client
 
@@ -1282,6 +1330,27 @@ To enable pipe-lining, it must be enabled using `link:../dataobjects.html#HttpCl
 By default pipe-lining is disabled.
 
 When pipe-lining is enabled requests will be written to connections without waiting for previous responses to return.
+
+=== HttpClient usage
+
+The HttpClient can be used in a Verticle or embedded.
+
+When used in a Verticle, the Verticle *should use its own client instance*.
+
+More generally a client should not be shared between different Vert.x contexts as it can lead to unexpected behavior.
+
+For example a keep-alive connection will call the client handlers on the context of the request that opened the connection, subsequent requests will use
+the same context.
+
+When this happen Vert.x detects it and log a warn:
+
+----
+Reusing a connection with a different context: an HttpClient is probably shared between different Verticles
+----
+
+The HttpClient can be embedded in a non Vert.x thread like a unit test or a plain java `main`: the client handlers
+will be called by different Vert.x threads and contexts, such contexts are created as needed. For production this
+usage is not recommended.
 
 === Server sharing
 
@@ -1408,8 +1477,8 @@ server.requestHandler(function (request) {
 ===== The server WebSocket
 
 The `link:../../jsdoc/server_web_socket-ServerWebSocket.html[ServerWebSocket]` instance enables you to retrieve the `link:../../jsdoc/server_web_socket-ServerWebSocket.html#headers[headers]`,
-`link:../../jsdoc/server_web_socket-ServerWebSocket.html#path[path]` path}, `link:../../jsdoc/server_web_socket-ServerWebSocket.html#query[query]` and
-`link:../../jsdoc/server_web_socket-ServerWebSocket.html#uri[uri]` URI} of the HTTP request of the WebSocket handshake.
+`link:../../jsdoc/server_web_socket-ServerWebSocket.html#path[path]`, `link:../../jsdoc/server_web_socket-ServerWebSocket.html#query[query]` and
+`link:../../jsdoc/server_web_socket-ServerWebSocket.html#uri[URI]` of the HTTP request of the WebSocket handshake.
 
 ==== WebSockets on the client
 

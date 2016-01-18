@@ -194,4 +194,3 @@ This has the same meaning as `link:../../jsdoc/write_stream-WriteStream.html#set
 A pump can be started and stopped multiple times.
 
 When a pump is first created it is _not_ started. You need to call the `start()` method to start it.
-<a href="mailto:julien@julienviet.com">Julien Viet</a>

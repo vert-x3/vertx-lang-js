@@ -13,6 +13,8 @@ var LongConverterMap = Java.type("io.vertx.lang.js.LongConverterMap");
 var ShortConverterMap = Java.type("io.vertx.lang.js.ShortConverterMap");
 var ByteConverterMap = Java.type("io.vertx.lang.js.ByteConverterMap");
 var ThrowableConverter = Java.type("io.vertx.lang.js.ThrowableConverter");
+var SucceededResult = Packages.io.vertx.lang.js.SucceededResult;
+var FailedResult = Packages.io.vertx.lang.js.FailedResult;
 
 var utils = {};
 
@@ -36,6 +38,9 @@ utils.convParamTypeUnknown = function(param) {
   if (typeof param === 'object') {
     if (param instanceof Array) {
       return utils.convParamJsonArray(param);
+    }
+    if (typeof param._jdel === 'object') {
+      return param;
     }
     return utils.convParamJsonObject(param);
   }
@@ -404,6 +409,24 @@ utils.convReturnMap = function(jMap) {
     });
   } else {
     return null;
+  }
+};
+
+// Convert a Handler<AsyncResult> return
+utils.convReturnHandlerAsyncResult = function(handler, converter) {
+  return function(result, err) {
+    if (err == null) {
+      handler.handle(new SucceededResult(converter(result)));
+    } else {
+      handler.handle(new FailedResult(err));
+    }
+  }
+};
+
+// Convert a Handler return
+utils.convReturnHandler = function(handler, converter) {
+  return function(result) {
+    handler.handle(converter(result));
   }
 };
 
