@@ -315,6 +315,12 @@ function testMethodWithHandlerGenericReturn() {
   Assert.assertEquals(result, obj);
 }
 
+function testMethodWithHandlerVertxGenReturn() {
+  var handler = obj.methodWithHandlerVertxGenReturn("the-result");
+  refed_obj.setString("the-result");
+  handler(refed_obj);
+}
+
 function testMethodWithHandlerAsyncResultStringReturn() {
   var succeedingHandler = obj.methodWithHandlerAsyncResultStringReturn("the-result", false);
   succeedingHandler("the-result");
@@ -352,6 +358,20 @@ function testMethodWithHandlerAsyncResultGenericReturn() {
   Assert.assertEquals(result.getMessage(), "the-error");
   succeedingHandler(obj);
   Assert.assertEquals(result, obj);
+}
+
+function testMethodWithHandlerAsyncResultVertxGenReturn() {
+  var handler = obj.methodWithHandlerAsyncResultVertxGenReturn("the-async-result", false);
+  refed_obj.setString("the-async-result");
+  handler(refed_obj);
+  var err;
+  try {
+    throw "it-fails";
+  } catch (e) {
+    err = e;
+  }
+  handler = obj.methodWithHandlerAsyncResultVertxGenReturn("it-fails", true);
+  handler(null, err);
 }
 
 function testMethodWithHandlerListAndSet() {

@@ -169,6 +169,19 @@ var TestInterface = function(j_val) {
   /**
 
    @public
+   @param expected {string} 
+   @return {function}
+   */
+  this.methodWithHandlerVertxGenReturn = function(expected) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'string') {
+      return utils.convReturnHandler(j_testInterface["methodWithHandlerVertxGenReturn(java.lang.String)"](expected), function(result) { return result._jdel; });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
    @param sendFailure {boolean} 
    @param handler {function} 
    */
@@ -386,6 +399,20 @@ var TestInterface = function(j_val) {
         handler(null, ar.cause());
       }
     }), function(result) { return utils.convParamTypeUnknown(result); });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param expected {string} 
+   @param fail {boolean} 
+   @return {function}
+   */
+  this.methodWithHandlerAsyncResultVertxGenReturn = function(expected, fail) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] ==='boolean') {
+      return utils.convReturnHandlerAsyncResult(j_testInterface["methodWithHandlerAsyncResultVertxGenReturn(java.lang.String,boolean)"](expected, fail), function(result) { return result._jdel; });
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
