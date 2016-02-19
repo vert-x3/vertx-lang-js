@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.vertx</groupId>
     <artifactId>vertx-parent</artifactId>
-    <version>8</version>
+    <version>9</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -68,19 +68,19 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.12</version>
+      <version>1.7.16</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.mvel</groupId>
       <artifactId>mvel2</artifactId>
-      <version>2.2.6.Final</version>
+      <version>2.2.7.Final</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>4.12</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -180,7 +180,7 @@
       <plugin>
         <groupId>org.bsc.maven</groupId>
         <artifactId>maven-processor-plugin</artifactId>
-        <version>2.2.4</version>
+        <version>3.1.0</version>
         <executions>
           <!-- Run the annotation processor on vertx-core and generate the js API -->
           <execution>
@@ -281,7 +281,7 @@
       <plugin>
         <groupId>com.phasebash.jsdoc</groupId>
         <artifactId>jsdoc3-maven-plugin</artifactId>
-        <version>1.1.0</version>
+        <version>1.2.0</version>
         <executions>
           <execution>
             <phase>prepare-package</phase>
@@ -301,21 +301,12 @@
       <plugin>
         <groupId>org.asciidoctor</groupId>
         <artifactId>asciidoctor-maven-plugin</artifactId>
-        <version>1.5.2</version>
         <executions>
           <execution>
             <goals>
               <goal>process-asciidoc</goal>
             </goals>
             <phase>package</phase>
-            <configuration>
-              <sourceDirectory>${asciidoc.dir}</sourceDirectory>
-              <outputDirectory>${project.build.directory}/docs/vertx-core</outputDirectory>
-              <backend>html</backend>
-              <doctype>book</doctype>
-              <preserveDirectories>true</preserveDirectories>
-              <relativeBaseDir>true</relativeBaseDir>
-            </configuration>
           </execution>
         </executions>
       </plugin>
