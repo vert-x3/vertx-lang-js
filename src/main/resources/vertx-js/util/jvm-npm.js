@@ -222,8 +222,15 @@ if (typeof Java.synchronized == 'undefined') {
     if (!modParent || !modParent.id) {
       return Require.root;
     }
-    // The id is the path, so, the split must be system dependent.
-    var pathParts = modParent.id.split(File.separator);
+    // The id may be the path, so, the split must be system dependent.
+    // The id may be the require id (already normalized), so the split uses "/"
+    var pathParts;
+    if (modParent.id.contains(File.separator)) {
+      pathParts = modParent.id.split(File.separator);
+    } else {
+      // This branch will only be executed on windows for nested modules.
+      pathParts = modParent.id.split("/");
+    }
     pathParts.pop();
     return pathParts.join('/');
   }
