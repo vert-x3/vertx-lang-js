@@ -89,32 +89,40 @@
 @comment{"Generate the code that converts a parameter from JavaScript to Java to call a Java API method"}
 @comment{"============================================================================================="}
 
+@declare{'susmab'}
+@end{}
+
 @declare{'convParam'}
 	@code{paramName = overloaded ? argName : param.name;}
-	@if{param.type.kind == CLASS_HANDLER}
+	@code{funct = param.type.kind == CLASS_FUNCTION}
+	@if{param.type.kind == CLASS_HANDLER || funct}
 		@if{param.type.args[0].kind == CLASS_ASYNC_RESULT}
+@if{param.nullable}@{paramName} == null ? null : @end{}function(ar) {\n
+@if{funct}
+@{ind}    var jRet;\n
+@end{}
+@{ind}    if (ar.succeeded()) {\n
+@{ind}      @if{funct}jRet = @end{}@{paramName}(
 			@if{param.type.args[0].args[0].name == "java.lang.Void"}
-@if{param.nullable}@{paramName} == null ? null : @end{}function(ar) {\n
-@{ind}    if (ar.succeeded()) {\n
-@{ind}      @{paramName}(null, null);\n
-@{ind}    } else {\n
-@{ind}      @{paramName}(null, ar.cause());\n
-@{ind}    }\n
-@{ind}  }
+				null
 			@else{}
-@if{param.nullable}@{paramName} == null ? null : @end{}function(ar) {\n
-@{ind}    if (ar.succeeded()) {\n
-@{ind}      @{paramName}(@includeNamed{'convReturn'; templ='arVal'; returnType=param.type.args[0].args[0]}, null);\n
+				@includeNamed{'convReturn'; templ='arVal'; returnType=param.type.args[0].args[0]}
+			@end{}, null);\n
 @{ind}    } else {\n
-@{ind}      @{paramName}(null, ar.cause());\n
+@{ind}      @if{funct}jRet = @end{}@{paramName}(null, ar.cause());\n
 @{ind}    }\n
+@if{funct}
+@{ind}    return jRet;\n
+@end{}
 @{ind}  }
-			@end{}
 		@else{param.type.args[0].name == "java.lang.Void"}
 @{paramName}
 		@else{}
 @if{param.nullable}@{paramName} == null ? null : @end{}function(jVal) {\n
-@{ind}    @{paramName}(@includeNamed{'convReturn'; templ='basicVal'; returnType=param.type.args[0]});\n
+@{ind}    @if{funct}var jRet = @end{}@{paramName}(@includeNamed{'convReturn'; templ='basicVal'; returnType=param.type.args[0]});\n
+@if{funct}
+@{ind}    return @includeNamed{'unwrapToJava';unwrappedType=param.type.args[1];unwrappedName='jRet'};\n
+@end{}
 @{ind}  }
 		@end{}
 	@else{}
@@ -127,14 +135,30 @@
 utils.convParamJsonObject(@{unwrappedName})
 	@else{unwrappedType.kind == CLASS_JSON_ARRAY}
 utils.convParamJsonArray(@{unwrappedName})
-	@else{param.dataObject}
+	@else{unwrappedType.kind == CLASS_DATA_OBJECT}
 @{unwrappedName} != null ? new @{unwrappedType.simpleName}(new JsonObject(JSON.stringify(@{unwrappedName}))) : null
 	@else{unwrappedType.kind == CLASS_ENUM}
-@if{param.nullable}@{argName} == null ? null : @end{}@{unwrappedType.name}.valueOf(@{argName})
+@if{param.nullable}@{unwrappedName} == null ? null : @end{}@{unwrappedType.name}.valueOf(@{unwrappedName})
 	@else{unwrappedType.kind == CLASS_OBJECT}
 utils.convParamTypeUnknown(@{unwrappedName})
 	@else{unwrappedType.kind.basic}
+		@if{unwrappedType.name == 'java.lang.Byte'}
+utils.convParamByte(@{unwrappedName})
+		@else{unwrappedType.name == 'java.lang.Short'}
+utils.convParamShort(@{unwrappedName})
+		@else{unwrappedType.name == 'java.lang.Integer'}
+utils.convParamInteger(@{unwrappedName})
+		@else{unwrappedType.name == 'java.lang.Long'}
+utils.convParamLong(@{unwrappedName})
+		@else{unwrappedType.name == 'java.lang.Float'}
+utils.convParamFloat(@{unwrappedName})
+		@else{unwrappedType.name == 'java.lang.Double'}
+utils.convParamDouble(@{unwrappedName})
+		@else{unwrappedType.name == 'java.lang.Character'}
+utils.convParamCharacter(@{unwrappedName})
+		@else{}
 @{unwrappedName}
+		@end{}
 	@else{unwrappedType.kind == CLASS_THROWABLE}
 utils.convParamThrowable(@{unwrappedName})
 	@else{unwrappedType.kind == CLASS_LIST}
@@ -155,7 +179,7 @@ utils.convParamListDataObject(@{unwrappedName}, function(json) { return new @{un
 		@else{unwrappedType.args[0].kind == CLASS_ENUM}
 utils.convParamListEnum(@{unwrappedName}, function(val) { return Packages.@{unwrappedType.args[0].name}.valueOf(val); })
 		@else{}
-@{unwrappedName}
+@if{param.nullable}@{unwrappedName} == null ? null : @end{}utils.convParamListBasicOther(@{unwrappedName})
 		@end{}
 	@else{unwrappedType.kind == CLASS_SET}
 		@if{unwrappedType.args[0].name == 'long' || unwrappedType.args[0].name == 'java.lang.Long'}
@@ -276,6 +300,8 @@ ar.result()
 						@if{param.nullable} || __args[@{cnt}] == null)@end{}
 					@else{param.type.kind == CLASS_OBJECT}
 						true
+					@else{param.type.kind == CLASS_FUNCTION}
+						typeof __args[@{cnt}] === 'function'
 					@else{param.type.kind == CLASS_THROWABLE}
 						typeof __args[@{cnt}] === 'object'
 					@else{}
