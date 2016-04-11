@@ -52,7 +52,13 @@ function testBrokenModuleTypeErrorInMainBody() {
     var blah = require("brokenmodule_typeerror");
     Assert.fail();
   } catch (e) {
-    Assert.assertTrue(e.message.startsWith("234 has no such function \"substr\""));
+    if (e.message.startsWith("234 has no such function \"substr\"")) {
+      // Ok
+    } else if (e.message.equals("num.substr is not a function")) {
+      // Ok
+    } else {
+      Assert.fail("Unexpected error message " + e.message);
+    }
     Assert.assertTrue(e.fileName.contains("brokenmodule_typeerror.js"));
     Assert.assertEquals(6, e.lineNumber, 0);
     Assert.assertTrue(e instanceof TypeError);
@@ -65,7 +71,13 @@ function testBrokenModuleTypeErrorInFunction() {
     blah();
     Assert.fail();
   } catch (e) {
-    Assert.assertTrue(e.message.startsWith("234 has no such function \"substr\""));
+    if (e.message.startsWith("234 has no such function \"substr\"")) {
+      // Ok
+    } else if (e.message.equals("num.substr is not a function")) {
+      // Ok
+    } else {
+      Assert.fail("Unexpected error message " + e.message);
+    }
     Assert.assertEquals(9, e.lineNumber, 0);
     Assert.assertTrue(e instanceof TypeError);
   }
