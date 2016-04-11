@@ -117,78 +117,84 @@
 @{ind}    @{paramName}(@includeNamed{'convReturn'; templ='basicVal'; returnType=param.type.args[0]});\n
 @{ind}  }
 		@end{}
-	@else{param.type.kind == CLASS_JSON_OBJECT}
-utils.convParamJsonObject(@{paramName})
-	@else{param.type.kind == CLASS_JSON_ARRAY}
-utils.convParamJsonArray(@{paramName})
+	@else{}
+		@includeNamed{'unwrapToJava';unwrappedType=param.type;unwrappedName=paramName}
+	@end{}
+@end{}
+
+@declare{'unwrapToJava'}
+	@if{unwrappedType.kind == CLASS_JSON_OBJECT}
+utils.convParamJsonObject(@{unwrappedName})
+	@else{unwrappedType.kind == CLASS_JSON_ARRAY}
+utils.convParamJsonArray(@{unwrappedName})
 	@else{param.dataObject}
-@{paramName} != null ? new @{param.type.simpleName}(new JsonObject(JSON.stringify(@{paramName}))) : null
-	@else{param.type.kind == CLASS_ENUM}
-@if{param.nullable}@{argName} == null ? null : @end{}@{param.type.name}.valueOf(@{argName})
-	@else{param.type.kind == CLASS_OBJECT}
-utils.convParamTypeUnknown(@{paramName})
-	@else{param.type.kind.basic}
-@{paramName}
-	@else{param.type.kind == CLASS_THROWABLE}
-utils.convParamThrowable(@{paramName})
-	@else{param.type.kind == CLASS_LIST}
-		@if{param.type.args[0].name == 'long' || param.type.args[0].name == 'java.lang.Long'}
-utils.convParamListLong(@{paramName})
-		@else{param.type.args[0].name == 'short' || param.type.args[0].name == 'java.lang.Short'}
-utils.convParamListShort(@{paramName})
-		@else{param.type.args[0].name == 'byte' || param.type.args[0].name == 'java.lang.Byte'}
-utils.convParamListByte(@{paramName})
-		@else{param.type.args[0].kind == CLASS_API}
-utils.convParamListVertxGen(@{paramName})
-		@else{param.type.args[0].kind == CLASS_JSON_OBJECT}
-utils.convParamListJsonObject(@{paramName})
-		@else{param.type.args[0].kind == CLASS_JSON_ARRAY}
-utils.convParamListJsonArray(@{paramName})
-		@else{param.type.args[0].kind == CLASS_DATA_OBJECT}
-utils.convParamListDataObject(@{paramName}, function(json) { return new @{param.type.args[0].simpleName}(json); })
-		@else{param.type.args[0].kind == CLASS_ENUM}
-utils.convParamListEnum(@{paramName}, function(val) { return Packages.@{param.type.args[0].name}.valueOf(val); })
+@{unwrappedName} != null ? new @{unwrappedType.simpleName}(new JsonObject(JSON.stringify(@{unwrappedName}))) : null
+	@else{unwrappedType.kind == CLASS_ENUM}
+@if{param.nullable}@{argName} == null ? null : @end{}@{unwrappedType.name}.valueOf(@{argName})
+	@else{unwrappedType.kind == CLASS_OBJECT}
+utils.convParamTypeUnknown(@{unwrappedName})
+	@else{unwrappedType.kind.basic}
+@{unwrappedName}
+	@else{unwrappedType.kind == CLASS_THROWABLE}
+utils.convParamThrowable(@{unwrappedName})
+	@else{unwrappedType.kind == CLASS_LIST}
+		@if{unwrappedType.args[0].name == 'long' || unwrappedType.args[0].name == 'java.lang.Long'}
+utils.convParamListLong(@{unwrappedName})
+		@else{unwrappedType.args[0].name == 'short' || unwrappedType.args[0].name == 'java.lang.Short'}
+utils.convParamListShort(@{unwrappedName})
+		@else{unwrappedType.args[0].name == 'byte' || unwrappedType.args[0].name == 'java.lang.Byte'}
+utils.convParamListByte(@{unwrappedName})
+		@else{unwrappedType.args[0].kind == CLASS_API}
+utils.convParamListVertxGen(@{unwrappedName})
+		@else{unwrappedType.args[0].kind == CLASS_JSON_OBJECT}
+utils.convParamListJsonObject(@{unwrappedName})
+		@else{unwrappedType.args[0].kind == CLASS_JSON_ARRAY}
+utils.convParamListJsonArray(@{unwrappedName})
+		@else{unwrappedType.args[0].kind == CLASS_DATA_OBJECT}
+utils.convParamListDataObject(@{unwrappedName}, function(json) { return new @{unwrappedType.args[0].simpleName}(json); })
+		@else{unwrappedType.args[0].kind == CLASS_ENUM}
+utils.convParamListEnum(@{unwrappedName}, function(val) { return Packages.@{unwrappedType.args[0].name}.valueOf(val); })
 		@else{}
-@{paramName}
+@{unwrappedName}
 		@end{}
-	@else{param.type.kind == CLASS_SET}
-		@if{param.type.args[0].name == 'long' || param.type.args[0].name == 'java.lang.Long'}
-utils.convParamSetLong(@{paramName})
-		@else{param.type.args[0].name == 'short' || param.type.args[0].name == 'java.lang.Short'}
-utils.convParamSetShort(@{paramName})
-		@else{param.type.args[0].name == 'byte' || param.type.args[0].name == 'java.lang.Byte'}
-utils.convParamSetByte(@{paramName})
-		@else{param.type.args[0].kind == CLASS_API}
-utils.convParamSetVertxGen(@{paramName})
-		@else{param.type.args[0].kind == CLASS_JSON_OBJECT}
-utils.convParamSetJsonObject(@{paramName})
-		@else{param.type.args[0].kind == CLASS_JSON_ARRAY}
-utils.convParamSetJsonArray(@{paramName})
-		@else{param.type.args[0].kind == CLASS_DATA_OBJECT}
-utils.convParamSetDataObject(@{paramName}, function(json) { return new @{param.type.args[0].simpleName}(json); })
-		@else{param.type.args[0].kind == CLASS_ENUM}
-utils.convParamSetEnum(@{paramName}, function(val) { return Packages.@{param.type.args[0].name}.valueOf(val); })
+	@else{unwrappedType.kind == CLASS_SET}
+		@if{unwrappedType.args[0].name == 'long' || unwrappedType.args[0].name == 'java.lang.Long'}
+utils.convParamSetLong(@{unwrappedName})
+		@else{unwrappedType.args[0].name == 'short' || unwrappedType.args[0].name == 'java.lang.Short'}
+utils.convParamSetShort(@{unwrappedName})
+		@else{unwrappedType.args[0].name == 'byte' || unwrappedType.args[0].name == 'java.lang.Byte'}
+utils.convParamSetByte(@{unwrappedName})
+		@else{unwrappedType.args[0].kind == CLASS_API}
+utils.convParamSetVertxGen(@{unwrappedName})
+		@else{unwrappedType.args[0].kind == CLASS_JSON_OBJECT}
+utils.convParamSetJsonObject(@{unwrappedName})
+		@else{unwrappedType.args[0].kind == CLASS_JSON_ARRAY}
+utils.convParamSetJsonArray(@{unwrappedName})
+		@else{unwrappedType.args[0].kind == CLASS_DATA_OBJECT}
+utils.convParamSetDataObject(@{unwrappedName}, function(json) { return new @{unwrappedType.args[0].simpleName}(json); })
+		@else{unwrappedType.args[0].kind == CLASS_ENUM}
+utils.convParamSetEnum(@{unwrappedName}, function(val) { return Packages.@{unwrappedType.args[0].name}.valueOf(val); })
 		@else{}
-@if{param.nullable}@{paramName} == null ? null : @end{}utils.convParamSetBasicOther(@{paramName})
+@if{param.nullable}@{unwrappedName} == null ? null : @end{}utils.convParamSetBasicOther(@{unwrappedName})
 		@end{}
-	@else{param.type.kind == CLASS_MAP}
-		@if{param.type.args[1].name == 'long' || param.type.args[1].name == 'java.lang.Long'}
-utils.convParamMapLong(@{paramName})
-		@else{param.type.args[1].name == 'short' || param.type.args[1].name == 'java.lang.Short'}
-utils.convParamMapShort(@{paramName})
-		@else{param.type.args[1].name == 'byte' || param.type.args[1].name == 'java.lang.Byte'}
-utils.convParamMapByte(@{paramName})
-		@else{param.type.args[1].kind == CLASS_API}
-utils.convParamMapVertxGen(@{paramName})
-		@else{param.type.args[1].kind == CLASS_JSON_OBJECT}
-utils.convParamMapJsonObject(@{paramName})
-		@else{param.type.args[1].kind == CLASS_JSON_ARRAY}
-utils.convParamMapJsonArray(@{paramName})
+	@else{unwrappedType.kind == CLASS_MAP}
+		@if{unwrappedType.args[1].name == 'long' || unwrappedType.args[1].name == 'java.lang.Long'}
+utils.convParamMapLong(@{unwrappedName})
+		@else{unwrappedType.args[1].name == 'short' || unwrappedType.args[1].name == 'java.lang.Short'}
+utils.convParamMapShort(@{unwrappedName})
+		@else{unwrappedType.args[1].name == 'byte' || unwrappedType.args[1].name == 'java.lang.Byte'}
+utils.convParamMapByte(@{unwrappedName})
+		@else{unwrappedType.args[1].kind == CLASS_API}
+utils.convParamMapVertxGen(@{unwrappedName})
+		@else{unwrappedType.args[1].kind == CLASS_JSON_OBJECT}
+utils.convParamMapJsonObject(@{unwrappedName})
+		@else{unwrappedType.args[1].kind == CLASS_JSON_ARRAY}
+utils.convParamMapJsonArray(@{unwrappedName})
 		@else{}
-@{paramName}
+@{unwrappedName}
 		@end{}
 	@else{}
-@if{param.nullable}@{paramName} == null ? null : @end{}@{paramName}._jdel
+		@if{param.nullable}@{unwrappedName} == null ? null : @end{}@{unwrappedName}._jdel
 	@end{}
 @end{}
 
