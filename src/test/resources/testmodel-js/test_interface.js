@@ -436,7 +436,7 @@ var TestInterface = function(j_val) {
    */
   this.methodWithObjectParam = function(str, obj) {
     var __args = arguments;
-    if (__args.length === 2 && typeof __args[0] === 'string' && true) {
+    if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] !== 'function') {
       j_testInterface["methodWithObjectParam(java.lang.String,java.lang.Object)"](str, utils.convParamTypeUnknown(obj));
     } else throw new TypeError('function invoked with invalid arguments');
   };
@@ -1484,7 +1484,7 @@ var TestInterface = function(j_val) {
    */
   this.methodWithHandlerGenericUserType = function(value, handler) {
     var __args = arguments;
-    if (__args.length === 2 && true && typeof __args[1] === 'function') {
+    if (__args.length === 2 && typeof __args[0] !== 'function' && typeof __args[1] === 'function') {
       j_testInterface["methodWithHandlerGenericUserType(java.lang.Object,io.vertx.core.Handler)"](utils.convParamTypeUnknown(value), function(jVal) {
       handler(utils.convReturnVertxGen(jVal, GenericRefedInterface));
     });
@@ -1499,7 +1499,7 @@ var TestInterface = function(j_val) {
    */
   this.methodWithHandlerAsyncResultGenericUserType = function(value, handler) {
     var __args = arguments;
-    if (__args.length === 2 && true && typeof __args[1] === 'function') {
+    if (__args.length === 2 && typeof __args[0] !== 'function' && typeof __args[1] === 'function') {
       j_testInterface["methodWithHandlerAsyncResultGenericUserType(java.lang.Object,io.vertx.core.Handler)"](utils.convParamTypeUnknown(value), function(ar) {
       if (ar.succeeded()) {
         handler(utils.convReturnVertxGen(ar.result(), GenericRefedInterface), null);
@@ -1741,7 +1741,7 @@ var TestInterface = function(j_val) {
    */
   this.methodWithGenericParam = function(type, u) {
     var __args = arguments;
-    if (__args.length === 2 && typeof __args[0] === 'string' && true) {
+    if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] !== 'function') {
       j_testInterface["methodWithGenericParam(java.lang.String,java.lang.Object)"](type, utils.convParamTypeUnknown(u));
     } else throw new TypeError('function invoked with invalid arguments');
   };

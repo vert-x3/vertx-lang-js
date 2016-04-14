@@ -362,13 +362,18 @@ var Buffer = require("vertx-js/buffer");
 var fs = vertx.fileSystem();
 
 var fut1 = Future.future();
-var fut2 = Future.future();
 
 fs.createFile("/foo", fut1.completer());
 fut1.compose(function (v) {
+
+  var fut2 = Future.future();
   fs.writeFile("/foo", Buffer.buffer(), fut2.completer());
-}, fut2);
-fut2.compose(function (v) {
+
+  // Compose fut1 with fut2
+  return fut2
+}).compose(function (v) {
+
+  // Compose fut1 with fut2 and fut3
   fs.move("/foo", "/bar", startFuture.completer());
 }, startFuture);
 

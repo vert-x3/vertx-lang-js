@@ -299,7 +299,7 @@ ar.result()
 							typeof __args[@{cnt}] === 'function'
 						@if{param.nullable} || __args[@{cnt}] == null)@end{}
 					@else{param.type.kind == CLASS_OBJECT}
-						true
+						typeof __args[@{cnt}] !== 'function'
 					@else{param.type.kind == CLASS_FUNCTION}
 						typeof __args[@{cnt}] === 'function'
 					@else{param.type.kind == CLASS_THROWABLE}

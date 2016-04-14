@@ -140,7 +140,7 @@ var FunctionParamTCK = function(j_val) {
    */
   this.methodWithObjectParam = function(arg, func) {
     var __args = arguments;
-    if (__args.length === 2 && true && typeof __args[1] === 'function') {
+    if (__args.length === 2 && typeof __args[0] !== 'function' && typeof __args[1] === 'function') {
       return j_functionParamTCK["methodWithObjectParam(java.lang.Object,java.util.function.Function)"](utils.convParamTypeUnknown(arg), function(jVal) {
       var jRet = func(utils.convReturnTypeUnknown(jVal));
       return jRet;
@@ -237,7 +237,7 @@ var FunctionParamTCK = function(j_val) {
    */
   this.methodWithGenericParam = function(t, func) {
     var __args = arguments;
-    if (__args.length === 2 && true && typeof __args[1] === 'function') {
+    if (__args.length === 2 && typeof __args[0] !== 'function' && typeof __args[1] === 'function') {
       return j_functionParamTCK["methodWithGenericParam(java.lang.Object,java.util.function.Function)"](utils.convParamTypeUnknown(t), function(jVal) {
       var jRet = func(utils.convReturnTypeUnknown(jVal));
       return jRet;
@@ -254,7 +254,7 @@ var FunctionParamTCK = function(j_val) {
    */
   this.methodWithGenericUserTypeParam = function(t, func) {
     var __args = arguments;
-    if (__args.length === 2 && true && typeof __args[1] === 'function') {
+    if (__args.length === 2 && typeof __args[0] !== 'function' && typeof __args[1] === 'function') {
       return j_functionParamTCK["methodWithGenericUserTypeParam(java.lang.Object,java.util.function.Function)"](utils.convParamTypeUnknown(t), function(jVal) {
       var jRet = func(utils.convReturnVertxGen(jVal, GenericRefedInterface));
       return jRet;

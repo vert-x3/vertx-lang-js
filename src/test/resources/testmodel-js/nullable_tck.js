@@ -1135,7 +1135,7 @@ var NullableTCK = function(j_val) {
    */
   this.methodWithNullableTypeVariableParam = function(expectNull, param) {
     var __args = arguments;
-    if (__args.length === 2 && typeof __args[0] ==='boolean' && true) {
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] !== 'function') {
       j_nullableTCK["methodWithNullableTypeVariableParam(boolean,java.lang.Object)"](expectNull, utils.convParamTypeUnknown(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
@@ -1149,7 +1149,7 @@ var NullableTCK = function(j_val) {
    */
   this.methodWithNullableTypeVariableHandler = function(notNull, value, handler) {
     var __args = arguments;
-    if (__args.length === 3 && typeof __args[0] ==='boolean' && true && typeof __args[2] === 'function') {
+    if (__args.length === 3 && typeof __args[0] ==='boolean' && typeof __args[1] !== 'function' && typeof __args[2] === 'function') {
       j_nullableTCK["methodWithNullableTypeVariableHandler(boolean,java.lang.Object,io.vertx.core.Handler)"](notNull, utils.convParamTypeUnknown(value), function(jVal) {
       handler(utils.convReturnTypeUnknown(jVal));
     });
@@ -1165,7 +1165,7 @@ var NullableTCK = function(j_val) {
    */
   this.methodWithNullableTypeVariableHandlerAsyncResult = function(notNull, value, handler) {
     var __args = arguments;
-    if (__args.length === 3 && typeof __args[0] ==='boolean' && true && typeof __args[2] === 'function') {
+    if (__args.length === 3 && typeof __args[0] ==='boolean' && typeof __args[1] !== 'function' && typeof __args[2] === 'function') {
       j_nullableTCK["methodWithNullableTypeVariableHandlerAsyncResult(boolean,java.lang.Object,io.vertx.core.Handler)"](notNull, utils.convParamTypeUnknown(value), function(ar) {
       if (ar.succeeded()) {
         handler(utils.convReturnTypeUnknown(ar.result()), null);
@@ -1185,7 +1185,7 @@ var NullableTCK = function(j_val) {
    */
   this.methodWithNullableTypeVariableReturn = function(notNull, value) {
     var __args = arguments;
-    if (__args.length === 2 && typeof __args[0] ==='boolean' && true) {
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] !== 'function') {
       return utils.convReturnTypeUnknown(j_nullableTCK["methodWithNullableTypeVariableReturn(boolean,java.lang.Object)"](notNull, utils.convParamTypeUnknown(value)));
     } else throw new TypeError('function invoked with invalid arguments');
   };
@@ -1198,7 +1198,7 @@ var NullableTCK = function(j_val) {
    */
   this.methodWithNullableObjectParam = function(expectNull, param) {
     var __args = arguments;
-    if (__args.length === 2 && typeof __args[0] ==='boolean' && true) {
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] !== 'function') {
       j_nullableTCK["methodWithNullableObjectParam(boolean,java.lang.Object)"](expectNull, utils.convParamTypeUnknown(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };

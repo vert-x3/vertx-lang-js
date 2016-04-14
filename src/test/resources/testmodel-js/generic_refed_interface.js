@@ -37,7 +37,7 @@ var GenericRefedInterface = function(j_val) {
    */
   this.setValue = function(value) {
     var __args = arguments;
-    if (__args.length === 1 && true) {
+    if (__args.length === 1 && typeof __args[0] !== 'function') {
       j_genericRefedInterface["setValue(java.lang.Object)"](utils.convParamTypeUnknown(value));
     } else throw new TypeError('function invoked with invalid arguments');
   };
