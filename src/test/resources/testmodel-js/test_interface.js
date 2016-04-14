@@ -96,7 +96,7 @@ var TestInterface = function(j_val) {
   this.methodWithBasicBoxedParams = function(b, s, i, l, f, d, bool, ch) {
     var __args = arguments;
     if (__args.length === 8 && typeof __args[0] ==='number' && typeof __args[1] ==='number' && typeof __args[2] ==='number' && typeof __args[3] ==='number' && typeof __args[4] ==='number' && typeof __args[5] ==='number' && typeof __args[6] ==='boolean' && typeof __args[7] ==='string') {
-      j_testInterface["methodWithBasicBoxedParams(java.lang.Byte,java.lang.Short,java.lang.Integer,java.lang.Long,java.lang.Float,java.lang.Double,java.lang.Boolean,java.lang.Character)"](b, s, i, l, f, d, bool, ch);
+      j_testInterface["methodWithBasicBoxedParams(java.lang.Byte,java.lang.Short,java.lang.Integer,java.lang.Long,java.lang.Float,java.lang.Double,java.lang.Boolean,java.lang.Character)"](utils.convParamByte(b), utils.convParamShort(s), utils.convParamInteger(i), utils.convParamLong(l), utils.convParamFloat(f), utils.convParamDouble(d), bool, utils.convParamCharacter(ch));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -506,7 +506,7 @@ var TestInterface = function(j_val) {
   this.methodWithListParams = function(listString, listByte, listShort, listInt, listLong, listJsonObject, listJsonArray, listVertxGen, listDataObject, listEnum) {
     var __args = arguments;
     if (__args.length === 10 && typeof __args[0] === 'object' && __args[0] instanceof Array && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'object' && __args[2] instanceof Array && typeof __args[3] === 'object' && __args[3] instanceof Array && typeof __args[4] === 'object' && __args[4] instanceof Array && typeof __args[5] === 'object' && __args[5] instanceof Array && typeof __args[6] === 'object' && __args[6] instanceof Array && typeof __args[7] === 'object' && __args[7] instanceof Array && typeof __args[8] === 'object' && __args[8] instanceof Array && typeof __args[9] === 'object' && __args[9] instanceof Array) {
-      j_testInterface["methodWithListParams(java.util.List,java.util.List,java.util.List,java.util.List,java.util.List,java.util.List,java.util.List,java.util.List,java.util.List,java.util.List)"](listString, utils.convParamListByte(listByte), utils.convParamListShort(listShort), listInt, utils.convParamListLong(listLong), utils.convParamListJsonObject(listJsonObject), utils.convParamListJsonArray(listJsonArray), utils.convParamListVertxGen(listVertxGen), utils.convParamListDataObject(listDataObject, function(json) { return new TestDataObject(json); }), utils.convParamListEnum(listEnum, function(val) { return Packages.io.vertx.codegen.testmodel.TestEnum.valueOf(val); }));
+      j_testInterface["methodWithListParams(java.util.List,java.util.List,java.util.List,java.util.List,java.util.List,java.util.List,java.util.List,java.util.List,java.util.List,java.util.List)"](utils.convParamListBasicOther(listString), utils.convParamListByte(listByte), utils.convParamListShort(listShort), utils.convParamListBasicOther(listInt), utils.convParamListLong(listLong), utils.convParamListJsonObject(listJsonObject), utils.convParamListJsonArray(listJsonArray), utils.convParamListVertxGen(listVertxGen), utils.convParamListDataObject(listDataObject, function(json) { return new TestDataObject(json); }), utils.convParamListEnum(listEnum, function(val) { return Packages.io.vertx.codegen.testmodel.TestEnum.valueOf(val); }));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -2598,7 +2598,7 @@ var TestInterface = function(j_val) {
   this.methodWithEnumParam = function(strVal, weirdo) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'string') {
-      return j_testInterface["methodWithEnumParam(java.lang.String,io.vertx.codegen.testmodel.TestEnum)"](strVal, io.vertx.codegen.testmodel.TestEnum.valueOf(__args[1]));
+      return j_testInterface["methodWithEnumParam(java.lang.String,io.vertx.codegen.testmodel.TestEnum)"](strVal, io.vertx.codegen.testmodel.TestEnum.valueOf(weirdo));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -2625,7 +2625,7 @@ var TestInterface = function(j_val) {
   this.methodWithGenEnumParam = function(strVal, weirdo) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'string') {
-      return j_testInterface["methodWithGenEnumParam(java.lang.String,io.vertx.codegen.testmodel.TestGenEnum)"](strVal, io.vertx.codegen.testmodel.TestGenEnum.valueOf(__args[1]));
+      return j_testInterface["methodWithGenEnumParam(java.lang.String,io.vertx.codegen.testmodel.TestGenEnum)"](strVal, io.vertx.codegen.testmodel.TestGenEnum.valueOf(weirdo));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 

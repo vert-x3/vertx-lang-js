@@ -41,7 +41,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNonNullableByteParam = function(param) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] ==='number') {
-      return j_nullableTCK["methodWithNonNullableByteParam(java.lang.Byte)"](param);
+      return j_nullableTCK["methodWithNonNullableByteParam(java.lang.Byte)"](utils.convParamByte(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -54,7 +54,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNullableByteParam = function(expectNull, param) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] ==='boolean' && (typeof __args[1] ==='number' || __args[1] == null)) {
-      j_nullableTCK["methodWithNullableByteParam(boolean,java.lang.Byte)"](expectNull, param);
+      j_nullableTCK["methodWithNullableByteParam(boolean,java.lang.Byte)"](expectNull, utils.convParamByte(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -114,7 +114,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNonNullableShortParam = function(param) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] ==='number') {
-      return j_nullableTCK["methodWithNonNullableShortParam(java.lang.Short)"](param);
+      return j_nullableTCK["methodWithNonNullableShortParam(java.lang.Short)"](utils.convParamShort(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -127,7 +127,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNullableShortParam = function(expectNull, param) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] ==='boolean' && (typeof __args[1] ==='number' || __args[1] == null)) {
-      j_nullableTCK["methodWithNullableShortParam(boolean,java.lang.Short)"](expectNull, param);
+      j_nullableTCK["methodWithNullableShortParam(boolean,java.lang.Short)"](expectNull, utils.convParamShort(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -187,7 +187,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNonNullableIntegerParam = function(param) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] ==='number') {
-      return j_nullableTCK["methodWithNonNullableIntegerParam(java.lang.Integer)"](param);
+      return j_nullableTCK["methodWithNonNullableIntegerParam(java.lang.Integer)"](utils.convParamInteger(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -200,7 +200,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNullableIntegerParam = function(expectNull, param) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] ==='boolean' && (typeof __args[1] ==='number' || __args[1] == null)) {
-      j_nullableTCK["methodWithNullableIntegerParam(boolean,java.lang.Integer)"](expectNull, param);
+      j_nullableTCK["methodWithNullableIntegerParam(boolean,java.lang.Integer)"](expectNull, utils.convParamInteger(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -260,7 +260,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNonNullableLongParam = function(param) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] ==='number') {
-      return j_nullableTCK["methodWithNonNullableLongParam(java.lang.Long)"](param);
+      return j_nullableTCK["methodWithNonNullableLongParam(java.lang.Long)"](utils.convParamLong(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -273,7 +273,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNullableLongParam = function(expectNull, param) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] ==='boolean' && (typeof __args[1] ==='number' || __args[1] == null)) {
-      j_nullableTCK["methodWithNullableLongParam(boolean,java.lang.Long)"](expectNull, param);
+      j_nullableTCK["methodWithNullableLongParam(boolean,java.lang.Long)"](expectNull, utils.convParamLong(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -333,7 +333,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNonNullableFloatParam = function(param) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] ==='number') {
-      return j_nullableTCK["methodWithNonNullableFloatParam(java.lang.Float)"](param);
+      return j_nullableTCK["methodWithNonNullableFloatParam(java.lang.Float)"](utils.convParamFloat(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -346,7 +346,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNullableFloatParam = function(expectNull, param) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] ==='boolean' && (typeof __args[1] ==='number' || __args[1] == null)) {
-      j_nullableTCK["methodWithNullableFloatParam(boolean,java.lang.Float)"](expectNull, param);
+      j_nullableTCK["methodWithNullableFloatParam(boolean,java.lang.Float)"](expectNull, utils.convParamFloat(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -406,7 +406,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNonNullableDoubleParam = function(param) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] ==='number') {
-      return j_nullableTCK["methodWithNonNullableDoubleParam(java.lang.Double)"](param);
+      return j_nullableTCK["methodWithNonNullableDoubleParam(java.lang.Double)"](utils.convParamDouble(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -419,7 +419,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNullableDoubleParam = function(expectNull, param) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] ==='boolean' && (typeof __args[1] ==='number' || __args[1] == null)) {
-      j_nullableTCK["methodWithNullableDoubleParam(boolean,java.lang.Double)"](expectNull, param);
+      j_nullableTCK["methodWithNullableDoubleParam(boolean,java.lang.Double)"](expectNull, utils.convParamDouble(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -625,7 +625,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNonNullableCharParam = function(param) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] ==='string') {
-      return j_nullableTCK["methodWithNonNullableCharParam(java.lang.Character)"](param);
+      return j_nullableTCK["methodWithNonNullableCharParam(java.lang.Character)"](utils.convParamCharacter(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -638,7 +638,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNullableCharParam = function(expectNull, param) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] ==='boolean' && (typeof __args[1] ==='string' || __args[1] == null)) {
-      j_nullableTCK["methodWithNullableCharParam(boolean,java.lang.Character)"](expectNull, param);
+      j_nullableTCK["methodWithNullableCharParam(boolean,java.lang.Character)"](expectNull, utils.convParamCharacter(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -990,7 +990,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNonNullableEnumParam = function(param) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'string') {
-      return j_nullableTCK["methodWithNonNullableEnumParam(io.vertx.codegen.testmodel.TestEnum)"](io.vertx.codegen.testmodel.TestEnum.valueOf(__args[0]));
+      return j_nullableTCK["methodWithNonNullableEnumParam(io.vertx.codegen.testmodel.TestEnum)"](io.vertx.codegen.testmodel.TestEnum.valueOf(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -1003,7 +1003,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNullableEnumParam = function(expectNull, param) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] ==='boolean' && (typeof __args[1] === 'string' || __args[1] == null)) {
-      j_nullableTCK["methodWithNullableEnumParam(boolean,io.vertx.codegen.testmodel.TestEnum)"](expectNull, __args[1] == null ? null : io.vertx.codegen.testmodel.TestEnum.valueOf(__args[1]));
+      j_nullableTCK["methodWithNullableEnumParam(boolean,io.vertx.codegen.testmodel.TestEnum)"](expectNull, param == null ? null : io.vertx.codegen.testmodel.TestEnum.valueOf(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -1063,7 +1063,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNonNullableGenEnumParam = function(param) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'string') {
-      return j_nullableTCK["methodWithNonNullableGenEnumParam(io.vertx.codegen.testmodel.TestGenEnum)"](io.vertx.codegen.testmodel.TestGenEnum.valueOf(__args[0]));
+      return j_nullableTCK["methodWithNonNullableGenEnumParam(io.vertx.codegen.testmodel.TestGenEnum)"](io.vertx.codegen.testmodel.TestGenEnum.valueOf(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -1076,7 +1076,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNullableGenEnumParam = function(expectNull, param) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] ==='boolean' && (typeof __args[1] === 'string' || __args[1] == null)) {
-      j_nullableTCK["methodWithNullableGenEnumParam(boolean,io.vertx.codegen.testmodel.TestGenEnum)"](expectNull, __args[1] == null ? null : io.vertx.codegen.testmodel.TestGenEnum.valueOf(__args[1]));
+      j_nullableTCK["methodWithNullableGenEnumParam(boolean,io.vertx.codegen.testmodel.TestGenEnum)"](expectNull, param == null ? null : io.vertx.codegen.testmodel.TestGenEnum.valueOf(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -1358,7 +1358,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNonNullableListIntegerParam = function(param) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
-      return j_nullableTCK["methodWithNonNullableListIntegerParam(java.util.List)"](param);
+      return j_nullableTCK["methodWithNonNullableListIntegerParam(java.util.List)"](utils.convParamListBasicOther(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -1371,7 +1371,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNullableListIntegerParam = function(expectNull, param) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'object' && (__args[1] instanceof Array || __args[1] == null)) {
-      j_nullableTCK["methodWithNullableListIntegerParam(boolean,java.util.List)"](expectNull, param);
+      j_nullableTCK["methodWithNullableListIntegerParam(boolean,java.util.List)"](expectNull, param == null ? null : utils.convParamListBasicOther(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -1504,7 +1504,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNonNullableListFloatParam = function(param) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
-      return j_nullableTCK["methodWithNonNullableListFloatParam(java.util.List)"](param);
+      return j_nullableTCK["methodWithNonNullableListFloatParam(java.util.List)"](utils.convParamListBasicOther(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -1517,7 +1517,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNullableListFloatParam = function(expectNull, param) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'object' && (__args[1] instanceof Array || __args[1] == null)) {
-      j_nullableTCK["methodWithNullableListFloatParam(boolean,java.util.List)"](expectNull, param);
+      j_nullableTCK["methodWithNullableListFloatParam(boolean,java.util.List)"](expectNull, param == null ? null : utils.convParamListBasicOther(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -1577,7 +1577,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNonNullableListDoubleParam = function(param) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
-      return j_nullableTCK["methodWithNonNullableListDoubleParam(java.util.List)"](param);
+      return j_nullableTCK["methodWithNonNullableListDoubleParam(java.util.List)"](utils.convParamListBasicOther(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -1590,7 +1590,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNullableListDoubleParam = function(expectNull, param) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'object' && (__args[1] instanceof Array || __args[1] == null)) {
-      j_nullableTCK["methodWithNullableListDoubleParam(boolean,java.util.List)"](expectNull, param);
+      j_nullableTCK["methodWithNullableListDoubleParam(boolean,java.util.List)"](expectNull, param == null ? null : utils.convParamListBasicOther(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -1650,7 +1650,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNonNullableListBooleanParam = function(param) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
-      return j_nullableTCK["methodWithNonNullableListBooleanParam(java.util.List)"](param);
+      return j_nullableTCK["methodWithNonNullableListBooleanParam(java.util.List)"](utils.convParamListBasicOther(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -1663,7 +1663,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNullableListBooleanParam = function(expectNull, param) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'object' && (__args[1] instanceof Array || __args[1] == null)) {
-      j_nullableTCK["methodWithNullableListBooleanParam(boolean,java.util.List)"](expectNull, param);
+      j_nullableTCK["methodWithNullableListBooleanParam(boolean,java.util.List)"](expectNull, param == null ? null : utils.convParamListBasicOther(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -1723,7 +1723,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNonNullableListStringParam = function(param) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
-      return j_nullableTCK["methodWithNonNullableListStringParam(java.util.List)"](param);
+      return j_nullableTCK["methodWithNonNullableListStringParam(java.util.List)"](utils.convParamListBasicOther(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -1736,7 +1736,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNullableListStringParam = function(expectNull, param) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'object' && (__args[1] instanceof Array || __args[1] == null)) {
-      j_nullableTCK["methodWithNullableListStringParam(boolean,java.util.List)"](expectNull, param);
+      j_nullableTCK["methodWithNullableListStringParam(boolean,java.util.List)"](expectNull, param == null ? null : utils.convParamListBasicOther(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -1796,7 +1796,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNonNullableListCharParam = function(param) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
-      return j_nullableTCK["methodWithNonNullableListCharParam(java.util.List)"](param);
+      return j_nullableTCK["methodWithNonNullableListCharParam(java.util.List)"](utils.convParamListBasicOther(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -1809,7 +1809,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNullableListCharParam = function(expectNull, param) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'object' && (__args[1] instanceof Array || __args[1] == null)) {
-      j_nullableTCK["methodWithNullableListCharParam(boolean,java.util.List)"](expectNull, param);
+      j_nullableTCK["methodWithNullableListCharParam(boolean,java.util.List)"](expectNull, param == null ? null : utils.convParamListBasicOther(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -4344,7 +4344,7 @@ var NullableTCK = function(j_val) {
   this.methodWithListNullableIntegerParam = function(param) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
-      j_nullableTCK["methodWithListNullableIntegerParam(java.util.List)"](param);
+      j_nullableTCK["methodWithListNullableIntegerParam(java.util.List)"](utils.convParamListBasicOther(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -4458,7 +4458,7 @@ var NullableTCK = function(j_val) {
   this.methodWithListNullableBooleanParam = function(param) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
-      j_nullableTCK["methodWithListNullableBooleanParam(java.util.List)"](param);
+      j_nullableTCK["methodWithListNullableBooleanParam(java.util.List)"](utils.convParamListBasicOther(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -4515,7 +4515,7 @@ var NullableTCK = function(j_val) {
   this.methodWithListNullableFloatParam = function(param) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
-      j_nullableTCK["methodWithListNullableFloatParam(java.util.List)"](param);
+      j_nullableTCK["methodWithListNullableFloatParam(java.util.List)"](utils.convParamListBasicOther(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -4572,7 +4572,7 @@ var NullableTCK = function(j_val) {
   this.methodWithListNullableDoubleParam = function(param) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
-      j_nullableTCK["methodWithListNullableDoubleParam(java.util.List)"](param);
+      j_nullableTCK["methodWithListNullableDoubleParam(java.util.List)"](utils.convParamListBasicOther(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -4629,7 +4629,7 @@ var NullableTCK = function(j_val) {
   this.methodWithListNullableStringParam = function(param) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
-      j_nullableTCK["methodWithListNullableStringParam(java.util.List)"](param);
+      j_nullableTCK["methodWithListNullableStringParam(java.util.List)"](utils.convParamListBasicOther(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -4686,7 +4686,7 @@ var NullableTCK = function(j_val) {
   this.methodWithListNullableCharParam = function(param) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
-      j_nullableTCK["methodWithListNullableCharParam(java.util.List)"](param);
+      j_nullableTCK["methodWithListNullableCharParam(java.util.List)"](utils.convParamListBasicOther(param));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 

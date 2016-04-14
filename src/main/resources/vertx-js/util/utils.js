@@ -1,9 +1,11 @@
 var JsonObject = Packages.io.vertx.core.json.JsonObject;
 var JsonArray = Packages.io.vertx.core.json.JsonArray;
 var asList = java.util.Arrays.asList;
+var Character = Java.type("java.lang.Character");
 var LongArrayType = Java.type("java.lang.Long[]");
 var ShortArrayType = Java.type("java.lang.Short[]");
 var ByteArrayType = Java.type("java.lang.Byte[]");
+var ObjectArrayType = Java.type("java.lang.Object[]");
 var VertxGenConverterList = Java.type("io.vertx.lang.js.VertxGenConverterList");
 var VertxGenConverterSet = Java.type("io.vertx.lang.js.VertxGenConverterSet");
 var JavaArraySetWrapper = Java.type("io.vertx.lang.js.JavaArraySetWrapper");
@@ -53,9 +55,37 @@ utils.convParamThrowable = function(err) {
   });
 };
 
+utils.convParamByte = function(n) {
+  return n == null ? null : n.byteValue();
+};
+
+utils.convParamShort = function(n) {
+  return n == null ? null : n.shortValue();
+};
+
+utils.convParamInteger = function(n) {
+  return n == null ? null : n.intValue();
+};
+
+utils.convParamLong = function(n) {
+  return n == null ? null : n.longValue();
+};
+
+utils.convParamFloat = function(n) {
+  return n == null ? null : n.floatValue();
+};
+
+utils.convParamDouble = function(n) {
+  return n == null ? null : n.doubleValue();
+};
+
+utils.convParamCharacter = function(c) {
+  return c == null ? null : new Character(c.charCodeAt(0));
+};
+
 utils.convParamListLong = function(arr) {
   return arr == null ? null : asList(Java.to(arr, LongArrayType));
-}
+};
 
 utils.convParamListShort = function(arr) {
   return arr == null ? null : asList(Java.to(arr, ShortArrayType));
@@ -63,6 +93,10 @@ utils.convParamListShort = function(arr) {
 
 utils.convParamListByte = function(arr) {
   return arr == null ? null: asList(Java.to(arr, ByteArrayType));
+}
+
+utils.convParamListBasicOther = function(arr) {
+  return arr == null ? null: asList(Java.to(arr, ObjectArrayType));
 }
 
 utils.convParamSetBasicOther = function(arr) {
