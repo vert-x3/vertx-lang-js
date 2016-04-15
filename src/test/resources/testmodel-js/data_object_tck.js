@@ -21,6 +21,7 @@ var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
 var JDataObjectTCK = io.vertx.codegen.testmodel.DataObjectTCK;
 var DataObjectWithMaps = io.vertx.codegen.testmodel.DataObjectWithMaps;
+var DataObjectWithOnlyJsonObjectConstructor = io.vertx.codegen.testmodel.DataObjectWithOnlyJsonObjectConstructor;
 var DataObjectWithLists = io.vertx.codegen.testmodel.DataObjectWithLists;
 var DataObjectWithValues = io.vertx.codegen.testmodel.DataObjectWithValues;
 
@@ -107,6 +108,18 @@ var DataObjectTCK = function(j_val) {
     var __args = arguments;
     if (__args.length === 1 && (typeof __args[0] === 'object' && __args[0] != null)) {
       j_dataObjectTCK["setDataObjectWithMaps(io.vertx.codegen.testmodel.DataObjectWithMaps)"](dataObject != null ? new DataObjectWithMaps(new JsonObject(JSON.stringify(dataObject))) : null);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param dataObject {Object} 
+   */
+  this.methodWithOnlyJsonObjectConstructorDataObject = function(dataObject) {
+    var __args = arguments;
+    if (__args.length === 1 && (typeof __args[0] === 'object' && __args[0] != null)) {
+      j_dataObjectTCK["methodWithOnlyJsonObjectConstructorDataObject(io.vertx.codegen.testmodel.DataObjectWithOnlyJsonObjectConstructor)"](dataObject != null ? new DataObjectWithOnlyJsonObjectConstructor(new JsonObject(JSON.stringify(dataObject))) : null);
     } else throw new TypeError('function invoked with invalid arguments');
   };
 

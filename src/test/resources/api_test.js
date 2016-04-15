@@ -13,6 +13,9 @@ var refed_obj2 = new RefedInterface1(new Packages.io.vertx.codegen.testmodel.Ref
 var NullableTCK = require('testmodel-js/nullable_tck');
 var nullableTCK = new NullableTCK(new Packages.io.vertx.codegen.testmodel.NullableTCKImpl());
 
+var DataObjectTCK = require('testmodel-js/data_object_tck');
+var dataObjectTCK = new DataObjectTCK(new Packages.io.vertx.codegen.testmodel.DataObjectTCKImpl());
+
 var that = this;
 
 function testMethodWithBasicParams() {
@@ -2860,6 +2863,11 @@ function testNullableHandler() {
     count++;
   });
   Assert.assertEquals(2, count, 0);
+}
+
+function testJsonOnlyConstructorDataObject() {
+  var dataObject = { "foo" : "bar" };
+  dataObjectTCK.methodWithOnlyJsonObjectConstructorDataObject(dataObject);
 }
 
 if (typeof this[testName] === 'undefined') {
