@@ -1169,4 +1169,9 @@ public class APITest extends JSTestBase {
   public void testMapNullableApi() throws Exception {
     runTest();
   }
+
+  @Test
+  public void testJsonOnlyConstructorDataObject() throws Exception {
+    runTest();
+  }
 }
