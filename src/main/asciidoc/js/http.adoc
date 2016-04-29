@@ -434,6 +434,11 @@ request.unknownFrameHandler(function (frame) {
 HTTP/2 frames are not subject to flow control - the frame handler will be called immediatly when an
 unkown frame is received whether the request is paused or is not
 
+==== Non standard HTTP methods
+
+The `link:todo[OTHER]` HTTP method is used for non standard methods, in this case
+`link:../../jsdoc/http_server_request-HttpServerRequest.html#rawMethod[rawMethod]` returns the HTTP method as sent by the client.
+
 === Sending back responses
 
 The server response object is an instance of `link:../../jsdoc/http_server_response-HttpServerResponse.html[HttpServerResponse]` and is obtained from the
@@ -1122,6 +1127,12 @@ request.putHeader("content-type", "application/json").putHeader("other-header", 
 ----
 
 If you wish to write headers to the request you must do so before any part of the request body is written.
+
+==== Non standard HTTP methods
+
+The `link:todo[OTHER]` HTTP method is used for non standard methods, when this method
+is used, `link:../../jsdoc/http_client_request-HttpClientRequest.html#setRawMethod[setRawMethod]` must be used to
+set the raw method to send to the server.
 
 ==== Ending HTTP requests
 
