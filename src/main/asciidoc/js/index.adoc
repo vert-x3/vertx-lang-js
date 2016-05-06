@@ -304,6 +304,55 @@ An alternative way to run blocking code is to use a <<worker_verticles, worker v
 
 A worker verticle is always executed with a thread from the worker pool.
 
+By default blocking code is executed on the Vert.x blocking code pool, configured with `link:../dataobjects.html#VertxOptions#setWorkerPoolSize[workerPoolSize]`.
+
+Additional pools can be created for different purposes:
+
+[source,js]
+----
+var someAPI = new (Java.type("examples.CoreExamples.BlockingAPI"))();
+var executor = vertx.createWorkerExecutor("my-worker-pool");
+executor.executeBlocking(function (future) {
+  // Call some blocking API that takes a significant amount of time to return
+  var result = someAPI.blockingMethod("hello");
+  future.complete(result);
+}, function (res, res_err) {
+  console.log("The result is: " + res);
+});
+
+----
+
+The worker executor must be closed when it's not necessary anymore:
+
+[source,js]
+----
+executor.close();
+
+----
+
+When several workers are created with the same name, they will share the same pool. The worker pool is destroyed
+when all the worker executors using it are closed.
+
+When an executor is created in a Verticle, Vert.x will close it automatically for you when the Verticle
+is undeployed.
+
+Worker executors can be configured when created:
+
+[source,js]
+----
+//
+// 10 threads max
+var poolSize = 10;
+
+// 2 minutes
+var maxExecuteTime = 120000;
+
+var executor = vertx.createWorkerExecutor("my-worker-pool", poolSize, maxExecuteTime);
+
+----
+
+NOTE: the configuration is set when the worker pool is created
+
 == Async coordination
 
 Coordination of multiple asynchronous results can be achieved with Vert.x `link:../../jsdoc/future-Future.html[futures]`.
@@ -819,6 +868,21 @@ vertx.cancelTimer(timerID);
 
 If you're creating timers from inside verticles, those timers will be automatically closed
 when the verticle is undeployed.
+
+=== Verticle worker pool
+
+Verticle use the Vert.x worker pool for executing blocking actions, i.e `link:../../jsdoc/context-Context.html#executeBlocking[executeBlocking]` or
+worker verticle.
+
+A different worker pool can be specified in deployment options:
+
+[source,js]
+----
+vertx.deployVerticle("the-verticle", {
+  "workerPoolName" : "the-specific-pool"
+});
+
+----
 
 [[event_bus]]
 include::eventbus.adoc[]
