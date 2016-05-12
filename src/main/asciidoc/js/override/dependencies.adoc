@@ -30,7 +30,7 @@ compile "io.vertx:vertx-lang-js:3.3.0-SNAPSHOT"
 The JavaScript support is based on http://openjdk.java.net/projects/nashorn/[Nashorn], and so is
 constrained by Nashorn feature set and limits.
 
-It does not support EcmaScript 6, until Nashorn support it.
+It does not support EcmaScript 6, because Nashorn does not support it.
 
 In addition, _native_ NPM modules cannot be used as they are _compiled_ for Node.JS. NPMs developed in EcmaScript 6
 are also not usable.
