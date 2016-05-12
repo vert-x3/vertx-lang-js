@@ -41,6 +41,15 @@
  * compile "io.vertx:vertx-core:${maven.version}"
  * compile "${maven.groupId}:${maven.artifactId}:${maven.version}"
  * ----
+ *
+ * [IMPORTANT]
+ * ====
+ * The JavaScript support is based on http://openjdk.java.net/projects/nashorn/[Nashorn], and so is
+ * constrained by Nashorn feature set and limits. It does not support EcmaScript 6, because Nashorn does not support it.
+ *
+ * In addition, _native_ NPM modules cannot be used as they are _compiled_ for Node.JS. NPMs developed in EcmaScript 6
+ * are also not usable.
+ * ====
  */
 @Document(fileName = "override/dependencies.adoc")
 package docoverride.dependencies;
