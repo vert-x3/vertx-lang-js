@@ -52,4 +52,4 @@ RecordParser.newFixed(4, function (h) {
 
 ----
 
-For more details, check out the `link:../../jsdoc/record_parser-RecordParser.html[RecordParser]` class.
+For more details, check out the `link:../../jsdoc/module-vertx-js_record_parser-RecordParser.html[RecordParser]` class.

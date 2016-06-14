@@ -23,6 +23,7 @@ var JDataObjectTCK = io.vertx.codegen.testmodel.DataObjectTCK;
 var DataObjectWithMaps = io.vertx.codegen.testmodel.DataObjectWithMaps;
 var DataObjectWithOnlyJsonObjectConstructor = io.vertx.codegen.testmodel.DataObjectWithOnlyJsonObjectConstructor;
 var DataObjectWithLists = io.vertx.codegen.testmodel.DataObjectWithLists;
+var DataObjectWithNestedBuffer = io.vertx.codegen.testmodel.DataObjectWithNestedBuffer;
 var DataObjectWithValues = io.vertx.codegen.testmodel.DataObjectWithValues;
 
 /**
@@ -120,6 +121,18 @@ var DataObjectTCK = function(j_val) {
     var __args = arguments;
     if (__args.length === 1 && (typeof __args[0] === 'object' && __args[0] != null)) {
       j_dataObjectTCK["methodWithOnlyJsonObjectConstructorDataObject(io.vertx.codegen.testmodel.DataObjectWithOnlyJsonObjectConstructor)"](dataObject != null ? new DataObjectWithOnlyJsonObjectConstructor(new JsonObject(JSON.stringify(dataObject))) : null);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param dataObject {Object} 
+   */
+  this.setDataObjectWithBuffer = function(dataObject) {
+    var __args = arguments;
+    if (__args.length === 1 && (typeof __args[0] === 'object' && __args[0] != null)) {
+      j_dataObjectTCK["setDataObjectWithBuffer(io.vertx.codegen.testmodel.DataObjectWithNestedBuffer)"](dataObject != null ? new DataObjectWithNestedBuffer(new JsonObject(JSON.stringify(dataObject))) : null);
     } else throw new TypeError('function invoked with invalid arguments');
   };
 

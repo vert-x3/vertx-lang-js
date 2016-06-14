@@ -1,9 +1,9 @@
 == The Event Bus
 :toc: left
 
-The `link:../../jsdoc/event_bus-EventBus.html[event bus]` is the *nervous system* of Vert.x.
+The `link:../../jsdoc/module-vertx-js_event_bus-EventBus.html[event bus]` is the *nervous system* of Vert.x.
 
-There is a single event bus instance for every Vert.x instance and it is obtained using the method `link:../../jsdoc/vertx-Vertx.html#eventBus[eventBus]`.
+There is a single event bus instance for every Vert.x instance and it is obtained using the method `link:../../jsdoc/module-vertx-js_vertx-Vertx.html#eventBus[eventBus]`.
 
 The event bus allows different parts of your application to communicate with each other irrespective of what language they are written in,
 and whether they're in the same Vert.x instance, or in a different Vert.x instance.
@@ -77,7 +77,7 @@ to retry after recovery.
 
 ==== Types of messages
 
-Out of the box Vert.x allows any primitive/simple type, String, or `link:../../jsdoc/buffer-Buffer.html[buffers]` to
+Out of the box Vert.x allows any primitive/simple type, String, or `link:../../jsdoc/module-vertx-js_buffer-Buffer.html[buffers]` to
 be sent as messages.
 
 However it's a convention and common practice in Vert.x to send messages as http://json.org/[JSON]
@@ -108,7 +108,7 @@ There is a single instance of the event bus per Vert.x instance.
 
 ==== Registering Handlers
 
-This simplest way to register a handler is using `link:../../jsdoc/event_bus-EventBus.html#consumer[consumer]`.
+This simplest way to register a handler is using `link:../../jsdoc/module-vertx-js_event_bus-EventBus.html#consumer[consumer]`.
 Here's an example:
 
 [source,js]
@@ -121,13 +121,13 @@ eb.consumer("news.uk.sport", function (message) {
 
 ----
 
-When a message arrives for your handler, your handler will be called, passing in the `link:../../jsdoc/message-Message.html[message]`.
+When a message arrives for your handler, your handler will be called, passing in the `link:../../jsdoc/module-vertx-js_message-Message.html[message]`.
 
-The object returned from call to +consumer()+ is an instance of `link:../../jsdoc/message_consumer-MessageConsumer.html[MessageConsumer]`
+The object returned from call to +consumer()+ is an instance of `link:../../jsdoc/module-vertx-js_message_consumer-MessageConsumer.html[MessageConsumer]`
 
 This object can subsequently be used to unregister the handler, or use the handler as a stream.
 
-Alternatively you can use `link:../../jsdoc/event_bus-EventBus.html#consumer[consumer]` to
+Alternatively you can use `link:../../jsdoc/module-vertx-js_event_bus-EventBus.html#consumer[consumer]` to
 to return a +MessageConsumer+ with no handler set, and then set the handler on that. For example:
 
 [source,js]
@@ -144,7 +144,7 @@ consumer.handler(function (message) {
 When registering a handler on a clustered event bus, it can take some time for the registration to reach all
 nodes of the cluster.
 
-If you want to be notified when this has completed, you can register a `link:../../jsdoc/message_consumer-MessageConsumer.html#completionHandler[completion handler]`
+If you want to be notified when this has completed, you can register a `link:../../jsdoc/module-vertx-js_message_consumer-MessageConsumer.html#completionHandler[completion handler]`
 on the +MessageConsumer+ object.
 
 [source,js]
@@ -161,10 +161,10 @@ consumer.completionHandler(function (res, res_err) {
 
 ==== Un-registering Handlers
 
-To unregister a handler, call `link:../../jsdoc/message_consumer-MessageConsumer.html#unregister[unregister]`.
+To unregister a handler, call `link:../../jsdoc/module-vertx-js_message_consumer-MessageConsumer.html#unregister[unregister]`.
 
 If you are on a clustered event bus, un-registering can take some time to propagate across the nodes, if you want to
-be notified when this is complete use `link:../../jsdoc/message_consumer-MessageConsumer.html#unregister[unregister]`.
+be notified when this is complete use `link:../../jsdoc/module-vertx-js_message_consumer-MessageConsumer.html#unregister[unregister]`.
 
 [source,js]
 ----
@@ -180,7 +180,7 @@ consumer.unregister(function (res, res_err) {
 
 ==== Publishing messages
 
-Publishing a message is simple. Just use `link:../../jsdoc/event_bus-EventBus.html#publish[publish]` specifying the
+Publishing a message is simple. Just use `link:../../jsdoc/module-vertx-js_event_bus-EventBus.html#publish[publish]` specifying the
 address to publish it to.
 
 [source,js]
@@ -196,7 +196,7 @@ That message will then be delivered to all handlers registered against the addre
 Sending a message will result in only one handler registered at the address receiving the message.
 This is the point to point messaging pattern. The handler is chosen in a non-strict round-robin fashion.
 
-You can send a message with `link:../../jsdoc/event_bus-EventBus.html#send[send]`
+You can send a message with `link:../../jsdoc/module-vertx-js_event_bus-EventBus.html#send[send]`
 
 [source,js]
 ----
@@ -212,20 +212,20 @@ Vert.x will deliver messages to any particular handler in the same order they we
 
 ==== The Message object
 
-The object you receive in a message handler is a `link:../../jsdoc/message-Message.html[Message]`.
+The object you receive in a message handler is a `link:../../jsdoc/module-vertx-js_message-Message.html[Message]`.
 
-The `link:../../jsdoc/message-Message.html#body[body]` of the message corresponds to the object that was sent or published.
+The `link:../../jsdoc/module-vertx-js_message-Message.html#body[body]` of the message corresponds to the object that was sent or published.
 
-The headers of the message are available with `link:../../jsdoc/message-Message.html#headers[headers]`.
+The headers of the message are available with `link:../../jsdoc/module-vertx-js_message-Message.html#headers[headers]`.
 
 ==== Acknowledging messages / sending replies
 
-When using `link:../../jsdoc/event_bus-EventBus.html#send[send]` the event bus attempts to deliver the message to a
-`link:../../jsdoc/message_consumer-MessageConsumer.html[MessageConsumer]` registered with the event bus.
+When using `link:../../jsdoc/module-vertx-js_event_bus-EventBus.html#send[send]` the event bus attempts to deliver the message to a
+`link:../../jsdoc/module-vertx-js_message_consumer-MessageConsumer.html[MessageConsumer]` registered with the event bus.
 
 In some cases it's useful for the sender to know when the consumer has received the message and "processed" it.
 
-To acknowledge that the message has been processed the consumer can reply to the message by calling `link:../../jsdoc/message-Message.html#reply[reply]`.
+To acknowledge that the message has been processed the consumer can reply to the message by calling `link:../../jsdoc/module-vertx-js_message-Message.html#reply[reply]`.
 
 When this happens it causes a reply to be sent back to the sender and the reply handler is invoked with the reply.
 
@@ -282,7 +282,7 @@ The default timeout is 30 seconds.
 Message sends can fail for other reasons, including:
 
 * There are no handlers available to send the message to
-* The recipient has explicitly failed the message using `link:../../jsdoc/message-Message.html#fail[fail]`
+* The recipient has explicitly failed the message using `link:../../jsdoc/module-vertx-js_message-Message.html#fail[fail]`
 
 In all cases the reply handler will be called with the specific failure.
 
@@ -351,7 +351,7 @@ var options = {
       "path" : "keystore.jks",
       "password" : "wibble"
     },
-    "clientAuth" : 'REQUIRED'
+    "clientAuth" : "REQUIRED"
   }
 };
 

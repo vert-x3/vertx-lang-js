@@ -47,12 +47,12 @@ var cli = CLI.create("copy").setSummary("A command line interface to copy files.
 
 ----
 
-As you can see, you can create a new `link:../../jsdoc/cli-CLI.html[CLI]` using
-`link:../../jsdoc/cli-CLI.html#create[CLI.create]`. The passed string is the name of the CLI. Once created you
+As you can see, you can create a new `link:../../jsdoc/module-vertx-js_cli-CLI.html[CLI]` using
+`link:../../jsdoc/module-vertx-js_cli-CLI.html#create[CLI.create]`. The passed string is the name of the CLI. Once created you
 can set the summary and description. The summary is intended to be short (one line), while the description can
 contain more details. Each option and argument are also added on the `CLI` object using the
-`link:../../jsdoc/cli-CLI.html#addArgument[addArgument]` and
-`link:../../jsdoc/cli-CLI.html#addOption[addOption]` methods.
+`link:../../jsdoc/module-vertx-js_cli-CLI.html#addArgument[addArgument]` and
+`link:../../jsdoc/module-vertx-js_cli-CLI.html#addOption[addOption]` methods.
 
 ==== Options
 
@@ -187,7 +187,7 @@ Arguments can also be instantiated from their JSON form.
 
 ==== Usage generation
 
-Once your `link:../../jsdoc/cli-CLI.html[CLI]` instance is configured, you can generate the _usage_ message:
+Once your `link:../../jsdoc/module-vertx-js_cli-CLI.html[CLI]` instance is configured, you can generate the _usage_ message:
 
 [source,js]
 ----
@@ -227,7 +227,7 @@ If you need to tune the usage message, check the `UsageMessageFormatter` class.
 
 === Parsing Stage
 
-Once your `link:../../jsdoc/cli-CLI.html[CLI]` instance is configured, you can parse the user command line to evaluate
+Once your `link:../../jsdoc/module-vertx-js_cli-CLI.html[CLI]` instance is configured, you can parse the user command line to evaluate
 each option and argument:
 
 [source,js]
@@ -236,19 +236,19 @@ var commandLine = cli.parse(userCommandLineArguments);
 
 ----
 
-The `link:../../jsdoc/cli-CLI.html#parse[parse]` method returns a `link:../../jsdoc/command_line-CommandLine.html[CommandLine]`
+The `link:../../jsdoc/module-vertx-js_cli-CLI.html#parse[parse]` method returns a `link:../../jsdoc/module-vertx-js_command_line-CommandLine.html[CommandLine]`
 object containing the values. By default, it validates the user command line and checks that each mandatory options
 and arguments have been set as well as the number of values received by each option. You can disable the
-validation by passing `false` as second parameter of `link:../../jsdoc/cli-CLI.html#parse[parse]`.
+validation by passing `false` as second parameter of `link:../../jsdoc/module-vertx-js_cli-CLI.html#parse[parse]`.
 This is useful if you want to check an argument or option is present even if the parsed command line is invalid.
 
 You can check whether or not the
-`link:../../jsdoc/command_line-CommandLine.html[CommandLine]` is valid using `link:../../jsdoc/command_line-CommandLine.html#isValid[isValid]`.
+`link:../../jsdoc/module-vertx-js_command_line-CommandLine.html[CommandLine]` is valid using `link:../../jsdoc/module-vertx-js_command_line-CommandLine.html#isValid[isValid]`.
 
 === Query / Interrogation Stage
 
 Once parsed, you can retrieve the values of the options and arguments from the
-`link:../../jsdoc/command_line-CommandLine.html[CommandLine]` object returned by the `link:../../jsdoc/cli-CLI.html#parse[parse]`
+`link:../../jsdoc/module-vertx-js_command_line-CommandLine.html[CommandLine]` object returned by the `link:../../jsdoc/module-vertx-js_cli-CLI.html#parse[parse]`
 method:
 
 [source,js]

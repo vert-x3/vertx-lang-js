@@ -30,7 +30,7 @@ var server = vertx.createNetServer(options);
 
 === Start the Server Listening
 
-To tell the server to listen for incoming requests you use one of the `link:../../jsdoc/net_server-NetServer.html#listen[listen]`
+To tell the server to listen for incoming requests you use one of the `link:../../jsdoc/module-vertx-js_net_server-NetServer.html#listen[listen]`
 alternatives.
 
 To tell the server to listen at the host and port as specified in the options:
@@ -80,7 +80,7 @@ server.listen(1234, "localhost", function (res, res_err) {
 
 If `0` is used as the listening port, the server will find an unused random port to listen on.
 
-To find out the real port the server is listening on you can call `link:../../jsdoc/net_server-NetServer.html#actualPort[actualPort]`.
+To find out the real port the server is listening on you can call `link:../../jsdoc/module-vertx-js_net_server-NetServer.html#actualPort[actualPort]`.
 
 [source,js]
 ----
@@ -98,7 +98,7 @@ server.listen(0, "localhost", function (res, res_err) {
 
 === Getting notified of incoming connections
 
-To be notified when a connection is made you need to set a `link:../../jsdoc/net_server-NetServer.html#connectHandler[connectHandler]`:
+To be notified when a connection is made you need to set a `link:../../jsdoc/module-vertx-js_net_server-NetServer.html#connectHandler[connectHandler]`:
 
 [source,js]
 ----
@@ -110,17 +110,17 @@ server.connectHandler(function (socket) {
 
 ----
 
-When a connection is made the handler will be called with an instance of `link:../../jsdoc/net_socket-NetSocket.html[NetSocket]`.
+When a connection is made the handler will be called with an instance of `link:../../jsdoc/module-vertx-js_net_socket-NetSocket.html[NetSocket]`.
 
 This is a socket-like interface to the actual connection, and allows you to read and write data as well as do various
 other things like close the socket.
 
 === Reading data from the socket
 
-To read data from the socket you set the `link:../../jsdoc/net_socket-NetSocket.html#handler[handler]` on the
+To read data from the socket you set the `link:../../jsdoc/module-vertx-js_net_socket-NetSocket.html#handler[handler]` on the
 socket.
 
-This handler will be called with an instance of `link:../../jsdoc/buffer-Buffer.html[Buffer]` every time data is received on
+This handler will be called with an instance of `link:../../jsdoc/module-vertx-js_buffer-Buffer.html[Buffer]` every time data is received on
 the socket.
 
 [source,js]
@@ -137,7 +137,7 @@ server.connectHandler(function (socket) {
 
 === Writing data to a socket
 
-You write to a socket using one of `link:../../jsdoc/net_socket-NetSocket.html#write[write]`.
+You write to a socket using one of `link:../../jsdoc/module-vertx-js_net_socket-NetSocket.html#write[write]`.
 
 [source,js]
 ----
@@ -161,7 +161,7 @@ Write operations are asynchronous and may not occur until some time after the ca
 
 === Closed handler
 
-If you want to be notified when a socket is closed, you can set a `link:../../jsdoc/net_socket-NetSocket.html#closeHandler[closeHandler]`
+If you want to be notified when a socket is closed, you can set a `link:../../jsdoc/module-vertx-js_net_socket-NetSocket.html#closeHandler[closeHandler]`
 on it:
 
 [source,js]
@@ -175,7 +175,7 @@ socket.closeHandler(function (v) {
 
 === Handling exceptions
 
-You can set an `link:../../jsdoc/net_socket-NetSocket.html#exceptionHandler[exceptionHandler]` to receive any
+You can set an `link:../../jsdoc/module-vertx-js_net_socket-NetSocket.html#exceptionHandler[exceptionHandler]` to receive any
 exceptions that happen on the socket.
 
 === Event bus write handler
@@ -186,18 +186,18 @@ it writes them to itself.
 This enables you to write data to a socket which is potentially in a completely different verticle or even in a
 different Vert.x instance by sending the buffer to the address of that handler.
 
-The address of the handler is given by `link:../../jsdoc/net_socket-NetSocket.html#writeHandlerID[writeHandlerID]`
+The address of the handler is given by `link:../../jsdoc/module-vertx-js_net_socket-NetSocket.html#writeHandlerID[writeHandlerID]`
 
 === Local and remote addresses
 
-The local address of a `link:../../jsdoc/net_socket-NetSocket.html[NetSocket]` can be retrieved using `link:../../jsdoc/net_socket-NetSocket.html#localAddress[localAddress]`.
+The local address of a `link:../../jsdoc/module-vertx-js_net_socket-NetSocket.html[NetSocket]` can be retrieved using `link:../../jsdoc/module-vertx-js_net_socket-NetSocket.html#localAddress[localAddress]`.
 
-The remote address, (i.e. the address of the other end of the connection) of a `link:../../jsdoc/net_socket-NetSocket.html[NetSocket]`
-can be retrieved using `link:../../jsdoc/net_socket-NetSocket.html#remoteAddress[remoteAddress]`.
+The remote address, (i.e. the address of the other end of the connection) of a `link:../../jsdoc/module-vertx-js_net_socket-NetSocket.html[NetSocket]`
+can be retrieved using `link:../../jsdoc/module-vertx-js_net_socket-NetSocket.html#remoteAddress[remoteAddress]`.
 
 === Sending files or resources from the classpath
 
-Files and classpath resources can be written to the socket directly using `link:../../jsdoc/net_socket-NetSocket.html#sendFile[sendFile]`. This can be a very
+Files and classpath resources can be written to the socket directly using `link:../../jsdoc/module-vertx-js_net_socket-NetSocket.html#sendFile[sendFile]`. This can be a very
 efficient way to send files, as it can be handled by the OS kernel directly where supported by the operating system.
 
 Please see the chapter about <<classpath, serving files from the classpath>> for restrictions of the 
@@ -212,22 +212,22 @@ socket.sendFile("myfile.dat");
 
 === Streaming sockets
 
-Instances of `link:../../jsdoc/net_socket-NetSocket.html[NetSocket]` are also `link:../../jsdoc/read_stream-ReadStream.html[ReadStream]` and
-`link:../../jsdoc/write_stream-WriteStream.html[WriteStream]` instances so they can be used to pump data to or from other
+Instances of `link:../../jsdoc/module-vertx-js_net_socket-NetSocket.html[NetSocket]` are also `link:../../jsdoc/module-vertx-js_read_stream-ReadStream.html[ReadStream]` and
+`link:../../jsdoc/module-vertx-js_write_stream-WriteStream.html[WriteStream]` instances so they can be used to pump data to or from other
 read and write streams.
 
 See the chapter on <<streams, streams and pumps>> for more information.
 
 === Upgrading connections to SSL/TLS
 
-A non SSL/TLS connection can be upgraded to SSL/TLS using `link:../../jsdoc/net_socket-NetSocket.html#upgradeToSsl[upgradeToSsl]`.
+A non SSL/TLS connection can be upgraded to SSL/TLS using `link:../../jsdoc/module-vertx-js_net_socket-NetSocket.html#upgradeToSsl[upgradeToSsl]`.
 
 The server or client must be configured for SSL/TLS for this to work correctly. Please see the <<ssl, chapter on SSL/TLS>>
 for more information.
 
 === Closing a TCP Server
 
-Call `link:../../jsdoc/net_server-NetServer.html#close[close]` to close the server. Closing the server closes any open connections
+Call `link:../../jsdoc/module-vertx-js_net_server-NetServer.html#close[close]` to close the server. Closing the server closes any open connections
 and releases all server resources.
 
 The close is actually asynchronous and might not complete until some time after the call has returned.
@@ -343,9 +343,9 @@ var client = vertx.createNetClient(options);
 
 === Making connections
 
-To make a connection to a server you use `link:../../jsdoc/net_client-NetClient.html#connect[connect]`,
+To make a connection to a server you use `link:../../jsdoc/module-vertx-js_net_client-NetClient.html#connect[connect]`,
 specifying the port and host of the server and a handler that will be called with a result containing the
-`link:../../jsdoc/net_socket-NetSocket.html[NetSocket]` when connection is successful or with a failure if connection failed.
+`link:../../jsdoc/module-vertx-js_net_socket-NetSocket.html[NetSocket]` when connection is successful or with a failure if connection failed.
 
 [source,js]
 ----
@@ -387,6 +387,57 @@ var client = vertx.createNetClient(options);
 ----
 
 By default, multiple connection attempts are disabled.
+
+[[logging_network_activity]]
+=== Logging network activity
+
+For debugging purposes, network activity can be logged:
+
+[source,js]
+----
+
+var options = {
+  "logActivity" : true
+};
+
+var server = vertx.createNetServer(options);
+
+----
+
+for the client
+
+[source,js]
+----
+
+var options = {
+  "logActivity" : true
+};
+
+var client = vertx.createNetClient(options);
+
+----
+
+Network activity is logged by Netty with the `DEBUG` level and with the `io.netty.handler.logging.LoggingHandler`
+name. When using network activity logging there are a few things to keep in mind:
+
+- logging is not performed by Vert.x logging but by Netty
+- this is *not* a production feature
+
+Netty will try to locate the following logger implementations, in the following order:
+
+- Slf4j
+- Log4j
+- JDK
+
+The presense of the slf4j or log4j classes on the classpath is enough to pick up the logging implementation.
+
+The logger implementation can be forced to a specific implementation by setting Netty's internal logger implementation directly:
+
+[source,java]
+----
+// Force logging to SLF4J
+InternalLoggerFactory.setDefaultFactory(Log4JLoggerFactory.INSTANCE);
+----
 
 [[ssl]]
 === Configuring servers and clients to work with SSL/TLS
@@ -530,7 +581,7 @@ The password for the trust store should also be provided:
 ----
 var options = {
   "ssl" : true,
-  "clientAuth" : 'REQUIRED',
+  "clientAuth" : "REQUIRED",
   "trustStoreOptions" : {
     "path" : "/path/to/your/truststore.jks",
     "password" : "password-of-your-truststore"
@@ -547,7 +598,7 @@ Alternatively you can read the trust store yourself as a buffer and provide that
 var myTrustStoreAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/truststore.jks");
 var options = {
   "ssl" : true,
-  "clientAuth" : 'REQUIRED',
+  "clientAuth" : "REQUIRED",
   "trustStoreOptions" : {
     "value" : myTrustStoreAsABuffer,
     "password" : "password-of-your-truststore"
@@ -564,7 +615,7 @@ extension can also be loaded in a similar fashion than JKS trust stores:
 ----
 var options = {
   "ssl" : true,
-  "clientAuth" : 'REQUIRED',
+  "clientAuth" : "REQUIRED",
   "pfxTrustOptions" : {
     "path" : "/path/to/your/truststore.pfx",
     "password" : "password-of-your-truststore"
@@ -581,7 +632,7 @@ Buffer configuration is also supported:
 var myTrustStoreAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/truststore.pfx");
 var options = {
   "ssl" : true,
-  "clientAuth" : 'REQUIRED',
+  "clientAuth" : "REQUIRED",
   "pfxTrustOptions" : {
     "value" : myTrustStoreAsABuffer,
     "password" : "password-of-your-truststore"
@@ -597,7 +648,7 @@ Another way of providing server certificate authority using a list `.pem` files.
 ----
 var options = {
   "ssl" : true,
-  "clientAuth" : 'REQUIRED',
+  "clientAuth" : "REQUIRED",
   "pemTrustOptions" : {
     "certPaths" : [
       "/path/to/your/server-ca.pem"
@@ -615,7 +666,7 @@ Buffer configuration is also supported:
 var myCaAsABuffer = vertx.fileSystem().readFileBlocking("/path/to/your/server-ca.pfx");
 var options = {
   "ssl" : true,
-  "clientAuth" : 'REQUIRED',
+  "clientAuth" : "REQUIRED",
   "pemTrustOptions" : {
     "certValues" : [
       myCaAsABuffer
@@ -955,19 +1006,42 @@ var server = vertx.createNetServer(options);
 
 Protocol versions can be specified on the `link:../dataobjects.html#NetServerOptions[NetServerOptions]` or `link:../dataobjects.html#NetClientOptions[NetClientOptions]` configuration.
 
-==== OpenSSL engine
+==== SSL engine
 
-The default SSL/TLS engine implementation is provided by the JDK.
+The engine implementation can be configured to use https://www.openssl.org[OpenSSL] instead of the JDK implementation.
+OpenSSL provides better performances and CPU usage than the JDK engine, as well as JDK version independence.
 
-The engine implementation can be configured to use https://www.openssl.org[OpenSSL] instead. OpenSSL provides
-better performances and CPU usage than the JDK engine, as well as JDK version independence.
+The engine options to use is
 
-OpenSSL requires to configure `link:../dataobjects.html#TCPSSLOptions#setSslEngine[sslEngine]` to `link:todo[OPENSSL]`
-and use http://netty.io/wiki/forked-tomcat-native.html[netty-tcnative] jar on the classpath. Using tcnative may require
-OpenSSL to be installed on your OS depending on the tcnative implementation.
+- the `link:../dataobjects.html#TCPSSLOptions#getSslEngineOptions[getSslEngineOptions]` options when it is set
+- otherwise `link:../dataobjects.html#JdkSSLEngineOptions[JdkSSLEngineOptions]`
 
-OpenSSL restricts the key/certificate configuration to `.pem` files. However it is still possible to use any trust
-configuration.
+[source,js]
+----
+
+// Use JDK SSL engine
+var options = {
+  "ssl" : true,
+  "keyStoreOptions" : keyStoreOptions
+};
+
+// Use JDK SSL engine explicitly
+options = {
+  "ssl" : true,
+  "keyStoreOptions" : keyStoreOptions,
+  "jdkSslEngineOptions" : {
+  }
+};
+
+// Use OpenSSL engine
+options = {
+  "ssl" : true,
+  "keyStoreOptions" : keyStoreOptions,
+  "openSslEngineOptions" : {
+  }
+};
+
+----
 
 ==== Application-Layer Protocol Negotiation
 
@@ -979,9 +1053,23 @@ Java 8 does not supports ALPN out of the box, so ALPN should be enabled by other
 - _OpenSSL_ support
 - _Jetty-ALPN_ support
 
+The engine options to use is
+
+- the `link:../dataobjects.html#TCPSSLOptions#getSslEngineOptions[getSslEngineOptions]` options when it is set
+- `link:../dataobjects.html#JdkSSLEngineOptions[JdkSSLEngineOptions]` when ALPN is available for JDK
+- `link:../dataobjects.html#OpenSSLEngineOptions[OpenSSLEngineOptions]` when ALPN is available for OpenSSL
+- otherwise it fails
+
 ===== OpenSSL ALPN support
 
 OpenSSL provides native ALPN support.
+
+OpenSSL requires to configure `link:../dataobjects.html#TCPSSLOptions#setOpenSslEngineOptions[openSslEngineOptions]`
+and use http://netty.io/wiki/forked-tomcat-native.html[netty-tcnative] jar on the classpath. Using tcnative may require
+OpenSSL to be installed on your OS depending on the tcnative implementation.
+
+OpenSSL restricts the key/certificate configuration to `.pem` files. However it is still possible to use any trust
+configuration.
 
 ===== Jetty-ALPN support
 
@@ -1004,3 +1092,31 @@ ALPN version for the JVM running it:
 ----
 -javaagent:/path/to/alpn/agent
 ----
+
+=== Using a proxy for client connections
+
+The `link:../../jsdoc/module-vertx-js_net_client-NetClient.html[NetClient]` supports either a HTTP/1.x _CONNECT_, _SOCKS4a_ or _SOCKS5_ proxy.
+
+The proxy can be configured in the `link:../dataobjects.html#NetClientOptions[NetClientOptions]` by setting a
+`link:../dataobjects.html#ProxyOptions[ProxyOptions]` object containing proxy type, hostname, port and optionally username and password.
+
+Here's an example:
+
+[source,js]
+
+----
+var options = {
+  "proxyOptions" : {
+    "type" : "SOCKS5",
+    "host" : "localhost",
+    "port" : 1080,
+    "username" : "username",
+    "password" : "secret"
+  }
+};
+var client = vertx.createNetClient(options);
+
+----
+
+The DNS resolution is always done on the proxy server, to achieve the functionality of a SOCKS4 client, it is necessary
+to resolve the DNS address locally.

@@ -2,6 +2,7 @@ package io.vertx.lang.js;
 
 import io.vertx.codegen.Case;
 import io.vertx.codegen.type.ClassKind;
+import io.vertx.codegen.type.ClassTypeInfo;
 import io.vertx.codegen.type.EnumTypeInfo;
 import io.vertx.codegen.type.TypeInfo;
 import io.vertx.codegen.type.TypeMirrorFactory;
@@ -77,7 +78,9 @@ public class JSDocGenerator implements DocGenerator {
       return baselink + "dataobjects.html#" + elt.getSimpleName().toString();
     }
     if (type.getKind() == ClassKind.API) {
-      return "../../jsdoc/" + Case.SNAKE.format(Case.CAMEL.parse(elt.getSimpleName().toString())) + "-" + elt.getSimpleName() + ".html";
+      ClassTypeInfo ct = type.getRaw();
+
+      return "../../jsdoc/module-" + ct.getModule().getName(Case.KEBAB) + "-js_" + Case.SNAKE.format(Case.CAMEL.parse(elt.getSimpleName().toString())) + "-" + elt.getSimpleName() + ".html";
     }
     return null;
   }
