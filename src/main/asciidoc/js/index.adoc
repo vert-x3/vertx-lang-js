@@ -380,6 +380,15 @@ CompositeFuture.all(httpServerFuture, netServerFuture).setHandler(function (ar, 
 
 ----
 
+A list of futures can be used also:
+
+[source,js]
+----
+var CompositeFuture = require("vertx-js/composite_future");
+CompositeFuture.all([f1, f2, f3]);
+
+----
+
 The handler returned by `link:../../jsdoc/module-vertx-js_future-Future.html#completer[completer]` completes the future.
 
 `link:../../jsdoc/module-vertx-js_composite_future-CompositeFuture.html#any[CompositeFuture.any]` takes several futures arguments (up to 6) and returns a future that is
@@ -398,6 +407,15 @@ CompositeFuture.any(future1, future2).setHandler(function (ar, ar_err) {
     // All failed
   }
 });
+
+----
+
+A list of futures can be used also:
+
+[source,js]
+----
+var CompositeFuture = require("vertx-js/composite_future");
+CompositeFuture.any([f1, f2, f3]);
 
 ----
 

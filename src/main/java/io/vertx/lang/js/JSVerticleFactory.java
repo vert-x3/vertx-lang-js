@@ -160,9 +160,9 @@ public class JSVerticleFactory implements VerticleFactory {
         String globs =
           "var Vertx = require('vertx-js/vertx'); var vertx = new Vertx(__jvertx);" +
           "var console = require('vertx-js/util/console');" +
-          "var setTimeout = function(callback,delay) { return vertx.setTimer(delay, callback); };" +
+          "var setTimeout = function(callback,delay) { return vertx.setTimer(delay, callback).doubleValue(); };" +
           "var clearTimeout = function(id) { vertx.cancelTimer(id); };" +
-          "var setInterval = function(callback, delay) { return vertx.setPeriodic(delay, callback); };" +
+          "var setInterval = function(callback, delay) { return vertx.setPeriodic(delay, callback).doubleValue(); };" +
           "var clearInterval = clearTimeout;" +
           "var parent = this;" +
           "var global = this;";

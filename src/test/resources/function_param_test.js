@@ -19,7 +19,7 @@ function testBasicParam() {
       return "ok2";
     },
     function(arg) {
-      Assert.assertEquals(10000000000, arg);
+      Assert.assertEquals(10000000000, arg, 0);
       return "ok3";
     },
     function(arg) {

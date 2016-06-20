@@ -123,7 +123,7 @@ var TestInterface = function(j_val) {
     }, function(jVal) {
       intHandler(jVal);
     }, function(jVal) {
-      longHandler(jVal);
+      longHandler(utils.convReturnLong(jVal));
     }, function(jVal) {
       floatHandler(jVal);
     }, function(jVal) {
@@ -247,7 +247,7 @@ var TestInterface = function(j_val) {
     if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
       j_testInterface["methodWithHandlerAsyncResultLong(boolean,io.vertx.core.Handler)"](sendFailure, function(ar) {
       if (ar.succeeded()) {
-        handler(ar.result(), null);
+        handler(utils.convReturnLong(ar.result()), null);
       } else {
         handler(null, ar.cause());
       }
@@ -2350,7 +2350,7 @@ var TestInterface = function(j_val) {
   this.methodWithListLongReturn = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      return j_testInterface["methodWithListLongReturn()"]();
+      return utils.convReturnListSetLong(j_testInterface["methodWithListLongReturn()"]());
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -2480,7 +2480,7 @@ var TestInterface = function(j_val) {
   this.methodWithSetLongReturn = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      return utils.convReturnSet(j_testInterface["methodWithSetLongReturn()"]());
+      return utils.convReturnListSetLong(j_testInterface["methodWithSetLongReturn()"]());
     } else throw new TypeError('function invoked with invalid arguments');
   };
 

@@ -60,7 +60,7 @@ var FunctionParamTCK = function(j_val) {
       var jRet = integerFunc(jVal);
       return jRet;
     }, function(jVal) {
-      var jRet = longFunc(jVal);
+      var jRet = longFunc(utils.convReturnLong(jVal));
       return jRet;
     }, function(jVal) {
       var jRet = floatFunc(jVal);

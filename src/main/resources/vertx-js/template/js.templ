@@ -34,6 +34,8 @@ utils.convReturnListSetDataObject(@includeNamed{templ})
 utils.convReturnListSetEnum(@includeNamed{templ})
 		@else{elementType.kind == CLASS_API}
 utils.convReturnListSetVertxGen(@includeNamed{templ}, @{elementType.raw.simpleName})
+		@else{elementType.name == 'java.lang.Long'}
+utils.convReturnListSetLong(@includeNamed{templ})
 		@else{}
 @includeNamed{templ}
 		@end{}
@@ -47,6 +49,8 @@ utils.convReturnListSetDataObject(@includeNamed{templ})
 utils.convReturnListSetEnum(@includeNamed{templ})
 		@else{elementType.kind == CLASS_API}
 utils.convReturnListSetVertxGen(@includeNamed{templ}, @{elementType.raw.simpleName})
+		@else{elementType.name == 'java.lang.Long'}
+utils.convReturnListSetLong(@includeNamed{templ})
 		@else{}
 utils.convReturnSet(@includeNamed{templ})
 		@end{}
@@ -55,7 +59,11 @@ utils.convReturnMap(@includeNamed{templ})
 	@else{returnType.kind.json}
 utils.convReturnJson(@includeNamed{templ})
 	@else{returnType.kind.basic}
+		@if{returnType.name == 'java.lang.Long'}
+utils.convReturnLong(@includeNamed{templ})
+		@else{}
 @includeNamed{templ}
+		@end{}
 	@else{returnType.kind == CLASS_API}
 utils.convReturnVertxGen(@includeNamed{templ}, @{returnType.raw.simpleName})
 	@else{returnType.kind == CLASS_ENUM}

@@ -287,7 +287,7 @@ var NullableTCK = function(j_val) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
       j_nullableTCK["methodWithNullableLongHandler(boolean,io.vertx.core.Handler)"](notNull, function(jVal) {
-      handler(jVal);
+      handler(utils.convReturnLong(jVal));
     });
     } else throw new TypeError('function invoked with invalid arguments');
   };
@@ -303,7 +303,7 @@ var NullableTCK = function(j_val) {
     if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
       j_nullableTCK["methodWithNullableLongHandlerAsyncResult(boolean,io.vertx.core.Handler)"](notNull, function(ar) {
       if (ar.succeeded()) {
-        handler(ar.result(), null);
+        handler(utils.convReturnLong(ar.result()), null);
       } else {
         handler(null, ar.cause());
       }
@@ -320,7 +320,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNullableLongReturn = function(notNull) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] ==='boolean') {
-      return j_nullableTCK["methodWithNullableLongReturn(boolean)"](notNull);
+      return utils.convReturnLong(j_nullableTCK["methodWithNullableLongReturn(boolean)"](notNull));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -1458,7 +1458,7 @@ var NullableTCK = function(j_val) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
       j_nullableTCK["methodWithNullableListLongHandler(boolean,io.vertx.core.Handler)"](notNull, function(jVal) {
-      handler(jVal);
+      handler(utils.convReturnListSetLong(jVal));
     });
     } else throw new TypeError('function invoked with invalid arguments');
   };
@@ -1474,7 +1474,7 @@ var NullableTCK = function(j_val) {
     if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
       j_nullableTCK["methodWithNullableListLongHandlerAsyncResult(boolean,io.vertx.core.Handler)"](notNull, function(ar) {
       if (ar.succeeded()) {
-        handler(ar.result(), null);
+        handler(utils.convReturnListSetLong(ar.result()), null);
       } else {
         handler(null, ar.cause());
       }
@@ -1491,7 +1491,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNullableListLongReturn = function(notNull) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] ==='boolean') {
-      return j_nullableTCK["methodWithNullableListLongReturn(boolean)"](notNull);
+      return utils.convReturnListSetLong(j_nullableTCK["methodWithNullableListLongReturn(boolean)"](notNull));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -2553,7 +2553,7 @@ var NullableTCK = function(j_val) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
       j_nullableTCK["methodWithNullableSetLongHandler(boolean,io.vertx.core.Handler)"](notNull, function(jVal) {
-      handler(utils.convReturnSet(jVal));
+      handler(utils.convReturnListSetLong(jVal));
     });
     } else throw new TypeError('function invoked with invalid arguments');
   };
@@ -2569,7 +2569,7 @@ var NullableTCK = function(j_val) {
     if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
       j_nullableTCK["methodWithNullableSetLongHandlerAsyncResult(boolean,io.vertx.core.Handler)"](notNull, function(ar) {
       if (ar.succeeded()) {
-        handler(utils.convReturnSet(ar.result()), null);
+        handler(utils.convReturnListSetLong(ar.result()), null);
       } else {
         handler(null, ar.cause());
       }
@@ -2586,7 +2586,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNullableSetLongReturn = function(notNull) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] ==='boolean') {
-      return utils.convReturnSet(j_nullableTCK["methodWithNullableSetLongReturn(boolean)"](notNull));
+      return utils.convReturnListSetLong(j_nullableTCK["methodWithNullableSetLongReturn(boolean)"](notNull));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -4414,7 +4414,7 @@ var NullableTCK = function(j_val) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'function') {
       j_nullableTCK["methodWithListNullableLongHandler(io.vertx.core.Handler)"](function(jVal) {
-      handler(jVal);
+      handler(utils.convReturnListSetLong(jVal));
     });
     } else throw new TypeError('function invoked with invalid arguments');
   };
@@ -4429,7 +4429,7 @@ var NullableTCK = function(j_val) {
     if (__args.length === 1 && typeof __args[0] === 'function') {
       j_nullableTCK["methodWithListNullableLongHandlerAsyncResult(io.vertx.core.Handler)"](function(ar) {
       if (ar.succeeded()) {
-        handler(ar.result(), null);
+        handler(utils.convReturnListSetLong(ar.result()), null);
       } else {
         handler(null, ar.cause());
       }
@@ -4446,7 +4446,7 @@ var NullableTCK = function(j_val) {
   this.methodWithListNullableLongReturn = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      return j_nullableTCK["methodWithListNullableLongReturn()"]();
+      return utils.convReturnListSetLong(j_nullableTCK["methodWithListNullableLongReturn()"]());
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -5269,7 +5269,7 @@ var NullableTCK = function(j_val) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'function') {
       j_nullableTCK["methodWithSetNullableLongHandler(io.vertx.core.Handler)"](function(jVal) {
-      handler(utils.convReturnSet(jVal));
+      handler(utils.convReturnListSetLong(jVal));
     });
     } else throw new TypeError('function invoked with invalid arguments');
   };
@@ -5284,7 +5284,7 @@ var NullableTCK = function(j_val) {
     if (__args.length === 1 && typeof __args[0] === 'function') {
       j_nullableTCK["methodWithSetNullableLongHandlerAsyncResult(io.vertx.core.Handler)"](function(ar) {
       if (ar.succeeded()) {
-        handler(utils.convReturnSet(ar.result()), null);
+        handler(utils.convReturnListSetLong(ar.result()), null);
       } else {
         handler(null, ar.cause());
       }
@@ -5301,7 +5301,7 @@ var NullableTCK = function(j_val) {
   this.methodWithSetNullableLongReturn = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      return utils.convReturnSet(j_nullableTCK["methodWithSetNullableLongReturn()"]());
+      return utils.convReturnListSetLong(j_nullableTCK["methodWithSetNullableLongReturn()"]());
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
