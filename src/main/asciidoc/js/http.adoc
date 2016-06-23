@@ -804,7 +804,14 @@ The request handler are notified of stream reset events with the `link:../../jsd
 
 [source,js]
 ----
-Code not translatable
+
+request.response().exceptionHandler(function (err) {
+  if (err.getClass().getSimpleName() == 'StreamResetException') {
+    var reset = err;
+    console.log("Stream reset " + reset.getCode());
+  }
+});
+
 ----
 
 ==== Server push
@@ -1368,7 +1375,14 @@ The request handler are notified of stream reset events with the `link:../../jsd
 
 [source,js]
 ----
-Code not translatable
+
+request.exceptionHandler(function (err) {
+  if (err.getClass().getSimpleName() == 'StreamResetException') {
+    var reset = err;
+    console.log("Stream reset " + reset.getCode());
+  }
+});
+
 ----
 
 === Handling http responses
