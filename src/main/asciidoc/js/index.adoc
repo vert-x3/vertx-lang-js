@@ -355,7 +355,9 @@ NOTE: the configuration is set when the worker pool is created
 
 == Async coordination
 
-Coordination of multiple asynchronous results can be achieved with Vert.x `link:../../jsdoc/module-vertx-js_future-Future.html[futures]`.
+Coordination of multiple asynchronous results can be achieved with Vert.x `link:../../jsdoc/module-vertx-js_future-Future.html[futures]`. It
+supports concurrent composition (run several async operations in parallel and join) and sequential composition
+(chain async operations).
 
 `link:../../jsdoc/module-vertx-js_composite_future-CompositeFuture.html#all[CompositeFuture.all]` takes several futures arguments (up to 6) and returns a future that is
 _succeeded_ when all the futures are and _failed_ otherwise:
@@ -372,7 +374,7 @@ netServer.listen(netServerFuture.completer());
 
 CompositeFuture.all(httpServerFuture, netServerFuture).setHandler(function (ar, ar_err) {
   if (ar_err == null) {
-    // All server started
+    // All servers started
   } else {
     // At least one server failed
   }
@@ -380,7 +382,12 @@ CompositeFuture.all(httpServerFuture, netServerFuture).setHandler(function (ar, 
 
 ----
 
-A list of futures can be used also:
+The operations run concurrently, and are joined. The `Handler` attached to the returned future is
+invoked upon completion of the composition. If one of the operation fails (one of the passed future is marked
+as a failure), the resulting future is marked as failed too. If all the operations succeed, the resulting future
+is completed with a success.
+
+Alternatively, you can pass a list (potentially empty) of futures:
 
 [source,js]
 ----
@@ -389,10 +396,9 @@ CompositeFuture.all([f1, f2, f3]);
 
 ----
 
-The handler returned by `link:../../jsdoc/module-vertx-js_future-Future.html#completer[completer]` completes the future.
-
-`link:../../jsdoc/module-vertx-js_composite_future-CompositeFuture.html#any[CompositeFuture.any]` takes several futures arguments (up to 6) and returns a future that is
-_succeeded_ if one of the futures is, and _failed_ otherwise:
+While the `all` composition _waits_ until all futures are completed (or one fails), the `any` composition
+_waits_ for the first completed future. `link:../../jsdoc/module-vertx-js_composite_future-CompositeFuture.html#any[CompositeFuture.any]` takes several futures arguments
+(up to 6) and returns a future that is _succeeded_ if one of the futures is, and _failed_ otherwise:
 
 [source,js]
 ----
@@ -419,7 +425,8 @@ CompositeFuture.any([f1, f2, f3]);
 
 ----
 
-`link:../../jsdoc/module-vertx-js_future-Future.html#compose[compose]` can be used for chaining futures:
+While `all` and `any` are implementing concurrent composition, `link:../../jsdoc/module-vertx-js_future-Future.html#compose[compose]` can be used
+for chaining futures (so sequential composition).
 
 [source,js]
 ----
@@ -431,20 +438,40 @@ var fs = vertx.fileSystem();
 var fut1 = Future.future();
 
 fs.createFile("/foo", fut1.completer());
-fut1.compose(function (v) {
 
+fut1.compose(function (v) {
+  // When the file is created (fut1), execute this:
   var fut2 = Future.future();
   fs.writeFile("/foo", Buffer.buffer(), fut2.completer());
-
-  // Compose fut1 with fut2
   return fut2
 }).compose(function (v) {
-
-  // Compose fut1 with fut2 and fut3
+  // When the file is written (fut2), execute this:
   fs.move("/foo", "/bar", startFuture.completer());
 }, startFuture);
 
 ----
+
+In this example, 3 operations are chained:
+
+1. a file is created (`fut1`)
+2. something is written in the file (`fut2`)
+3. the file is moved (`fut3`)
+
+When these 3 steps are successful, the final future (`startFuture`) is completed with a success. However, if one
+of the steps fails, the final future is completed with a failure.
+
+This example uses:
+
+* `link:../../jsdoc/module-vertx-js_future-Future.html#compose[compose]`: when the current future completes,
+run the given function, that returns a future. When this returned future completes, it completes the composition.
+* `link:../../jsdoc/module-vertx-js_future-Future.html#compose[compose]`: when the current future
+completes, run the given handler that completes the given `future` (next).
+
+In this second case, the `Handler` should complete the `next` future to report its success or
+failure.
+
+You can use `link:../../jsdoc/module-vertx-js_future-Future.html#completer[completer]` that completes a future with the operation result or
+failure. It avoids having to write the _traditional_: `if success then complete the future else fail the future`.
 
 == Verticles
 
