@@ -1,44 +1,96 @@
-var stdout = java.lang.System.out;
-var stderr = java.lang.System.err;
+'use strict';
 
-/**
- * A simple console object that can be used to print log messages
- * errors, and warnings.
- * @example
- *
- * console.log('Hello standard out');
- * console.warn('Warning standard error');
- * console.error('Alert! Alert!');
- *
- */
-var console = {
+var formatRegExp = /%[sdj%]/g;
 
-  /**
-   * Log the msg to STDOUT.
-   *
-   * @param {string} msg The message to log to standard out.
-   */
-  log: function(msg) {
-    stdout.println(msg);
-  },
-
-  /**
-   * Log the msg to STDERR
-   *
-   * @param {string} msg The message to log with a warning to standard error.
-   */
-  warn: function(msg) {
-    stderr.println(msg);
-  },
-
-  /**
-   * Log the msg to STDERR
-   *
-   * @param {string} msg The message to log with a warning alert to standard error.
-   */
-  error: function(msg) {
-    stderr.println(msg);
+function format(f) {
+  if (typeof f !== 'string') {
+    var objects = [];
+    for (var index = 0; index < arguments.length; index++) {
+      objects.push(inspect(arguments[index]));
+    }
+    return objects.join(' ');
   }
+
+  if (arguments.length === 1) return f;
+
+  var i = 1;
+  var args = arguments;
+  var len = args.length;
+  var str = String(f).replace(formatRegExp, function(x) {
+    if (x === '%%') return '%';
+    if (i >= len) return x;
+    switch (x) {
+      case '%s': return String(args[i++]);
+      case '%d': return Number(args[i++]);
+      case '%j':
+        try {
+          return JSON.stringify(args[i++]);
+        } catch (_) {
+          return '[Circular]';
+        }
+        // falls through
+      default:
+        return x;
+    }
+  });
+  for (var x = args[i]; i < len; x = args[++i]) {
+    if (x === null || (typeof x !== 'object' && typeof x !== 'symbol')) {
+      str += ' ' + x;
+    } else {
+      str += ' ' + inspect(x);
+    }
+  }
+  return str;
+}
+
+function Console(stdout, stderr) {
+  if (!(this instanceof Console)) {
+    return new Console(stdout, stderr);
+  }
+  if (!stdout || !(stdout instanceof java.io.PrintStream)) {
+    throw new TypeError('Console expects a java.io.PrintStream instance');
+  }
+  if (!stderr) {
+    stderr = stdout;
+  } else if (!(stderr instanceof java.io.PrintStream)) {
+    throw new TypeError('Console expects java.io.PrintStream instances');
+  }
+
+  var prop = {
+    writable: true,
+    enumerable: false,
+    configurable: true
+  };
+  prop.value = stdout;
+  Object.defineProperty(this, '_stdout', prop);
+  prop.value = stderr;
+  Object.defineProperty(this, '_stderr', prop);
+  prop.value = {};
+  Object.defineProperty(this, '_times', prop);
+
+  // bind the prototype functions to this Console instance
+  var keys = Object.keys(Console.prototype);
+  for (var v = 0; v < keys.length; v++) {
+    var k = keys[v];
+    this[k] = this[k].bind(this);
+  }
+}
+
+Console.prototype.log = function() {
+  this._stdout.println(format.apply(null, arguments));
 };
 
-module.exports = console;
+
+Console.prototype.info = Console.prototype.log;
+
+
+Console.prototype.warn = function() {
+  this._stderr.println(format.apply(null, arguments));
+};
+
+
+Console.prototype.error = Console.prototype.warn;
+
+
+module.exports = new Console(java.lang.System.out, java.lang.System.err);
+module.exports.Console = Console;

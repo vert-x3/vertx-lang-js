@@ -5,6 +5,22 @@ if (typeof console !== 'object') {
   throw "No console global";
 }
 
+if (typeof console.log !== 'function') {
+  throw "No console.log";
+}
+
+if (typeof console.info !== 'function') {
+  throw "No console.info";
+}
+
+if (typeof console.warn !== 'function') {
+  throw "No console.warn";
+}
+
+if (typeof console.error !== 'function') {
+  throw "No console.error";
+}
+
 if (typeof require !== 'function') {
   throw "No require global";
 }
