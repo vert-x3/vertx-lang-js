@@ -431,6 +431,20 @@ var TestInterface = function(j_val) {
   /**
 
    @public
+   @param a {GenericRefedInterface} 
+   @param b {GenericRefedInterface} 
+   @param c {GenericRefedInterface} 
+   */
+  this.methodWithGenericUserTypes = function(a, b, c) {
+    var __args = arguments;
+    if (__args.length === 3 && typeof __args[0] === 'object' && __args[0]._jdel && typeof __args[1] === 'object' && __args[1]._jdel && typeof __args[2] === 'object' && __args[2]._jdel) {
+      j_testInterface["methodWithGenericUserTypes(io.vertx.codegen.testmodel.GenericRefedInterface,io.vertx.codegen.testmodel.GenericRefedInterface,io.vertx.codegen.testmodel.GenericRefedInterface)"](a._jdel, b._jdel, c._jdel);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
    @param str {string} 
    @param obj {Object} 
    */

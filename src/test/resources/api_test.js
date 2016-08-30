@@ -2,6 +2,8 @@ var Assert = org.junit.Assert;
 
 var TestInterface = require('testmodel-js/test_interface');
 var RefedInterface1 = require('testmodel-js/refed_interface1');
+var GenericRefedInterface = require('testmodel-js/generic_refed_interface');
+var ReifiedGenericRefedInterface = require('testmodel-js/reified_generic_refed_interface');
 var Factory = require('testmodel-js/factory');
 var SubInterface = require('acme-js/sub_interface');
 var MyInterface = require('acme-js/my_interface');
@@ -9,6 +11,9 @@ var MyInterface = require('acme-js/my_interface');
 var obj = new TestInterface(new Packages.io.vertx.codegen.testmodel.TestInterfaceImpl());
 var refed_obj = new RefedInterface1(new Packages.io.vertx.codegen.testmodel.RefedInterface1Impl());
 var refed_obj2 = new RefedInterface1(new Packages.io.vertx.codegen.testmodel.RefedInterface1Impl());
+var generic_refed_obj = new GenericRefedInterface(new Packages.io.vertx.codegen.testmodel.GenericRefedInterfaceImpl());
+var generic_refed_obj1 = new GenericRefedInterface(new Packages.io.vertx.codegen.testmodel.GenericRefedInterfaceImpl());
+var reified_generic_refed_obj = new ReifiedGenericRefedInterface(new Packages.io.vertx.codegen.testmodel.ReifiedGenericRefedInterfaceImpl());
 
 var NullableTCK = require('testmodel-js/nullable_tck');
 var nullableTCK = new NullableTCK(new Packages.io.vertx.codegen.testmodel.NullableTCKImpl());
@@ -199,6 +204,14 @@ function testMethodWithHandlerAsyncResultBasicTypesFails() {
 function testMethodWithUserTypes() {
   refed_obj.setString("aardvarks");
   obj.methodWithUserTypes(refed_obj);
+}
+
+function methodWithGenericUserTypes() {
+  generic_refed_obj.setValue(null);
+  generic_refed_obj1.setValue("aardvarks");
+  refed_obj.setString("aardvarks");
+  reified_generic_refed_obj.setValue(refed_obj);
+  obj.methodWithGenericUserTypes(generic_refed_obj, generic_refed_obj1, reified_generic_refed_obj);
 }
 
 function testObjectParam() {

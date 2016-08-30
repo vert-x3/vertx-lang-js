@@ -356,11 +356,13 @@ NOTE: the configuration is set when the worker pool is created
 == Async coordination
 
 Coordination of multiple asynchronous results can be achieved with Vert.x `link:../../jsdoc/module-vertx-js_future-Future.html[futures]`. It
-supports concurrent composition (run several async operations in parallel and join) and sequential composition
+supports concurrent composition (run several async operations in parallel) and sequential composition
 (chain async operations).
 
+=== Concurrent composition
+
 `link:../../jsdoc/module-vertx-js_composite_future-CompositeFuture.html#all[CompositeFuture.all]` takes several futures arguments (up to 6) and returns a future that is
-_succeeded_ when all the futures are and _failed_ otherwise:
+_succeeded_ when all the futures are and _failed_ when at least one of the futures is failed:
 
 [source,js]
 ----
@@ -382,30 +384,28 @@ CompositeFuture.all(httpServerFuture, netServerFuture).setHandler(function (ar, 
 
 ----
 
-The operations run concurrently, and are joined. The `Handler` attached to the returned future is
-invoked upon completion of the composition. If one of the operation fails (one of the passed future is marked
-as a failure), the resulting future is marked as failed too. If all the operations succeed, the resulting future
-is completed with a success.
+The operations run concurrently, the `Handler` attached to the returned future is invoked upon
+completion of the composition. When one of the operation fails (one of the passed future is marked as a failure),
+the resulting future is marked as failed too. When all the operations succeed, the resulting future is completed
+with a success.
 
 Alternatively, you can pass a list (potentially empty) of futures:
 
 [source,js]
 ----
 var CompositeFuture = require("vertx-js/composite_future");
-CompositeFuture.all([f1, f2, f3]);
+CompositeFuture.all([future1, future2, future3]);
 
 ----
 
-While the `all` composition _waits_ until all futures are completed (or one fails), the `any` composition
-_waits_ for the first completed future. `link:../../jsdoc/module-vertx-js_composite_future-CompositeFuture.html#any[CompositeFuture.any]` takes several futures arguments
-(up to 6) and returns a future that is _succeeded_ if one of the futures is, and _failed_ otherwise:
+While the `all` composition _waits_ until all futures are successful (or one fails), the `any` composition
+_waits_ for the first succeeded future. `link:../../jsdoc/module-vertx-js_composite_future-CompositeFuture.html#any[CompositeFuture.any]` takes several futures
+arguments (up to 6) and returns a future that is succeeded when one of the futures is, and failed when
+all the futures are failed:
 
 [source,js]
 ----
-var Future = require("vertx-js/future");
 var CompositeFuture = require("vertx-js/composite_future");
-var future1 = Future.future();
-var future2 = Future.future();
 CompositeFuture.any(future1, future2).setHandler(function (ar, ar_err) {
   if (ar_err == null) {
     // At least one is succeeded
@@ -425,6 +425,35 @@ CompositeFuture.any([f1, f2, f3]);
 
 ----
 
+The `join` composition _waits_ until all futures are completed, either with a success or a failure.
+`link:../../jsdoc/module-vertx-js_composite_future-CompositeFuture.html#join[CompositeFuture.join]` takes several futures arguments (up to 6) and returns a future that is
+succeeded when all the futures are succeeded, and failed when all the futures are completed and at least one of
+them is failed:
+
+[source,js]
+----
+var CompositeFuture = require("vertx-js/composite_future");
+CompositeFuture.join(future1, future2, future3).setHandler(function (ar, ar_err) {
+  if (ar_err == null) {
+    // All succeeded
+  } else {
+    // All completed and at least one failed
+  }
+});
+
+----
+
+A list of futures can be used also:
+
+[source,js]
+----
+var CompositeFuture = require("vertx-js/composite_future");
+CompositeFuture.join([future1, future2, future3]);
+
+----
+
+=== Sequential composition
+
 While `all` and `any` are implementing concurrent composition, `link:../../jsdoc/module-vertx-js_future-Future.html#compose[compose]` can be used
 for chaining futures (so sequential composition).
 
@@ -434,9 +463,9 @@ var Future = require("vertx-js/future");
 var Buffer = require("vertx-js/buffer");
 
 var fs = vertx.fileSystem();
+var startFuture = Future.future();
 
 var fut1 = Future.future();
-
 fs.createFile("/foo", fut1.completer());
 
 fut1.compose(function (v) {
@@ -446,7 +475,8 @@ fut1.compose(function (v) {
   return fut2
 }).compose(function (v) {
   // When the file is written (fut2), execute this:
-  fs.move("/foo", "/bar", startFuture.completer());
+  var fut3 = Future.future();
+  fs.move("/foo", "/bar", fut3.completer());
 }, startFuture);
 
 ----

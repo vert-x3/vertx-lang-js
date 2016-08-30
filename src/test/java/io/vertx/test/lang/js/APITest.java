@@ -49,6 +49,11 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void methodWithGenericUserTypes() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testObjectParam() throws Exception {
     runTest();
   }
