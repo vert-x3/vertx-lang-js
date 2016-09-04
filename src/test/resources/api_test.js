@@ -1983,6 +1983,11 @@ function testThrowableParam(undefined) {
   }
 }
 
+function testSuperMethodOverloadedBySubclass() {
+  Assert.assertEquals(0, obj.superMethodOverloadedBySubclass(), 0);
+  Assert.assertEquals(1, obj.superMethodOverloadedBySubclass("sstring_arg"), 0);
+}
+
 // TODO should test more than just List<Long>
 function testMethodWithListParams() {
   obj.methodWithListParams(["foo", "bar"], [2, 3], [12, 13], [1234, 1345], [123, 456], [{foo: "bar"}, {eek: "wibble"}], [["foo"], ["blah"]], [refed_obj.setString("foo"), refed_obj2.setString("bar")], [{"foo":"String 1","bar":1,"wibble":1.1}, {"foo":"String 2","bar": 2,"wibble": 2.2}], ["JULIEN","TIM"]);

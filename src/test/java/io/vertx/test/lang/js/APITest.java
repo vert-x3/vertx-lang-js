@@ -681,6 +681,11 @@ public class APITest extends JSTestBase {
   }
 
   @Test
+  public void testSuperMethodOverloadedBySubclass() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testCustomModule() throws Exception {
     runTest();
   }
