@@ -74,6 +74,41 @@ var TestInterface = function(j_val) {
    @param ch {string} 
    @param str {string} 
    */
+  this.superMethodWithBasicParams = function(b, s, i, l, f, d, bool, ch, str) {
+    var __args = arguments;
+    if (__args.length === 9 && typeof __args[0] ==='number' && typeof __args[1] ==='number' && typeof __args[2] ==='number' && typeof __args[3] ==='number' && typeof __args[4] ==='number' && typeof __args[5] ==='number' && typeof __args[6] ==='boolean' && typeof __args[7] ==='string' && typeof __args[8] === 'string') {
+      j_testInterface["superMethodWithBasicParams(byte,short,int,long,float,double,boolean,char,java.lang.String)"](b, s, i, l, f, d, bool, ch, str);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param s {string} 
+   @return {number}
+   */
+  this.superMethodOverloadedBySubclass = function() {
+    var __args = arguments;
+    if (__args.length === 0) {
+      return j_testInterface["superMethodOverloadedBySubclass()"]();
+    }  else if (__args.length === 1 && typeof __args[0] === 'string') {
+      return j_testInterface["superMethodOverloadedBySubclass(java.lang.String)"](__args[0]);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param b {number} 
+   @param s {number} 
+   @param i {number} 
+   @param l {number} 
+   @param f {number} 
+   @param d {number} 
+   @param bool {boolean} 
+   @param ch {string} 
+   @param str {string} 
+   */
   this.methodWithBasicParams = function(b, s, i, l, f, d, bool, ch, str) {
     var __args = arguments;
     if (__args.length === 9 && typeof __args[0] ==='number' && typeof __args[1] ==='number' && typeof __args[2] ==='number' && typeof __args[3] ==='number' && typeof __args[4] ==='number' && typeof __args[5] ==='number' && typeof __args[6] ==='boolean' && typeof __args[7] ==='string' && typeof __args[8] === 'string') {
