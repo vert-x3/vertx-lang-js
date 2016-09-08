@@ -6,7 +6,7 @@ function format(f) {
   if (typeof f !== 'string') {
     var objects = [];
     for (var index = 0; index < arguments.length; index++) {
-      objects.push(inspect(arguments[index]));
+      objects.push(JSON.stringify(arguments[index]));
     }
     return objects.join(' ');
   }
@@ -37,7 +37,7 @@ function format(f) {
     if (x === null || (typeof x !== 'object' && typeof x !== 'symbol')) {
       str += ' ' + x;
     } else {
-      str += ' ' + inspect(x);
+      str += ' ' + JSON.stringify(x);
     }
   }
   return str;
