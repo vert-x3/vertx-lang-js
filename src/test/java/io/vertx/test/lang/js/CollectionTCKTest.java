@@ -29,21 +29,6 @@ public class CollectionTCKTest extends JSTestBase {
   }
 
   @Test
-  public void testListOfDataObjectsParam() throws Exception {
-    runTest();
-  }
-
-  @Test
-  public void testSetOfDataObjectsParam() throws Exception {
-    runTest();
-  }
-
-  @Test
-  public void testMapReturn() throws Exception {
-    runTest();
-  }
-
-  @Test
   public void testMapStringReturn() throws Exception {
     runTest();
   }
@@ -70,11 +55,6 @@ public class CollectionTCKTest extends JSTestBase {
 
   @Test
   public void testMapLongReturn() throws Exception {
-    runTest();
-  }
-
-  @Test
-  public void testMapNullReturn() throws Exception {
     runTest();
   }
 
@@ -204,22 +184,12 @@ public class CollectionTCKTest extends JSTestBase {
   }
 
   @Test
-  public void testMethodWithHandlerListNullJsonObject() throws Exception {
-    runTest();
-  }
-
-  @Test
   public void testMethodWithHandlerListComplexJsonObject() throws Exception {
     runTest();
   }
 
   @Test
   public void testMethodWithHandlerSetJsonObject() throws Exception {
-    runTest();
-  }
-
-  @Test
-  public void testMethodWithHandlerSetNullJsonObject() throws Exception {
     runTest();
   }
 
@@ -234,11 +204,6 @@ public class CollectionTCKTest extends JSTestBase {
   }
 
   @Test
-  public void testMethodWithHandlerListNullJsonArray() throws Exception {
-    runTest();
-  }
-
-  @Test
   public void testMethodWithHandlerListComplexJsonArray() throws Exception {
     runTest();
   }
@@ -249,17 +214,7 @@ public class CollectionTCKTest extends JSTestBase {
   }
 
   @Test
-  public void testMethodWithHandlerSetNullJsonArray() throws Exception {
-    runTest();
-  }
-
-  @Test
   public void testMethodWithHandlerSetComplexJsonArray() throws Exception {
-    runTest();
-  }
-
-  @Test
-  public void testMethodWithHandlerNullListDataObject() throws Exception {
     runTest();
   }
 
@@ -270,11 +225,6 @@ public class CollectionTCKTest extends JSTestBase {
 
   @Test
   public void testMethodWithHandlerSetDataObject() throws Exception {
-    runTest();
-  }
-
-  @Test
-  public void testMethodWithHandlerNullSetDataObject() throws Exception {
     runTest();
   }
 
@@ -309,17 +259,7 @@ public class CollectionTCKTest extends JSTestBase {
   }
 
   @Test
-  public void testMethodWithHandlerAsyncResultListNullJsonObject() throws Exception {
-    runTest();
-  }
-
-  @Test
   public void testMethodWithHandlerAsyncResultSetJsonObject() throws Exception {
-    runTest();
-  }
-
-  @Test
-  public void testMethodWithHandlerAsyncResultSetNullJsonObject() throws Exception {
     runTest();
   }
 
@@ -334,11 +274,6 @@ public class CollectionTCKTest extends JSTestBase {
   }
 
   @Test
-  public void testMethodWithHandlerAsyncResultListNullJsonArray() throws Exception {
-    runTest();
-  }
-
-  @Test
   public void testMethodWithHandlerAsyncResultListComplexJsonArray() throws Exception {
     runTest();
   }
@@ -349,17 +284,7 @@ public class CollectionTCKTest extends JSTestBase {
   }
 
   @Test
-  public void testMethodWithHandlerAsyncResultSetNullJsonArray() throws Exception {
-    runTest();
-  }
-
-  @Test
   public void testMethodWithHandlerAsyncResultSetComplexJsonArray() throws Exception {
-    runTest();
-  }
-
-  @Test
-  public void testMethodWithHandlerAsyncResultNullListDataObject() throws Exception {
     runTest();
   }
 

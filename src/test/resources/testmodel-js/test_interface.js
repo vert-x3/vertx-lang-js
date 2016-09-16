@@ -491,18 +491,6 @@ var TestInterface = function(j_val) {
   /**
 
    @public
-   @param dataObject {Object} 
-   */
-  this.methodWithNullDataObjectParam = function(dataObject) {
-    var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'object') {
-      j_testInterface["methodWithNullDataObjectParam(io.vertx.codegen.testmodel.TestDataObject)"](dataObject != null ? new TestDataObject(new JsonObject(JSON.stringify(dataObject))) : null);
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-
-   @public
    @param handler {function} 
    */
   this.methodWithHandlerUserTypes = function(handler) {
@@ -1107,23 +1095,6 @@ var TestInterface = function(j_val) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] === 'function' && typeof __args[1] === 'function') {
       j_testInterface["methodWithHandlerJson(io.vertx.core.Handler,io.vertx.core.Handler)"](function(jVal) {
-      jsonObjectHandler(utils.convReturnJson(jVal));
-    }, function(jVal) {
-      jsonArrayHandler(utils.convReturnJson(jVal));
-    });
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-
-   @public
-   @param jsonObjectHandler {function} 
-   @param jsonArrayHandler {function} 
-   */
-  this.methodWithHandlerNullJson = function(jsonObjectHandler, jsonArrayHandler) {
-    var __args = arguments;
-    if (__args.length === 2 && typeof __args[0] === 'function' && typeof __args[1] === 'function') {
-      j_testInterface["methodWithHandlerNullJson(io.vertx.core.Handler,io.vertx.core.Handler)"](function(jVal) {
       jsonObjectHandler(utils.convReturnJson(jVal));
     }, function(jVal) {
       jsonArrayHandler(utils.convReturnJson(jVal));

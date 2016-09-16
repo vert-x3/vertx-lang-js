@@ -181,11 +181,6 @@ public class APITest extends JSTestBase {
   }
 
   @Test
-  public void testNullJsonHandlerParams() throws Exception {
-    runTest();
-  }
-
-  @Test
   public void testComplexJsonHandlerParams() throws Exception {
     runTest();
   }

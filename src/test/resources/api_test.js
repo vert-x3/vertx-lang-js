@@ -763,21 +763,6 @@ function testJsonHandlerParams() {
   Assert.assertEquals(2, count, 0);
 }
 
-function testNullJsonHandlerParams() {
-
-    var count = 0;
-    obj.methodWithHandlerNullJson(function(jsonObject) {
-        Assert.assertTrue(typeof jsonObject === 'object')
-        Assert.assertNull(jsonObject);
-        count++;
-    }, function(jsonArray) {
-        Assert.assertTrue(typeof jsonArray === 'object')
-        Assert.assertNull(jsonArray);
-        count++;
-    });
-    Assert.assertEquals(2, count, 0);
-}
-
 function testComplexJsonHandlerParams() {
   var count = 0;
   obj.methodWithHandlerComplexJson(function(jsonObject) {

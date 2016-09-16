@@ -23,38 +23,6 @@ var tck = new CollectionTCK(new Packages.io.vertx.codegen.testmodel.CollectionTC
 var refed_obj = new RefedInterface1(new Packages.io.vertx.codegen.testmodel.RefedInterface1Impl());
 var refed_obj2 = new RefedInterface1(new Packages.io.vertx.codegen.testmodel.RefedInterface1Impl());
 
-function testListOfDataObjectsParam() {
-  var dataObjects = [
-    {
-      foo: "hello",
-      bar: 123,
-      wibble: 1.23
-    },
-    {
-      foo: "world",
-      bar: 123,
-      wibble: 1.23
-    }
-  ];
-  tck.methodWithListOfDataObjectsParam(dataObjects);
-}
-
-function testSetOfDataObjectsParam() {
-  var dataObjects = [
-    {
-      foo: "hello",
-      bar: 123,
-      wibble: 1.23
-    },
-    {
-      foo: "world",
-      bar: 123,
-      wibble: 1.23
-    }
-  ];
-  tck.methodWithSetOfDataObjectsParam(dataObjects);
-}
-
 function testMethodWithHandlerListAndSet() {
   var count = 0;
   tck.methodWithHandlerListAndSet(function (listString) {
@@ -259,16 +227,6 @@ function testMethodWithHandlerListJsonObject() {
   Assert.assertEquals(1, count, 0);
 }
 
-function testMethodWithHandlerListNullJsonObject() {
-  var count = 0;
-  tck.methodWithHandlerListNullJsonObject(function (listJsonObject) {
-    Assert.assertTrue(typeof listJsonObject === 'object');
-    Assert.assertNull(listJsonObject[0]);
-    count++;
-  });
-  Assert.assertEquals(1, count, 0);
-}
-
 function testMethodWithHandlerListComplexJsonObject() {
   var count = 0;
   tck.methodWithHandlerListComplexJsonObject(function (listJsonObject) {
@@ -314,17 +272,6 @@ function testMethodWithHandlerAsyncResultListComplexJsonObject() {
   Assert.assertEquals(1, count, 0);
 }
 
-function testMethodWithHandlerAsyncResultListNullJsonObject() {
-  var count = 0;
-  tck.methodWithHandlerAsyncResultListNullJsonObject(function (listJsonObject, err) {
-    Assert.assertNull(err);
-    Assert.assertTrue(typeof listJsonObject === 'object');
-    Assert.assertNull(listJsonObject[0]);
-    count++;
-  });
-  Assert.assertEquals(1, count, 0);
-}
-
 function testMethodWithHandlerSetJsonObject() {
   var count = 0;
   tck.methodWithHandlerSetJsonObject(function (setJsonObject) {
@@ -333,16 +280,6 @@ function testMethodWithHandlerSetJsonObject() {
     Assert.assertEquals("stilton", setJsonObject[0].cheese);
     Assert.assertTrue(typeof setJsonObject[1] === 'object');
     Assert.assertEquals("tartan", setJsonObject[1].socks);
-    count++;
-  });
-  Assert.assertEquals(1, count, 0);
-}
-
-function testMethodWithHandlerSetNullJsonObject() {
-  var count = 0;
-  tck.methodWithHandlerSetNullJsonObject(function (setJsonObject) {
-    Assert.assertTrue(typeof setJsonObject === 'object');
-    Assert.assertNull(setJsonObject[0]);
     count++;
   });
   Assert.assertEquals(1, count, 0);
@@ -372,17 +309,6 @@ function testMethodWithHandlerAsyncResultSetJsonObject() {
     Assert.assertEquals("stilton", setJsonObject[0].cheese);
     Assert.assertTrue(typeof setJsonObject[1] === 'object');
     Assert.assertEquals("tartan", setJsonObject[1].socks);
-    count++;
-  });
-  Assert.assertEquals(1, count, 0);
-}
-
-function testMethodWithHandlerAsyncResultSetNullJsonObject() {
-  var count = 0;
-  tck.methodWithHandlerAsyncResultSetNullJsonObject(function (setJsonObject, err) {
-    Assert.assertNull(err);
-    Assert.assertTrue(typeof setJsonObject === 'object');
-    Assert.assertNull(setJsonObject[0]);
     count++;
   });
   Assert.assertEquals(1, count, 0);
@@ -421,16 +347,6 @@ function testMethodWithHandlerListJsonArray() {
   Assert.assertEquals(1, count, 0);
 }
 
-function testMethodWithHandlerListNullJsonArray() {
-  var count = 0;
-  tck.methodWithHandlerListNullJsonArray(function (listJsonArray) {
-    Assert.assertTrue(typeof listJsonArray === 'object');
-    Assert.assertNull(listJsonArray[0]);
-    count++;
-  });
-  Assert.assertEquals(1, count, 0);
-}
-
 function testMethodWithHandlerListComplexJsonArray() {
   var count = 0;
   tck.methodWithHandlerListComplexJsonArray(function (listJsonArray) {
@@ -459,17 +375,6 @@ function testMethodWithHandlerAsyncResultListJsonArray() {
     Assert.assertTrue(listJsonArray[1] instanceof Array);
     Assert.assertEquals("yellow", listJsonArray[1][0]);
     Assert.assertEquals("purple", listJsonArray[1][1]);
-    count++;
-  });
-  Assert.assertEquals(1, count, 0);
-}
-
-function testMethodWithHandlerAsyncResultListNullJsonArray() {
-  var count = 0;
-  tck.methodWithHandlerAsyncResultListNullJsonArray(function (listJsonArray, err) {
-    Assert.assertNull(err);
-    Assert.assertTrue(typeof listJsonArray === 'object');
-    Assert.assertNull(listJsonArray[0]);
     count++;
   });
   Assert.assertEquals(1, count, 0);
@@ -508,16 +413,6 @@ function testMethodWithHandlerSetJsonArray() {
   Assert.assertEquals(1, count, 0);
 }
 
-function testMethodWithHandlerSetNullJsonArray() {
-  var count = 0;
-  tck.methodWithHandlerSetNullJsonArray(function (setJsonArray) {
-    Assert.assertTrue(typeof setJsonArray === 'object');
-    Assert.assertNull(setJsonArray[0]);
-    count++;
-  });
-  Assert.assertEquals(1, count, 0);
-}
-
 function testMethodWithHandlerSetComplexJsonArray() {
   var count = 0;
   tck.methodWithHandlerSetComplexJsonArray(function (setJsonArray) {
@@ -546,17 +441,6 @@ function testMethodWithHandlerAsyncResultSetJsonArray() {
     Assert.assertTrue(setJsonArray[1] instanceof Array);
     Assert.assertEquals("yellow", setJsonArray[1][0]);
     Assert.assertEquals("purple", setJsonArray[1][1]);
-    count++;
-  });
-  Assert.assertEquals(1, count, 0);
-}
-
-function testMethodWithHandlerAsyncResultSetNullJsonArray() {
-  var count = 0;
-  tck.methodWithHandlerAsyncResultSetNullJsonArray(function (setJsonArray, err) {
-    Assert.assertNull(err);
-    Assert.assertTrue(typeof setJsonArray === 'object');
-    Assert.assertNull(setJsonArray[0]);
     count++;
   });
   Assert.assertEquals(1, count, 0);
@@ -597,16 +481,6 @@ function testMethodWithHandlerListDataObject() {
   Assert.assertEquals(1, count, 0);
 }
 
-function testMethodWithHandlerNullListDataObject() {
-  var count = 0;
-  tck.methodWithHandlerAsyncResultListNullDataObject(function (listDataObject) {
-    Assert.assertTrue(typeof listDataObject === 'object');
-    Assert.assertNull(listDataObject[0]);
-    count++;
-  });
-  Assert.assertEquals(1, count, 0);
-}
-
 function testMethodWithHandlerSetDataObject() {
   var count = 0;
   tck.methodWithHandlerAsyncResultSetDataObject(function (setDataObject) {
@@ -621,16 +495,6 @@ function testMethodWithHandlerSetDataObject() {
     Assert.assertEquals("String 2", setDataObject[1].foo);
     Assert.assertEquals(2, setDataObject[1].bar, 0);
     Assert.assertEquals(2.2, setDataObject[1].wibble, 0);
-    count++;
-  });
-  Assert.assertEquals(1, count, 0);
-}
-
-function testMethodWithHandlerNullSetDataObject() {
-  var count = 0;
-  tck.methodWithHandlerAsyncResultSetNullDataObject(function (setDataObject) {
-    Assert.assertTrue(typeof setDataObject === 'object');
-    Assert.assertNull(setDataObject[0]);
     count++;
   });
   Assert.assertEquals(1, count, 0);
@@ -656,17 +520,6 @@ function testMethodWithHandlerAsyncResultListDataObject() {
   Assert.assertEquals(1, count, 0);
 }
 
-function testMethodWithHandlerAsyncResultNullListDataObject() {
-  var count = 0;
-  tck.methodWithHandlerAsyncResultListNullDataObject(function (listDataObject, err) {
-    Assert.assertNull(err);
-    Assert.assertTrue(typeof listDataObject === 'object');
-    Assert.assertNull(listDataObject[0]);
-    count++;
-  });
-  Assert.assertEquals(1, count, 0);
-}
-
 function testMethodWithHandlerAsyncResultSetDataObject() {
   var count = 0;
   tck.methodWithHandlerAsyncResultSetDataObject(function (setDataObject, err) {
@@ -682,17 +535,6 @@ function testMethodWithHandlerAsyncResultSetDataObject() {
     Assert.assertEquals("String 2", setDataObject[1].foo);
     Assert.assertEquals(2, setDataObject[1].bar, 0);
     Assert.assertEquals(2.2, setDataObject[1].wibble, 0);
-    count++;
-  });
-  Assert.assertEquals(1, count, 0);
-}
-
-function testMethodWithHandlerAsyncResultNullSetDataObject() {
-  var count = 0;
-  tck.methodWithHandlerAsyncResultSetNullDataObject(function (setDataObject, err) {
-    Assert.assertNull(err);
-    Assert.assertTrue(typeof setDataObject === 'object');
-    Assert.assertNull(setDataObject[0]);
     count++;
   });
   Assert.assertEquals(1, count, 0);
@@ -917,11 +759,6 @@ function testMapLongReturn() {
   Assert.assertTrue(123 === map["foo"]);
   Assert.assertTrue(123 === map.foo);
   Assert.assertTrue(typeof map["foo"] === 'number');
-}
-
-function testMapNullReturn() {
-  var map = tck.methodWithNullMapReturn();
-  Assert.assertTrue(map === null);
 }
 
 function testListStringReturn() {

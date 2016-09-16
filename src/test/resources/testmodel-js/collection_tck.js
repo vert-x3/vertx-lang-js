@@ -97,30 +97,6 @@ var CollectionTCK = function(j_val) {
   /**
 
    @public
-   @param dataObjects {Array.<Object>} 
-   */
-  this.methodWithListOfDataObjectsParam = function(dataObjects) {
-    var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
-      j_collectionTCK["methodWithListOfDataObjectsParam(java.util.List)"](utils.convParamListDataObject(dataObjects, function(json) { return new TestDataObject(json); }));
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-
-   @public
-   @param dataObjects {Array.<Object>} 
-   */
-  this.methodWithSetOfDataObjectsParam = function(dataObjects) {
-    var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
-      j_collectionTCK["methodWithSetOfDataObjectsParam(java.util.Set)"](utils.convParamSetDataObject(dataObjects, function(json) { return new TestDataObject(json); }));
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-
-   @public
    @param listStringHandler {function} 
    @param listIntHandler {function} 
    @param setStringHandler {function} 
@@ -442,90 +418,6 @@ var CollectionTCK = function(j_val) {
    @public
    @param listHandler {function} 
    */
-  this.methodWithHandlerListNullJsonObject = function(listHandler) {
-    var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_collectionTCK["methodWithHandlerListNullJsonObject(io.vertx.core.Handler)"](function(jVal) {
-      listHandler(utils.convReturnListSetJson(jVal));
-    });
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-
-   @public
-   @param listHandler {function} 
-   */
-  this.methodWithHandlerSetNullJsonObject = function(listHandler) {
-    var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_collectionTCK["methodWithHandlerSetNullJsonObject(io.vertx.core.Handler)"](function(jVal) {
-      listHandler(utils.convReturnListSetJson(jVal));
-    });
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-
-   @public
-   @param listHandler {function} 
-   */
-  this.methodWithHandlerListNullJsonArray = function(listHandler) {
-    var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_collectionTCK["methodWithHandlerListNullJsonArray(io.vertx.core.Handler)"](function(jVal) {
-      listHandler(utils.convReturnListSetJson(jVal));
-    });
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-
-   @public
-   @param listHandler {function} 
-   */
-  this.methodWithHandlerSetNullJsonArray = function(listHandler) {
-    var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_collectionTCK["methodWithHandlerSetNullJsonArray(io.vertx.core.Handler)"](function(jVal) {
-      listHandler(utils.convReturnListSetJson(jVal));
-    });
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-
-   @public
-   @param listHandler {function} 
-   */
-  this.methodWithHandlerListNullDataObject = function(listHandler) {
-    var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_collectionTCK["methodWithHandlerListNullDataObject(io.vertx.core.Handler)"](function(jVal) {
-      listHandler(utils.convReturnListSetDataObject(jVal));
-    });
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-
-   @public
-   @param setHandler {function} 
-   */
-  this.methodWithHandlerSetNullDataObject = function(setHandler) {
-    var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_collectionTCK["methodWithHandlerSetNullDataObject(io.vertx.core.Handler)"](function(jVal) {
-      setHandler(utils.convReturnListSetDataObject(jVal));
-    });
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-
-   @public
-   @param listHandler {function} 
-   */
   this.methodWithHandlerAsyncResultListVertxGen = function(listHandler) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'function') {
@@ -812,114 +704,6 @@ var CollectionTCK = function(j_val) {
   /**
 
    @public
-   @param listHandler {function} 
-   */
-  this.methodWithHandlerAsyncResultListNullJsonObject = function(listHandler) {
-    var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_collectionTCK["methodWithHandlerAsyncResultListNullJsonObject(io.vertx.core.Handler)"](function(ar) {
-      if (ar.succeeded()) {
-        listHandler(utils.convReturnListSetJson(ar.result()), null);
-      } else {
-        listHandler(null, ar.cause());
-      }
-    });
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-
-   @public
-   @param listHandler {function} 
-   */
-  this.methodWithHandlerAsyncResultSetNullJsonObject = function(listHandler) {
-    var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_collectionTCK["methodWithHandlerAsyncResultSetNullJsonObject(io.vertx.core.Handler)"](function(ar) {
-      if (ar.succeeded()) {
-        listHandler(utils.convReturnListSetJson(ar.result()), null);
-      } else {
-        listHandler(null, ar.cause());
-      }
-    });
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-
-   @public
-   @param listHandler {function} 
-   */
-  this.methodWithHandlerAsyncResultListNullJsonArray = function(listHandler) {
-    var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_collectionTCK["methodWithHandlerAsyncResultListNullJsonArray(io.vertx.core.Handler)"](function(ar) {
-      if (ar.succeeded()) {
-        listHandler(utils.convReturnListSetJson(ar.result()), null);
-      } else {
-        listHandler(null, ar.cause());
-      }
-    });
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-
-   @public
-   @param listHandler {function} 
-   */
-  this.methodWithHandlerAsyncResultSetNullJsonArray = function(listHandler) {
-    var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_collectionTCK["methodWithHandlerAsyncResultSetNullJsonArray(io.vertx.core.Handler)"](function(ar) {
-      if (ar.succeeded()) {
-        listHandler(utils.convReturnListSetJson(ar.result()), null);
-      } else {
-        listHandler(null, ar.cause());
-      }
-    });
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-
-   @public
-   @param listHandler {function} 
-   */
-  this.methodWithHandlerAsyncResultListNullDataObject = function(listHandler) {
-    var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_collectionTCK["methodWithHandlerAsyncResultListNullDataObject(io.vertx.core.Handler)"](function(ar) {
-      if (ar.succeeded()) {
-        listHandler(utils.convReturnListSetDataObject(ar.result()), null);
-      } else {
-        listHandler(null, ar.cause());
-      }
-    });
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-
-   @public
-   @param setHandler {function} 
-   */
-  this.methodWithHandlerAsyncResultSetNullDataObject = function(setHandler) {
-    var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_collectionTCK["methodWithHandlerAsyncResultSetNullDataObject(io.vertx.core.Handler)"](function(ar) {
-      if (ar.succeeded()) {
-        setHandler(utils.convReturnListSetDataObject(ar.result()), null);
-      } else {
-        setHandler(null, ar.cause());
-      }
-    });
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-
-   @public
    @param handler {function} 
    @return {Array.<string>}
    */
@@ -1133,19 +917,6 @@ var CollectionTCK = function(j_val) {
 
    @return {Array.<string>}
    */
-  this.methodWithNullMapReturn = function() {
-    var __args = arguments;
-    if (__args.length === 0) {
-      return utils.convReturnMap(j_collectionTCK["methodWithNullMapReturn()"]());
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-
-   @public
-
-   @return {Array.<string>}
-   */
   this.methodWithListStringReturn = function() {
     var __args = arguments;
     if (__args.length === 0) {
@@ -1263,19 +1034,6 @@ var CollectionTCK = function(j_val) {
 
    @return {Array.<string>}
    */
-  this.methodWithNullListReturn = function() {
-    var __args = arguments;
-    if (__args.length === 0) {
-      return j_collectionTCK["methodWithNullListReturn()"]();
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-
-   @public
-
-   @return {Array.<string>}
-   */
   this.methodWithSetStringReturn = function() {
     var __args = arguments;
     if (__args.length === 0) {
@@ -1384,19 +1142,6 @@ var CollectionTCK = function(j_val) {
     var __args = arguments;
     if (__args.length === 0) {
       return utils.convReturnListSetEnum(j_collectionTCK["methodWithSetEnumReturn()"]());
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-
-   @public
-
-   @return {Array.<string>}
-   */
-  this.methodWithNullSetReturn = function() {
-    var __args = arguments;
-    if (__args.length === 0) {
-      return utils.convReturnSet(j_collectionTCK["methodWithNullSetReturn()"]());
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
