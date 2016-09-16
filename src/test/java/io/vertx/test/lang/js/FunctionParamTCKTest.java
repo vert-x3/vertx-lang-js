@@ -5,11 +5,11 @@ import org.junit.Test;
 /**
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
-public class FunctionParamTest extends JSTestBase {
+public class FunctionParamTCKTest extends JSTestBase {
 
   @Override
   protected String getTestFile() {
-    return "function_param_test.js";
+    return "function_param_tck_test.js";
   }
 
   @Test

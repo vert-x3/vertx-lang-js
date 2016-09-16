@@ -25,7 +25,7 @@ public class CollectionTCKTest extends JSTestBase {
 
   @Override
   protected String getTestFile() {
-    return "collection_test.js";
+    return "collection_tck_test.js";
   }
 
   @Test
