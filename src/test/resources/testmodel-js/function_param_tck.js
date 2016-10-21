@@ -125,7 +125,7 @@ var FunctionParamTCK = function(j_val) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] === 'object' && __args[0]._jdel && typeof __args[1] === 'function') {
       return j_functionParamTCK["methodWithUserTypeParam(io.vertx.codegen.testmodel.RefedInterface1,java.util.function.Function)"](arg._jdel, function(jVal) {
-      var jRet = func(utils.convReturnVertxGen(jVal, RefedInterface1));
+      var jRet = func(utils.convReturnVertxGen(RefedInterface1, jVal));
       return jRet;
     });
     } else throw new TypeError('function invoked with invalid arguments');
@@ -256,7 +256,7 @@ var FunctionParamTCK = function(j_val) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] !== 'function' && typeof __args[1] === 'function') {
       return j_functionParamTCK["methodWithGenericUserTypeParam(java.lang.Object,java.util.function.Function)"](utils.convParamTypeUnknown(t), function(jVal) {
-      var jRet = func(utils.convReturnVertxGen(jVal, GenericRefedInterface));
+      var jRet = func(utils.convReturnVertxGen(GenericRefedInterface, jVal, undefined));
       return jRet;
     });
     } else throw new TypeError('function invoked with invalid arguments');
@@ -452,7 +452,7 @@ var FunctionParamTCK = function(j_val) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'function') {
       return j_functionParamTCK["methodWithGenericUserTypeReturn(java.util.function.Function)"](function(jVal) {
-      var jRet = func(utils.convReturnVertxGen(jVal, GenericRefedInterface));
+      var jRet = func(utils.convReturnVertxGen(GenericRefedInterface, jVal, undefined));
       return jRet._jdel;
     });
     } else throw new TypeError('function invoked with invalid arguments');
@@ -496,5 +496,12 @@ var FunctionParamTCK = function(j_val) {
   this._jdel = j_functionParamTCK;
 };
 
+FunctionParamTCK._jclass = utils.getJavaClass("io.vertx.codegen.testmodel.FunctionParamTCK");
+FunctionParamTCK._create = function(jdel) {
+  // A bit of jiggery pokery to create the object given a reference to the constructor function
+  var obj = Object.create(FunctionParamTCK.prototype, {});
+  FunctionParamTCK.apply(obj, arguments);
+  return obj;
+}
 // We export the Constructor function
 module.exports = FunctionParamTCK;

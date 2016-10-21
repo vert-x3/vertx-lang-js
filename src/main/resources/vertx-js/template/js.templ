@@ -65,7 +65,24 @@ utils.convReturnLong(@includeNamed{templ})
 @includeNamed{templ}
 		@end{}
 	@else{returnType.kind == CLASS_API}
-utils.convReturnVertxGen(@includeNamed{templ}, @{returnType.raw.simpleName})
+utils.convReturnVertxGen(@{returnType.raw.simpleName}, @includeNamed{templ}
+		@if{returnType.parameterized}
+			@foreach{arg:returnType.args}
+				@if{arg.kind == CLASS_API}
+					, @{arg.simpleName}._create
+				@else{arg.kind == CLASS_OBJECT}
+					@code{typeLiteralParam=method.resolveTypeLiteralParam(arg)}
+					@if{typeLiteralParam != null}
+						, __args[@{typeLiteralParam.index}]._create
+					@else{}
+						, undefined
+					@end{}
+				@else{}
+					, undefined
+				@end{}
+			@end{}
+		@end{}
+)
 	@else{returnType.kind == CLASS_ENUM}
 utils.convReturnEnum(@includeNamed{templ})
 	@else{returnType.kind == CLASS_DATA_OBJECT}
@@ -80,7 +97,13 @@ utils.convReturnHandler(@includeNamed{templ}, function(result) { return @include
 		@end{}
 	@else{}
 	@comment{'This will probably happen if the return type is generic'}
-utils.convReturnTypeUnknown(@includeNamed{templ})
+		@code{wrapper='utils.convReturnTypeUnknown'}
+		@foreach{param: type.params}
+			@if{param.name == returnType.name}
+				@code{wrapper='j_' + param.name}
+			@end{}
+		@end{}
+@{wrapper}(@includeNamed{templ})
 	@end{}
 @end{}
 
@@ -160,9 +183,12 @@ var @{dataObjectType.simpleName} = @{dataObjectType};\n
 
 @comment{"The constructor"}
 
-var @{ifaceSimpleName} = function(j_val) {\n\n
+var @{ifaceSimpleName} = function(j_val@foreach{param: type.params}, j_arg_@{param.index}@end{}) {\n\n
   var j_@{ifaceName} = j_val;\n
   var that = this;\n
+@foreach{param: type.params}
+  var j_@{param.name} = typeof j_arg_@{param.index} === 'function' ? j_arg_@{param.index} : utils.convReturnTypeUnknown;\n
+@end{}
 
 @comment{"Apply any supertypes"}
 
@@ -188,6 +214,15 @@ var @{ifaceSimpleName} = function(j_val) {\n\n
   this._jdel = j_@{ifaceName};\n
 };\n
 \n
+
+@{ifaceSimpleName}._jclass = utils.getJavaClass("@{type.raw.name}");\n
+
+@{ifaceSimpleName}._create = function(jdel) {\n
+  // A bit of jiggery pokery to create the object given a reference to the constructor function\n
+  var obj = Object.create(@{ifaceSimpleName}.prototype, {});\n
+  @{ifaceSimpleName}.apply(obj, arguments);\n
+  return obj;\n
+}\n
 
 @comment{"Iterate through the methods again, this time only considering the static ones"}
 

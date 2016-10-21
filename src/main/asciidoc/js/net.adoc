@@ -269,7 +269,7 @@ You can instantiate more instances programmatically in your code:
 
 // Create a few instances so we can utilise cores
 
-for (var i = 0; i < 10; i++) {
+for (var i = 0;i < 10;i++) {
   var server = vertx.createNetServer();
   server.connectHandler(function (socket) {
     socket.handler(function (buffer) {

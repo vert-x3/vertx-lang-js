@@ -1232,7 +1232,7 @@ no need to set the `Content-Length` of the request up-front.
 request.setChunked(true);
 
 // Write some chunks
-for (var i = 0; i < 10; i++) {
+for (var i = 0;i < 10;i++) {
   request.write("this-is-chunk-" + i);
 }
 
@@ -1885,7 +1885,7 @@ endpoint:
 ----
 var Buffer = require("vertx-js/buffer");
 var data = Buffer.buffer();
-for (var i = 0; i < 8; i++) {
+for (var i = 0;i < 8;i++) {
   data.appendByte(i);
 }
 connection.ping(data, function (pong, pong_err) {

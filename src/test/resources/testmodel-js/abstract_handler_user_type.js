@@ -49,5 +49,12 @@ var AbstractHandlerUserType = function(j_val) {
   this._jdel = j_abstractHandlerUserType;
 };
 
+AbstractHandlerUserType._jclass = utils.getJavaClass("io.vertx.codegen.testmodel.AbstractHandlerUserType");
+AbstractHandlerUserType._create = function(jdel) {
+  // A bit of jiggery pokery to create the object given a reference to the constructor function
+  var obj = Object.create(AbstractHandlerUserType.prototype, {});
+  AbstractHandlerUserType.apply(obj, arguments);
+  return obj;
+}
 // We export the Constructor function
 module.exports = AbstractHandlerUserType;

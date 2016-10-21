@@ -49,5 +49,12 @@ var ConcreteHandlerUserType = function(j_val) {
   this._jdel = j_concreteHandlerUserType;
 };
 
+ConcreteHandlerUserType._jclass = utils.getJavaClass("io.vertx.codegen.testmodel.ConcreteHandlerUserType");
+ConcreteHandlerUserType._create = function(jdel) {
+  // A bit of jiggery pokery to create the object given a reference to the constructor function
+  var obj = Object.create(ConcreteHandlerUserType.prototype, {});
+  ConcreteHandlerUserType.apply(obj, arguments);
+  return obj;
+}
 // We export the Constructor function
 module.exports = ConcreteHandlerUserType;

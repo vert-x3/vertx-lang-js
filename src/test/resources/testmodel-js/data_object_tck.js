@@ -142,5 +142,12 @@ var DataObjectTCK = function(j_val) {
   this._jdel = j_dataObjectTCK;
 };
 
+DataObjectTCK._jclass = utils.getJavaClass("io.vertx.codegen.testmodel.DataObjectTCK");
+DataObjectTCK._create = function(jdel) {
+  // A bit of jiggery pokery to create the object given a reference to the constructor function
+  var obj = Object.create(DataObjectTCK.prototype, {});
+  DataObjectTCK.apply(obj, arguments);
+  return obj;
+}
 // We export the Constructor function
 module.exports = DataObjectTCK;

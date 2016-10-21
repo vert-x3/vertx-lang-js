@@ -871,7 +871,7 @@ var NullableTCK = function(j_val) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
       j_nullableTCK["methodWithNullableApiHandler(boolean,io.vertx.core.Handler)"](notNull, function(jVal) {
-      handler(utils.convReturnVertxGen(jVal, RefedInterface1));
+      handler(utils.convReturnVertxGen(RefedInterface1, jVal));
     });
     } else throw new TypeError('function invoked with invalid arguments');
   };
@@ -887,7 +887,7 @@ var NullableTCK = function(j_val) {
     if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
       j_nullableTCK["methodWithNullableApiHandlerAsyncResult(boolean,io.vertx.core.Handler)"](notNull, function(ar) {
       if (ar.succeeded()) {
-        handler(utils.convReturnVertxGen(ar.result(), RefedInterface1), null);
+        handler(utils.convReturnVertxGen(RefedInterface1, ar.result()), null);
       } else {
         handler(null, ar.cause());
       }
@@ -904,7 +904,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNullableApiReturn = function(notNull) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] ==='boolean') {
-      return utils.convReturnVertxGen(j_nullableTCK["methodWithNullableApiReturn(boolean)"](notNull), RefedInterface1);
+      return utils.convReturnVertxGen(RefedInterface1, j_nullableTCK["methodWithNullableApiReturn(boolean)"](notNull));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -6611,5 +6611,12 @@ var NullableTCK = function(j_val) {
   this._jdel = j_nullableTCK;
 };
 
+NullableTCK._jclass = utils.getJavaClass("io.vertx.codegen.testmodel.NullableTCK");
+NullableTCK._create = function(jdel) {
+  // A bit of jiggery pokery to create the object given a reference to the constructor function
+  var obj = Object.create(NullableTCK.prototype, {});
+  NullableTCK.apply(obj, arguments);
+  return obj;
+}
 // We export the Constructor function
 module.exports = NullableTCK;

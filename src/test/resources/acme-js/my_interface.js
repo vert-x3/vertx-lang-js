@@ -41,7 +41,7 @@ var MyInterface = function(j_val) {
   this.sub = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      return utils.convReturnVertxGen(j_myInterface["sub()"](), SubInterface);
+      return utils.convReturnVertxGen(SubInterface, j_myInterface["sub()"]());
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -54,7 +54,7 @@ var MyInterface = function(j_val) {
   this.method = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      return utils.convReturnVertxGen(j_myInterface["method()"](), TestInterface);
+      return utils.convReturnVertxGen(TestInterface, j_myInterface["method()"]());
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -64,6 +64,13 @@ var MyInterface = function(j_val) {
   this._jdel = j_myInterface;
 };
 
+MyInterface._jclass = utils.getJavaClass("com.acme.pkg.MyInterface");
+MyInterface._create = function(jdel) {
+  // A bit of jiggery pokery to create the object given a reference to the constructor function
+  var obj = Object.create(MyInterface.prototype, {});
+  MyInterface.apply(obj, arguments);
+  return obj;
+}
 /**
 
  @memberof module:acme-js/my_interface
@@ -73,7 +80,7 @@ var MyInterface = function(j_val) {
 MyInterface.create = function() {
   var __args = arguments;
   if (__args.length === 0) {
-    return utils.convReturnVertxGen(JMyInterface["create()"](), MyInterface);
+    return utils.convReturnVertxGen(MyInterface, JMyInterface["create()"]());
   } else throw new TypeError('function invoked with invalid arguments');
 };
 

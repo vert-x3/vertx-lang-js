@@ -40,6 +40,13 @@ var Factory = function(j_val) {
   this._jdel = j_factory;
 };
 
+Factory._jclass = utils.getJavaClass("io.vertx.codegen.testmodel.Factory");
+Factory._create = function(jdel) {
+  // A bit of jiggery pokery to create the object given a reference to the constructor function
+  var obj = Object.create(Factory.prototype, {});
+  Factory.apply(obj, arguments);
+  return obj;
+}
 /**
 
  @memberof module:testmodel-js/factory
@@ -49,9 +56,9 @@ var Factory = function(j_val) {
 Factory.createConcreteHandlerUserType = function(handler) {
   var __args = arguments;
   if (__args.length === 1 && typeof __args[0] === 'function') {
-    return utils.convReturnVertxGen(JFactory["createConcreteHandlerUserType(io.vertx.core.Handler)"](function(jVal) {
-    handler(utils.convReturnVertxGen(jVal, RefedInterface1));
-  }), ConcreteHandlerUserType);
+    return utils.convReturnVertxGen(ConcreteHandlerUserType, JFactory["createConcreteHandlerUserType(io.vertx.core.Handler)"](function(jVal) {
+    handler(utils.convReturnVertxGen(RefedInterface1, jVal));
+  }));
   } else throw new TypeError('function invoked with invalid arguments');
 };
 
@@ -64,9 +71,9 @@ Factory.createConcreteHandlerUserType = function(handler) {
 Factory.createAbstractHandlerUserType = function(handler) {
   var __args = arguments;
   if (__args.length === 1 && typeof __args[0] === 'function') {
-    return utils.convReturnVertxGen(JFactory["createAbstractHandlerUserType(io.vertx.core.Handler)"](function(jVal) {
-    handler(utils.convReturnVertxGen(jVal, RefedInterface1));
-  }), AbstractHandlerUserType);
+    return utils.convReturnVertxGen(AbstractHandlerUserType, JFactory["createAbstractHandlerUserType(io.vertx.core.Handler)"](function(jVal) {
+    handler(utils.convReturnVertxGen(RefedInterface1, jVal));
+  }));
   } else throw new TypeError('function invoked with invalid arguments');
 };
 
@@ -79,9 +86,9 @@ Factory.createAbstractHandlerUserType = function(handler) {
 Factory.createConcreteHandlerUserTypeExtension = function(handler) {
   var __args = arguments;
   if (__args.length === 1 && typeof __args[0] === 'function') {
-    return utils.convReturnVertxGen(JFactory["createConcreteHandlerUserTypeExtension(io.vertx.core.Handler)"](function(jVal) {
-    handler(utils.convReturnVertxGen(jVal, RefedInterface1));
-  }), ConcreteHandlerUserTypeExtension);
+    return utils.convReturnVertxGen(ConcreteHandlerUserTypeExtension, JFactory["createConcreteHandlerUserTypeExtension(io.vertx.core.Handler)"](function(jVal) {
+    handler(utils.convReturnVertxGen(RefedInterface1, jVal));
+  }));
   } else throw new TypeError('function invoked with invalid arguments');
 };
 

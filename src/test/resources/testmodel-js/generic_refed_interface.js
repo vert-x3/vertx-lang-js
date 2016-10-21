@@ -25,10 +25,11 @@ var JGenericRefedInterface = io.vertx.codegen.testmodel.GenericRefedInterface;
 
  @class
 */
-var GenericRefedInterface = function(j_val) {
+var GenericRefedInterface = function(j_val, j_arg_0) {
 
   var j_genericRefedInterface = j_val;
   var that = this;
+  var j_T = typeof j_arg_0 === 'function' ? j_arg_0 : utils.convReturnTypeUnknown;
 
   /**
 
@@ -51,7 +52,7 @@ var GenericRefedInterface = function(j_val) {
   this.getValue = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      return utils.convReturnTypeUnknown(j_genericRefedInterface["getValue()"]());
+      return j_T(j_genericRefedInterface["getValue()"]());
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -61,5 +62,12 @@ var GenericRefedInterface = function(j_val) {
   this._jdel = j_genericRefedInterface;
 };
 
+GenericRefedInterface._jclass = utils.getJavaClass("io.vertx.codegen.testmodel.GenericRefedInterface");
+GenericRefedInterface._create = function(jdel) {
+  // A bit of jiggery pokery to create the object given a reference to the constructor function
+  var obj = Object.create(GenericRefedInterface.prototype, {});
+  GenericRefedInterface.apply(obj, arguments);
+  return obj;
+}
 // We export the Constructor function
 module.exports = GenericRefedInterface;

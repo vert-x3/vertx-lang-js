@@ -63,5 +63,12 @@ var RefedInterface2 = function(j_val) {
   this._jdel = j_refedInterface2;
 };
 
+RefedInterface2._jclass = utils.getJavaClass("io.vertx.codegen.testmodel.RefedInterface2");
+RefedInterface2._create = function(jdel) {
+  // A bit of jiggery pokery to create the object given a reference to the constructor function
+  var obj = Object.create(RefedInterface2.prototype, {});
+  RefedInterface2.apply(obj, arguments);
+  return obj;
+}
 // We export the Constructor function
 module.exports = RefedInterface2;

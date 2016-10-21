@@ -310,13 +310,30 @@ utils.convReturnListSetJson = function(jList) {
   return arr;
 };
 
+utils.getJavaClass = function(fqn) {
+  var type = Java.type(fqn + "[]");
+  return new type(0).getClass().getComponentType();
+};
+
+utils.typeMap = [
+  utils.getJavaClass("io.vertx.core.json.JsonObject")
+];
+
+utils.javaTypeOf = function(type) {
+  var jclass = type._jclass;
+  if (jclass != null) {
+    return jclass;
+  } else if (type === Object) {
+    return utils.typeMap[0];
+  } else {
+    return null;
+  }
+};
+
 // Convert a VertxGen return value
-utils.convReturnVertxGen = function(jdel, constructorFunction) {
+utils.convReturnVertxGen = function(constructorFunction, jdel) {
   if (jdel != null) {
-    // A bit of jiggery pokery to create the object given a reference to the constructor function
-    var obj = Object.create(constructorFunction.prototype, {});
-    constructorFunction.apply(obj, [jdel]);
-    return obj;
+    return constructorFunction._create.apply(this, Array.prototype.slice.call(arguments, 1));
   }
   return null;
 }
