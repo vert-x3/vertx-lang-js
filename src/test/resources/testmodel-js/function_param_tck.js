@@ -497,6 +497,20 @@ var FunctionParamTCK = function(j_val) {
 };
 
 FunctionParamTCK._jclass = utils.getJavaClass("io.vertx.codegen.testmodel.FunctionParamTCK");
+FunctionParamTCK._jtype = {
+  accept: function(obj) {
+    return FunctionParamTCK._jclass.isInstance(obj._jdel);
+  },
+  wrap: function(jdel) {
+    // A bit of jiggery pokery to create the object given a reference to the constructor function
+    var obj = Object.create(FunctionParamTCK.prototype, {});
+    FunctionParamTCK.apply(obj, arguments);
+    return obj;
+  },
+  unwrap: function(obj) {
+    return obj._jdel;
+  }
+};
 FunctionParamTCK._create = function(jdel) {
   // A bit of jiggery pokery to create the object given a reference to the constructor function
   var obj = Object.create(FunctionParamTCK.prototype, {});

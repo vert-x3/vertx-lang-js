@@ -32,4 +32,19 @@ public class GenericsTCKTest extends JSTestBase {
   public void testMethodWithHandlerClassTypeParameterized() throws Exception {
     runTest();
   }
+
+  @Test
+  public void testInterfaceWithStringArg() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testInterfaceWithVariableArg() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testInterfaceWithApiArg() throws Exception {
+    runTest();
+  }
 }

@@ -14,21 +14,35 @@
  * under the License.
  */
 
-/** @module testmodel-js/refed_interface1 */
+/** @module testmodel-js/interface_with_string_arg */
 var utils = require('vertx-js/util/utils');
+var GenericRefedInterface = require('testmodel-js/generic_refed_interface');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JRefedInterface1 = io.vertx.codegen.testmodel.RefedInterface1;
+var JInterfaceWithStringArg = io.vertx.codegen.testmodel.InterfaceWithStringArg;
 
 /**
 
  @class
 */
-var RefedInterface1 = function(j_val) {
+var InterfaceWithStringArg = function(j_val) {
 
-  var j_refedInterface1 = j_val;
+  var j_interfaceWithStringArg = j_val;
   var that = this;
+  GenericRefedInterface.call(this, j_val, undefined);
+
+  /**
+
+   @public
+   @param value {string} 
+   */
+  this.setValue = function(value) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'string') {
+      j_interfaceWithStringArg["setValue(java.lang.String)"](value);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
 
   /**
 
@@ -36,53 +50,51 @@ var RefedInterface1 = function(j_val) {
 
    @return {string}
    */
-  this.getString = function() {
+  this.getValue = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      return j_refedInterface1["getString()"]();
+      return j_interfaceWithStringArg["getValue()"]();
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
   /**
 
    @public
-   @param str {string} 
-   @return {RefedInterface1}
+
    */
-  this.setString = function(str) {
+  this.meth = function() {
     var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'string') {
-      j_refedInterface1["setString(java.lang.String)"](str);
-      return that;
+    if (__args.length === 0) {
+      j_interfaceWithStringArg["meth()"]();
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
   // A reference to the underlying Java delegate
   // NOTE! This is an internal API and must not be used in user code.
   // If you rely on this property your code is likely to break if we change it / remove it without warning.
-  this._jdel = j_refedInterface1;
+  this._jdel = j_interfaceWithStringArg;
 };
 
-RefedInterface1._jclass = utils.getJavaClass("io.vertx.codegen.testmodel.RefedInterface1");
-RefedInterface1._jtype = {
+InterfaceWithStringArg._jclass = utils.getJavaClass("io.vertx.codegen.testmodel.InterfaceWithStringArg");
+InterfaceWithStringArg._jtype = {
   accept: function(obj) {
-    return RefedInterface1._jclass.isInstance(obj._jdel);
+    return InterfaceWithStringArg._jclass.isInstance(obj._jdel);
   },
   wrap: function(jdel) {
     // A bit of jiggery pokery to create the object given a reference to the constructor function
-    var obj = Object.create(RefedInterface1.prototype, {});
-    RefedInterface1.apply(obj, arguments);
+    var obj = Object.create(InterfaceWithStringArg.prototype, {});
+    InterfaceWithStringArg.apply(obj, arguments);
     return obj;
   },
   unwrap: function(obj) {
     return obj._jdel;
   }
 };
-RefedInterface1._create = function(jdel) {
+InterfaceWithStringArg._create = function(jdel) {
   // A bit of jiggery pokery to create the object given a reference to the constructor function
-  var obj = Object.create(RefedInterface1.prototype, {});
-  RefedInterface1.apply(obj, arguments);
+  var obj = Object.create(InterfaceWithStringArg.prototype, {});
+  InterfaceWithStringArg.apply(obj, arguments);
   return obj;
 }
 // We export the Constructor function
-module.exports = RefedInterface1;
+module.exports = InterfaceWithStringArg;

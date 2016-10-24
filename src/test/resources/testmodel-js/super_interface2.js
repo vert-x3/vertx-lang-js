@@ -57,6 +57,20 @@ var SuperInterface2 = function(j_val) {
 };
 
 SuperInterface2._jclass = utils.getJavaClass("io.vertx.codegen.testmodel.SuperInterface2");
+SuperInterface2._jtype = {
+  accept: function(obj) {
+    return SuperInterface2._jclass.isInstance(obj._jdel);
+  },
+  wrap: function(jdel) {
+    // A bit of jiggery pokery to create the object given a reference to the constructor function
+    var obj = Object.create(SuperInterface2.prototype, {});
+    SuperInterface2.apply(obj, arguments);
+    return obj;
+  },
+  unwrap: function(obj) {
+    return obj._jdel;
+  }
+};
 SuperInterface2._create = function(jdel) {
   // A bit of jiggery pokery to create the object given a reference to the constructor function
   var obj = Object.create(SuperInterface2.prototype, {});

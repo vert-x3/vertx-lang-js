@@ -50,6 +50,20 @@ var SubInterface = function(j_val) {
 };
 
 SubInterface._jclass = utils.getJavaClass("com.acme.pkg.sub.SubInterface");
+SubInterface._jtype = {
+  accept: function(obj) {
+    return SubInterface._jclass.isInstance(obj._jdel);
+  },
+  wrap: function(jdel) {
+    // A bit of jiggery pokery to create the object given a reference to the constructor function
+    var obj = Object.create(SubInterface.prototype, {});
+    SubInterface.apply(obj, arguments);
+    return obj;
+  },
+  unwrap: function(obj) {
+    return obj._jdel;
+  }
+};
 SubInterface._create = function(jdel) {
   // A bit of jiggery pokery to create the object given a reference to the constructor function
   var obj = Object.create(SubInterface.prototype, {});

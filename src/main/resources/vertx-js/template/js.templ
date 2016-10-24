@@ -69,11 +69,11 @@ utils.convReturnVertxGen(@{returnType.raw.simpleName}, @includeNamed{templ}
 		@if{returnType.parameterized}
 			@foreach{arg:returnType.args}
 				@if{arg.kind == CLASS_API}
-					, @{arg.simpleName}._create
+					, @{arg.simpleName}._jtype
 				@else{arg.kind == CLASS_OBJECT}
 					@code{typeLiteralParam=method.resolveTypeLiteralParam(arg)}
 					@if{typeLiteralParam != null}
-						, __args[@{typeLiteralParam.index}]._create
+						, utils.get_jtype(@{typeLiteralParam.name})
 					@else{}
 						, undefined
 					@end{}
@@ -100,7 +100,7 @@ utils.convReturnHandler(@includeNamed{templ}, function(result) { return @include
 		@code{wrapper='utils.convReturnTypeUnknown'}
 		@foreach{param: type.params}
 			@if{param.name == returnType.name}
-				@code{wrapper='j_' + param.name}
+				@code{wrapper='j_' + param.name + '.wrap'}
 			@end{}
 		@end{}
 @{wrapper}(@includeNamed{templ})
@@ -187,13 +187,23 @@ var @{ifaceSimpleName} = function(j_val@foreach{param: type.params}, j_arg_@{par
   var j_@{ifaceName} = j_val;\n
   var that = this;\n
 @foreach{param: type.params}
-  var j_@{param.name} = typeof j_arg_@{param.index} === 'function' ? j_arg_@{param.index} : utils.convReturnTypeUnknown;\n
+  var j_@{param.name} = typeof j_arg_@{param.index} !== 'undefined' ? j_arg_@{param.index} : utils.unknown_jtype;\n
 @end{}
 
 @comment{"Apply any supertypes"}
 
 @foreach{superType: superTypes}
-  @{superType.raw.simpleName}.call(this, j_val);\n
+  @{superType.raw.simpleName}.call(this, j_val@if{superType.parameterized && superType.raw.concrete}
+	@foreach{arg:superType.args}
+		@if{arg.kind == CLASS_API}
+, @{arg.simpleName}._jtype
+		@else{arg.variable}
+, j_@{arg.name}
+		@else{}
+, undefined
+		@end{}
+	@end{}
+@end{});\n
 @end{}
 \n
 
@@ -216,6 +226,22 @@ var @{ifaceSimpleName} = function(j_val@foreach{param: type.params}, j_arg_@{par
 \n
 
 @{ifaceSimpleName}._jclass = utils.getJavaClass("@{type.raw.name}");\n
+
+@{ifaceSimpleName}._jtype = {\n
+  accept: function(obj) {\n
+    return @{ifaceSimpleName}._jclass.isInstance(obj._jdel);\n
+  },\n
+  wrap: function(jdel) {\n
+    // A bit of jiggery pokery to create the object given a reference to the constructor function\n
+    var obj = Object.create(@{ifaceSimpleName}.prototype, {});\n
+    @{ifaceSimpleName}.apply(obj, arguments);\n
+    return obj;\n
+  },\n
+  unwrap: function(obj) {\n
+    return obj._jdel;\n
+  }\n
+};\n
+
 
 @{ifaceSimpleName}._create = function(jdel) {\n
   // A bit of jiggery pokery to create the object given a reference to the constructor function\n

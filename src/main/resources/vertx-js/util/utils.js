@@ -319,7 +319,7 @@ utils.typeMap = [
   utils.getJavaClass("io.vertx.core.json.JsonObject")
 ];
 
-utils.javaTypeOf = function(type) {
+utils.get_jclass = function(type) {
   var jclass = type._jclass;
   if (jclass != null) {
     return jclass;
@@ -329,6 +329,15 @@ utils.javaTypeOf = function(type) {
     return null;
   }
 };
+
+utils.get_jtype = function(t) {
+  if (typeof t._jtype === 'undefined') {
+    return utils.unknown_jtype;
+  } else {
+    return t._jtype;
+  }
+}
+
 
 // Convert a VertxGen return value
 utils.convReturnVertxGen = function(constructorFunction, jdel) {
@@ -505,5 +514,14 @@ utils.convReturnHandler = function(handler, converter) {
     handler.handle(converter(result));
   }
 };
+
+//
+utils.unknown_jtype = {
+  accept: function(obj) {
+    return typeof obj !== 'function';
+  },
+  wrap: utils.convReturnTypeUnknown,
+  unwrap: utils.convParamTypeUnknown
+}
 
 module.exports = utils;

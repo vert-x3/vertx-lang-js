@@ -89,9 +89,6 @@
 @comment{"Generate the code that converts a parameter from JavaScript to Java to call a Java API method"}
 @comment{"============================================================================================="}
 
-@declare{'susmab'}
-@end{}
-
 @declare{'convParam'}
 	@code{paramName = overloaded ? argName : param.name;}
 	@code{funct = param.type.kind == CLASS_FUNCTION}
@@ -140,7 +137,20 @@ utils.convParamJsonArray(@{unwrappedName})
 	@else{unwrappedType.kind == CLASS_ENUM}
 @if{param.nullable}@{unwrappedName} == null ? null : @end{}@{unwrappedType.name}.valueOf(@{unwrappedName})
 	@else{unwrappedType.kind == CLASS_OBJECT}
+		@if{unwrappedType.variable}
+			@if{unwrappedType.classParam}
+j_@{unwrappedType.name}.unwrap(@{unwrappedName})
+			@else{}
+				@code{typeLiteralParam=method.resolveTypeLiteralParam(unwrappedType)}
+				@if{typeLiteralParam != null}
+utils.get_jtype(@{typeLiteralParam.name}).unwrap(@{unwrappedName})
+				@else{}
 utils.convParamTypeUnknown(@{unwrappedName})
+				@end{}
+			@end{}
+		@else{}
+utils.convParamTypeUnknown(@{unwrappedName})
+		@end{}
 	@else{unwrappedType.kind.basic}
 		@if{unwrappedType.name == 'java.lang.Byte'}
 utils.convParamByte(@{unwrappedName})
@@ -202,7 +212,7 @@ utils.convParamSetEnum(@{unwrappedName}, function(val) { return Packages.@{unwra
 @if{param.nullable}@{unwrappedName} == null ? null : @end{}utils.convParamSetBasicOther(@{unwrappedName})
 		@end{}
 	@else{unwrappedType.kind == CLASS_TYPE_LITERAL}
-		utils.javaTypeOf(@{unwrappedName})
+		utils.get_jclass(@{unwrappedName})
 	@else{unwrappedType.kind == CLASS_MAP}
 		@if{unwrappedType.args[1].name == 'long' || unwrappedType.args[1].name == 'java.lang.Long'}
 utils.convParamMapLong(@{unwrappedName})
@@ -303,7 +313,11 @@ ar.result()
 							typeof __args[@{cnt}] === 'function'
 						@if{param.nullable} || __args[@{cnt}] == null)@end{}
 					@else{param.type.kind == CLASS_OBJECT}
-						typeof __args[@{cnt}] !== 'function'
+						@if{param.type.variable && param.type.classParam}
+							j_@{param.type.name}.accept(__args[@{cnt}])
+						@else{}
+							typeof __args[@{cnt}] !== 'function'
+						@end{}
 					@else{param.type.kind == CLASS_FUNCTION}
 						typeof __args[@{cnt}] === 'function'
 					@else{param.type.kind == CLASS_THROWABLE}

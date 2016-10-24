@@ -13,6 +13,12 @@ function testMethodWithUserTypeParameterizedReturn() {
   var val = ret.getValue();
   Assert.assertNotEquals('undefined', typeof val._jdel);
   Assert.assertEquals('foo', val.getString());
+
+  refed_obj.setString("the_string")
+  ret.setValue(refed_obj);
+  val = ret.getValue();
+  Assert.assertNotEquals('undefined', typeof val._jdel);
+  Assert.assertEquals('the_string', val.getString());
 }
 
 function testMethodWithClassTypeParameterizedReturn() {
@@ -22,10 +28,20 @@ function testMethodWithClassTypeParameterizedReturn() {
   Assert.assertNotEquals('undefined', typeof val._jdel);
   Assert.assertEquals('foo', val.getString());
 
+  refed_obj.setString("the_string")
+  ret.setValue(refed_obj);
+  val = ret.getValue();
+  Assert.assertNotEquals('undefined', typeof val._jdel);
+  Assert.assertEquals('the_string', val.getString());
+
   ret = obj.methodWithClassTypeParameterizedReturn(Object);
   Assert.assertNotEquals('undefined', typeof ret._jdel);
   val = ret.getValue();
   Assert.assertEquals("stilton", val["cheese"]);
+
+  ret.setValue({"wine":"condrieu"});
+  val = ret.getValue();
+  Assert.assertEquals("condrieu", val["wine"]);
 }
 
 function testMethodWithHandlerClassTypeParameterized() {
@@ -46,6 +62,38 @@ function testMethodWithHandlerClassTypeParameterized() {
     count++;
   });
   Assert.assertEquals(2, count, 0);
+}
+
+function testInterfaceWithStringArg() {
+  var ret = obj.interfaceWithStringArg('the_string_value');
+  Assert.assertNotEquals('undefined', typeof ret._jdel);
+  var val = ret.getValue();
+  Assert.assertEquals('string', typeof val);
+  Assert.assertEquals('the_string_value', val);
+}
+
+function testInterfaceWithVariableArg() {
+  refed_obj.setString('the_string_value');
+  var ret = obj.interfaceWithVariableArg('whatever', RefedInterface1, refed_obj);
+  Assert.assertNotEquals('undefined', typeof ret._jdel);
+  var val = ret.getValue();
+  Assert.assertNotEquals('undefined', typeof val._jdel);
+  Assert.assertEquals('the_string_value', val.getString());
+
+  var ret = obj.interfaceWithVariableArg('whatever', String, 'the_string_arg');
+  Assert.assertNotEquals('undefined', typeof ret._jdel);
+  var val = ret.getValue();
+  Assert.assertEquals('undefined', typeof val._jdel);
+  Assert.assertEquals('the_string_arg', val);
+}
+
+function testInterfaceWithApiArg() {
+  refed_obj.setString('the_string_value');
+  var ret = obj.interfaceWithApiArg(refed_obj);
+  Assert.assertNotEquals('undefined', typeof ret._jdel);
+  var val = ret.getValue();
+  Assert.assertNotEquals('undefined', typeof val._jdel);
+  Assert.assertEquals('the_string_value', val.getString());
 }
 
 if (typeof this[testName] === 'undefined') {

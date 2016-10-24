@@ -29,7 +29,7 @@ var GenericRefedInterface = function(j_val, j_arg_0) {
 
   var j_genericRefedInterface = j_val;
   var that = this;
-  var j_T = typeof j_arg_0 === 'function' ? j_arg_0 : utils.convReturnTypeUnknown;
+  var j_T = typeof j_arg_0 !== 'undefined' ? j_arg_0 : utils.unknown_jtype;
 
   /**
 
@@ -38,8 +38,8 @@ var GenericRefedInterface = function(j_val, j_arg_0) {
    */
   this.setValue = function(value) {
     var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] !== 'function') {
-      j_genericRefedInterface["setValue(java.lang.Object)"](utils.convParamTypeUnknown(value));
+    if (__args.length === 1 && j_T.accept(__args[0])) {
+      j_genericRefedInterface["setValue(java.lang.Object)"](j_T.unwrap(value));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -52,7 +52,7 @@ var GenericRefedInterface = function(j_val, j_arg_0) {
   this.getValue = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      return j_T(j_genericRefedInterface["getValue()"]());
+      return j_T.wrap(j_genericRefedInterface["getValue()"]());
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -63,6 +63,20 @@ var GenericRefedInterface = function(j_val, j_arg_0) {
 };
 
 GenericRefedInterface._jclass = utils.getJavaClass("io.vertx.codegen.testmodel.GenericRefedInterface");
+GenericRefedInterface._jtype = {
+  accept: function(obj) {
+    return GenericRefedInterface._jclass.isInstance(obj._jdel);
+  },
+  wrap: function(jdel) {
+    // A bit of jiggery pokery to create the object given a reference to the constructor function
+    var obj = Object.create(GenericRefedInterface.prototype, {});
+    GenericRefedInterface.apply(obj, arguments);
+    return obj;
+  },
+  unwrap: function(obj) {
+    return obj._jdel;
+  }
+};
 GenericRefedInterface._create = function(jdel) {
   // A bit of jiggery pokery to create the object given a reference to the constructor function
   var obj = Object.create(GenericRefedInterface.prototype, {});
