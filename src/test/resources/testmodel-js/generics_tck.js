@@ -201,7 +201,7 @@ var GenericsTCK = function(j_val) {
   this.methodWithEnumParameterizedReturn = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      return utils.convReturnVertxGen(GenericRefedInterface, j_genericsTCK["methodWithEnumParameterizedReturn()"](), undefined);
+      return utils.convReturnVertxGen(GenericRefedInterface, j_genericsTCK["methodWithEnumParameterizedReturn()"](), utils.enum_jtype(io.vertx.codegen.testmodel.TestEnum));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -214,7 +214,7 @@ var GenericsTCK = function(j_val) {
   this.methodWithGenEnumParameterizedReturn = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      return utils.convReturnVertxGen(GenericRefedInterface, j_genericsTCK["methodWithGenEnumParameterizedReturn()"](), undefined);
+      return utils.convReturnVertxGen(GenericRefedInterface, j_genericsTCK["methodWithGenEnumParameterizedReturn()"](), utils.enum_jtype(io.vertx.codegen.testmodel.TestGenEnum));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -408,7 +408,7 @@ var GenericsTCK = function(j_val) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'function') {
       j_genericsTCK["methodWithHandlerEnumParameterized(io.vertx.core.Handler)"](function(jVal) {
-      handler(utils.convReturnVertxGen(GenericRefedInterface, jVal, undefined));
+      handler(utils.convReturnVertxGen(GenericRefedInterface, jVal, utils.enum_jtype(io.vertx.codegen.testmodel.TestEnum)));
     });
     } else throw new TypeError('function invoked with invalid arguments');
   };
@@ -422,7 +422,7 @@ var GenericsTCK = function(j_val) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'function') {
       j_genericsTCK["methodWithHandlerGenEnumParameterized(io.vertx.core.Handler)"](function(jVal) {
-      handler(utils.convReturnVertxGen(GenericRefedInterface, jVal, undefined));
+      handler(utils.convReturnVertxGen(GenericRefedInterface, jVal, utils.enum_jtype(io.vertx.codegen.testmodel.TestGenEnum)));
     });
     } else throw new TypeError('function invoked with invalid arguments');
   };
@@ -667,7 +667,7 @@ var GenericsTCK = function(j_val) {
     if (__args.length === 1 && typeof __args[0] === 'function') {
       j_genericsTCK["methodWithHandlerAsyncResultEnumParameterized(io.vertx.core.Handler)"](function(ar) {
       if (ar.succeeded()) {
-        handler(utils.convReturnVertxGen(GenericRefedInterface, ar.result(), undefined), null);
+        handler(utils.convReturnVertxGen(GenericRefedInterface, ar.result(), utils.enum_jtype(io.vertx.codegen.testmodel.TestEnum)), null);
       } else {
         handler(null, ar.cause());
       }
@@ -685,7 +685,7 @@ var GenericsTCK = function(j_val) {
     if (__args.length === 1 && typeof __args[0] === 'function') {
       j_genericsTCK["methodWithHandlerAsyncResultGenEnumParameterized(io.vertx.core.Handler)"](function(ar) {
       if (ar.succeeded()) {
-        handler(utils.convReturnVertxGen(GenericRefedInterface, ar.result(), undefined), null);
+        handler(utils.convReturnVertxGen(GenericRefedInterface, ar.result(), utils.enum_jtype(io.vertx.codegen.testmodel.TestGenEnum)), null);
       } else {
         handler(null, ar.cause());
       }

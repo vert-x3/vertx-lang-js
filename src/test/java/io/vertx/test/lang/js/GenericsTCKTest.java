@@ -19,7 +19,77 @@ public class GenericsTCKTest extends JSTestBase {
   // Test params
 
   @Test
+  public void testMethodWithBasicParameterizedReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerBasicParameterized() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerAsyncResultBasicParameterized() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithJsonParameterizedReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerJsonParameterized() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerAsyncResultJsonParameterized() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithDataObjectParameterizedReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerDataObjectParameterized() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerAsyncResultDataObjectParameterized() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithEnumParameterizedReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerEnumParameterized() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerAsyncResultEnumParameterized() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMethodWithUserTypeParameterizedReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerUserTypeParameterized() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerAsyncResultUserTypeParameterized() throws Exception {
     runTest();
   }
 
@@ -32,6 +102,14 @@ public class GenericsTCKTest extends JSTestBase {
   public void testMethodWithHandlerClassTypeParameterized() throws Exception {
     runTest();
   }
+
+  @Test
+  public void testMethodWithHandlerAsyncResultClassTypeParameterized() throws Exception {
+    runTest();
+  }
+
+
+  
 
   @Test
   public void testInterfaceWithStringArg() throws Exception {

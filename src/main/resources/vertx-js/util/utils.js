@@ -315,19 +315,19 @@ utils.getJavaClass = function(fqn) {
   return new type(0).getClass().getComponentType();
 };
 
-utils.typeMap = [
-  utils.getJavaClass("io.vertx.core.json.JsonObject")
-];
+utils.typeMap = {};
+utils.typeMap[Object] = utils.getJavaClass("io.vertx.core.json.JsonObject");
+utils.typeMap[Array] = utils.getJavaClass("io.vertx.core.json.JsonArray");
+utils.typeMap[Number] = utils.getJavaClass("java.lang.Long");
+utils.typeMap[String] = utils.getJavaClass("java.lang.String");
+utils.typeMap[Boolean] = utils.getJavaClass("java.lang.Boolean");
 
 utils.get_jclass = function(type) {
   var jclass = type._jclass;
-  if (jclass != null) {
-    return jclass;
-  } else if (type === Object) {
-    return utils.typeMap[0];
-  } else {
-    return null;
+  if (jclass == null) {
+    jclass = utils.typeMap[type];
   }
+  return jclass;
 };
 
 utils.get_jtype = function(t) {
@@ -337,7 +337,6 @@ utils.get_jtype = function(t) {
     return t._jtype;
   }
 }
-
 
 // Convert a VertxGen return value
 utils.convReturnVertxGen = function(constructorFunction, jdel) {
@@ -523,5 +522,16 @@ utils.unknown_jtype = {
   wrap: utils.convReturnTypeUnknown,
   unwrap: utils.convParamTypeUnknown
 }
+
+utils.enum_jtype = function(jEnum) {
+  return {
+    accept: function(val) {
+      return typeof val === 'string';
+    },
+    wrap: utils.convReturnEnum,
+    unwrap: jEnum.valueOf
+  };
+}
+
 
 module.exports = utils;

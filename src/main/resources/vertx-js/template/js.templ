@@ -70,6 +70,8 @@ utils.convReturnVertxGen(@{returnType.raw.simpleName}, @includeNamed{templ}
 			@foreach{arg:returnType.args}
 				@if{arg.kind == CLASS_API}
 					, @{arg.simpleName}._jtype
+				@else{arg.kind == CLASS_ENUM}
+					, utils.enum_jtype(@{arg.name})
 				@else{arg.kind == CLASS_OBJECT}
 					@code{typeLiteralParam=method.resolveTypeLiteralParam(arg)}
 					@if{typeLiteralParam != null}
