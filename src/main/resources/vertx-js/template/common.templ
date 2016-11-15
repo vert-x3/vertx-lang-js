@@ -141,9 +141,9 @@ utils.convParamJsonArray(@{unwrappedName})
 			@if{unwrappedType.classParam}
 j_@{unwrappedType.name}.unwrap(@{unwrappedName})
 			@else{}
-				@code{typeLiteralParam=method.resolveTypeLiteralParam(unwrappedType)}
-				@if{typeLiteralParam != null}
-utils.get_jtype(@{typeLiteralParam.name}).unwrap(@{unwrappedName})
+				@code{classTypeParam=method.resolveClassTypeParam(unwrappedType)}
+				@if{classTypeParam != null}
+utils.get_jtype(@{classTypeParam.name}).unwrap(@{unwrappedName})
 				@else{}
 utils.convParamTypeUnknown(@{unwrappedName})
 				@end{}
@@ -211,7 +211,7 @@ utils.convParamSetEnum(@{unwrappedName}, function(val) { return Packages.@{unwra
 		@else{}
 @if{param.nullable}@{unwrappedName} == null ? null : @end{}utils.convParamSetBasicOther(@{unwrappedName})
 		@end{}
-	@else{unwrappedType.kind == CLASS_TYPE_LITERAL}
+	@else{unwrappedType.kind == CLASS_CLASS_TYPE}
 		utils.get_jclass(@{unwrappedName})
 	@else{unwrappedType.kind == CLASS_MAP}
 		@if{unwrappedType.args[1].name == 'long' || unwrappedType.args[1].name == 'java.lang.Long'}
@@ -302,7 +302,7 @@ ar.result()
 						@if{param.nullable}(@end{}
 						typeof __args[@{cnt}] === 'string'
 						@if{param.nullable} || __args[@{cnt}] == null)@end{}
-					@else{param.type.kind == CLASS_TYPE_LITERAL}
+					@else{param.type.kind == CLASS_CLASS_TYPE}
 						typeof __args[@{cnt}] === 'function'
 					@else{param.type.kind == CLASS_API}
 						typeof __args[@{cnt}] === 'object' && @if{param.nullable}(__args[@{cnt}] == null || @end{}__args[@{cnt}]._jdel@if{param.nullable})@end{}

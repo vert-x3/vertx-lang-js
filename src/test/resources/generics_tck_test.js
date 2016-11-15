@@ -90,8 +90,8 @@ function checkMethodWithBasicParameterized(values) {
   assertNumberEquals(ret.getValue(), 1235);
   ret = assertApiType(values[2]);
   assertNumberEquals(ret.getValue(), 123456);
-  ret.setValue(1234568);
-  assertNumberEquals(ret.getValue(), 1234568);
+  ret.setValue(1234567);
+  assertNumberEquals(ret.getValue(), 1234567);
   ret = assertApiType(values[3]);
   assertNumberEquals(ret.getValue(), 123456789);
   ret.setValue(123456790);

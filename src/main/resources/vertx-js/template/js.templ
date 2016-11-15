@@ -73,9 +73,9 @@ utils.convReturnVertxGen(@{returnType.raw.simpleName}, @includeNamed{templ}
 				@else{arg.kind == CLASS_ENUM}
 					, utils.enum_jtype(@{arg.name})
 				@else{arg.kind == CLASS_OBJECT}
-					@code{typeLiteralParam=method.resolveTypeLiteralParam(arg)}
-					@if{typeLiteralParam != null}
-						, utils.get_jtype(@{typeLiteralParam.name})
+					@code{classTypeParam=method.resolveClassTypeParam(arg)}
+					@if{classTypeParam != null}
+						, utils.get_jtype(@{classTypeParam.name})
 					@else{}
 						, undefined
 					@end{}
