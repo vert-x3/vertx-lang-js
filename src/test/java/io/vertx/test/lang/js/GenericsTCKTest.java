@@ -34,6 +34,11 @@ public class GenericsTCKTest extends JSTestBase {
   }
 
   @Test
+  public void testMethodWithFunctionParamBasicParameterized() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMethodWithJsonParameterizedReturn() throws Exception {
     runTest();
   }
@@ -45,6 +50,11 @@ public class GenericsTCKTest extends JSTestBase {
 
   @Test
   public void testMethodWithHandlerAsyncResultJsonParameterized() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithFunctionParamJsonParameterized() throws Exception {
     runTest();
   }
 
@@ -64,6 +74,11 @@ public class GenericsTCKTest extends JSTestBase {
   }
 
   @Test
+  public void testMethodWithFunctionParamDataObjectParameterized() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMethodWithEnumParameterizedReturn() throws Exception {
     runTest();
   }
@@ -75,6 +90,11 @@ public class GenericsTCKTest extends JSTestBase {
 
   @Test
   public void testMethodWithHandlerAsyncResultEnumParameterized() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithFunctionParamEnumParameterized() throws Exception {
     runTest();
   }
 
@@ -94,6 +114,11 @@ public class GenericsTCKTest extends JSTestBase {
   }
 
   @Test
+  public void testMethodWithFunctionParamUserTypeParameterized() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMethodWithClassTypeParameterizedReturn() throws Exception {
     runTest();
   }
@@ -108,8 +133,45 @@ public class GenericsTCKTest extends JSTestBase {
     runTest();
   }
 
+  @Test
+  public void testMethodWithFunctionParamClassTypeParameterized() throws Exception {
+    runTest();
+  }
 
-  
+  @Test
+  public void testMethodWithClassTypeParam() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithClassTypeReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithClassTypeHandler() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithClassTypeHandlerAsyncResult() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithClassTypeFunctionParam() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithClassTypeFunctionReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testFooBar() throws Exception {
+    runTest();
+  }
 
   @Test
   public void testInterfaceWithStringArg() throws Exception {

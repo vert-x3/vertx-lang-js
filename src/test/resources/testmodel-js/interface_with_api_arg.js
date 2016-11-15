@@ -37,11 +37,13 @@ var InterfaceWithApiArg = function(j_val) {
 
    @public
    @param value {RefedInterface1} 
+   @return {GenericRefedInterface}
    */
   this.setValue = function(value) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'object' && __args[0]._jdel) {
       j_interfaceWithApiArg["setValue(io.vertx.codegen.testmodel.RefedInterface1)"](value._jdel);
+      return that;
     } else throw new TypeError('function invoked with invalid arguments');
   };
 

@@ -714,6 +714,231 @@ var GenericsTCK = function(j_val) {
   /**
 
    @public
+   @param handler {todo} 
+   */
+  this.methodWithFunctionParamByteParameterized = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_genericsTCK["methodWithFunctionParamByteParameterized(java.util.function.Function)"](function(jVal) {
+      var jRet = handler(utils.convReturnVertxGen(GenericRefedInterface, jVal, undefined));
+      return jRet;
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {todo} 
+   */
+  this.methodWithFunctionParamShortParameterized = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_genericsTCK["methodWithFunctionParamShortParameterized(java.util.function.Function)"](function(jVal) {
+      var jRet = handler(utils.convReturnVertxGen(GenericRefedInterface, jVal, undefined));
+      return jRet;
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {todo} 
+   */
+  this.methodWithFunctionParamIntegerParameterized = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_genericsTCK["methodWithFunctionParamIntegerParameterized(java.util.function.Function)"](function(jVal) {
+      var jRet = handler(utils.convReturnVertxGen(GenericRefedInterface, jVal, undefined));
+      return jRet;
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {todo} 
+   */
+  this.methodWithFunctionParamLongParameterized = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_genericsTCK["methodWithFunctionParamLongParameterized(java.util.function.Function)"](function(jVal) {
+      var jRet = handler(utils.convReturnVertxGen(GenericRefedInterface, jVal, undefined));
+      return jRet;
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {todo} 
+   */
+  this.methodWithFunctionParamFloatParameterized = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_genericsTCK["methodWithFunctionParamFloatParameterized(java.util.function.Function)"](function(jVal) {
+      var jRet = handler(utils.convReturnVertxGen(GenericRefedInterface, jVal, undefined));
+      return jRet;
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {todo} 
+   */
+  this.methodWithFunctionParamDoubleParameterized = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_genericsTCK["methodWithFunctionParamDoubleParameterized(java.util.function.Function)"](function(jVal) {
+      var jRet = handler(utils.convReturnVertxGen(GenericRefedInterface, jVal, undefined));
+      return jRet;
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {todo} 
+   */
+  this.methodWithFunctionParamBooleanParameterized = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_genericsTCK["methodWithFunctionParamBooleanParameterized(java.util.function.Function)"](function(jVal) {
+      var jRet = handler(utils.convReturnVertxGen(GenericRefedInterface, jVal, undefined));
+      return jRet;
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {todo} 
+   */
+  this.methodWithFunctionParamCharacterParameterized = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_genericsTCK["methodWithFunctionParamCharacterParameterized(java.util.function.Function)"](function(jVal) {
+      var jRet = handler(utils.convReturnVertxGen(GenericRefedInterface, jVal, undefined));
+      return jRet;
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {todo} 
+   */
+  this.methodWithFunctionParamStringParameterized = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_genericsTCK["methodWithFunctionParamStringParameterized(java.util.function.Function)"](function(jVal) {
+      var jRet = handler(utils.convReturnVertxGen(GenericRefedInterface, jVal, undefined));
+      return jRet;
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {todo} 
+   */
+  this.methodWithFunctionParamJsonObjectParameterized = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_genericsTCK["methodWithFunctionParamJsonObjectParameterized(java.util.function.Function)"](function(jVal) {
+      var jRet = handler(utils.convReturnVertxGen(GenericRefedInterface, jVal, undefined));
+      return jRet;
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {todo} 
+   */
+  this.methodWithFunctionParamJsonArrayParameterized = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_genericsTCK["methodWithFunctionParamJsonArrayParameterized(java.util.function.Function)"](function(jVal) {
+      var jRet = handler(utils.convReturnVertxGen(GenericRefedInterface, jVal, undefined));
+      return jRet;
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {todo} 
+   */
+  this.methodWithFunctionParamDataObjectParameterized = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_genericsTCK["methodWithFunctionParamDataObjectParameterized(java.util.function.Function)"](function(jVal) {
+      var jRet = handler(utils.convReturnVertxGen(GenericRefedInterface, jVal, undefined));
+      return jRet;
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {todo} 
+   */
+  this.methodWithFunctionParamEnumParameterized = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_genericsTCK["methodWithFunctionParamEnumParameterized(java.util.function.Function)"](function(jVal) {
+      var jRet = handler(utils.convReturnVertxGen(GenericRefedInterface, jVal, utils.enum_jtype(io.vertx.codegen.testmodel.TestEnum)));
+      return jRet;
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {todo} 
+   */
+  this.methodWithFunctionParamGenEnumParameterized = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_genericsTCK["methodWithFunctionParamGenEnumParameterized(java.util.function.Function)"](function(jVal) {
+      var jRet = handler(utils.convReturnVertxGen(GenericRefedInterface, jVal, utils.enum_jtype(io.vertx.codegen.testmodel.TestGenEnum)));
+      return jRet;
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {todo} 
+   */
+  this.methodWithFunctionParamUserTypeParameterized = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_genericsTCK["methodWithFunctionParamUserTypeParameterized(java.util.function.Function)"](function(jVal) {
+      var jRet = handler(utils.convReturnVertxGen(GenericRefedInterface, jVal, RefedInterface1._jtype));
+      return jRet;
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
    @param type {todo} 
    @return {GenericRefedInterface}
    */
@@ -754,6 +979,114 @@ var GenericsTCK = function(j_val) {
       } else {
         handler(null, ar.cause());
       }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param type {todo} 
+   @param handler {todo} 
+   */
+  this.methodWithFunctionParamClassTypeParameterized = function(type, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] === 'function' && typeof __args[1] === 'function') {
+      j_genericsTCK["methodWithFunctionParamClassTypeParameterized(java.lang.Class,java.util.function.Function)"](utils.get_jclass(type), function(jVal) {
+      var jRet = handler(utils.convReturnVertxGen(GenericRefedInterface, jVal, utils.get_jtype(type)));
+      return jRet;
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param type {todo} 
+   @param u {Object} 
+   */
+  this.methodWithClassTypeParam = function(type, u) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] === 'function' && typeof __args[1] !== 'function') {
+      j_genericsTCK["methodWithClassTypeParam(java.lang.Class,java.lang.Object)"](utils.get_jclass(type), utils.get_jtype(type).unwrap(u));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param type {todo} 
+   @return {Object}
+   */
+  this.methodWithClassTypeReturn = function(type) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      return utils.get_jtype(type).wrap(j_genericsTCK["methodWithClassTypeReturn(java.lang.Class)"](utils.get_jclass(type)));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param type {todo} 
+   @param f {function} 
+   */
+  this.methodWithClassTypeHandler = function(type, f) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] === 'function' && typeof __args[1] === 'function') {
+      j_genericsTCK["methodWithClassTypeHandler(java.lang.Class,io.vertx.core.Handler)"](utils.get_jclass(type), function(jVal) {
+      f(utils.get_jtype(type).wrap(jVal));
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param type {todo} 
+   @param f {function} 
+   */
+  this.methodWithClassTypeHandlerAsyncResult = function(type, f) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] === 'function' && typeof __args[1] === 'function') {
+      j_genericsTCK["methodWithClassTypeHandlerAsyncResult(java.lang.Class,io.vertx.core.Handler)"](utils.get_jclass(type), function(ar) {
+      if (ar.succeeded()) {
+        f(utils.get_jtype(type).wrap(ar.result()), null);
+      } else {
+        f(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param type {todo} 
+   @param f {todo} 
+   */
+  this.methodWithClassTypeFunctionParam = function(type, f) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] === 'function' && typeof __args[1] === 'function') {
+      j_genericsTCK["methodWithClassTypeFunctionParam(java.lang.Class,java.util.function.Function)"](utils.get_jclass(type), function(jVal) {
+      var jRet = f(utils.get_jtype(type).wrap(jVal));
+      return jRet;
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param type {todo} 
+   @param f {todo} 
+   */
+  this.methodWithClassTypeFunctionReturn = function(type, f) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] === 'function' && typeof __args[1] === 'function') {
+      j_genericsTCK["methodWithClassTypeFunctionReturn(java.lang.Class,java.util.function.Function)"](utils.get_jclass(type), function(jVal) {
+      var jRet = f(jVal);
+      return utils.get_jtype(type).unwrap(jRet);
     });
     } else throw new TypeError('function invoked with invalid arguments');
   };

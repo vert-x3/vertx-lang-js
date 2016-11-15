@@ -35,11 +35,13 @@ var GenericRefedInterface = function(j_val, j_arg_0) {
 
    @public
    @param value {Object} 
+   @return {GenericRefedInterface}
    */
   this.setValue = function(value) {
     var __args = arguments;
     if (__args.length === 1 && j_T.accept(__args[0])) {
       j_genericRefedInterface["setValue(java.lang.Object)"](j_T.unwrap(value));
+      return that;
     } else throw new TypeError('function invoked with invalid arguments');
   };
 

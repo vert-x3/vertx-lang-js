@@ -36,11 +36,13 @@ var InterfaceWithStringArg = function(j_val) {
 
    @public
    @param value {string} 
+   @return {GenericRefedInterface}
    */
   this.setValue = function(value) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'string') {
       j_interfaceWithStringArg["setValue(java.lang.String)"](value);
+      return that;
     } else throw new TypeError('function invoked with invalid arguments');
   };
 

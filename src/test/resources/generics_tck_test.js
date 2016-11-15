@@ -79,6 +79,20 @@ function testMethodWithHandlerAsyncResultBasicParameterized() {
   checkMethodWithBasicParameterized(values);
 }
 
+function testMethodWithFunctionParamBasicParameterized() {
+  var values = [];
+  obj.methodWithFunctionParamByteParameterized(setter(values, 0));
+  obj.methodWithFunctionParamShortParameterized(setter(values, 1));
+  obj.methodWithFunctionParamIntegerParameterized(setter(values, 2));
+  obj.methodWithFunctionParamLongParameterized(setter(values, 3));
+  obj.methodWithFunctionParamFloatParameterized(setter(values, 4));
+  obj.methodWithFunctionParamDoubleParameterized(setter(values, 5));
+  obj.methodWithFunctionParamBooleanParameterized(setter(values, 6));
+  obj.methodWithFunctionParamCharacterParameterized(setter(values, 7));
+  obj.methodWithFunctionParamStringParameterized(setter(values, 8));
+  checkMethodWithBasicParameterized(values);
+}
+
 function checkMethodWithBasicParameterized(values) {
   var ret = assertApiType(values[0]);
   assertNumberEquals(ret.getValue(), 123);
@@ -139,6 +153,13 @@ function testMethodWithHandlerAsyncResultJsonParameterized() {
   checkMethodWitJsonParameterized(values);
 }
 
+function testMethodWithFunctionParamJsonParameterized() {
+  var values = [];
+  obj.methodWithFunctionParamJsonObjectParameterized(setter(values, 0));
+  obj.methodWithFunctionParamJsonArrayParameterized(setter(values, 1));
+  checkMethodWitJsonParameterized(values);
+}
+
 function checkMethodWitJsonParameterized(values) {
   var ret = assertApiType(values[0]);
   var val = ret.getValue();
@@ -173,6 +194,12 @@ function testMethodWithHandlerDataObjectParameterized() {
 function testMethodWithHandlerAsyncResultDataObjectParameterized() {
   var values = [];
   obj.methodWithHandlerAsyncResultDataObjectParameterized(asyncResultSetter(values, 0));
+  checkMethodWitDataObjectParameterized(values);
+}
+
+function testMethodWithFunctionParamDataObjectParameterized() {
+  var values = [];
+  obj.methodWithFunctionParamDataObjectParameterized(setter(values, 0));
   checkMethodWitDataObjectParameterized(values);
 }
 
@@ -211,6 +238,13 @@ function testMethodWithHandlerAsyncResultEnumParameterized() {
   checkMethodWithEnumParameterized(values);
 }
 
+function testMethodWithFunctionParamEnumParameterized() {
+  var values = [];
+  obj.methodWithFunctionParamEnumParameterized(setter(values, 0));
+  obj.methodWithFunctionParamGenEnumParameterized(setter(values, 1));
+  checkMethodWithEnumParameterized(values);
+}
+
 function checkMethodWithEnumParameterized(values) {
   var ret = assertApiType(values[0]);
   Assert.assertEquals(ret.getValue(), "WESTON");
@@ -235,6 +269,12 @@ function testMethodWithHandlerUserTypeParameterized() {
 function testMethodWithHandlerAsyncResultUserTypeParameterized() {
   var values = [];
   obj.methodWithHandlerAsyncResultUserTypeParameterized(setter(values, 0));
+  checkMethodWithUserTypeParameterized(values)
+}
+
+function testMethodWithFunctionParamUserTypeParameterized() {
+  var values = [];
+  obj.methodWithFunctionParamUserTypeParameterized(setter(values, 0));
   checkMethodWithUserTypeParameterized(values)
 }
 
@@ -285,6 +325,17 @@ function testMethodWithHandlerAsyncResultClassTypeParameterized() {
   checkMethodWithClassTypeParameterized(values);
 }
 
+function testMethodWithFunctionParamClassTypeParameterized() {
+  var values = [];
+  obj.methodWithFunctionParamClassTypeParameterized(Number, setter(values, 0));
+  obj.methodWithFunctionParamClassTypeParameterized(Boolean, setter(values, 1));
+  obj.methodWithFunctionParamClassTypeParameterized(String, setter(values, 2));
+  obj.methodWithFunctionParamClassTypeParameterized(Object, setter(values, 3));
+  obj.methodWithFunctionParamClassTypeParameterized(Array, setter(values, 4));
+  obj.methodWithFunctionParamClassTypeParameterized(RefedInterface1, setter(values, 5));
+  checkMethodWithClassTypeParameterized(values);
+}
+
 function checkMethodWithClassTypeParameterized(values) {
   var ret = values[0];
   Assert.assertNotEquals('undefined', typeof ret._jdel);
@@ -331,6 +382,100 @@ function checkMethodWithClassTypeParameterized(values) {
   val = ret.getValue();
   Assert.assertNotEquals('undefined', typeof val._jdel);
   Assert.assertEquals('the_string', val.getString());
+}
+
+function testMethodWithClassTypeParam() {
+  // obj.methodWithClassTypeParam(Number, 123456789);
+  obj.methodWithClassTypeParam(Boolean, true);
+  obj.methodWithClassTypeParam(String, "zoumbawe");
+  obj.methodWithClassTypeParam(Object, {"cheese":"stilton"});
+  obj.methodWithClassTypeParam(Array, ["cheese","stilton"]);
+  obj.methodWithClassTypeParam(RefedInterface1, refed_obj.setString("foo"));
+}
+
+function testMethodWithClassTypeReturn() {
+  checkMethodWithClassType([
+    obj.methodWithClassTypeReturn(Number),
+    obj.methodWithClassTypeReturn(Boolean),
+    obj.methodWithClassTypeReturn(String),
+    obj.methodWithClassTypeReturn(Object),
+    obj.methodWithClassTypeReturn(Array),
+    obj.methodWithClassTypeReturn(RefedInterface1)
+  ]);
+}
+
+function testMethodWithClassTypeHandler() {
+  var values = [];
+  obj.methodWithClassTypeHandler(Number, setter(values, 0));
+  obj.methodWithClassTypeHandler(Boolean, setter(values, 1));
+  obj.methodWithClassTypeHandler(String, setter(values, 2));
+  obj.methodWithClassTypeHandler(Object, setter(values, 3));
+  obj.methodWithClassTypeHandler(Array, setter(values, 4));
+  obj.methodWithClassTypeHandler(RefedInterface1, setter(values, 5));
+  checkMethodWithClassType(values);
+}
+
+function testMethodWithClassTypeHandlerAsyncResult() {
+  var values = [];
+  obj.methodWithClassTypeHandlerAsyncResult(Number, asyncResultSetter(values, 0));
+  obj.methodWithClassTypeHandlerAsyncResult(Boolean, asyncResultSetter(values, 1));
+  obj.methodWithClassTypeHandlerAsyncResult(String, asyncResultSetter(values, 2));
+  obj.methodWithClassTypeHandlerAsyncResult(Object, asyncResultSetter(values, 3));
+  obj.methodWithClassTypeHandlerAsyncResult(Array, asyncResultSetter(values, 4));
+  obj.methodWithClassTypeHandlerAsyncResult(RefedInterface1, asyncResultSetter(values, 5));
+  checkMethodWithClassType(values);
+}
+
+function testMethodWithClassTypeFunctionParam() {
+  var values = [];
+  obj.methodWithClassTypeFunctionParam(Number, setter(values, 0));
+  obj.methodWithClassTypeFunctionParam(Boolean, setter(values, 1));
+  obj.methodWithClassTypeFunctionParam(String, setter(values, 2));
+  obj.methodWithClassTypeFunctionParam(Object, setter(values, 3));
+  obj.methodWithClassTypeFunctionParam(Array, setter(values, 4));
+  obj.methodWithClassTypeFunctionParam(RefedInterface1, setter(values, 5));
+  checkMethodWithClassType(values);
+}
+
+function testMethodWithClassTypeFunctionReturn() {
+  // obj.methodWithClassTypeParam(Number, 123456789);
+  obj.methodWithClassTypeFunctionReturn(Boolean, function() { return true; });
+  obj.methodWithClassTypeFunctionReturn(String, function() { return "zoumbawe"; });
+  obj.methodWithClassTypeFunctionReturn(Object, function() { return {"cheese":"stilton"}; });
+  obj.methodWithClassTypeFunctionReturn(Array, function() { return ["cheese","stilton"]; });
+  obj.methodWithClassTypeFunctionReturn(RefedInterface1, function() { return refed_obj.setString("foo"); });
+}
+
+function checkMethodWithClassType(values) {
+  assertNumberEquals(values[0], 123456789);
+  Assert.assertEquals(true, values[1]);
+  Assert.assertEquals("zoumbawe", values[2]);
+  var jsonObject = values[3];
+  Assert.assertEquals("stilton", jsonObject["cheese"]);
+  var jsonArray = values[4];
+  Assert.assertEquals("cheese", jsonArray[0]);
+  Assert.assertEquals("stilton", jsonArray[1]);
+  var refed = values[5];
+  Assert.assertNotEquals('undefined', typeof refed._jdel);
+  Assert.assertEquals('foo', refed.getString());
+}
+
+function testFooBar() {
+
+  refed_obj.setString("foo");
+
+  obj.methodWithFunctionParamUserTypeParameterized(function(generic) {
+    Assert.assertNotEquals('undefined', typeof generic._jdel);
+    Assert.assertNotEquals('undefined', typeof generic.getValue()._jdel);
+  });
+
+  obj.methodWithClassTypeParam(RefedInterface1, refed_obj);
+  obj.methodWithClassTypeFunctionParam(RefedInterface1, function(val) {
+    Assert.assertNotEquals('undefined', typeof val._jdel);
+  });
+  obj.methodWithClassTypeFunctionReturn(RefedInterface1, function() {
+    return refed_obj;
+  });
 }
 
 function testInterfaceWithStringArg() {
