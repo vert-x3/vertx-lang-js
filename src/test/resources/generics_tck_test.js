@@ -460,24 +460,6 @@ function checkMethodWithClassType(values) {
   Assert.assertEquals('foo', refed.getString());
 }
 
-function testFooBar() {
-
-  refed_obj.setString("foo");
-
-  obj.methodWithFunctionParamUserTypeParameterized(function(generic) {
-    Assert.assertNotEquals('undefined', typeof generic._jdel);
-    Assert.assertNotEquals('undefined', typeof generic.getValue()._jdel);
-  });
-
-  obj.methodWithClassTypeParam(RefedInterface1, refed_obj);
-  obj.methodWithClassTypeFunctionParam(RefedInterface1, function(val) {
-    Assert.assertNotEquals('undefined', typeof val._jdel);
-  });
-  obj.methodWithClassTypeFunctionReturn(RefedInterface1, function() {
-    return refed_obj;
-  });
-}
-
 function testInterfaceWithStringArg() {
   var ret = obj.interfaceWithStringArg('the_string_value');
   Assert.assertNotEquals('undefined', typeof ret._jdel);

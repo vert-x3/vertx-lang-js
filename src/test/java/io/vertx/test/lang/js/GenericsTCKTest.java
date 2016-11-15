@@ -169,11 +169,6 @@ public class GenericsTCKTest extends JSTestBase {
   }
 
   @Test
-  public void testFooBar() throws Exception {
-    runTest();
-  }
-
-  @Test
   public void testInterfaceWithStringArg() throws Exception {
     runTest();
   }
