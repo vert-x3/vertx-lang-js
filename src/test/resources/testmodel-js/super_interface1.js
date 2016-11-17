@@ -75,7 +75,6 @@ SuperInterface1._jtype = {
     return SuperInterface1._jclass.isInstance(obj._jdel);
   },
   wrap: function(jdel) {
-    // A bit of jiggery pokery to create the object given a reference to the constructor function
     var obj = Object.create(SuperInterface1.prototype, {});
     SuperInterface1.apply(obj, arguments);
     return obj;
@@ -85,10 +84,8 @@ SuperInterface1._jtype = {
   }
 };
 SuperInterface1._create = function(jdel) {
-  // A bit of jiggery pokery to create the object given a reference to the constructor function
   var obj = Object.create(SuperInterface1.prototype, {});
   SuperInterface1.apply(obj, arguments);
   return obj;
 }
-// We export the Constructor function
 module.exports = SuperInterface1;

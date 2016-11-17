@@ -236,7 +236,7 @@ var @{ifaceSimpleName} = function(j_val@foreach{param: type.params}, j_arg_@{par
     return @{ifaceSimpleName}._jclass.isInstance(obj._jdel);\n
   },\n
   wrap: function(jdel) {\n
-    // A bit of jiggery pokery to create the object given a reference to the constructor function\n
+		@comment{'A bit of jiggery pokery to create the object given a reference to the constructor function'}
     var obj = Object.create(@{ifaceSimpleName}.prototype, {});\n
     @{ifaceSimpleName}.apply(obj, arguments);\n
     return obj;\n
@@ -248,7 +248,7 @@ var @{ifaceSimpleName} = function(j_val@foreach{param: type.params}, j_arg_@{par
 
 
 @{ifaceSimpleName}._create = function(jdel) {\n
-  // A bit of jiggery pokery to create the object given a reference to the constructor function\n
+		@comment{'A bit of jiggery pokery to create the object given a reference to the constructor function'}
   var obj = Object.create(@{ifaceSimpleName}.prototype, {});\n
   @{ifaceSimpleName}.apply(obj, arguments);\n
   return obj;\n
@@ -263,5 +263,5 @@ var @{ifaceSimpleName} = function(j_val@foreach{param: type.params}, j_arg_@{par
 
 @end{}
 
-// We export the Constructor function\n
+@comment{'We export the Constructor function'}
 module.exports = @{ifaceSimpleName};

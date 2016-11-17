@@ -69,7 +69,6 @@ RefedInterface2._jtype = {
     return RefedInterface2._jclass.isInstance(obj._jdel);
   },
   wrap: function(jdel) {
-    // A bit of jiggery pokery to create the object given a reference to the constructor function
     var obj = Object.create(RefedInterface2.prototype, {});
     RefedInterface2.apply(obj, arguments);
     return obj;
@@ -79,10 +78,8 @@ RefedInterface2._jtype = {
   }
 };
 RefedInterface2._create = function(jdel) {
-  // A bit of jiggery pokery to create the object given a reference to the constructor function
   var obj = Object.create(RefedInterface2.prototype, {});
   RefedInterface2.apply(obj, arguments);
   return obj;
 }
-// We export the Constructor function
 module.exports = RefedInterface2;

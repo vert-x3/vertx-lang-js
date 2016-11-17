@@ -70,7 +70,6 @@ MyInterface._jtype = {
     return MyInterface._jclass.isInstance(obj._jdel);
   },
   wrap: function(jdel) {
-    // A bit of jiggery pokery to create the object given a reference to the constructor function
     var obj = Object.create(MyInterface.prototype, {});
     MyInterface.apply(obj, arguments);
     return obj;
@@ -80,7 +79,6 @@ MyInterface._jtype = {
   }
 };
 MyInterface._create = function(jdel) {
-  // A bit of jiggery pokery to create the object given a reference to the constructor function
   var obj = Object.create(MyInterface.prototype, {});
   MyInterface.apply(obj, arguments);
   return obj;
@@ -98,5 +96,4 @@ MyInterface.create = function() {
   } else throw new TypeError('function invoked with invalid arguments');
 };
 
-// We export the Constructor function
 module.exports = MyInterface;

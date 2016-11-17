@@ -84,7 +84,6 @@ InterfaceWithApiArg._jtype = {
     return InterfaceWithApiArg._jclass.isInstance(obj._jdel);
   },
   wrap: function(jdel) {
-    // A bit of jiggery pokery to create the object given a reference to the constructor function
     var obj = Object.create(InterfaceWithApiArg.prototype, {});
     InterfaceWithApiArg.apply(obj, arguments);
     return obj;
@@ -94,10 +93,8 @@ InterfaceWithApiArg._jtype = {
   }
 };
 InterfaceWithApiArg._create = function(jdel) {
-  // A bit of jiggery pokery to create the object given a reference to the constructor function
   var obj = Object.create(InterfaceWithApiArg.prototype, {});
   InterfaceWithApiArg.apply(obj, arguments);
   return obj;
 }
-// We export the Constructor function
 module.exports = InterfaceWithApiArg;

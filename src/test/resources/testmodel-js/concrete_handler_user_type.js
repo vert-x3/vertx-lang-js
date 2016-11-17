@@ -55,7 +55,6 @@ ConcreteHandlerUserType._jtype = {
     return ConcreteHandlerUserType._jclass.isInstance(obj._jdel);
   },
   wrap: function(jdel) {
-    // A bit of jiggery pokery to create the object given a reference to the constructor function
     var obj = Object.create(ConcreteHandlerUserType.prototype, {});
     ConcreteHandlerUserType.apply(obj, arguments);
     return obj;
@@ -65,10 +64,8 @@ ConcreteHandlerUserType._jtype = {
   }
 };
 ConcreteHandlerUserType._create = function(jdel) {
-  // A bit of jiggery pokery to create the object given a reference to the constructor function
   var obj = Object.create(ConcreteHandlerUserType.prototype, {});
   ConcreteHandlerUserType.apply(obj, arguments);
   return obj;
 }
-// We export the Constructor function
 module.exports = ConcreteHandlerUserType;

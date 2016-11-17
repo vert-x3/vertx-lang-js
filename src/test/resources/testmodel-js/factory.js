@@ -46,7 +46,6 @@ Factory._jtype = {
     return Factory._jclass.isInstance(obj._jdel);
   },
   wrap: function(jdel) {
-    // A bit of jiggery pokery to create the object given a reference to the constructor function
     var obj = Object.create(Factory.prototype, {});
     Factory.apply(obj, arguments);
     return obj;
@@ -56,7 +55,6 @@ Factory._jtype = {
   }
 };
 Factory._create = function(jdel) {
-  // A bit of jiggery pokery to create the object given a reference to the constructor function
   var obj = Object.create(Factory.prototype, {});
   Factory.apply(obj, arguments);
   return obj;
@@ -106,5 +104,4 @@ Factory.createConcreteHandlerUserTypeExtension = function(handler) {
   } else throw new TypeError('function invoked with invalid arguments');
 };
 
-// We export the Constructor function
 module.exports = Factory;

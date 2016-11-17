@@ -7,7 +7,7 @@ import org.junit.Test;
  * This test tests all the different types of methods, return values and parameters that can be used in generated
  * APIs.
  *
- * @author <a href="http://tfox.org">Tim Fox</a>
+ * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
 public class GenericsTCKTest extends JSTestBase {
 
