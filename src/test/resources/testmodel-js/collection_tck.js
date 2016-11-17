@@ -1151,5 +1151,23 @@ var CollectionTCK = function(j_val) {
   this._jdel = j_collectionTCK;
 };
 
-// We export the Constructor function
+CollectionTCK._jclass = utils.getJavaClass("io.vertx.codegen.testmodel.CollectionTCK");
+CollectionTCK._jtype = {
+  accept: function(obj) {
+    return CollectionTCK._jclass.isInstance(obj._jdel);
+  },
+  wrap: function(jdel) {
+    var obj = Object.create(CollectionTCK.prototype, {});
+    CollectionTCK.apply(obj, arguments);
+    return obj;
+  },
+  unwrap: function(obj) {
+    return obj._jdel;
+  }
+};
+CollectionTCK._create = function(jdel) {
+  var obj = Object.create(CollectionTCK.prototype, {});
+  CollectionTCK.apply(obj, arguments);
+  return obj;
+}
 module.exports = CollectionTCK;

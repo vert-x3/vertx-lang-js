@@ -49,5 +49,23 @@ var SubInterface = function(j_val) {
   this._jdel = j_subInterface;
 };
 
-// We export the Constructor function
+SubInterface._jclass = utils.getJavaClass("com.acme.pkg.sub.SubInterface");
+SubInterface._jtype = {
+  accept: function(obj) {
+    return SubInterface._jclass.isInstance(obj._jdel);
+  },
+  wrap: function(jdel) {
+    var obj = Object.create(SubInterface.prototype, {});
+    SubInterface.apply(obj, arguments);
+    return obj;
+  },
+  unwrap: function(obj) {
+    return obj._jdel;
+  }
+};
+SubInterface._create = function(jdel) {
+  var obj = Object.create(SubInterface.prototype, {});
+  SubInterface.apply(obj, arguments);
+  return obj;
+}
 module.exports = SubInterface;

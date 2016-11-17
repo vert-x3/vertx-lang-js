@@ -65,7 +65,26 @@ utils.convReturnLong(@includeNamed{templ})
 @includeNamed{templ}
 		@end{}
 	@else{returnType.kind == CLASS_API}
-utils.convReturnVertxGen(@includeNamed{templ}, @{returnType.raw.simpleName})
+utils.convReturnVertxGen(@{returnType.raw.simpleName}, @includeNamed{templ}
+		@if{returnType.parameterized}
+			@foreach{arg:returnType.args}
+				@if{arg.kind == CLASS_API}
+					, @{arg.simpleName}._jtype
+				@else{arg.kind == CLASS_ENUM}
+					, utils.enum_jtype(@{arg.name})
+				@else{arg.kind == CLASS_OBJECT}
+					@code{classTypeParam=method.resolveClassTypeParam(arg)}
+					@if{classTypeParam != null}
+						, utils.get_jtype(@{classTypeParam.name})
+					@else{}
+						, undefined
+					@end{}
+				@else{}
+					, undefined
+				@end{}
+			@end{}
+		@end{}
+)
 	@else{returnType.kind == CLASS_ENUM}
 utils.convReturnEnum(@includeNamed{templ})
 	@else{returnType.kind == CLASS_DATA_OBJECT}
@@ -78,9 +97,17 @@ utils.convReturnHandlerAsyncResult(@includeNamed{templ}, function(result) { retu
 		@else{}
 utils.convReturnHandler(@includeNamed{templ}, function(result) { return @includeNamed{'convParam';overloaded=false;param=new io.vertx.codegen.ParamInfo(0, "result", null, returnType.args[0])}; })
 		@end{}
+	@else{returnType.variable && method != null  && (classTypeParam = method.resolveClassTypeParam(returnType)) != null}
+utils.get_jtype(@{classTypeParam.name}).wrap(@includeNamed{templ})
 	@else{}
 	@comment{'This will probably happen if the return type is generic'}
-utils.convReturnTypeUnknown(@includeNamed{templ})
+		@code{wrapper='utils.convReturnTypeUnknown'}
+		@foreach{param: type.params}
+			@if{param.name == returnType.name}
+				@code{wrapper='j_' + param.name + '.wrap'}
+			@end{}
+		@end{}
+@{wrapper}(@includeNamed{templ})
 	@end{}
 @end{}
 
@@ -160,14 +187,27 @@ var @{dataObjectType.simpleName} = @{dataObjectType};\n
 
 @comment{"The constructor"}
 
-var @{ifaceSimpleName} = function(j_val) {\n\n
+var @{ifaceSimpleName} = function(j_val@foreach{param: type.params}, j_arg_@{param.index}@end{}) {\n\n
   var j_@{ifaceName} = j_val;\n
   var that = this;\n
+@foreach{param: type.params}
+  var j_@{param.name} = typeof j_arg_@{param.index} !== 'undefined' ? j_arg_@{param.index} : utils.unknown_jtype;\n
+@end{}
 
 @comment{"Apply any supertypes"}
 
 @foreach{superType: superTypes}
-  @{superType.raw.simpleName}.call(this, j_val);\n
+  @{superType.raw.simpleName}.call(this, j_val@if{superType.parameterized && superType.raw.concrete}
+	@foreach{arg:superType.args}
+		@if{arg.kind == CLASS_API}
+, @{arg.simpleName}._jtype
+		@else{arg.variable}
+, j_@{arg.name}
+		@else{}
+, undefined
+		@end{}
+	@end{}
+@end{});\n
 @end{}
 \n
 
@@ -189,6 +229,31 @@ var @{ifaceSimpleName} = function(j_val) {\n\n
 };\n
 \n
 
+@{ifaceSimpleName}._jclass = utils.getJavaClass("@{type.raw.name}");\n
+
+@{ifaceSimpleName}._jtype = {\n
+  accept: function(obj) {\n
+    return @{ifaceSimpleName}._jclass.isInstance(obj._jdel);\n
+  },\n
+  wrap: function(jdel) {\n
+		@comment{'A bit of jiggery pokery to create the object given a reference to the constructor function'}
+    var obj = Object.create(@{ifaceSimpleName}.prototype, {});\n
+    @{ifaceSimpleName}.apply(obj, arguments);\n
+    return obj;\n
+  },\n
+  unwrap: function(obj) {\n
+    return obj._jdel;\n
+  }\n
+};\n
+
+
+@{ifaceSimpleName}._create = function(jdel) {\n
+		@comment{'A bit of jiggery pokery to create the object given a reference to the constructor function'}
+  var obj = Object.create(@{ifaceSimpleName}.prototype, {});\n
+  @{ifaceSimpleName}.apply(obj, arguments);\n
+  return obj;\n
+}\n
+
 @comment{"Iterate through the methods again, this time only considering the static ones"}
 
 @foreach{methodName:methodsByName.keySet()}
@@ -198,5 +263,5 @@ var @{ifaceSimpleName} = function(j_val) {\n\n
 
 @end{}
 
-// We export the Constructor function\n
+@comment{'We export the Constructor function'}
 module.exports = @{ifaceSimpleName};

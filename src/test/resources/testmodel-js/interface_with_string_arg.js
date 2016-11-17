@@ -14,34 +14,35 @@
  * under the License.
  */
 
-/** @module acme-js/my_interface */
+/** @module testmodel-js/interface_with_string_arg */
 var utils = require('vertx-js/util/utils');
-var SubInterface = require('acme-js/sub_interface');
-var TestInterface = require('testmodel-js/test_interface');
+var GenericRefedInterface = require('testmodel-js/generic_refed_interface');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JMyInterface = com.acme.pkg.MyInterface;
+var JInterfaceWithStringArg = io.vertx.codegen.testmodel.InterfaceWithStringArg;
 
 /**
 
  @class
 */
-var MyInterface = function(j_val) {
+var InterfaceWithStringArg = function(j_val) {
 
-  var j_myInterface = j_val;
+  var j_interfaceWithStringArg = j_val;
   var that = this;
+  GenericRefedInterface.call(this, j_val, undefined);
 
   /**
 
    @public
-
-   @return {SubInterface}
+   @param value {string} 
+   @return {GenericRefedInterface}
    */
-  this.sub = function() {
+  this.setValue = function(value) {
     var __args = arguments;
-    if (__args.length === 0) {
-      return utils.convReturnVertxGen(SubInterface, j_myInterface["sub()"]());
+    if (__args.length === 1 && typeof __args[0] === 'string') {
+      j_interfaceWithStringArg["setValue(java.lang.String)"](value);
+      return that;
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -49,51 +50,50 @@ var MyInterface = function(j_val) {
 
    @public
 
-   @return {TestInterface}
+   @return {string}
    */
-  this.method = function() {
+  this.getValue = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      return utils.convReturnVertxGen(TestInterface, j_myInterface["method()"]());
+      return j_interfaceWithStringArg["getValue()"]();
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+
+   */
+  this.meth = function() {
+    var __args = arguments;
+    if (__args.length === 0) {
+      j_interfaceWithStringArg["meth()"]();
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
   // A reference to the underlying Java delegate
   // NOTE! This is an internal API and must not be used in user code.
   // If you rely on this property your code is likely to break if we change it / remove it without warning.
-  this._jdel = j_myInterface;
+  this._jdel = j_interfaceWithStringArg;
 };
 
-MyInterface._jclass = utils.getJavaClass("com.acme.pkg.MyInterface");
-MyInterface._jtype = {
+InterfaceWithStringArg._jclass = utils.getJavaClass("io.vertx.codegen.testmodel.InterfaceWithStringArg");
+InterfaceWithStringArg._jtype = {
   accept: function(obj) {
-    return MyInterface._jclass.isInstance(obj._jdel);
+    return InterfaceWithStringArg._jclass.isInstance(obj._jdel);
   },
   wrap: function(jdel) {
-    var obj = Object.create(MyInterface.prototype, {});
-    MyInterface.apply(obj, arguments);
+    var obj = Object.create(InterfaceWithStringArg.prototype, {});
+    InterfaceWithStringArg.apply(obj, arguments);
     return obj;
   },
   unwrap: function(obj) {
     return obj._jdel;
   }
 };
-MyInterface._create = function(jdel) {
-  var obj = Object.create(MyInterface.prototype, {});
-  MyInterface.apply(obj, arguments);
+InterfaceWithStringArg._create = function(jdel) {
+  var obj = Object.create(InterfaceWithStringArg.prototype, {});
+  InterfaceWithStringArg.apply(obj, arguments);
   return obj;
 }
-/**
-
- @memberof module:acme-js/my_interface
-
- @return {MyInterface}
- */
-MyInterface.create = function() {
-  var __args = arguments;
-  if (__args.length === 0) {
-    return utils.convReturnVertxGen(MyInterface, JMyInterface["create()"]());
-  } else throw new TypeError('function invoked with invalid arguments');
-};
-
-module.exports = MyInterface;
+module.exports = InterfaceWithStringArg;

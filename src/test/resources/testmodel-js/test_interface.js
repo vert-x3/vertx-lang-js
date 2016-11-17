@@ -497,7 +497,7 @@ var TestInterface = function(j_val) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'function') {
       j_testInterface["methodWithHandlerUserTypes(io.vertx.core.Handler)"](function(jVal) {
-      handler(utils.convReturnVertxGen(jVal, RefedInterface1));
+      handler(utils.convReturnVertxGen(RefedInterface1, jVal));
     });
     } else throw new TypeError('function invoked with invalid arguments');
   };
@@ -512,7 +512,7 @@ var TestInterface = function(j_val) {
     if (__args.length === 1 && typeof __args[0] === 'function') {
       j_testInterface["methodWithHandlerAsyncResultUserTypes(io.vertx.core.Handler)"](function(ar) {
       if (ar.succeeded()) {
-        handler(utils.convReturnVertxGen(ar.result(), RefedInterface1), null);
+        handler(utils.convReturnVertxGen(RefedInterface1, ar.result()), null);
       } else {
         handler(null, ar.cause());
       }
@@ -625,7 +625,7 @@ var TestInterface = function(j_val) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] !== 'function' && typeof __args[1] === 'function') {
       j_testInterface["methodWithHandlerGenericUserType(java.lang.Object,io.vertx.core.Handler)"](utils.convParamTypeUnknown(value), function(jVal) {
-      handler(utils.convReturnVertxGen(jVal, GenericRefedInterface));
+      handler(utils.convReturnVertxGen(GenericRefedInterface, jVal, undefined));
     });
     } else throw new TypeError('function invoked with invalid arguments');
   };
@@ -641,7 +641,7 @@ var TestInterface = function(j_val) {
     if (__args.length === 2 && typeof __args[0] !== 'function' && typeof __args[1] === 'function') {
       j_testInterface["methodWithHandlerAsyncResultGenericUserType(java.lang.Object,io.vertx.core.Handler)"](utils.convParamTypeUnknown(value), function(ar) {
       if (ar.succeeded()) {
-        handler(utils.convReturnVertxGen(ar.result(), GenericRefedInterface), null);
+        handler(utils.convReturnVertxGen(GenericRefedInterface, ar.result(), undefined), null);
       } else {
         handler(null, ar.cause());
       }
@@ -775,7 +775,7 @@ var TestInterface = function(j_val) {
   this.methodWithVertxGenReturn = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      return utils.convReturnVertxGen(j_testInterface["methodWithVertxGenReturn()"](), RefedInterface1);
+      return utils.convReturnVertxGen(RefedInterface1, j_testInterface["methodWithVertxGenReturn()"]());
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -788,7 +788,7 @@ var TestInterface = function(j_val) {
   this.methodWithVertxGenNullReturn = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      return utils.convReturnVertxGen(j_testInterface["methodWithVertxGenNullReturn()"](), RefedInterface1);
+      return utils.convReturnVertxGen(RefedInterface1, j_testInterface["methodWithVertxGenNullReturn()"]());
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -801,7 +801,7 @@ var TestInterface = function(j_val) {
   this.methodWithAbstractVertxGenReturn = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      return utils.convReturnVertxGen(j_testInterface["methodWithAbstractVertxGenReturn()"](), RefedInterface2);
+      return utils.convReturnVertxGen(RefedInterface2, j_testInterface["methodWithAbstractVertxGenReturn()"]());
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -828,6 +828,19 @@ var TestInterface = function(j_val) {
     var __args = arguments;
     if (__args.length === 0) {
       return utils.convReturnDataObject(j_testInterface["methodWithDataObjectNullReturn()"]());
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param value {Object} 
+   @return {GenericRefedInterface}
+   */
+  this.methodWithGenericUserTypeReturn = function(value) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] !== 'function') {
+      return utils.convReturnVertxGen(GenericRefedInterface, j_testInterface["methodWithGenericUserTypeReturn(java.lang.Object)"](utils.convParamTypeUnknown(value)), undefined);
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -943,7 +956,7 @@ var TestInterface = function(j_val) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'string') {
       if (that.cachedmethodWithCachedReturn == null) {
-        that.cachedmethodWithCachedReturn = utils.convReturnVertxGen(j_testInterface["methodWithCachedReturn(java.lang.String)"](foo), RefedInterface1);
+        that.cachedmethodWithCachedReturn = utils.convReturnVertxGen(RefedInterface1, j_testInterface["methodWithCachedReturn(java.lang.String)"](foo));
       }
       return that.cachedmethodWithCachedReturn;
     } else throw new TypeError('function invoked with invalid arguments');
@@ -1313,6 +1326,25 @@ var TestInterface = function(j_val) {
   this._jdel = j_testInterface;
 };
 
+TestInterface._jclass = utils.getJavaClass("io.vertx.codegen.testmodel.TestInterface");
+TestInterface._jtype = {
+  accept: function(obj) {
+    return TestInterface._jclass.isInstance(obj._jdel);
+  },
+  wrap: function(jdel) {
+    var obj = Object.create(TestInterface.prototype, {});
+    TestInterface.apply(obj, arguments);
+    return obj;
+  },
+  unwrap: function(obj) {
+    return obj._jdel;
+  }
+};
+TestInterface._create = function(jdel) {
+  var obj = Object.create(TestInterface.prototype, {});
+  TestInterface.apply(obj, arguments);
+  return obj;
+}
 /**
 
  @memberof module:testmodel-js/test_interface
@@ -1322,9 +1354,8 @@ var TestInterface = function(j_val) {
 TestInterface.staticFactoryMethod = function(foo) {
   var __args = arguments;
   if (__args.length === 1 && typeof __args[0] === 'string') {
-    return utils.convReturnVertxGen(JTestInterface["staticFactoryMethod(java.lang.String)"](foo), RefedInterface1);
+    return utils.convReturnVertxGen(RefedInterface1, JTestInterface["staticFactoryMethod(java.lang.String)"](foo));
   } else throw new TypeError('function invoked with invalid arguments');
 };
 
-// We export the Constructor function
 module.exports = TestInterface;

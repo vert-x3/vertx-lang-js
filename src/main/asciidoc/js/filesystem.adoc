@@ -139,7 +139,7 @@ vertx.fileSystem().open("target/classes/hello.txt", {
   if (result_err == null) {
     var file = result;
     var buff = Buffer.buffer("foo");
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0;i < 5;i++) {
       file.write(buff, buff.length() * i, function (ar, ar_err) {
         if (ar_err == null) {
           console.log("Written ok!");
@@ -182,7 +182,7 @@ vertx.fileSystem().open("target/classes/les_miserables.txt", {
   if (result_err == null) {
     var file = result;
     var buff = Buffer.buffer(1000);
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0;i < 10;i++) {
       file.read(buff, i * 100, i * 100, 100, function (ar, ar_err) {
         if (ar_err == null) {
           console.log("Read ok!");

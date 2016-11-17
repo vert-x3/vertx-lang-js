@@ -310,13 +310,38 @@ utils.convReturnListSetJson = function(jList) {
   return arr;
 };
 
+utils.getJavaClass = function(fqn) {
+  var type = Java.type(fqn + "[]");
+  return new type(0).getClass().getComponentType();
+};
+
+utils.typeMap = {};
+utils.typeMap[Object] = utils.getJavaClass("io.vertx.core.json.JsonObject");
+utils.typeMap[Array] = utils.getJavaClass("io.vertx.core.json.JsonArray");
+utils.typeMap[Number] = utils.getJavaClass("java.lang.Long");
+utils.typeMap[String] = utils.getJavaClass("java.lang.String");
+utils.typeMap[Boolean] = utils.getJavaClass("java.lang.Boolean");
+
+utils.get_jclass = function(type) {
+  var jclass = type._jclass;
+  if (jclass == null) {
+    jclass = utils.typeMap[type];
+  }
+  return jclass;
+};
+
+utils.get_jtype = function(t) {
+  if (typeof t._jtype === 'undefined') {
+    return utils.unknown_jtype;
+  } else {
+    return t._jtype;
+  }
+}
+
 // Convert a VertxGen return value
-utils.convReturnVertxGen = function(jdel, constructorFunction) {
+utils.convReturnVertxGen = function(constructorFunction, jdel) {
   if (jdel != null) {
-    // A bit of jiggery pokery to create the object given a reference to the constructor function
-    var obj = Object.create(constructorFunction.prototype, {});
-    constructorFunction.apply(obj, [jdel]);
-    return obj;
+    return constructorFunction._create.apply(this, Array.prototype.slice.call(arguments, 1));
   }
   return null;
 }
@@ -488,5 +513,25 @@ utils.convReturnHandler = function(handler, converter) {
     handler.handle(converter(result));
   }
 };
+
+//
+utils.unknown_jtype = {
+  accept: function(obj) {
+    return typeof obj !== 'function';
+  },
+  wrap: utils.convReturnTypeUnknown,
+  unwrap: utils.convParamTypeUnknown
+}
+
+utils.enum_jtype = function(jEnum) {
+  return {
+    accept: function(val) {
+      return typeof val === 'string';
+    },
+    wrap: utils.convReturnEnum,
+    unwrap: jEnum.valueOf
+  };
+}
+
 
 module.exports = utils;

@@ -51,5 +51,23 @@ var ConcreteHandlerUserTypeExtension = function(j_val) {
   this._jdel = j_concreteHandlerUserTypeExtension;
 };
 
-// We export the Constructor function
+ConcreteHandlerUserTypeExtension._jclass = utils.getJavaClass("io.vertx.codegen.testmodel.ConcreteHandlerUserTypeExtension");
+ConcreteHandlerUserTypeExtension._jtype = {
+  accept: function(obj) {
+    return ConcreteHandlerUserTypeExtension._jclass.isInstance(obj._jdel);
+  },
+  wrap: function(jdel) {
+    var obj = Object.create(ConcreteHandlerUserTypeExtension.prototype, {});
+    ConcreteHandlerUserTypeExtension.apply(obj, arguments);
+    return obj;
+  },
+  unwrap: function(obj) {
+    return obj._jdel;
+  }
+};
+ConcreteHandlerUserTypeExtension._create = function(jdel) {
+  var obj = Object.create(ConcreteHandlerUserTypeExtension.prototype, {});
+  ConcreteHandlerUserTypeExtension.apply(obj, arguments);
+  return obj;
+}
 module.exports = ConcreteHandlerUserTypeExtension;

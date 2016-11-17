@@ -475,8 +475,7 @@ fut1.compose(function (v) {
   return fut2
 }).compose(function (v) {
   // When the file is written (fut2), execute this:
-  var fut3 = Future.future();
-  fs.move("/foo", "/bar", fut3.completer());
+  fs.move("/foo", "/bar", startFuture.completer());
 }, startFuture);
 
 ----
@@ -485,10 +484,10 @@ In this example, 3 operations are chained:
 
 1. a file is created (`fut1`)
 2. something is written in the file (`fut2`)
-3. the file is moved (`fut3`)
+3. the file is moved (`startFuture`)
 
-When these 3 steps are successful, the final future (`startFuture`) is completed with a success. However, if one
-of the steps fails, the final future is completed with a failure.
+When these 3 steps are successful, the final future (`startFuture`) is succeeded. However, if one
+of the steps fails, the final future is failed.
 
 This example uses:
 
@@ -1555,7 +1554,7 @@ To specify an HA group you use the `-hagroup` switch when running the verticle, 
 
 [source]
 ----
-vertx run my-verticle.js -ha -ha-group my-group
+vertx run my-verticle.js -ha -hagroup my-group
 ----
 
 Let's look at an example:
