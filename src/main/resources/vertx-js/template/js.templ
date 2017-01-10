@@ -75,7 +75,7 @@ utils.convReturnVertxGen(@{returnType.raw.simpleName}, @includeNamed{templ}
 				@else{arg.kind == CLASS_OBJECT}
 					@code{classTypeParam=method.resolveClassTypeParam(arg)}
 					@if{classTypeParam != null}
-						, utils.get_jtype(@{classTypeParam.name})
+						, utils.get_jtype(__args[@{classTypeParam.index}])
 					@else{}
 						, undefined
 					@end{}
@@ -98,7 +98,7 @@ utils.convReturnHandlerAsyncResult(@includeNamed{templ}, function(result) { retu
 utils.convReturnHandler(@includeNamed{templ}, function(result) { return @includeNamed{'convParam';overloaded=false;param=new io.vertx.codegen.ParamInfo(0, "result", null, returnType.args[0])}; })
 		@end{}
 	@else{returnType.variable && method != null  && (classTypeParam = method.resolveClassTypeParam(returnType)) != null}
-utils.get_jtype(@{classTypeParam.name}).wrap(@includeNamed{templ})
+utils.get_jtype(__args[@{classTypeParam.index}]).wrap(@includeNamed{templ})
 	@else{}
 	@comment{'This will probably happen if the return type is generic'}
 		@code{wrapper='utils.convReturnTypeUnknown'}

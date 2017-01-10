@@ -258,6 +258,9 @@
                 <codeGenerators>JavaScript</codeGenerators>
               </optionMap>
               <sourceDirectory>${project.build.directory}/sources/codegen</sourceDirectory>
+              <additionalSourceDirectories>
+                <additionalSourceDirectory>${project.basedir}/src/test/java</additionalSourceDirectory>
+              </additionalSourceDirectories>
             </configuration>
           </execution>
         </executions>

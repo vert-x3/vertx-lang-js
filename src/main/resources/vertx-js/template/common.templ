@@ -143,7 +143,7 @@ j_@{unwrappedType.name}.unwrap(@{unwrappedName})
 			@else{}
 				@code{classTypeParam=method.resolveClassTypeParam(unwrappedType)}
 				@if{classTypeParam != null}
-utils.get_jtype(@{classTypeParam.name}).unwrap(@{unwrappedName})
+utils.get_jtype(__args[@{classTypeParam.index}]).unwrap(@{unwrappedName})
 				@else{}
 utils.convParamTypeUnknown(@{unwrappedName})
 				@end{}

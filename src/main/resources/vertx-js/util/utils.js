@@ -332,6 +332,9 @@ utils.get_jclass = function(type) {
 
 utils.get_jtype = function(t) {
   if (typeof t._jtype === 'undefined') {
+    if (t === Number) {
+      return utils.number_jtype;
+    }
     return utils.unknown_jtype;
   } else {
     return t._jtype;
@@ -515,6 +518,14 @@ utils.convReturnHandler = function(handler, converter) {
 };
 
 //
+utils.number_jtype = {
+  accept: function(obj) {
+    return typeof obj === 'number';
+  },
+  wrap: utils.convReturnLong,
+  unwrap: utils.convParamLong
+};
+
 utils.unknown_jtype = {
   accept: function(obj) {
     return typeof obj !== 'function';
