@@ -42,7 +42,7 @@ utils.convParamTypeUnknown = function(param) {
     if (param instanceof Array) {
       return utils.convParamJsonArray(param);
     }
-    if (typeof param._jdel === 'object') {
+    if (typeof param._jdel !== 'undefined'  && param._jdel) {
       return param;
     }
     return utils.convParamJsonObject(param);
