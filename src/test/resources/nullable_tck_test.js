@@ -483,7 +483,7 @@ function testListNullableInteger() {
 
 function testListNullableLong() {
   testListNullable('Long', [123456789,null,987654321], function(list) {
-    Assert.assertEquals(3, list.length, 0);
+    Assert.assertTrue(3 === list.length);
     Assert.assertEquals(Number(123456789), Number(list[0]), Number(0));
     Assert.assertEquals(null, list[1]);
     Assert.assertEquals(Number(987654321), Number(list[2]), Number(0));
@@ -638,7 +638,7 @@ function testSetNullableInteger() {
 
 function testSetNullableLong() {
   testSetNullable('Long', [123456789,null,987654321], function(s) {
-    Assert.assertEquals(3, s.length, 0);
+    Assert.assertTrue(3 === s.length);
     Assert.assertEquals(Number(123456789), Number(s[0]), Number(0));
     Assert.assertEquals(null, s[1]);
     Assert.assertEquals(Number(987654321), Number(s[2]), Number(0));
