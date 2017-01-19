@@ -20,7 +20,7 @@ var GenericRefedInterface = require('testmodel-js/generic_refed_interface');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JInterfaceWithStringArg = io.vertx.codegen.testmodel.InterfaceWithStringArg;
+var JInterfaceWithStringArg = Java.type('io.vertx.codegen.testmodel.InterfaceWithStringArg');
 
 /**
 

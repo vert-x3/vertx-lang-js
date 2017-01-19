@@ -19,7 +19,7 @@ var utils = require('vertx-js/util/utils');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JGenericNullableRefedInterface = io.vertx.codegen.testmodel.GenericNullableRefedInterface;
+var JGenericNullableRefedInterface = Java.type('io.vertx.codegen.testmodel.GenericNullableRefedInterface');
 
 /**
 

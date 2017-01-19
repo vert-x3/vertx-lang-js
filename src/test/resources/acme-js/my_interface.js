@@ -21,7 +21,7 @@ var TestInterface = require('testmodel-js/test_interface');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JMyInterface = com.acme.pkg.MyInterface;
+var JMyInterface = Java.type('com.acme.pkg.MyInterface');
 
 /**
 

@@ -19,7 +19,7 @@ var utils = require('vertx-js/util/utils');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JRefedInterface1 = io.vertx.codegen.testmodel.RefedInterface1;
+var JRefedInterface1 = Java.type('io.vertx.codegen.testmodel.RefedInterface1');
 
 /**
 

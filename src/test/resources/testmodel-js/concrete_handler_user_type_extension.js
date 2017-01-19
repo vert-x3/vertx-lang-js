@@ -21,7 +21,7 @@ var ConcreteHandlerUserType = require('testmodel-js/concrete_handler_user_type')
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JConcreteHandlerUserTypeExtension = io.vertx.codegen.testmodel.ConcreteHandlerUserTypeExtension;
+var JConcreteHandlerUserTypeExtension = Java.type('io.vertx.codegen.testmodel.ConcreteHandlerUserTypeExtension');
 
 /**
 

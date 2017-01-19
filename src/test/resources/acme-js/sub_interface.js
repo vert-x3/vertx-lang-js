@@ -19,7 +19,7 @@ var utils = require('vertx-js/util/utils');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JSubInterface = com.acme.pkg.sub.SubInterface;
+var JSubInterface = Java.type('com.acme.pkg.sub.SubInterface');
 
 /**
 
