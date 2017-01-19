@@ -917,7 +917,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNonNullableDataObjectParam = function(param) {
     var __args = arguments;
     if (__args.length === 1 && (typeof __args[0] === 'object' && __args[0] != null)) {
-      return j_nullableTCK["methodWithNonNullableDataObjectParam(io.vertx.codegen.testmodel.TestDataObject)"](param != null ? new TestDataObject(new JsonObject(JSON.stringify(param))) : null);
+      return j_nullableTCK["methodWithNonNullableDataObjectParam(io.vertx.codegen.testmodel.TestDataObject)"](param != null ? new TestDataObject(new JsonObject(Java.asJSONCompatible(param))) : null);
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -930,7 +930,7 @@ var NullableTCK = function(j_val) {
   this.methodWithNullableDataObjectParam = function(expectNull, param) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'object') {
-      j_nullableTCK["methodWithNullableDataObjectParam(boolean,io.vertx.codegen.testmodel.TestDataObject)"](expectNull, param != null ? new TestDataObject(new JsonObject(JSON.stringify(param))) : null);
+      j_nullableTCK["methodWithNullableDataObjectParam(boolean,io.vertx.codegen.testmodel.TestDataObject)"](expectNull, param != null ? new TestDataObject(new JsonObject(Java.asJSONCompatible(param))) : null);
     } else throw new TypeError('function invoked with invalid arguments');
   };
 

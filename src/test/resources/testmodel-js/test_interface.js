@@ -484,7 +484,7 @@ var TestInterface = function(j_val) {
   this.methodWithDataObjectParam = function(dataObject) {
     var __args = arguments;
     if (__args.length === 1 && (typeof __args[0] === 'object' && __args[0] != null)) {
-      j_testInterface["methodWithDataObjectParam(io.vertx.codegen.testmodel.TestDataObject)"](dataObject != null ? new TestDataObject(new JsonObject(JSON.stringify(dataObject))) : null);
+      j_testInterface["methodWithDataObjectParam(io.vertx.codegen.testmodel.TestDataObject)"](dataObject != null ? new TestDataObject(new JsonObject(Java.asJSONCompatible(dataObject))) : null);
     } else throw new TypeError('function invoked with invalid arguments');
   };
 

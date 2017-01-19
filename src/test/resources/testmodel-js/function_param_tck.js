@@ -357,7 +357,7 @@ var FunctionParamTCK = function(j_val) {
     if (__args.length === 1 && typeof __args[0] === 'function') {
       return j_functionParamTCK["methodWithDataObjectReturn(java.util.function.Function)"](function(jVal) {
       var jRet = func(jVal);
-      return jRet != null ? new TestDataObject(new JsonObject(JSON.stringify(jRet))) : null;
+      return jRet != null ? new TestDataObject(new JsonObject(Java.asJSONCompatible(jRet))) : null;
     });
     } else throw new TypeError('function invoked with invalid arguments');
   };
