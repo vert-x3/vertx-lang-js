@@ -187,8 +187,8 @@
                 <processor>io.vertx.codegen.CodeGenProcessor</processor>
               </processors>
               <optionMap>
-                <outputDirectory>${project.basedir}/src/main</outputDirectory>
-                <codeGenerators>JavaScript</codeGenerators>
+                <codegen.output>${project.basedir}/src/main</codegen.output>
+                <codegen.generators>JavaScript</codegen.generators>
               </optionMap>
               <sourceDirectory>${project.build.directory}/sources/vertx-core</sourceDirectory>
             </configuration>
@@ -254,8 +254,8 @@
                 <processor>io.vertx.codegen.CodeGenProcessor</processor>
               </processors>
               <optionMap>
-                <outputDirectory>${project.basedir}/src/test</outputDirectory>
-                <codeGenerators>JavaScript</codeGenerators>
+                <codegen.output>${project.basedir}/src/test</codegen.output>
+                <codegen.generators>JavaScript</codegen.generators>
               </optionMap>
               <sourceDirectory>${project.build.directory}/sources/codegen</sourceDirectory>
               <additionalSourceDirectories>

@@ -1180,6 +1180,53 @@ var GenericsTCK = function(j_val) {
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
+  /**
+
+   @public
+   @param param {GenericRefedInterface} 
+   @return {GenericRefedInterface}
+   */
+  this.methodWithParamInferedReturn = function(param) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'object' && __args[0]._jdel) {
+      return utils.convReturnVertxGen(GenericRefedInterface, j_genericsTCK["methodWithParamInferedReturn(io.vertx.codegen.testmodel.GenericRefedInterface)"](param._jdel), undefined);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param param {GenericRefedInterface} 
+   @param handler {function} 
+   */
+  this.methodWithHandlerParamInfered = function(param, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] === 'object' && __args[0]._jdel && typeof __args[1] === 'function') {
+      j_genericsTCK["methodWithHandlerParamInfered(io.vertx.codegen.testmodel.GenericRefedInterface,io.vertx.core.Handler)"](param._jdel, function(jVal) {
+      handler(utils.convReturnVertxGen(GenericRefedInterface, jVal, undefined));
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param param {GenericRefedInterface} 
+   @param handler {function} 
+   */
+  this.methodWithHandlerAsyncResultParamInfered = function(param, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] === 'object' && __args[0]._jdel && typeof __args[1] === 'function') {
+      j_genericsTCK["methodWithHandlerAsyncResultParamInfered(io.vertx.codegen.testmodel.GenericRefedInterface,io.vertx.core.Handler)"](param._jdel, function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnVertxGen(GenericRefedInterface, ar.result(), undefined), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
   // A reference to the underlying Java delegate
   // NOTE! This is an internal API and must not be used in user code.
   // If you rely on this property your code is likely to break if we change it / remove it without warning.
