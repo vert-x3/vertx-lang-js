@@ -21,8 +21,8 @@ var RefedInterface2 = require('testmodel-js/refed_interface2');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JCollectionTCK = io.vertx.codegen.testmodel.CollectionTCK;
-var TestDataObject = io.vertx.codegen.testmodel.TestDataObject;
+var JCollectionTCK = Java.type('io.vertx.codegen.testmodel.CollectionTCK');
+var TestDataObject = Java.type('io.vertx.codegen.testmodel.TestDataObject');
 
 /**
 

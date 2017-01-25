@@ -19,7 +19,7 @@ var utils = require('vertx-js/util/utils');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JSuperInterface1 = io.vertx.codegen.testmodel.SuperInterface1;
+var JSuperInterface1 = Java.type('io.vertx.codegen.testmodel.SuperInterface1');
 
 /**
 

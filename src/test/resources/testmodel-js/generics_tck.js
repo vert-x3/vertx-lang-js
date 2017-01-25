@@ -25,8 +25,8 @@ var GenericNullableRefedInterface = require('testmodel-js/generic_nullable_refed
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JGenericsTCK = io.vertx.codegen.testmodel.GenericsTCK;
-var TestDataObject = io.vertx.codegen.testmodel.TestDataObject;
+var JGenericsTCK = Java.type('io.vertx.codegen.testmodel.GenericsTCK');
+var TestDataObject = Java.type('io.vertx.codegen.testmodel.TestDataObject');
 
 /**
 

@@ -168,9 +168,9 @@ var @{refedType} = require('@{genModuleName(referencedType)}');\n
 	@comment{"The top level vars for the module"}
 var io = Packages.io;\n
 var JsonObject = io.vertx.core.json.JsonObject;\n
-var J@{ifaceSimpleName} = @{type.raw.name};\n
+var J@{ifaceSimpleName} = Java.type('@{type.raw.name}');\n
 	@foreach{dataObjectType: referencedDataObjectTypes}
-var @{dataObjectType.simpleName} = @{dataObjectType};\n
+var @{dataObjectType.simpleName} = Java.type('@{dataObjectType}');\n
 	@end{}
 \n
 

@@ -19,12 +19,12 @@ var utils = require('vertx-js/util/utils');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JDataObjectTCK = io.vertx.codegen.testmodel.DataObjectTCK;
-var DataObjectWithMaps = io.vertx.codegen.testmodel.DataObjectWithMaps;
-var DataObjectWithOnlyJsonObjectConstructor = io.vertx.codegen.testmodel.DataObjectWithOnlyJsonObjectConstructor;
-var DataObjectWithLists = io.vertx.codegen.testmodel.DataObjectWithLists;
-var DataObjectWithNestedBuffer = io.vertx.codegen.testmodel.DataObjectWithNestedBuffer;
-var DataObjectWithValues = io.vertx.codegen.testmodel.DataObjectWithValues;
+var JDataObjectTCK = Java.type('io.vertx.codegen.testmodel.DataObjectTCK');
+var DataObjectWithMaps = Java.type('io.vertx.codegen.testmodel.DataObjectWithMaps');
+var DataObjectWithOnlyJsonObjectConstructor = Java.type('io.vertx.codegen.testmodel.DataObjectWithOnlyJsonObjectConstructor');
+var DataObjectWithLists = Java.type('io.vertx.codegen.testmodel.DataObjectWithLists');
+var DataObjectWithNestedBuffer = Java.type('io.vertx.codegen.testmodel.DataObjectWithNestedBuffer');
+var DataObjectWithValues = Java.type('io.vertx.codegen.testmodel.DataObjectWithValues');
 
 /**
  todo:

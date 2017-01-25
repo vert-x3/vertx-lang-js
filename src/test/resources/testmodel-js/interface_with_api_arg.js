@@ -21,7 +21,7 @@ var RefedInterface1 = require('testmodel-js/refed_interface1');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JInterfaceWithApiArg = io.vertx.codegen.testmodel.InterfaceWithApiArg;
+var JInterfaceWithApiArg = Java.type('io.vertx.codegen.testmodel.InterfaceWithApiArg');
 
 /**
 

@@ -20,7 +20,7 @@ var GenericHolder = require('extra-js/generic_holder');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JClassParamOverload = io.vertx.test.codegen.ClassParamOverload;
+var JClassParamOverload = Java.type('io.vertx.test.codegen.ClassParamOverload');
 
 /**
 

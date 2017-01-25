@@ -27,8 +27,8 @@ var SuperInterface2 = require('testmodel-js/super_interface2');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JTestInterface = io.vertx.codegen.testmodel.TestInterface;
-var TestDataObject = io.vertx.codegen.testmodel.TestDataObject;
+var JTestInterface = Java.type('io.vertx.codegen.testmodel.TestInterface');
+var TestDataObject = Java.type('io.vertx.codegen.testmodel.TestDataObject');
 
 /**
 

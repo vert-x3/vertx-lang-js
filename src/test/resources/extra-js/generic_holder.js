@@ -19,7 +19,7 @@ var utils = require('vertx-js/util/utils');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JGenericHolder = io.vertx.test.codegen.GenericHolder;
+var JGenericHolder = Java.type('io.vertx.test.codegen.GenericHolder');
 
 /**
 

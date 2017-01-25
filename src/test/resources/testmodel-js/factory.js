@@ -23,7 +23,7 @@ var ConcreteHandlerUserTypeExtension = require('testmodel-js/concrete_handler_us
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JFactory = io.vertx.codegen.testmodel.Factory;
+var JFactory = Java.type('io.vertx.codegen.testmodel.Factory');
 
 /**
 
