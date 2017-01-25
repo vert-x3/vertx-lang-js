@@ -133,7 +133,7 @@ utils.convParamJsonObject(@{unwrappedName})
 	@else{unwrappedType.kind == CLASS_JSON_ARRAY}
 utils.convParamJsonArray(@{unwrappedName})
 	@else{unwrappedType.kind == CLASS_DATA_OBJECT}
-@{unwrappedName} != null ? new @{unwrappedType.simpleName}(new JsonObject(JSON.stringify(@{unwrappedName}))) : null
+@{unwrappedName} != null ? new @{unwrappedType.simpleName}(new JsonObject(Java.asJSONCompatible(@{unwrappedName}))) : null
 	@else{unwrappedType.kind == CLASS_ENUM}
 @if{param.nullable}@{unwrappedName} == null ? null : @end{}@{unwrappedType.name}.valueOf(@{unwrappedName})
 	@else{unwrappedType.kind == CLASS_OBJECT}
