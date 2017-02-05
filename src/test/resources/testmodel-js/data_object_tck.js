@@ -21,7 +21,10 @@ var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
 var JDataObjectTCK = Java.type('io.vertx.codegen.testmodel.DataObjectTCK');
 var DataObjectWithMaps = Java.type('io.vertx.codegen.testmodel.DataObjectWithMaps');
+var DataObjectWithRecursion = Java.type('io.vertx.codegen.testmodel.DataObjectWithRecursion');
 var DataObjectWithOnlyJsonObjectConstructor = Java.type('io.vertx.codegen.testmodel.DataObjectWithOnlyJsonObjectConstructor');
+var DataObjectWithMapAdders = Java.type('io.vertx.codegen.testmodel.DataObjectWithMapAdders');
+var DataObjectWithListAdders = Java.type('io.vertx.codegen.testmodel.DataObjectWithListAdders');
 var DataObjectWithLists = Java.type('io.vertx.codegen.testmodel.DataObjectWithLists');
 var DataObjectWithNestedBuffer = Java.type('io.vertx.codegen.testmodel.DataObjectWithNestedBuffer');
 var DataObjectWithValues = Java.type('io.vertx.codegen.testmodel.DataObjectWithValues');
@@ -133,6 +136,42 @@ var DataObjectTCK = function(j_val) {
     var __args = arguments;
     if (__args.length === 1 && (typeof __args[0] === 'object' && __args[0] != null)) {
       j_dataObjectTCK["setDataObjectWithBuffer(io.vertx.codegen.testmodel.DataObjectWithNestedBuffer)"](dataObject != null ? new DataObjectWithNestedBuffer(new JsonObject(Java.asJSONCompatible(dataObject))) : null);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param dataObject {Object} 
+   */
+  this.setDataObjectWithListAdders = function(dataObject) {
+    var __args = arguments;
+    if (__args.length === 1 && (typeof __args[0] === 'object' && __args[0] != null)) {
+      j_dataObjectTCK["setDataObjectWithListAdders(io.vertx.codegen.testmodel.DataObjectWithListAdders)"](dataObject != null ? new DataObjectWithListAdders(new JsonObject(Java.asJSONCompatible(dataObject))) : null);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param dataObject {Object} 
+   */
+  this.setDataObjectWithMapAdders = function(dataObject) {
+    var __args = arguments;
+    if (__args.length === 1 && (typeof __args[0] === 'object' && __args[0] != null)) {
+      j_dataObjectTCK["setDataObjectWithMapAdders(io.vertx.codegen.testmodel.DataObjectWithMapAdders)"](dataObject != null ? new DataObjectWithMapAdders(new JsonObject(Java.asJSONCompatible(dataObject))) : null);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param dataObject {Object} 
+   */
+  this.setDataObjectWithRecursion = function(dataObject) {
+    var __args = arguments;
+    if (__args.length === 1 && (typeof __args[0] === 'object' && __args[0] != null)) {
+      j_dataObjectTCK["setDataObjectWithRecursion(io.vertx.codegen.testmodel.DataObjectWithRecursion)"](dataObject != null ? new DataObjectWithRecursion(new JsonObject(Java.asJSONCompatible(dataObject))) : null);
     } else throw new TypeError('function invoked with invalid arguments');
   };
 

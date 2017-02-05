@@ -40,7 +40,7 @@ var cli = CLI.create("copy").setSummary("A command line interface to copy files.
   "description" : "The source",
   "argName" : "source"
 }).addArgument({
-  "index" : 0,
+  "index" : 1,
   "description" : "The destination",
   "argName" : "target"
 });
