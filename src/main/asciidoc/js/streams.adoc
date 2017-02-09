@@ -138,9 +138,8 @@ Let's now look at the methods on `ReadStream` and `WriteStream` in more detail:
 
 `ReadStream` is implemented by `link:../../jsdoc/module-vertx-js_http_client_response-HttpClientResponse.html[HttpClientResponse]`, `link:../../jsdoc/module-vertx-js_datagram_socket-DatagramSocket.html[DatagramSocket]`,
 `link:../../jsdoc/module-vertx-js_http_client_request-HttpClientRequest.html[HttpClientRequest]`, `link:../../jsdoc/module-vertx-js_http_server_file_upload-HttpServerFileUpload.html[HttpServerFileUpload]`,
-`link:../../jsdoc/module-vertx-js_http_server_request-HttpServerRequest.html[HttpServerRequest]`, `link:../../jsdoc/module-vertx-js_http_server_request_stream-HttpServerRequestStream.html[HttpServerRequestStream]`,
-`link:../../jsdoc/module-vertx-js_message_consumer-MessageConsumer.html[MessageConsumer]`, `link:../../jsdoc/module-vertx-js_net_socket-NetSocket.html[NetSocket]`, `link:../../jsdoc/module-vertx-js_net_socket_stream-NetSocketStream.html[NetSocketStream]`,
-`link:../../jsdoc/module-vertx-js_web_socket-WebSocket.html[WebSocket]`, `link:../../jsdoc/module-vertx-js_web_socket_stream-WebSocketStream.html[WebSocketStream]`, `link:../../jsdoc/module-vertx-js_timeout_stream-TimeoutStream.html[TimeoutStream]`,
+`link:../../jsdoc/module-vertx-js_http_server_request-HttpServerRequest.html[HttpServerRequest]`, `link:../../jsdoc/module-vertx-js_message_consumer-MessageConsumer.html[MessageConsumer]`,
+`link:../../jsdoc/module-vertx-js_net_socket-NetSocket.html[NetSocket]`, `link:../../jsdoc/module-vertx-js_web_socket-WebSocket.html[WebSocket]`, `link:../../jsdoc/module-vertx-js_timeout_stream-TimeoutStream.html[TimeoutStream]`,
 `link:../../jsdoc/module-vertx-js_async_file-AsyncFile.html[AsyncFile]`.
 
 Functions:
