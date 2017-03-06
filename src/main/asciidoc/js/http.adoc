@@ -1580,9 +1580,6 @@ The default redirection policy can changed with a custom implementation:
 [source,js]
 ----
 var Future = require("vertx-js/future");
-var resolveURI = function(base, uriRef) {
-  throw "an error occured";
-};
 
 client.redirectHandler(function (response) {
 
@@ -2280,16 +2277,20 @@ client.websocket("/some-uri", function (websocket) {
 
 ==== Writing messages to WebSockets
 
-If you wish to write a single binary WebSocket message to the WebSocket you can do this with
-`link:../../jsdoc/module-vertx-js_web_socket-WebSocket.html#writeBinaryMessage[writeBinaryMessage]`:
+If you wish to write a single WebSocket message to the WebSocket you can do this with
+`link:../../jsdoc/module-vertx-js_web_socket-WebSocket.html#writeBinaryMessage[writeBinaryMessage]` or
+`link:../../jsdoc/module-vertx-js_web_socket-WebSocket.html#writeTextMessage[writeTextMessage]` :
 
 [source,js]
 ----
 var Buffer = require("vertx-js/buffer");
-// Write a simple message
+// Write a simple binary message
 var buffer = Buffer.buffer().appendInt(123).appendFloat(1.23);
-
 websocket.writeBinaryMessage(buffer);
+
+// Write a simple text message
+var message = "hello";
+websocket.writeTextMessage(message);
 
 ----
 

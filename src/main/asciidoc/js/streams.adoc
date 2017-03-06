@@ -160,7 +160,7 @@ or when end of request is reached if it's an HTTP request, or when the connectio
 
 `WriteStream` is implemented by `link:../../jsdoc/module-vertx-js_http_client_request-HttpClientRequest.html[HttpClientRequest]`, `link:../../jsdoc/module-vertx-js_http_server_response-HttpServerResponse.html[HttpServerResponse]`
 `link:../../jsdoc/module-vertx-js_web_socket-WebSocket.html[WebSocket]`, `link:../../jsdoc/module-vertx-js_net_socket-NetSocket.html[NetSocket]`, `link:../../jsdoc/module-vertx-js_async_file-AsyncFile.html[AsyncFile]`,
-`link:../../jsdoc/module-vertx-js_packet_writestream-PacketWritestream.html[PacketWritestream]` and `link:../../jsdoc/module-vertx-js_message_producer-MessageProducer.html[MessageProducer]`
+and `link:../../jsdoc/module-vertx-js_message_producer-MessageProducer.html[MessageProducer]`
 
 Functions:
 
