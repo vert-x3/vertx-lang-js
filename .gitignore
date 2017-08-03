@@ -1,4 +1,3 @@
-.vertx
 .DS_Store
 .gradle
 .idea
@@ -22,5 +21,6 @@ test-tmp
 *.class
 src/gen
 src/main/resources/vertx-js/*.js
-# src/test/resources/testmodel-js/*.js
+src/test/resources/testmodel-js/*.js
 src/scratchpad
+.vertx/
