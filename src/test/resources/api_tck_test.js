@@ -277,7 +277,7 @@ function testMethodWithHandlerGenericReturn() {
   handler("the-result");
   Assert.assertEquals(result, "the-result");
   handler(obj);
-  Assert.assertEquals(result, obj);
+  Assert.assertEquals(result, obj._jdel);
 }
 
 function testMethodWithHandlerVertxGenReturn() {
@@ -322,7 +322,7 @@ function testMethodWithHandlerAsyncResultGenericReturn() {
   succeedingHandler(null, "the-error");
   Assert.assertEquals(result.getMessage(), "the-error");
   succeedingHandler(obj);
-  Assert.assertEquals(result, obj);
+  Assert.assertEquals(result, obj._jdel);
 }
 
 function testMethodWithHandlerAsyncResultVertxGenReturn() {
