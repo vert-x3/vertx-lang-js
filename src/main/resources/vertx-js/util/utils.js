@@ -43,7 +43,7 @@ utils.convParamTypeUnknown = function(param) {
       return utils.convParamJsonArray(param);
     }
     if (typeof param._jdel !== 'undefined'  && param._jdel) {
-      return param._jdel;
+      return param;
     }
     return utils.convParamJsonObject(param);
   }
@@ -90,55 +90,55 @@ utils.convParamListLong = function(arr) {
 
 utils.convParamListShort = function(arr) {
   return arr == null ? null : asList(Java.to(arr, ShortArrayType));
-};
+}
 
 utils.convParamListByte = function(arr) {
   return arr == null ? null: asList(Java.to(arr, ByteArrayType));
-};
+}
 
 utils.convParamListBasicOther = function(arr) {
   return arr == null ? null: asList(Java.to(arr, ObjectArrayType));
-};
+}
 
 utils.convParamSetBasicOther = function(arr) {
   return arr == null ? null : new ListConverterSet(arr);
-};
+}
 
 utils.convParamSetLong = function(arr) {
   return arr == null ? null : new JavaArraySetWrapper(Java.to(arr, LongArrayType));
-};
+}
 
 utils.convParamSetShort = function(arr) {
   return arr == null ? null : new JavaArraySetWrapper(Java.to(arr, ShortArrayType));
-};
+}
 
 utils.convParamSetByte = function(arr) {
   return arr == null ? null : new JavaArraySetWrapper(Java.to(arr, ByteArrayType));
-};
+}
 
 utils.convParamListVertxGen = function(arr) {
   return arr == null ? null : new VertxGenConverterList(arr);
-};
+}
 
 utils.convParamSetVertxGen = function(arr) {
   return arr == null ? null : new VertxGenConverterSet(arr);
-};
+}
 
 utils.convParamMapLong = function(arr) {
   return arr == null ? null : new LongConverterMap(arr);
-};
+}
 
 utils.convParamMapShort = function(arr) {
   return arr == null ? null : new ShortConverterMap(arr);
-};
+}
 
 utils.convParamMapByte = function(arr) {
   return arr == null ? null : new ByteConverterMap(arr);
-};
+}
 
 utils.convParamMapVertxGen = function(arr) {
   return arr == null ? null : new VertxGenConverterMap(arr);
-};
+}
 
 utils.convParamMapJsonObject = function(arr) {
   if (arr) {
@@ -157,7 +157,7 @@ utils.convParamMapJsonObject = function(arr) {
   } else {
     return null;
   }
-};
+}
 
 utils.convParamMapJsonArray = function(arr) {
   if (arr) {
@@ -176,7 +176,7 @@ utils.convParamMapJsonArray = function(arr) {
   } else {
     return null;
   }
-};
+}
 
 utils.convParamListJsonObject = function(arr) {
   if (arr) {
@@ -190,7 +190,7 @@ utils.convParamListJsonObject = function(arr) {
   } else {
     return null;
   }
-};
+}
 
 utils.convParamListJsonArray = function(arr) {
   if (arr) {
@@ -204,7 +204,7 @@ utils.convParamListJsonArray = function(arr) {
   } else {
     return null;
   }
-};
+}
 
 utils.convParamListDataObject = function(arr, constructor) {
   if (arr) {
@@ -218,7 +218,7 @@ utils.convParamListDataObject = function(arr, constructor) {
   } else {
     return null;
   }
-};
+}
 
 utils.convParamListEnum = function(arr, constructor) {
   if (arr) {
@@ -232,23 +232,23 @@ utils.convParamListEnum = function(arr, constructor) {
   } else {
     return null;
   }
-};
+}
 
 utils.convParamSetJsonObject = function(arr) {
   return arr == null ? null : new ListConverterSet(utils.convParamListJsonObject(arr));
-};
+}
 
 utils.convParamSetJsonArray = function(arr) {
   return arr == null ? null : new ListConverterSet(utils.convParamListJsonArray(arr));
-};
+}
 
 utils.convParamSetDataObject = function(arr, constructor) {
   return arr == null ? null : new ListConverterSet(utils.convParamListDataObject(arr, constructor));
-};
+}
 
 utils.convParamSetEnum = function(arr, constructor) {
   return arr == null ? null : new ListConverterSet(utils.convParamListEnum(arr, constructor));
-};
+}
 
 // Return conversion
 
@@ -339,7 +339,7 @@ utils.get_jtype = function(t) {
   } else {
     return t._jtype;
   }
-};
+}
 
 // Convert a VertxGen return value
 utils.convReturnVertxGen = function(constructorFunction, jdel) {
@@ -347,11 +347,11 @@ utils.convReturnVertxGen = function(constructorFunction, jdel) {
     return constructorFunction._create.apply(this, Array.prototype.slice.call(arguments, 1));
   }
   return null;
-};
+}
 
 utils.convReturnEnum = function(jVal) {
   return jVal != null ? jVal.toString() : null;
-};
+}
 
 // Convert a DataObject return value
 utils.convReturnDataObject = function(dataObject) {
@@ -359,7 +359,7 @@ utils.convReturnDataObject = function(dataObject) {
     return utils.convReturnJson(dataObject.toJson());
   }
   return null;
-};
+}
 
 // Convert a list/set containing VertxGen return
 utils.convReturnListSetVertxGen = function(jList, constructorFunction) {
@@ -532,7 +532,7 @@ utils.unknown_jtype = {
   },
   wrap: utils.convReturnTypeUnknown,
   unwrap: utils.convParamTypeUnknown
-};
+}
 
 utils.enum_jtype = function(jEnum) {
   return {
@@ -542,7 +542,7 @@ utils.enum_jtype = function(jEnum) {
     wrap: utils.convReturnEnum,
     unwrap: jEnum.valueOf
   };
-};
+}
 
 
 module.exports = utils;
