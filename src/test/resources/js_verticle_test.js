@@ -3,6 +3,9 @@ var Assert = org.junit.Assert;
 var CountDownLatch = java.util.concurrent.CountDownLatch;
 var TimeUnit = java.util.concurrent.TimeUnit;
 
+var testUtils = require("test_utils");
+var assertEquals = testUtils.assertEquals;
+
 // Use an embedded Vert.x
 var Vertx = require("vertx-js/vertx");
 
@@ -18,7 +21,7 @@ function testStopCalled() {
 
     vertx.eventBus().consumer("testComplete").handler(function(msg) {
       // Verticle will send a message if vertxStop is called
-      Assert.assertEquals("foo", msg.body());
+      assertEquals("foo", msg.body());
       latch.countDown();
     });
 
@@ -119,8 +122,8 @@ function testErrorInVerticle() {
     } else {
       Assert.fail("Invalid error message " + err.message);
     }
-    Assert.assertEquals("src/test/resources/brokenmodule_typeerror.js", err.fileName);
-    Assert.assertEquals(6, err.lineNumber, 0);
+    assertEquals("src/test/resources/brokenmodule_typeerror.js", err.fileName);
+    assertEquals(6, err.lineNumber);
 
     latch.countDown();
   });
@@ -137,8 +140,8 @@ function testSyntaxErrorInVerticle() {
 
     // FIXME - currently broken-  Nashorn issue
     //Assert.assertTrue(err.message.startsWith("SyntaxError: 234 has no such function \"substr\" in brokenmodule_typeerror.js at line number 6"));
-    //Assert.assertEquals("brokenmodule_syntaxerror.js", err.fileName);
-    //Assert.assertEquals(5, err.lineNumber, 0);
+    //assertEquals("brokenmodule_syntaxerror.js", err.fileName);
+    //assertEquals(5, err.lineNumber, 0);
 
     latch.countDown();
   });

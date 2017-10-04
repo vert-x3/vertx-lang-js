@@ -12,6 +12,9 @@ var refed_obj2 = new RefedInterface1(new Packages.io.vertx.codegen.testmodel.Ref
 
 var that = this;
 
+var testUtils = require("test_utils");
+var assertEquals = testUtils.assertEquals;
+
 function testMethodWithBasicParams() {
   obj.methodWithBasicParams(123, 12345, 1234567, 1265615234, 12.345, 12.34566, true, 'X', 'foobar');
 }
@@ -23,112 +26,112 @@ function testMethodWithBasicBoxedParams() {
 function testMethodWithHandlerBasicTypes() {
   var count = 0;
   obj.methodWithHandlerBasicTypes(function(b) {
-    Assert.assertEquals("number", typeof b);
-    Assert.assertEquals(123, b, 0);
+    assertEquals("number", typeof b);
+    assertEquals(123, b);
     count++;
   }, function(s) {
-    Assert.assertEquals("number", typeof s);
-    Assert.assertEquals(12345, s, 0);
+    assertEquals("number", typeof s);
+    assertEquals(12345, s);
     count++;
   }, function (i) {
-    Assert.assertEquals("number", typeof i);
-    Assert.assertEquals(1234567, i, 0);
+    assertEquals("number", typeof i);
+    assertEquals(1234567, i);
     count++;
   }, function (l) {
-    Assert.assertEquals("number", typeof l);
-    Assert["assertEquals(double, double, double)"](1265615234, l, 0);
+    assertEquals("number", typeof l);
+    assertEquals(1265615234, l);
     count++;
   }, function (f) {
-    Assert.assertEquals("number", typeof f);
-    Assert["assertEquals(float, float, float)"](12.345, f, 0);
+    assertEquals("number", typeof f);
+    assertEquals(12.345, f);
     count++;
   }, function(d) {
-    Assert.assertEquals("number", typeof d);
-    Assert["assertEquals(double, double, double)"](12.34566, d, 0);
+    assertEquals("number", typeof d);
+    assertEquals(12.34566, d);
     count++;
   }, function (bool) {
-    Assert.assertEquals("boolean", typeof bool);
+    assertEquals("boolean", typeof bool);
     Assert.assertTrue(bool);
     count++;
   }, function (char) {
     // TODO - it seems that Nashorn passes Java chars as object and doesn't convert them to String automatically
-    Assert.assertEquals("object", typeof char); // !!
+    assertEquals("object", typeof char); // !!
     if (typeof char === "object") {
       console.log("Nashorn is returning char from Java API as object into JS, not string!");
     }
     // hence we do '' + char to convert to String
-    Assert.assertEquals('X', '' + char);
+    assertEquals('X', '' + char);
     count++;
   }, function (str) {
-    Assert.assertEquals("string", typeof str);
-    Assert.assertEquals("quux!", str);
+    assertEquals("string", typeof str);
+    assertEquals("quux!", str);
     count++;
   });
-  Assert.assertEquals(9, count, 0);
+  assertEquals(9, count);
 }
 
 function testMethodWithHandlerAsyncResultBasicTypes() {
   var count = 0;
   obj.methodWithHandlerAsyncResultByte(false, function(b, err) {
-    Assert.assertEquals("number", typeof b);
-    Assert.assertEquals(123, b, 0);
+    assertEquals("number", typeof b);
+    assertEquals(123, b);
     Assert.assertNull(err);
     count++;
   });
   obj.methodWithHandlerAsyncResultShort(false, function(s, err) {
-    Assert.assertEquals("number", typeof s);
-    Assert.assertEquals(12345, s, 0);
+    assertEquals("number", typeof s);
+    assertEquals(12345, s);
     Assert.assertNull(err);
     count++;
   });
   obj.methodWithHandlerAsyncResultInteger(false, function (i, err) {
-    Assert.assertEquals("number", typeof i);
-    Assert.assertEquals(1234567, i, 0);
+    assertEquals("number", typeof i);
+    assertEquals(1234567, i);
     Assert.assertNull(err);
     count++;
   });
   obj.methodWithHandlerAsyncResultLong(false, function (l, err) {
-    Assert.assertEquals("number", typeof l);
-    Assert["assertEquals(double, double, double)"](1265615234, l, 0);
+    assertEquals("number", typeof l);
+    assertEquals(1265615234, l);
     Assert.assertNull(err);
     count++;
   });
   obj.methodWithHandlerAsyncResultFloat(false, function (f, err) {
-    Assert.assertEquals("number", typeof f);
-    Assert["assertEquals(float, float, float)"](12.345, f, 0);
+    assertEquals("number", typeof f);
+    assertEquals(12.345, f);
     Assert.assertNull(err);
     count++;
   });
   obj.methodWithHandlerAsyncResultDouble(false, function(d, err) {
-    Assert.assertEquals("number", typeof d);
-    Assert["assertEquals(double, double, double)"](12.34566, d, 0);
+    assertEquals("number", typeof d);
+    assertEquals(12.34566, d);
     Assert.assertNull(err);
     count++;
   });
   obj.methodWithHandlerAsyncResultBoolean(false, function (bool, err) {
-    Assert.assertEquals("boolean", typeof bool);
+    assertEquals("boolean", typeof bool);
     Assert.assertTrue(bool);
     Assert.assertNull(err);
     count++;
   });
   obj.methodWithHandlerAsyncResultCharacter(false, function (char, err) {
     // TODO - it seems that Nashorn passes Java chars as object and doesn't convert them to String automatically
-    Assert.assertEquals("object", typeof char); // !!
+    assertEquals("object", typeof char); // !!
     if (typeof char === "object") {
       console.log("Nashorn is returning char from Java API as object into JS, not string!");
     }
     // hence we do '' + char to convert to String
-    Assert.assertEquals('X', '' + char);
+    assertEquals('X', '' + char);
     Assert.assertNull(err);
     count++;
   });
   obj.methodWithHandlerAsyncResultString(false, function (str, err) {
-    Assert.assertEquals("string", typeof str);
-    Assert.assertEquals("quux!", str);
+    assertEquals("string", typeof str);
+    assertEquals("quux!", str);
     Assert.assertNull(err);
     count++;
   });
-  Assert.assertEquals(9, count, 0);
+  assertEquals(9, count);
 }
 
 function testMethodWithHandlerAsyncResultBasicTypesFails() {
@@ -136,58 +139,58 @@ function testMethodWithHandlerAsyncResultBasicTypesFails() {
   obj.methodWithHandlerAsyncResultByte(true, function(b, err) {
     Assert.assertNull(b);
     Assert.assertNotNull(err);
-    Assert.assertEquals("foobar!", err.getMessage());
+    assertEquals("foobar!", err.getMessage());
      count++;
   });
   obj.methodWithHandlerAsyncResultShort(true, function(s, err) {
     Assert.assertNull(s);
     Assert.assertNotNull(err);
-    Assert.assertEquals("foobar!", err.getMessage());
+    assertEquals("foobar!", err.getMessage());
     count++;
   });
   obj.methodWithHandlerAsyncResultInteger(true, function (i, err) {
     Assert.assertNull(i);
     Assert.assertNotNull(err);
-    Assert.assertEquals("foobar!", err.getMessage());
+    assertEquals("foobar!", err.getMessage());
     count++;
   });
   obj.methodWithHandlerAsyncResultLong(true, function (l, err) {
     Assert.assertNull(l);
     Assert.assertNotNull(err);
-    Assert.assertEquals("foobar!", err.getMessage());
+    assertEquals("foobar!", err.getMessage());
     count++;
   });
   obj.methodWithHandlerAsyncResultFloat(true, function (f, err) {
     Assert.assertNull(f);
     Assert.assertNotNull(err);
-    Assert.assertEquals("foobar!", err.getMessage());
+    assertEquals("foobar!", err.getMessage());
     count++;
   });
   obj.methodWithHandlerAsyncResultDouble(true, function(d, err) {
     Assert.assertNull(d);
     Assert.assertNotNull(err);
-    Assert.assertEquals("foobar!", err.getMessage());
+    assertEquals("foobar!", err.getMessage());
     count++;
   });
   obj.methodWithHandlerAsyncResultBoolean(true, function (bool, err) {
     Assert.assertNull(bool);
     Assert.assertNotNull(err);
-    Assert.assertEquals("foobar!", err.getMessage());
+    assertEquals("foobar!", err.getMessage());
     count++;
   });
   obj.methodWithHandlerAsyncResultCharacter(true, function (char, err) {
     Assert.assertNull(char);
     Assert.assertNotNull(err);
-    Assert.assertEquals("foobar!", err.getMessage());
+    assertEquals("foobar!", err.getMessage());
     count++;
   });
   obj.methodWithHandlerAsyncResultString(true, function (str, err) {
     Assert.assertNull(str);
     Assert.assertNotNull(err);
-    Assert.assertEquals("foobar!", err.getMessage());
+    assertEquals("foobar!", err.getMessage());
     count++;
   });
-  Assert.assertEquals(9, count, 0);
+  assertEquals(9, count);
 }
 
 function testMethodWithUserTypes() {
@@ -224,12 +227,12 @@ function testMethodWithHandlerDataObject() {
 
   obj.methodWithHandlerDataObject(function(option) {
     Assert.assertTrue(typeof option === 'object');
-    Assert.assertEquals("foo", option.foo);
-    Assert.assertEquals(123, option.bar, 0);
-    Assert.assertEquals(0.0, option.wibble, 0);
+    assertEquals("foo", option.foo);
+    assertEquals(123, option.bar);
+    assertEquals(0.0, option.wibble);
     count++;
   });
-  Assert.assertEquals(1, count, 0);
+  assertEquals(1, count);
 }
 
 function testMethodWithHandlerAsyncResultDataObject() {
@@ -238,12 +241,12 @@ function testMethodWithHandlerAsyncResultDataObject() {
   obj.methodWithHandlerAsyncResultDataObject(false, function(option, err) {
     Assert.assertNull(err);
     Assert.assertTrue(typeof option === 'object');
-    Assert.assertEquals("foo", option.foo);
-    Assert.assertEquals(123, option.bar, 0);
-    Assert.assertEquals(0.0, option.wibble, 0);
+    assertEquals("foo", option.foo);
+    assertEquals(123, option.bar);
+    assertEquals(0.0, option.wibble);
     count++;
   });
-  Assert.assertEquals(1, count, 0);
+  assertEquals(1, count);
 }
 
 function testMethodWithHandlerAsyncResultDataObjectFails() {
@@ -251,10 +254,10 @@ function testMethodWithHandlerAsyncResultDataObjectFails() {
   obj.methodWithHandlerAsyncResultDataObject(true, function(option, err) {
     Assert.assertNull(option);
     Assert.assertNotNull(err);
-    Assert.assertEquals("foobar!", err.getMessage());
+    assertEquals("foobar!", err.getMessage());
     count++;
   });
-  Assert.assertEquals(1, count, 0);
+  assertEquals(1, count);
 }
 
 function testMethodWithHandlerStringReturn() {
@@ -275,9 +278,9 @@ function testMethodWithHandlerGenericReturn() {
     result = res;
   });
   handler("the-result");
-  Assert.assertEquals(result, "the-result");
+  assertEquals(result, "the-result");
   handler(obj);
-  Assert.assertEquals(result, obj._jdel);
+  assertEquals(result, obj._jdel);
 }
 
 function testMethodWithHandlerVertxGenReturn() {
@@ -318,11 +321,11 @@ function testMethodWithHandlerAsyncResultGenericReturn() {
     result = err != null ? err : res;
   });
   succeedingHandler("the-result");
-  Assert.assertEquals(result, "the-result");
+  assertEquals(result, "the-result");
   succeedingHandler(null, "the-error");
-  Assert.assertEquals(result.getMessage(), "the-error");
+  assertEquals(result.getMessage(), "the-error");
   succeedingHandler(obj);
-  Assert.assertEquals(result, obj._jdel);
+  assertEquals(result, obj._jdel);
 }
 
 function testMethodWithHandlerAsyncResultVertxGenReturn() {
@@ -342,47 +345,47 @@ function testMethodWithHandlerAsyncResultVertxGenReturn() {
 function testMethodWithHandlerUserTypes() {
   var count = 0;
   obj.methodWithHandlerUserTypes(function(refedObj) {
-    Assert.assertEquals("echidnas", refedObj.getString());
+    assertEquals("echidnas", refedObj.getString());
     count++;
   });
-  Assert.assertEquals(1, count, 0);
+  assertEquals(1, count);
 }
 
 function testMethodWithHandlerAsyncResultUserTypes() {
   var count = 0;
   obj.methodWithHandlerAsyncResultUserTypes(function(refedObj, err) {
     Assert.assertNull(err);
-    Assert.assertEquals("cheetahs", refedObj.getString());
+    assertEquals("cheetahs", refedObj.getString());
     count++;
   });
-  Assert.assertEquals(1, count, 0);
+  assertEquals(1, count);
 }
 
 function testMethodWithConcreteHandlerUserTypeSubtype() {
   var count = 0;
   obj.methodWithConcreteHandlerUserTypeSubtype(Factory.createConcreteHandlerUserType(function(refedObj) {
-    Assert.assertEquals("echidnas", refedObj.getString());
+    assertEquals("echidnas", refedObj.getString());
     count++;
   }));
-  Assert.assertEquals(1, count, 0);
+  assertEquals(1, count);
 }
 
 function testMethodWithAbstractHandlerUserTypeSubtype() {
   var count = 0;
   obj.methodWithAbstractHandlerUserTypeSubtype(Factory.createAbstractHandlerUserType(function(refedObj) {
-    Assert.assertEquals("echidnas", refedObj.getString());
+    assertEquals("echidnas", refedObj.getString());
     count++;
   }));
-  Assert.assertEquals(1, count, 0);
+  assertEquals(1, count);
 }
 
 function testMethodWithConcreteHandlerUserTypeSubtypeExtension() {
   var count = 0;
   obj.methodWithConcreteHandlerUserTypeSubtypeExtension(Factory.createConcreteHandlerUserTypeExtension(function(refedObj) {
-    Assert.assertEquals("echidnas", refedObj.getString());
+    assertEquals("echidnas", refedObj.getString());
     count++;
   }));
-  Assert.assertEquals(1, count, 0);
+  assertEquals(1, count);
 }
 
 function testMethodWithHandlerVoid() {
@@ -390,7 +393,7 @@ function testMethodWithHandlerVoid() {
   obj.methodWithHandlerVoid(function() {
     count++;
   });
-  Assert.assertEquals(1, count, 0);
+  assertEquals(1, count);
 }
 
 function testMethodWithHandlerAsyncResultVoid() {
@@ -399,42 +402,42 @@ function testMethodWithHandlerAsyncResultVoid() {
     Assert.assertNull(err);
     count++;
   });
-  Assert.assertEquals(1, count, 0);
+  assertEquals(1, count);
 }
 
 function testMethodWithHandlerAsyncResultVoidFails() {
   var count = 0;
   obj.methodWithHandlerAsyncResultVoid(true, function(v, err) {
     Assert.assertNotNull(err);
-    Assert.assertEquals("foo!", err.getMessage());
+    assertEquals("foo!", err.getMessage());
     count++;
   });
-  Assert.assertEquals(1, count, 0);
+  assertEquals(1, count);
 }
 
 function testMethodWithHandlerThrowable() {
   var count = 0;
   obj.methodWithHandlerThrowable(function(t) {
     Assert.assertNotNull(t);
-    Assert.assertEquals("cheese!", t.getMessage());
+    assertEquals("cheese!", t.getMessage());
     count++;
   });
-  Assert.assertEquals(1, count, 0);
+  assertEquals(1, count);
 }
 
 function testMethodWithHandlerGenericUserType() {
   function runTest(value, assert) {
     var count = 0;
     obj.methodWithHandlerGenericUserType(value, function(refedObj) {
-      Assert.assertEquals("[object Object]", refedObj.toString()); // Make sure we don't have a Java object
+      assertEquals("[object Object]", refedObj.toString()); // Make sure we don't have a Java object
       assert(refedObj.getValue());
       count++;
     });
-    Assert.assertEquals(1, count, 0);
+    assertEquals(1, count);
   }
-  runTest("string_value", function(value) { Assert.assertEquals("string_value", value) });
-  runTest({"key":"key_value"}, function(value) { Assert.assertEquals("key_value", value["key"]) });
-  runTest(["foo","bar","juu"], function(value) { Assert.assertEquals(["foo","bar","juu"], value) });
+  runTest("string_value", function(value) { assertEquals("string_value", value) });
+  runTest({"key":"key_value"}, function(value) { assertEquals("key_value", value["key"]) });
+  runTest(["foo","bar","juu"], function(value) { assertEquals(["foo","bar","juu"], value) });
 }
 
 function testMethodWithHandlerAsyncResultGenericUserType() {
@@ -443,15 +446,15 @@ function testMethodWithHandlerAsyncResultGenericUserType() {
     obj.methodWithHandlerAsyncResultGenericUserType(value, function(refedObj, err) {
       Assert.assertNotNull(refedObj);
       Assert.assertNull(err);
-      Assert.assertEquals("[object Object]", refedObj.toString()); // Make sure we don't have a Java object
+      assertEquals("[object Object]", refedObj.toString()); // Make sure we don't have a Java object
       assert(refedObj.getValue());
       count++;
     });
-    Assert.assertEquals(1, count, 0);
+    assertEquals(1, count);
   }
-  runTest("string_value", function(value) { Assert.assertEquals("string_value", value) });
-  runTest({"key":"key_value"}, function(value) { Assert.assertEquals("key_value", value["key"]) });
-  runTest(["foo","bar","juu"], function(value) { Assert.assertEquals(["foo","bar","juu"], value) });
+  runTest("string_value", function(value) { assertEquals("string_value", value) });
+  runTest({"key":"key_value"}, function(value) { assertEquals("key_value", value["key"]) });
+  runTest(["foo","bar","juu"], function(value) { assertEquals(["foo","bar","juu"], value) });
 }
 
 function testMethodWithGenericParam() {
@@ -468,113 +471,113 @@ function testMethodWithGenericParam() {
 function testMethodWithGenericHandler() {
     var count = 0;
     obj.methodWithGenericHandler("String", function(res) {
-        Assert.assertEquals("foo", res);
+        assertEquals("foo", res);
         count++;
     });
-    Assert.assertEquals(1, count, 0);
+    assertEquals(1, count);
     count = 0;
     obj.methodWithGenericHandler("Ref", function(res) {
-        Assert.assertEquals("bar", res.getString());
+        assertEquals("bar", res.getString());
         count++;
     });
-    Assert.assertEquals(1, count, 0);
+    assertEquals(1, count);
     count = 0;
     obj.methodWithGenericHandler("JsonObject", function(res) {
-        Assert.assertEquals("hello", res.foo);
-        Assert.assertEquals(123, res.bar, 0);
+        assertEquals("hello", res.foo);
+        assertEquals(123, res.bar);
         count++;
     });
-    Assert.assertEquals(1, count, 0);
+    assertEquals(1, count);
     count = 0;
     obj.methodWithGenericHandler("JsonArray", function(res) {
-        Assert.assertEquals("foo", res[0]);
-        Assert.assertEquals("bar", res[1]);
-        Assert.assertEquals("wib", res[2]);
+        assertEquals("foo", res[0]);
+        assertEquals("bar", res[1]);
+        assertEquals("wib", res[2]);
         count++;
     });
-    Assert.assertEquals(1, count, 0);
+    assertEquals(1, count);
   count = 0;
   obj.methodWithGenericHandler("JsonObjectComplex", function(res) {
     Assert.assertTrue(typeof res === 'object');
     Assert.assertTrue(typeof res.outer === 'object');
-    Assert.assertEquals("hello", res.outer.foo);
+    assertEquals("hello", res.outer.foo);
     Assert.assertTrue(res.bar instanceof Array);
-    Assert.assertEquals("this", res.bar[0]);
-    Assert.assertEquals("that", res.bar[1]);
+    assertEquals("this", res.bar[0]);
+    assertEquals("that", res.bar[1]);
     count++;
   });
-  Assert.assertEquals(1, count, 0);
+  assertEquals(1, count);
 }
 
 function testMethodWithGenericHandlerAsyncResult() {
     var count = 0;
     obj.methodWithGenericHandlerAsyncResult("String", function (res, err) {
         Assert.assertNull(err);
-        Assert.assertEquals("foo", res);
+        assertEquals("foo", res);
         count++;
     });
-    Assert.assertEquals(1, count, 0);
+    assertEquals(1, count);
     count = 0;
     obj.methodWithGenericHandlerAsyncResult("Ref", function (res, err) {
         Assert.assertNull(err);
-        Assert.assertEquals("bar", res.getString());
+        assertEquals("bar", res.getString());
         count++;
     });
-    Assert.assertEquals(1, count, 0);
+    assertEquals(1, count);
     count = 0;
     obj.methodWithGenericHandlerAsyncResult("JsonObject", function (res, err) {
         Assert.assertNull(err);
-        Assert.assertEquals("hello", res.foo);
-        Assert.assertEquals(123, res.bar, 0);
+        assertEquals("hello", res.foo);
+        assertEquals(123, res.bar);
         count++;
     });
-    Assert.assertEquals(1, count, 0);
+    assertEquals(1, count);
     count = 0;
     obj.methodWithGenericHandlerAsyncResult("JsonObjectComplex", function (res, err) {
       Assert.assertNull(err);
       Assert.assertTrue(typeof res === 'object');
       Assert.assertTrue(typeof res.outer === 'object');
-      Assert.assertEquals("hello", res.outer.foo);
+      assertEquals("hello", res.outer.foo);
       Assert.assertTrue(res.bar instanceof Array);
-      Assert.assertEquals("this", res.bar[0]);
-      Assert.assertEquals("that", res.bar[1]);
+      assertEquals("this", res.bar[0]);
+      assertEquals("that", res.bar[1]);
       count++;
     });
-    Assert.assertEquals(1, count, 0);
+    assertEquals(1, count);
     count = 0;
     obj.methodWithGenericHandlerAsyncResult("JsonArray", function (res, err) {
-        Assert.assertEquals("foo", res[0]);
-        Assert.assertEquals("bar", res[1]);
-        Assert.assertEquals("wib", res[2]);
+        assertEquals("foo", res[0]);
+        assertEquals("bar", res[1]);
+        assertEquals("wib", res[2]);
         count++;
     });
-    Assert.assertEquals(1, count, 0);
+    assertEquals(1, count);
 }
 
 function testBasicReturns() {
   var ret = obj.methodWithByteReturn();
-  Assert.assertEquals(ret, 123, 0);
+  assertEquals(ret, 123);
   ret = obj.methodWithShortReturn();
-  Assert.assertEquals(ret, 12345, 0);
+  assertEquals(ret, 12345);
   ret = obj.methodWithIntReturn();
-  Assert.assertEquals(ret, 12345464, 0);
+  assertEquals(ret, 12345464);
   ret = obj.methodWithLongReturn();
-  Assert["assertEquals(double, double, double)"](65675123, ret, 0);
+  assertEquals(65675123, ret);
   ret = obj.methodWithFloatReturn();
-  Assert["assertEquals(float, float, float)"](1.23, ret, 0);
+  assertEquals(1.23, ret);
   ret = obj.methodWithDoubleReturn();
-  Assert["assertEquals(double, double, double)"](3.34535, ret, 0);
+  assertEquals(3.34535, ret);
   ret = obj.methodWithBooleanReturn();
   Assert.assertTrue(ret);
   ret = obj.methodWithCharReturn();
-  Assert.assertEquals("Y", "" + ret);
+  assertEquals("Y", "" + ret);
   ret = obj.methodWithStringReturn();
-  Assert.assertEquals("orangutan", ret);
+  assertEquals("orangutan", ret);
 }
 
 function testVertxGenReturn() {
   var ret = obj.methodWithVertxGenReturn();
-  Assert.assertEquals("chaffinch", ret.getString());
+  assertEquals("chaffinch", ret.getString());
   Assert.assertTrue(ret._jdel);
 }
 
@@ -585,16 +588,16 @@ function testVertxGenNullReturn() {
 
 function testAbstractVertxGenReturn() {
   var ret = obj.methodWithAbstractVertxGenReturn();
-  Assert.assertEquals("abstractchaffinch", ret.getString());
+  assertEquals("abstractchaffinch", ret.getString());
   Assert.assertTrue(ret._jdel);
 }
 
 function testDataObjectReturn() {
   var ret = obj.methodWithDataObjectReturn();
   Assert.assertTrue(typeof ret === 'object');
-  Assert.assertEquals("foo", ret.foo);
-  Assert.assertEquals(123, ret.bar, 0);
-  Assert.assertEquals(0.0, ret.wibble, 0);
+  assertEquals("foo", ret.foo);
+  assertEquals(123, ret.bar);
+  assertEquals(0.0, ret.wibble);
 }
 
 function testDataObjectNullReturn() {
@@ -605,26 +608,26 @@ function testDataObjectNullReturn() {
 function testOverloadedMethods() {
   refed_obj.setString("dog");
   var ret = obj.overloadedMethod("cat", refed_obj);
-  Assert.assertEquals("meth1", ret);
+  assertEquals("meth1", ret);
   ret = obj.overloadedMethod("cat", refed_obj, 12345, function(animal) {
-    Assert.assertEquals("giraffe", animal);
+    assertEquals("giraffe", animal);
     called = true;
   });
-  Assert.assertEquals("meth2", ret);
+  assertEquals("meth2", ret);
   Assert.assertTrue(called);
   called = false;
   ret = obj.overloadedMethod("cat", function(animal) {
-    Assert.assertEquals("giraffe", animal);
+    assertEquals("giraffe", animal);
     called = true;
   });
-  Assert.assertEquals("meth3", ret);
+  assertEquals("meth3", ret);
   Assert.assertTrue(called);
   called = false;
   ret = obj.overloadedMethod("cat", refed_obj, function(animal) {
-    Assert.assertEquals("giraffe", animal);
+    assertEquals("giraffe", animal);
     called = true;
   });
-  Assert.assertEquals("meth4", ret);
+  assertEquals("meth4", ret);
   Assert.assertTrue(called);
 
   try {
@@ -660,15 +663,15 @@ function testMethodWithGenericReturn() {
   // JsonObject should be converted to JS object
   var ret = obj.methodWithGenericReturn("JsonObject");
   Assert.assertTrue(typeof ret === 'object');
-  Assert.assertEquals("hello", ret.foo);
-  Assert.assertEquals(123, ret.bar, 0);
+  assertEquals("hello", ret.foo);
+  assertEquals(123, ret.bar);
 
   ret = obj.methodWithGenericReturn("JsonArray");
   Assert.assertTrue(typeof ret === 'object');
   Assert.assertTrue(ret instanceof Array)
-  Assert.assertEquals("foo", ret[0]);
-  Assert.assertEquals("bar", ret[1]);
-  Assert.assertEquals("wib", ret[2]);
+  assertEquals("foo", ret[0]);
+  assertEquals("bar", ret[1]);
+  assertEquals("wib", ret[2]);
 }
 
 function testFluentMethod() {
@@ -680,13 +683,13 @@ function testFluentMethod() {
 function testStaticFactoryMethod() {
   var ret = TestInterface.staticFactoryMethod("bar");
   Assert.assertTrue(typeof ret === 'object');
-  Assert.assertEquals("bar", ret.getString());
+  assertEquals("bar", ret.getString());
 }
 
 function testMethodWithCachedReturn() {
   var ret = obj.methodWithCachedReturn("bar");
   Assert.assertTrue(typeof ret === 'object');
-  Assert.assertEquals("bar", ret.getString());
+  assertEquals("bar", ret.getString());
   var ret2 = obj.methodWithCachedReturn("bar");
   Assert.assertTrue(ret === ret2);
   var ret3 = obj.methodWithCachedReturn("bar");
@@ -696,12 +699,12 @@ function testMethodWithCachedReturn() {
 function testJsonReturns() {
   var ret = obj.methodWithJsonObjectReturn();
   Assert.assertTrue(typeof ret === 'object')
-  Assert.assertEquals("stilton", ret.cheese);
+  assertEquals("stilton", ret.cheese);
   ret = obj.methodWithJsonArrayReturn();
   Assert.assertTrue(typeof ret === 'object')
   Assert.assertTrue(ret instanceof Array)
-  Assert.assertEquals("socks", ret[0]);
-  Assert.assertEquals("shoes", ret[1]);
+  assertEquals("socks", ret[0]);
+  assertEquals("shoes", ret[1]);
 }
 
 function testNullJsonReturns() {
@@ -745,16 +748,16 @@ function testJsonHandlerParams() {
   var count = 0;
   obj.methodWithHandlerJson(function(jsonObject) {
     Assert.assertTrue(typeof jsonObject === 'object')
-    Assert.assertEquals("stilton", jsonObject.cheese);
+    assertEquals("stilton", jsonObject.cheese);
     count++;
   }, function(jsonArray) {
     Assert.assertTrue(typeof jsonArray === 'object')
     Assert.assertTrue(jsonArray instanceof Array)
-    Assert.assertEquals("socks", jsonArray[0]);
-    Assert.assertEquals("shoes", jsonArray[1]);
+    assertEquals("socks", jsonArray[0]);
+    assertEquals("shoes", jsonArray[1]);
     count++;
   });
-  Assert.assertEquals(2, count, 0);
+  assertEquals(2, count);
 }
 
 function testComplexJsonHandlerParams() {
@@ -762,21 +765,21 @@ function testComplexJsonHandlerParams() {
   obj.methodWithHandlerComplexJson(function(jsonObject) {
     Assert.assertTrue(typeof jsonObject === 'object');
     Assert.assertTrue(typeof jsonObject.outer === 'object');
-    Assert.assertEquals("tartan", jsonObject.outer.socks);
+    assertEquals("tartan", jsonObject.outer.socks);
     Assert.assertTrue(jsonObject.list instanceof Array);
-    Assert.assertEquals("yellow", jsonObject.list[0]);
-    Assert.assertEquals("blue", jsonObject.list[1]);
+    assertEquals("yellow", jsonObject.list[0]);
+    assertEquals("blue", jsonObject.list[1]);
     count++;
   }, function(jsonArray) {
     Assert.assertTrue(jsonArray instanceof Array);
     Assert.assertTrue(jsonArray[0] instanceof Array);
     Assert.assertTrue(typeof jsonArray[0][0] === 'object');
-    Assert.assertEquals("hello", jsonArray[0][0].foo);
+    assertEquals("hello", jsonArray[0][0].foo);
     Assert.assertTrue(typeof jsonArray[1][0] === 'object');
-    Assert.assertEquals("bye", jsonArray[1][0].bar);
+    assertEquals("bye", jsonArray[1][0].bar);
     count++;
   });
-  Assert.assertEquals(2, count, 0);
+  assertEquals(2, count);
 }
 
 function testJsonHandlerAsyncResultParams() {
@@ -785,18 +788,18 @@ function testJsonHandlerAsyncResultParams() {
   obj.methodWithHandlerAsyncResultJsonObject(function(jsonObject, err) {
     Assert.assertNull(err);
     Assert.assertTrue(typeof jsonObject === 'object')
-    Assert.assertEquals("stilton", jsonObject.cheese);
+    assertEquals("stilton", jsonObject.cheese);
     count++;
   });
   obj.methodWithHandlerAsyncResultJsonArray(function(jsonArray, err) {
     Assert.assertNull(err);
     Assert.assertTrue(typeof jsonArray === 'object')
     Assert.assertTrue(jsonArray instanceof Array)
-    Assert.assertEquals("socks", jsonArray[0]);
-    Assert.assertEquals("shoes", jsonArray[1]);
+    assertEquals("socks", jsonArray[0]);
+    assertEquals("shoes", jsonArray[1]);
     count++;
   });
-  Assert.assertEquals(2, count, 0);
+  assertEquals(2, count);
 }
 
 function testComplexJsonHandlerAsyncResultParams() {
@@ -805,22 +808,22 @@ function testComplexJsonHandlerAsyncResultParams() {
     Assert.assertNull(err);
     Assert.assertTrue(typeof jsonObject === 'object');
     Assert.assertTrue(typeof jsonObject.outer === 'object');
-    Assert.assertEquals("tartan", jsonObject.outer.socks);
+    assertEquals("tartan", jsonObject.outer.socks);
     Assert.assertTrue(jsonObject.list instanceof Array);
-    Assert.assertEquals("yellow", jsonObject.list[0]);
-    Assert.assertEquals("blue", jsonObject.list[1]);
+    assertEquals("yellow", jsonObject.list[0]);
+    assertEquals("blue", jsonObject.list[1]);
     count++;
   });
   obj.methodWithHandlerAsyncResultComplexJsonArray(function(jsonArray, err) {
     Assert.assertNull(err);
     Assert.assertTrue(jsonArray instanceof Array);
     Assert.assertTrue(typeof jsonArray[0] === 'object');
-    Assert.assertEquals("hello", jsonArray[0].foo);
+    assertEquals("hello", jsonArray[0].foo);
     Assert.assertTrue(typeof jsonArray[1] === 'object');
-    Assert.assertEquals("bye", jsonArray[1].bar);
+    assertEquals("bye", jsonArray[1].bar);
     count++;
   });
-  Assert.assertEquals(2, count, 0);
+  assertEquals(2, count);
 }
 
 function testNullJsonHandlerAsyncResultParams() {
@@ -838,22 +841,22 @@ function testNullJsonHandlerAsyncResultParams() {
       Assert.assertNull(jsonArray);
       count++;
   });
-  Assert.assertEquals(2, count, 0);
+  assertEquals(2, count);
 }
 
 function testEnumParam() {
   var ret = obj.methodWithEnumParam("sausages", "TIM");
-  Assert.assertEquals("sausagesTIM", ret);
+  assertEquals("sausagesTIM", ret);
 }
 
 function testEnumReturn() {
   var ret = obj.methodWithEnumReturn("JULIEN");
-  Assert.assertEquals("JULIEN", ret);
+  assertEquals("JULIEN", ret);
 }
 
 function testThrowableReturn() {
   var ret = obj.methodWithThrowableReturn("bogies");
-  Assert.assertEquals("bogies", ret.getMessage());
+  assertEquals("bogies", ret.getMessage());
 }
 
 function testThrowableParam(undefined) {
@@ -862,13 +865,13 @@ function testThrowableParam(undefined) {
     Assert.fail();
   } catch (e) {
     var msg = obj.methodWithThrowableParam(e);
-    Assert.assertEquals('TypeError: Cannot read property "does_not_exist" from undefined', msg);
+    assertEquals('TypeError: Cannot read property "does_not_exist" from undefined', msg);
   }
 }
 
 function testSuperMethodOverloadedBySubclass() {
-  Assert.assertEquals(0, obj.superMethodOverloadedBySubclass(), 0);
-  Assert.assertEquals(1, obj.superMethodOverloadedBySubclass("sstring_arg"), 0);
+  assertEquals(0, obj.superMethodOverloadedBySubclass());
+  assertEquals(1, obj.superMethodOverloadedBySubclass("sstring_arg"));
 }
 
 function testCustomModule() {
@@ -876,7 +879,7 @@ function testCustomModule() {
   var testInterface = my.method();
   testInterface.methodWithBasicParams(123, 12345, 1234567, 1265615234, 12.345, 12.34566, true, 'X', 'foobar');
   var sub = my.sub();
-  Assert.assertEquals("olleh", sub.reverse("hello"));
+  assertEquals("olleh", sub.reverse("hello"));
 }
 
 if (typeof this[testName] === 'undefined') {

@@ -7,22 +7,27 @@ var obj = new GenericsTCK(new Packages.io.vertx.codegen.testmodel.GenericsTCKImp
 var refed_obj = new RefedInterface1(new Packages.io.vertx.codegen.testmodel.RefedInterface1Impl());
 var refed_obj2 = new RefedInterface1(new Packages.io.vertx.codegen.testmodel.RefedInterface1Impl());
 
+var testUtils = require("test_utils");
+var assertEquals = testUtils.assertEquals;
+
 function assertApiType(obj) {
   Assert.assertNotEquals('undefined', typeof obj._jdel);
   return obj;
 }
 
-function assertNumberEquals(expected, actual) {
-  Assert.assertEquals(expected, actual, 0)
+/*
+function assertEquals(expected, actual) {
+  assertEquals(expected, actual)
 }
 
-function assertFloatEquals(expected, actual) {
-  Assert["assertEquals(float, float, float)"](expected, actual, 0)
+function assertEquals(expected, actual) {
+  Assert["assertEquals(float, float, float)"](expected, actual)
 }
 
-function assertDoubleEquals(expected, actual) {
-  Assert["assertEquals(double, double, double)"](expected, actual, 0)
+function assertEquals(expected, actual) {
+  Assert["assertEquals(double, double, double)"](expected, actual)
 }
+*/
 
 function setter(values, index) {
   return function(val) {
@@ -95,41 +100,41 @@ function testMethodWithFunctionParamBasicParameterized() {
 
 function checkMethodWithBasicParameterized(values) {
   var ret = assertApiType(values[0]);
-  assertNumberEquals(ret.getValue(), 123);
+  assertEquals(ret.getValue(), 123);
   ret.setValue(124);
-  assertNumberEquals(ret.getValue(), 124);
+  assertEquals(ret.getValue(), 124);
   ret = assertApiType(values[1]);
-  assertNumberEquals(ret.getValue(), 1234);
+  assertEquals(ret.getValue(), 1234);
   ret.setValue(1235);
-  assertNumberEquals(ret.getValue(), 1235);
+  assertEquals(ret.getValue(), 1235);
   ret = assertApiType(values[2]);
-  assertNumberEquals(ret.getValue(), 123456);
+  assertEquals(ret.getValue(), 123456);
   ret.setValue(1234567);
-  assertNumberEquals(ret.getValue(), 1234567);
+  assertEquals(ret.getValue(), 1234567);
   ret = assertApiType(values[3]);
-  assertNumberEquals(ret.getValue(), 123456789);
+  assertEquals(ret.getValue(), 123456789);
   ret.setValue(123456790);
-  assertNumberEquals(ret.getValue(), 123456790);
+  assertEquals(ret.getValue(), 123456790);
   ret = assertApiType(values[4]);
-  assertFloatEquals(ret.getValue(), 0.34);
+  assertEquals(ret.getValue(), 0.34);
   ret.setValue(0.35);
-  assertFloatEquals(ret.getValue(), 0.35);
+  assertEquals(ret.getValue(), 0.35);
   ret = assertApiType(values[5]);
-  assertDoubleEquals(ret.getValue(), 0.314);
+  assertEquals(ret.getValue(), 0.314);
   ret.setValue(0.3141);
-  assertDoubleEquals(ret.getValue(), 0.3141);
+  assertEquals(ret.getValue(), 0.3141);
   ret = assertApiType(values[6]);
-  Assert.assertEquals(ret.getValue(), true);
+  assertEquals(ret.getValue(), true);
   ret.setValue(false);
-  Assert.assertEquals(ret.getValue(), false);
+  assertEquals(ret.getValue(), false);
   ret = assertApiType(values[7]);
-  Assert.assertEquals(ret.getValue() + "", "F");
+  assertEquals(ret.getValue() + "", "F");
   ret.setValue("G");
-  Assert.assertEquals(ret.getValue() + "", "G");
+  assertEquals(ret.getValue() + "", "G");
   ret = assertApiType(values[8]);
-  Assert.assertEquals(ret.getValue(), "zoumbawe");
+  assertEquals(ret.getValue(), "zoumbawe");
   ret.setValue("the_string");
-  Assert.assertEquals(ret.getValue(), "the_string");
+  assertEquals(ret.getValue(), "the_string");
 }
 
 function testMethodWithJsonParameterizedReturn() {
@@ -164,21 +169,21 @@ function checkMethodWitJsonParameterized(values) {
   var ret = assertApiType(values[0]);
   var val = ret.getValue();
   Assert.assertTrue(typeof val === 'object');
-  Assert.assertEquals(val.cheese, "stilton");
+  assertEquals(val.cheese, "stilton");
   ret.setValue({"cheese": "roquefort"});
   val = ret.getValue();
   Assert.assertTrue(typeof val === 'object');
-  Assert.assertEquals(val.cheese, "roquefort");
+  assertEquals(val.cheese, "roquefort");
   ret = assertApiType(values[1]);
   val = ret.getValue();
   Assert.assertTrue(val instanceof Array);
-  Assert.assertEquals(val[0], "cheese");
-  Assert.assertEquals(val[1], "stilton");
+  assertEquals(val[0], "cheese");
+  assertEquals(val[1], "stilton");
   ret.setValue(["cheese", "roquefort"]);
   val = ret.getValue();
   Assert.assertTrue(val instanceof Array);
-  Assert.assertEquals(val[0], "cheese");
-  Assert.assertEquals(val[1], "roquefort");
+  assertEquals(val[0], "cheese");
+  assertEquals(val[1], "roquefort");
 }
 
 function testMethodWithDataObjectParameterizedReturn() {
@@ -207,15 +212,15 @@ function checkMethodWitDataObjectParameterized(values) {
   var ret = values[0];
   var val = ret.getValue();
   Assert.assertTrue(typeof val === 'object');
-  assertDoubleEquals(val.wibble, 3.14);
-  assertNumberEquals(val.bar, 123456);
-  Assert.assertEquals(val.foo, "foo_value");
+  assertEquals(val.wibble, 3.14);
+  assertEquals(val.bar, 123456);
+  assertEquals(val.foo, "foo_value");
   ret.setValue({"wibble": 0.1, "bar": 543321, "foo": "another_value"});
   val = ret.getValue();
   Assert.assertTrue(typeof val === 'object');
-  assertDoubleEquals(val.wibble, 0.1);
-  assertNumberEquals(val.bar, 543321);
-  Assert.assertEquals(val.foo, "another_value");
+  assertEquals(val.wibble, 0.1);
+  assertEquals(val.bar, 543321);
+  assertEquals(val.foo, "another_value");
 }
 
 function testMethodWithEnumParameterizedReturn() {
@@ -247,13 +252,13 @@ function testMethodWithFunctionParamEnumParameterized() {
 
 function checkMethodWithEnumParameterized(values) {
   var ret = assertApiType(values[0]);
-  Assert.assertEquals(ret.getValue(), "WESTON");
+  assertEquals(ret.getValue(), "WESTON");
   ret.setValue("JULIEN");
-  Assert.assertEquals(ret.getValue(), "JULIEN");
+  assertEquals(ret.getValue(), "JULIEN");
   ret = assertApiType(values[1]);
-  Assert.assertEquals(ret.getValue(), "LELAND");
+  assertEquals(ret.getValue(), "LELAND");
   ret.setValue("LAURA");
-  Assert.assertEquals(ret.getValue(), "LAURA");
+  assertEquals(ret.getValue(), "LAURA");
 }
 
 function testMethodWithUserTypeParameterizedReturn() {
@@ -283,13 +288,13 @@ function checkMethodWithUserTypeParameterized(values) {
   Assert.assertNotEquals('undefined', typeof ret._jdel);
   var val = ret.getValue();
   Assert.assertNotEquals('undefined', typeof val._jdel);
-  Assert.assertEquals('foo', val.getString());
+  assertEquals('foo', val.getString());
 
   refed_obj.setString("the_string");
   ret.setValue(refed_obj);
   val = ret.getValue();
   Assert.assertNotEquals('undefined', typeof val._jdel);
-  Assert.assertEquals('the_string', val.getString());
+  assertEquals('the_string', val.getString());
 }
 
 function testMethodWithClassTypeParameterizedReturn() {
@@ -340,48 +345,48 @@ function checkMethodWithClassTypeParameterized(values) {
   var ret = values[0];
   Assert.assertNotEquals('undefined', typeof ret._jdel);
   var val = ret.getValue();
-  assertNumberEquals(val, 123456789);
+  assertEquals(val, 123456789);
 
   ret = values[1];
   Assert.assertNotEquals('undefined', typeof ret._jdel);
   val = ret.getValue();
-  Assert.assertEquals(val, true);
+  assertEquals(val, true);
 
   ret = values[2];
   Assert.assertNotEquals('undefined', typeof ret._jdel);
   val = ret.getValue();
-  Assert.assertEquals(val, "zoumbawe");
+  assertEquals(val, "zoumbawe");
 
   ret = values[3];
   Assert.assertNotEquals('undefined', typeof ret._jdel);
   val = ret.getValue();
-  Assert.assertEquals("stilton", val["cheese"]);
+  assertEquals("stilton", val["cheese"]);
 
   ret.setValue({"wine":"condrieu"});
   val = ret.getValue();
-  Assert.assertEquals("condrieu", val["wine"]);
+  assertEquals("condrieu", val["wine"]);
 
   ret = values[4];
   Assert.assertNotEquals('undefined', typeof ret._jdel);
   val = ret.getValue();
-  Assert.assertEquals("cheese", val[0]);
-  Assert.assertEquals("stilton", val[1]);
+  assertEquals("cheese", val[0]);
+  assertEquals("stilton", val[1]);
 
   ret.setValue({"wine":"condrieu"});
   val = ret.getValue();
-  Assert.assertEquals("condrieu", val["wine"]);
+  assertEquals("condrieu", val["wine"]);
 
   ret = values[5];
   Assert.assertNotEquals('undefined', typeof ret._jdel);
   val = ret.getValue();
   Assert.assertNotEquals('undefined', typeof val._jdel);
-  Assert.assertEquals('foo', val.getString());
+  assertEquals('foo', val.getString());
 
   refed_obj.setString("the_string");
   ret.setValue(refed_obj);
   val = ret.getValue();
   Assert.assertNotEquals('undefined', typeof val._jdel);
-  Assert.assertEquals('the_string', val.getString());
+  assertEquals('the_string', val.getString());
 }
 
 function testMethodWithClassTypeParam() {
@@ -447,25 +452,25 @@ function testMethodWithClassTypeFunctionReturn() {
 }
 
 function checkMethodWithClassType(values) {
-  assertNumberEquals(values[0], 123456789);
-  Assert.assertEquals(true, values[1]);
-  Assert.assertEquals("zoumbawe", values[2]);
+  assertEquals(values[0], 123456789);
+  assertEquals(true, values[1]);
+  assertEquals("zoumbawe", values[2]);
   var jsonObject = values[3];
-  Assert.assertEquals("stilton", jsonObject["cheese"]);
+  assertEquals("stilton", jsonObject["cheese"]);
   var jsonArray = values[4];
-  Assert.assertEquals("cheese", jsonArray[0]);
-  Assert.assertEquals("stilton", jsonArray[1]);
+  assertEquals("cheese", jsonArray[0]);
+  assertEquals("stilton", jsonArray[1]);
   var refed = values[5];
   Assert.assertNotEquals('undefined', typeof refed._jdel);
-  Assert.assertEquals('foo', refed.getString());
+  assertEquals('foo', refed.getString());
 }
 
 function testInterfaceWithStringArg() {
   var ret = obj.interfaceWithStringArg('the_string_value');
   Assert.assertNotEquals('undefined', typeof ret._jdel);
   var val = ret.getValue();
-  Assert.assertEquals('string', typeof val);
-  Assert.assertEquals('the_string_value', val);
+  assertEquals('string', typeof val);
+  assertEquals('the_string_value', val);
 }
 
 function testInterfaceWithVariableArg() {
@@ -474,13 +479,13 @@ function testInterfaceWithVariableArg() {
   Assert.assertNotEquals('undefined', typeof ret._jdel);
   var val = ret.getValue();
   Assert.assertNotEquals('undefined', typeof val._jdel);
-  Assert.assertEquals('the_string_value', val.getString());
+  assertEquals('the_string_value', val.getString());
 
   ret = obj.interfaceWithVariableArg('whatever', String, 'the_string_arg');
   Assert.assertNotEquals('undefined', typeof ret._jdel);
   val = ret.getValue();
-  Assert.assertEquals('undefined', typeof val._jdel);
-  Assert.assertEquals('the_string_arg', val);
+  assertEquals('undefined', typeof val._jdel);
+  assertEquals('the_string_arg', val);
 }
 
 function testInterfaceWithApiArg() {
@@ -489,7 +494,7 @@ function testInterfaceWithApiArg() {
   Assert.assertNotEquals('undefined', typeof ret._jdel);
   var val = ret.getValue();
   Assert.assertNotEquals('undefined', typeof val._jdel);
-  Assert.assertEquals('the_string_value', val.getString());
+  assertEquals('the_string_value', val.getString());
 }
 
 if (typeof this[testName] === 'undefined') {

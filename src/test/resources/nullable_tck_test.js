@@ -15,78 +15,81 @@ var dataObjectTCK = new DataObjectTCK(new Packages.io.vertx.codegen.testmodel.Da
 
 var that = this;
 
+var testUtils = require("test_utils");
+var assertEquals = testUtils.assertEquals;
+
 function testNullableByte() {
-  testNullable('Byte', 67, function(val) { Assert.assertEquals(67, val, 0) });
+  testNullable('Byte', 67, function(val) { assertEquals(67, val) });
 }
 
 function testNullableShort() {
-  testNullable('Short', 1024, function(val) { Assert.assertEquals(1024, val, 0) });
+  testNullable('Short', 1024, function(val) { assertEquals(1024, val) });
 }
 
 function testNullableInteger() {
-  testNullable('Integer', 1234567, function(val) { Assert.assertEquals(1234567, val, 0) });
+  testNullable('Integer', 1234567, function(val) { assertEquals(1234567, val) });
 }
 
 function testNullableLong() {
-  testNullable('Long', 9876543210, function(val) { Assert.assertEquals(9876543210, val, 0) });
+  testNullable('Long', 9876543210, function(val) { assertEquals(9876543210, val) });
 }
 
 function testNullableFloat() {
-  testNullable('Float', 3.14, function(val) { Assert.assertEquals(new Packages.java.lang.Float(3.14), val, new Packages.java.lang.Float(0.0)) });
+  testNullable('Float', 3.14, function(val) { assertEquals(new Packages.java.lang.Float(3.14), val) });
 }
 
 function testNullableDouble() {
-  testNullable('Double', 3.1415926, function(val) { Assert.assertEquals(3.1415926, val, 0.0) });
+  testNullable('Double', 3.1415926, function(val) { assertEquals(3.1415926, val) });
 }
 
 function testNullableBoolean() {
-  testNullable('Boolean', true, function(val) { Assert.assertEquals(true, val) });
+  testNullable('Boolean', true, function(val) { assertEquals(true, val) });
 }
 
 function testNullableString() {
-  testNullable('String', 'the_string_value', function(val) { Assert.assertEquals('the_string_value', val) });
+  testNullable('String', 'the_string_value', function(val) { assertEquals('the_string_value', val) });
 }
 
 function testNullableChar() {
-  testNullable('Char', 'f', function(val) { Assert.assertEquals('f', "" + val) });
+  testNullable('Char', 'f', function(val) { assertEquals('f', "" + val) });
 }
 
 function testNullableJsonObject() {
   testNullable('JsonObject', {"foo":"wibble","bar":3}, function(json) {
-    Assert.assertEquals("wibble", json["foo"]);
-    Assert.assertEquals(3, json["bar"], 0);
+    assertEquals("wibble", json["foo"]);
+    assertEquals(3, json["bar"]);
   });
 }
 
 function testNullableJsonArray() {
   testNullable('JsonArray', ["one","two","three"], function(array) {
-    Assert.assertEquals("one", array[0]);
-    Assert.assertEquals("two", array[1]);
-    Assert.assertEquals("three", array[2]);
+    assertEquals("one", array[0]);
+    assertEquals("two", array[1]);
+    assertEquals("three", array[2]);
   });
 }
 
 function testNullableApi() {
   refed_obj.setString('lovely_dae');
   testNullable('Api', refed_obj, function(api_obj) {
-    Assert.assertEquals('lovely_dae', api_obj.getString());
+    assertEquals('lovely_dae', api_obj.getString());
   });
 }
 
 function testNullableDataObject() {
   testNullable('DataObject', {"foo":"foo_value","bar":12345,"wibble":3.5}, function(data_obj) {
-    Assert.assertEquals('foo_value', data_obj.foo);
-    Assert.assertEquals(12345, data_obj.bar, 0);
-    Assert.assertEquals(3.5, data_obj.wibble, 0);
+    assertEquals('foo_value', data_obj.foo);
+    assertEquals(12345, data_obj.bar);
+    assertEquals(3.5, data_obj.wibble);
   });
 }
 
 function testNullableEnum() {
-  testNullable('Enum', "TIM", function(enumVal) { Assert.assertEquals("TIM", enumVal); });
+  testNullable('Enum', "TIM", function(enumVal) { assertEquals("TIM", enumVal); });
 }
 
 function testNullableGenEnum() {
-  testNullable('GenEnum', "MIKE", function(enumVal) { Assert.assertEquals("MIKE", enumVal); });
+  testNullable('GenEnum', "MIKE", function(enumVal) { assertEquals("MIKE", enumVal); });
 }
 
 function testNullable(type, expected, check) {
@@ -117,7 +120,7 @@ function testNullable(type, expected, check) {
     Assert.assertNull(err);
     count++;
   });
-  Assert.assertEquals(4, count, 0);
+  assertEquals(4, count);
   Assert.assertNull(nullableTCK['methodWithNullable' + type + 'Return'](false));
   check(nullableTCK['methodWithNullable' + type + 'Return'](true));
 }
@@ -127,26 +130,26 @@ function testNullableTypeVariable() {
   nullableTCK.methodWithNullableTypeVariableParam(true, null);
   var count = 0;
   nullableTCK.methodWithNullableTypeVariableHandler(true, "wibble", function(res) {
-    Assert.assertEquals("wibble", res);
+    assertEquals("wibble", res);
     count++;
   });
   nullableTCK.methodWithNullableTypeVariableHandler(false, "wibble", function(res) {
-    Assert.assertEquals(null, res);
+    assertEquals(null, res);
     count++;
   });
   nullableTCK.methodWithNullableTypeVariableHandlerAsyncResult(true, "sausage", function(res, err) {
-    Assert.assertEquals("sausage", res);
+    assertEquals("sausage", res);
     Assert.assertNull(err);
     count++;
   });
   nullableTCK.methodWithNullableTypeVariableHandlerAsyncResult(false, "sausage", function(res, err) {
-    Assert.assertEquals(null, res);
+    assertEquals(null, res);
     Assert.assertNull(err);
     count++;
   });
-  Assert.assertEquals(4, count, 0);
-  Assert.assertEquals("fizz1", nullableTCK.methodWithNullableTypeVariableReturn(true, "fizz1"));
-  Assert.assertEquals(null, nullableTCK.methodWithNullableTypeVariableReturn(false, "fizz2"));
+  assertEquals(4, count);
+  assertEquals("fizz1", nullableTCK.methodWithNullableTypeVariableReturn(true, "fizz1"));
+  assertEquals(null, nullableTCK.methodWithNullableTypeVariableReturn(false, "fizz2"));
 }
 
 function testNullableObject() {
@@ -155,49 +158,49 @@ function testNullableObject() {
 }
 
 function testNullableListByte() {
-  testNullableList('Byte', [12,24,-12], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  testNullableList('Byte', [12,24,-12], function(expected, actual) { assertEquals(expected, actual); });
 }
 
 function testNullableListShort() {
-  testNullableList('Short', [520,1040,-520], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  testNullableList('Short', [520,1040,-520], function(expected, actual) { assertEquals(expected, actual); });
 }
 
 function testNullableListInteger() {
-  testNullableList('Integer', [12345,54321,-12345], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  testNullableList('Integer', [12345,54321,-12345], function(expected, actual) { assertEquals(expected, actual); });
 }
 
 function testNullableListLong() {
-  testNullableList('Long', [123456789,987654321,-123456789], function(expected, actual) { Assert.assertEquals(new Packages.java.lang.Double(expected), new Packages.java.lang.Double(actual), 0.0); });
+  testNullableList('Long', [123456789,987654321,-123456789], function(expected, actual) { assertEquals(new Packages.java.lang.Double(expected), new Packages.java.lang.Double(actual)); });
 }
 
 function testNullableListFloat() {
   // todo : make this pass
-  // testNullableList('Float', [1.1,2.2,3.3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  // testNullableList('Float', [1.1,2.2,3.3], function(expected, actual) { assertEquals(expected, actual); });
 }
 
 function testNullableListDouble() {
-  testNullableList('Double', [1.11,2.22,3.33], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  testNullableList('Double', [1.11,2.22,3.33], function(expected, actual) { assertEquals(expected, actual); });
 }
 
 function testNullableListBoolean() {
-  testNullableList('Boolean', [true,false,true], Assert.assertEquals);
+  testNullableList('Boolean', [true,false,true], assertEquals);
 }
 
 function testNullableListString() {
-  testNullableList('String', ['first','second','third'], Assert.assertEquals);
+  testNullableList('String', ['first','second','third'], assertEquals);
 }
 
 function testNullableListChar() {
   // todo : make this pass
-  // testNullableList('Char', ['x','y','z'], Assert.assertEquals);
+  // testNullableList('Char', ['x','y','z'], assertEquals);
 }
 
 function testNullableListJsonObject() {
-  testNullableList('JsonObject', [{"foo":"bar"},{"juu":3}], function(expected, actual) { Assert.assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
+  testNullableList('JsonObject', [{"foo":"bar"},{"juu":3}], function(expected, actual) { assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
 }
 
 function testNullableListJsonArray() {
-  testNullableList('JsonArray', [["foo","bar"],["juu"]], function(expected, actual) { Assert.assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
+  testNullableList('JsonArray', [["foo","bar"],["juu"]], function(expected, actual) { assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
 }
 
 function testNullableListApi() {
@@ -206,15 +209,15 @@ function testNullableListApi() {
 }
 
 function testNullableListDataObject() {
-  testNullableList('DataObject', [{"foo":"foo_value","bar": 12345,"wibble":5.6}], function(expected, actual) { Assert.assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
+  testNullableList('DataObject', [{"foo":"foo_value","bar": 12345,"wibble":5.6}], function(expected, actual) { assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
 }
 
 function testNullableListEnum() {
-  testNullableList('Enum', ["TIM","JULIEN"], Assert.assertEquals);
+  testNullableList('Enum', ["TIM","JULIEN"], assertEquals);
 }
 
 function testNullableListGenEnum() {
-  testNullableList('GenEnum', ["BOB","LELAND"], Assert.assertEquals);
+  testNullableList('GenEnum', ["BOB","LELAND"], assertEquals);
 }
 
 function testNullableList(type, expectedList, assertEquals) {
@@ -250,55 +253,55 @@ function testNullableList(type, expectedList, assertEquals) {
     Assert.assertNull(err);
     count++;
   });
-  Assert.assertEquals(4, count, 0);
+  assertEquals(4, count);
   Assert.assertNull(nullableTCK['methodWithNullableList' + type + 'Return'](false));
   checkList(nullableTCK['methodWithNullableList' + type + 'Return'](true));
 }
 
 function testNullableSetByte() {
-  testNullableSet('Byte', [12,24,-12], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  testNullableSet('Byte', [12,24,-12], function(expected, actual) { assertEquals(expected, actual); });
 }
 
 function testNullableSetShort() {
-  testNullableSet('Short', [520,1040,-520], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  testNullableSet('Short', [520,1040,-520], function(expected, actual) { assertEquals(expected, actual); });
 }
 
 function testNullableSetInteger() {
-  testNullableSet('Integer', [12345,54321,-12345], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  testNullableSet('Integer', [12345,54321,-12345], function(expected, actual) { assertEquals(expected, actual); });
 }
 
 function testNullableSetLong() {
-  testNullableSet('Long', [123456789,987654321,-123456789], function(expected, actual) { Assert.assertEquals(new Packages.java.lang.Double(expected), new Packages.java.lang.Double(actual), 0.0); });
+  testNullableSet('Long', [123456789,987654321,-123456789], function(expected, actual) { assertEquals(new Packages.java.lang.Double(expected), new Packages.java.lang.Double(actual)); });
 }
 
 function testNullableSetFloat() {
   // todo : make this pass
-  // testNullableSet('Float', [1.1,2.2,3.3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  // testNullableSet('Float', [1.1,2.2,3.3], function(expected, actual) { assertEquals(expected, actual); });
 }
 
 function testNullableSetDouble() {
-  testNullableSet('Double', [1.11,2.22,3.33], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  testNullableSet('Double', [1.11,2.22,3.33], function(expected, actual) { assertEquals(expected, actual); });
 }
 
 function testNullableSetBoolean() {
-  testNullableSet('Boolean', [true,false], Assert.assertEquals);
+  testNullableSet('Boolean', [true,false], assertEquals);
 }
 
 function testNullableSetString() {
-  testNullableSet('String', ['first','second','third'], Assert.assertEquals);
+  testNullableSet('String', ['first','second','third'], assertEquals);
 }
 
 function testNullableSetChar() {
   // todo : make this pass
-  // testNullableSet('Char', ['x','y','z'], Assert.assertEquals);
+  // testNullableSet('Char', ['x','y','z'], assertEquals);
 }
 
 function testNullableSetJsonObject() {
-  testNullableList('JsonObject', [{"foo":"bar"},{"juu":3}], function(expected, actual) { Assert.assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
+  testNullableList('JsonObject', [{"foo":"bar"},{"juu":3}], function(expected, actual) { assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
 }
 
 function testNullableSetJsonArray() {
-  testNullableSet('JsonArray', [["foo","bar"],["juu"]], function(expected, actual) { Assert.assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
+  testNullableSet('JsonArray', [["foo","bar"],["juu"]], function(expected, actual) { assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
 }
 
 function testNullableSetApi() {
@@ -307,15 +310,15 @@ function testNullableSetApi() {
 }
 
 function testNullableSetDataObject() {
-  testNullableSet('DataObject', [{"foo":"foo_value","bar": 12345,"wibble":5.6}], function(expected, actual) { Assert.assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
+  testNullableSet('DataObject', [{"foo":"foo_value","bar": 12345,"wibble":5.6}], function(expected, actual) { assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
 }
 
 function testNullableSetEnum() {
-  testNullableSet('Enum', ["TIM","JULIEN"], Assert.assertEquals);
+  testNullableSet('Enum', ["TIM","JULIEN"], assertEquals);
 }
 
 function testNullableSetGenEnum() {
-  testNullableSet('GenEnum', ["BOB","LELAND"], Assert.assertEquals);
+  testNullableSet('GenEnum', ["BOB","LELAND"], assertEquals);
 }
 
 function testNullableSet(type, expectedSet, assertEquals) {
@@ -351,55 +354,55 @@ function testNullableSet(type, expectedSet, assertEquals) {
     Assert.assertNull(err);
     count++;
   });
-  Assert.assertEquals(4, count, 0);
+  assertEquals(4, count);
   Assert.assertNull(nullableTCK['methodWithNullableSet' + type + 'Return'](false));
   checkSet(nullableTCK['methodWithNullableSet' + type + 'Return'](true));
 }
 
 function testNullableMapByte() {
-  testNullableMap('Byte', [1,2,3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  testNullableMap('Byte', [1,2,3], function(expected, actual) { assertEquals(expected, actual); });
 }
 
 function testNullableMapShort() {
-  testNullableMap('Short', [1,2,3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  testNullableMap('Short', [1,2,3], function(expected, actual) { assertEquals(expected, actual); });
 }
 
 function testNullableMapInteger() {
-  testNullableMap('Integer', [1,2,3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  testNullableMap('Integer', [1,2,3], function(expected, actual) { assertEquals(expected, actual); });
 }
 
 function testNullableMapLong() {
-  testNullableMap('Long', [1,2,3], function(expected, actual) { Assert.assertEquals(new Packages.java.lang.Double(expected), new Packages.java.lang.Double(actual), 0.0); });
+  testNullableMap('Long', [1,2,3], function(expected, actual) { assertEquals(new Packages.java.lang.Double(expected), new Packages.java.lang.Double(actual)); });
 }
 
 function testNullableMapFloat() {
   // todo : make this pass
-  // testNullableList('Float', [1.1,2.2,3.3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  // testNullableList('Float', [1.1,2.2,3.3], function(expected, actual) { assertEquals(expected, actual); });
 }
 
 function testNullableMapDouble() {
-  testNullableMap('Double', [1.11,2.22,3.33], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  testNullableMap('Double', [1.11,2.22,3.33], function(expected, actual) { assertEquals(expected, actual); });
 }
 
 function testNullableMapBoolean() {
-  testNullableMap('Boolean', [true,false,true], Assert.assertEquals);
+  testNullableMap('Boolean', [true,false,true], assertEquals);
 }
 
 function testNullableMapString() {
-  testNullableMap('String', ['first','second','third'], Assert.assertEquals);
+  testNullableMap('String', ['first','second','third'], assertEquals);
 }
 
 function testNullableMapChar() {
   // todo : make this pass
-  // testNullableList('Char', ['x','y','z'], Assert.assertEquals);
+  // testNullableList('Char', ['x','y','z'], assertEquals);
 }
 
 function testNullableMapJsonObject() {
-  testNullableMap('JsonObject', [{"foo":"bar"},{"juu":3}], function(expected, actual) { Assert.assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
+  testNullableMap('JsonObject', [{"foo":"bar"},{"juu":3}], function(expected, actual) { assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
 }
 
 function testNullableMapJsonArray() {
-  testNullableMap('JsonArray', [["foo","bar"],["juu"]], function(expected, actual) { Assert.assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
+  testNullableMap('JsonArray', [["foo","bar"],["juu"]], function(expected, actual) { assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
 }
 
 function testNullableMap(type, expectedMap, assertEquals) {
@@ -449,44 +452,44 @@ function testNullableMapOut(type, expectedMap, assertEquals) {
     Assert.assertNull(err);
     count++;
   });
-  Assert.assertEquals(4, count, 0);
+  assertEquals(4, count);
   Assert.assertNull(nullableTCK['methodWithNullableMap' + type + 'Return'](false));
   checkMap(nullableTCK['methodWithNullableMap' + type + 'Return'](true));
 }
 
 function testListNullableByte() {
   testListNullable('Byte', [12,null,24], function(list) {
-    Assert.assertEquals(3, list.length, 0);
-    Assert.assertEquals(12, list[0], 0);
-    Assert.assertEquals(null, list[1]);
-    Assert.assertEquals(24, list[2], 0);
+    assertEquals(3, list.length);
+    assertEquals(12, list[0]);
+    assertEquals(null, list[1]);
+    assertEquals(24, list[2]);
   });
 }
 
 function testListNullableShort() {
   testListNullable('Short', [520,null,1040], function(list) {
-    Assert.assertEquals(3, list.length, 0);
-    Assert.assertEquals(520, list[0], 0);
-    Assert.assertEquals(null, list[1]);
-    Assert.assertEquals(1040, list[2], 0);
+    assertEquals(3, list.length);
+    assertEquals(520, list[0]);
+    assertEquals(null, list[1]);
+    assertEquals(1040, list[2]);
   });
 }
 
 function testListNullableInteger() {
   testListNullable('Integer', [12345,null,54321], function(list) {
-    Assert.assertEquals(3, list.length, 0);
-    Assert.assertEquals(12345, list[0], 0);
-    Assert.assertEquals(null, list[1]);
-    Assert.assertEquals(54321, list[2], 0);
+    assertEquals(3, list.length);
+    assertEquals(12345, list[0]);
+    assertEquals(null, list[1]);
+    assertEquals(54321, list[2]);
   });
 }
 
 function testListNullableLong() {
   testListNullable('Long', [123456789,null,987654321], function(list) {
     Assert.assertTrue(3 === list.length);
-    Assert.assertEquals(Number(123456789), Number(list[0]), Number(0));
-    Assert.assertEquals(null, list[1]);
-    Assert.assertEquals(Number(987654321), Number(list[2]), Number(0));
+    assertEquals(Number(123456789), Number(list[0]));
+    assertEquals(null, list[1]);
+    assertEquals(Number(987654321), Number(list[2]));
   });
 }
 
@@ -494,64 +497,64 @@ function testListNullableFloat() {
   // Todo make this pass, currently nashorn transforms to a List<Double> which can lead to class cast exceptions
   /*
    testListNullable('Float', [1.1,null,3.3], function(list) {
-   Assert.assertEquals(3, list.length, 0);
-   Assert.assertEquals(1.1, list[0], 0);
-   Assert.assertEquals(null, list[1]);
-   Assert.assertEquals(3.3, list[2],0);
+   assertEquals(3, list.length);
+   assertEquals(1.1, list[0]);
+   assertEquals(null, list[1]);
+   assertEquals(3.3, list[2],0);
    });
    */
 }
 
 function testListNullableDouble() {
   testListNullable('Double', [1.11,null,3.33], function(list) {
-    Assert.assertEquals(3, list.length, 0);
-    Assert.assertEquals(1.11, list[0], 0);
-    Assert.assertEquals(null, list[1]);
-    Assert.assertEquals(3.33, list[2],0);
+    assertEquals(3, list.length);
+    assertEquals(1.11, list[0]);
+    assertEquals(null, list[1]);
+    assertEquals(3.33, list[2]);
   });
 }
 
 function testListNullableBoolean() {
   testListNullable('Boolean', [true,null,false], function(list) {
-    Assert.assertEquals(3, list.length, 0);
-    Assert.assertEquals(true, list[0]);
-    Assert.assertEquals(null, list[1]);
-    Assert.assertEquals(false, list[2]);
+    assertEquals(3, list.length);
+    assertEquals(true, list[0]);
+    assertEquals(null, list[1]);
+    assertEquals(false, list[2]);
   });
 }
 
 function testListNullableString() {
   testListNullable('String', ["first",null,"third"], function(list) {
-    Assert.assertEquals(3, list.length, 0);
-    Assert.assertEquals("first", list[0]);
-    Assert.assertEquals(null, list[1]);
-    Assert.assertEquals("third", list[2]);
+    assertEquals(3, list.length);
+    assertEquals("first", list[0]);
+    assertEquals(null, list[1]);
+    assertEquals("third", list[2]);
   });
 }
 
 function testListNullableChar() {
   testListNullable('Char', ["F",null,"R"], function(list) {
-    Assert.assertEquals(3, list.length, 0);
-    Assert.assertEquals("F", list[0]);
-    Assert.assertEquals(null, list[1]);
-    Assert.assertEquals("R", list[2]);
+    assertEquals(3, list.length);
+    assertEquals("F", list[0]);
+    assertEquals(null, list[1]);
+    assertEquals("R", list[2]);
   });
 }
 
 function testListNullableJsonObject() {
   testListNullable('JsonObject', [{"foo":"bar"},null,{"juu":3}], function(list) {
-    Assert.assertEquals("bar", list[0].foo);
-    Assert.assertEquals(null, list[1]);
-    Assert.assertEquals(3, list[2].juu, 0);
+    assertEquals("bar", list[0].foo);
+    assertEquals(null, list[1]);
+    assertEquals(3, list[2].juu);
   });
 }
 
 function testListNullableJsonArray() {
   testListNullable('JsonArray', [["foo","bar"],null,["juu"]], function(list) {
-    Assert.assertEquals("foo", list[0][0]);
-    Assert.assertEquals("bar", list[0][1]);
-    Assert.assertEquals(null, list[1]);
-    Assert.assertEquals("juu", list[2][0]);
+    assertEquals("foo", list[0][0]);
+    assertEquals("bar", list[0][1]);
+    assertEquals(null, list[1]);
+    assertEquals("juu", list[2][0]);
   });
 }
 
@@ -559,37 +562,37 @@ function testListNullableApi() {
   refed_obj.setString('first');
   refed_obj2.setString('third');
   testListNullable('Api', [refed_obj,null,refed_obj2], function(list) {
-    Assert.assertEquals("first", list[0].getString());
+    assertEquals("first", list[0].getString());
     Assert.assertNull(list[1]);
-    Assert.assertEquals("third", list[2].getString());
+    assertEquals("third", list[2].getString());
   });
 }
 
 function testListNullableDataObject() {
   testListNullable('DataObject', [{"foo":"first","bar":1,"wibble":1.1},null,{"foo":"third","bar":3,"wibble":3.3}], function(list) {
-    Assert.assertEquals("first", list[0].foo);
-    Assert.assertEquals(1, list[0].bar, 0);
-    Assert.assertEquals(1.1, list[0].wibble, 0);
+    assertEquals("first", list[0].foo);
+    assertEquals(1, list[0].bar);
+    assertEquals(1.1, list[0].wibble);
     Assert.assertNull(list[1]);
-    Assert.assertEquals("third", list[2].foo);
-    Assert.assertEquals(3, list[2].bar, 0);
-    Assert.assertEquals(3.3, list[2].wibble, 0);
+    assertEquals("third", list[2].foo);
+    assertEquals(3, list[2].bar);
+    assertEquals(3.3, list[2].wibble);
   });
 }
 
 function testListNullableEnum() {
   testListNullable('Enum', ['TIM',null,'JULIEN'], function(list) {
-    Assert.assertEquals("TIM", list[0]);
+    assertEquals("TIM", list[0]);
     Assert.assertNull(list[1]);
-    Assert.assertEquals("JULIEN", list[2]);
+    assertEquals("JULIEN", list[2]);
   });
 }
 
 function testListNullableGenEnum() {
   testListNullable('GenEnum', ['BOB',null,'LELAND'], function(list) {
-    Assert.assertEquals("BOB", list[0]);
+    assertEquals("BOB", list[0]);
     Assert.assertNull(list[1]);
-    Assert.assertEquals("LELAND", list[2]);
+    assertEquals("LELAND", list[2]);
   });
 }
 
@@ -606,42 +609,42 @@ function testListNullable(type, expectedList, checkList) {
     count++;
   });
   checkList(nullableTCK['methodWithListNullable' + type + 'Return']());
-  Assert.assertEquals(2, count, 0);
+  assertEquals(2, count);
 }
 
 function testSetNullableByte() {
   testSetNullable('Byte', [12,null,24], function(s) {
-    Assert.assertEquals(3, s.length, 0);
-    Assert.assertEquals(12, s[0], 0);
-    Assert.assertEquals(null, s[1]);
-    Assert.assertEquals(24, s[2], 0);
+    assertEquals(3, s.length);
+    assertEquals(12, s[0]);
+    assertEquals(null, s[1]);
+    assertEquals(24, s[2]);
   });
 }
 
 function testSetNullableShort() {
   testSetNullable('Short', [520,null,1040], function(s) {
-    Assert.assertEquals(3, s.length, 0);
-    Assert.assertEquals(520, s[0], 0);
-    Assert.assertEquals(null, s[1]);
-    Assert.assertEquals(1040, s[2], 0);
+    assertEquals(3, s.length);
+    assertEquals(520, s[0]);
+    assertEquals(null, s[1]);
+    assertEquals(1040, s[2]);
   });
 }
 
 function testSetNullableInteger() {
   testSetNullable('Integer', [12345,null,54321], function(s) {
-    Assert.assertEquals(3, s.length, 0);
-    Assert.assertEquals(12345, s[0], 0);
-    Assert.assertEquals(null, s[1]);
-    Assert.assertEquals(54321, s[2], 0);
+    assertEquals(3, s.length);
+    assertEquals(12345, s[0]);
+    assertEquals(null, s[1]);
+    assertEquals(54321, s[2]);
   });
 }
 
 function testSetNullableLong() {
   testSetNullable('Long', [123456789,null,987654321], function(s) {
     Assert.assertTrue(3 === s.length);
-    Assert.assertEquals(Number(123456789), Number(s[0]), Number(0));
-    Assert.assertEquals(null, s[1]);
-    Assert.assertEquals(Number(987654321), Number(s[2]), Number(0));
+    assertEquals(Number(123456789), Number(s[0]));
+    assertEquals(null, s[1]);
+    assertEquals(Number(987654321), Number(s[2]));
   });
 }
 
@@ -649,64 +652,64 @@ function testSetNullableFloat() {
   // Todo make this pass, currently nashorn transforms to a Set<Double> which can lead to class cast exceptions
   /*
    testSetNullable('Float', [1.1,null,3.3], function(s) {
-   Assert.assertEquals(3, s.length, 0);
-   Assert.assertEquals(1.1, s[0], 0);
-   Assert.assertEquals(null, s[1]);
-   Assert.assertEquals(3.3, s[2],0);
+   assertEquals(3, s.length);
+   assertEquals(1.1, s[0]);
+   assertEquals(null, s[1]);
+   assertEquals(3.3, s[2],0);
    });
    */
 }
 
 function testSetNullableDouble() {
   testSetNullable('Double', [1.11,null,3.33], function(s) {
-    Assert.assertEquals(3, s.length, 0);
-    Assert.assertEquals(1.11, s[0], 0);
-    Assert.assertEquals(null, s[1]);
-    Assert.assertEquals(3.33, s[2],0);
+    assertEquals(3, s.length);
+    assertEquals(1.11, s[0]);
+    assertEquals(null, s[1]);
+    assertEquals(3.33, s[2]);
   });
 }
 
 function testSetNullableBoolean() {
   testSetNullable('Boolean', [true,null,false], function(s) {
-    Assert.assertEquals(3, s.length, 0);
-    Assert.assertEquals(true, s[0]);
-    Assert.assertEquals(null, s[1]);
-    Assert.assertEquals(false, s[2]);
+    assertEquals(3, s.length);
+    assertEquals(true, s[0]);
+    assertEquals(null, s[1]);
+    assertEquals(false, s[2]);
   });
 }
 
 function testSetNullableString() {
   testSetNullable('String', ["first",null,"third"], function(s) {
-    Assert.assertEquals(3, s.length, 0);
-    Assert.assertEquals("first", s[0]);
-    Assert.assertEquals(null, s[1]);
-    Assert.assertEquals("third", s[2]);
+    assertEquals(3, s.length);
+    assertEquals("first", s[0]);
+    assertEquals(null, s[1]);
+    assertEquals("third", s[2]);
   });
 }
 
 function testSetNullableChar() {
   testSetNullable('Char', ["F",null,"R"], function(s) {
-    Assert.assertEquals(3, s.length, 0);
-    Assert.assertEquals("F", s[0]);
-    Assert.assertEquals(null, s[1]);
-    Assert.assertEquals("R", s[2]);
+    assertEquals(3, s.length);
+    assertEquals("F", s[0]);
+    assertEquals(null, s[1]);
+    assertEquals("R", s[2]);
   });
 }
 
 function testSetNullableJsonObject() {
   testSetNullable('JsonObject', [{"foo":"bar"},null,{"juu":3}], function(s) {
-    Assert.assertEquals("bar", s[0].foo);
-    Assert.assertEquals(null, s[1]);
-    Assert.assertEquals(3, s[2].juu, 0);
+    assertEquals("bar", s[0].foo);
+    assertEquals(null, s[1]);
+    assertEquals(3, s[2].juu);
   });
 }
 
 function testSetNullableJsonArray() {
   testSetNullable('JsonArray', [["foo","bar"],null,["juu"]], function(s) {
-    Assert.assertEquals("foo", s[0][0]);
-    Assert.assertEquals("bar", s[0][1]);
-    Assert.assertEquals(null, s[1]);
-    Assert.assertEquals("juu", s[2][0]);
+    assertEquals("foo", s[0][0]);
+    assertEquals("bar", s[0][1]);
+    assertEquals(null, s[1]);
+    assertEquals("juu", s[2][0]);
   });
 }
 
@@ -714,37 +717,37 @@ function testSetNullableApi() {
   refed_obj.setString('first');
   refed_obj2.setString('third');
   testSetNullable('Api', [refed_obj,null,refed_obj2], function(s) {
-    Assert.assertEquals("first", s[0].getString());
+    assertEquals("first", s[0].getString());
     Assert.assertNull(s[1]);
-    Assert.assertEquals("third", s[2].getString());
+    assertEquals("third", s[2].getString());
   });
 }
 
 function testSetNullableDataObject() {
   testSetNullable('DataObject', [{"foo":"first","bar":1,"wibble":1.1},null,{"foo":"third","bar":3,"wibble":3.3}], function(s) {
-    Assert.assertEquals("first", s[0].foo);
-    Assert.assertEquals(1, s[0].bar, 0);
-    Assert.assertEquals(1.1, s[0].wibble, 0);
+    assertEquals("first", s[0].foo);
+    assertEquals(1, s[0].bar);
+    assertEquals(1.1, s[0].wibble);
     Assert.assertNull(s[1]);
-    Assert.assertEquals("third", s[2].foo);
-    Assert.assertEquals(3, s[2].bar, 0);
-    Assert.assertEquals(3.3, s[2].wibble, 0);
+    assertEquals("third", s[2].foo);
+    assertEquals(3, s[2].bar);
+    assertEquals(3.3, s[2].wibble);
   });
 }
 
 function testSetNullableEnum() {
   testSetNullable('Enum', ['TIM',null,'JULIEN'], function(s) {
-    Assert.assertEquals("TIM", s[0]);
+    assertEquals("TIM", s[0]);
     Assert.assertNull(s[1]);
-    Assert.assertEquals("JULIEN", s[2]);
+    assertEquals("JULIEN", s[2]);
   });
 }
 
 function testSetNullableGenEnum() {
   testSetNullable('GenEnum', ['BOB',null,'LELAND'], function(s) {
-    Assert.assertEquals("BOB", s[0]);
+    assertEquals("BOB", s[0]);
     Assert.assertNull(s[1]);
-    Assert.assertEquals("LELAND", s[2]);
+    assertEquals("LELAND", s[2]);
   });
 }
 
@@ -761,59 +764,59 @@ function testSetNullable(type, expectedList, checkSet) {
     count++;
   });
   checkSet(nullableTCK['methodWithSetNullable' + type + 'Return']());
-  Assert.assertEquals(2, count, 0);
+  assertEquals(2, count);
 }
 
 function testMapNullableByte() {
-  testMapNullable('Byte', [12,null,24], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  testMapNullable('Byte', [12,null,24], function(expected, actual) { assertEquals(expected, actual); });
 }
 
 function testMapNullableShort() {
-  testMapNullable('Short', [520,null,1040], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  testMapNullable('Short', [520,null,1040], function(expected, actual) { assertEquals(expected, actual); });
 }
 
 function testMapNullableInteger() {
-  testMapNullable('Integer', [12345,null,54321], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  testMapNullable('Integer', [12345,null,54321], function(expected, actual) { assertEquals(expected, actual); });
 }
 
 function testMapNullableLong() {
-  testMapNullable('Long', [123456789,null,987654321], function(expected, actual) { Assert.assertEquals(new Packages.java.lang.Double(expected), new Packages.java.lang.Double(actual), 0.0); });
+  testMapNullable('Long', [123456789,null,987654321], function(expected, actual) { assertEquals(new Packages.java.lang.Double(expected), new Packages.java.lang.Double(actual)); });
 }
 
 function testMapNullableFloat() {
   // todo : make this pass
-  // testNullableList('Float', [1.1,2.2,3.3], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  // testNullableList('Float', [1.1,2.2,3.3], function(expected, actual) { assertEquals(expected, actual); });
 }
 
 function testMapNullableDouble() {
-  testMapNullable('Double', [1.11,null,3.33], function(expected, actual) { Assert.assertEquals(expected, actual, 0); });
+  testMapNullable('Double', [1.11,null,3.33], function(expected, actual) { assertEquals(expected, actual); });
 }
 
 function testMapNullableBoolean() {
-  testMapNullable('Boolean', [true,null,false], Assert.assertEquals);
+  testMapNullable('Boolean', [true,null,false], assertEquals);
 }
 
 function testMapNullableString() {
-  testMapNullable('String', ['first',null,'third'], Assert.assertEquals);
+  testMapNullable('String', ['first',null,'third'], assertEquals);
 }
 
 function testMapNullableChar() {
   // todo : make this pass
-  // testNullableList('Char', ['x','y','z'], Assert.assertEquals);
+  // testNullableList('Char', ['x','y','z'], assertEquals);
 }
 
 function testMapNullableJsonObject() {
-  testMapNullable('JsonObject', [{"foo":"bar"},null,{"juu":3}], function(expected, actual) { Assert.assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
+  testMapNullable('JsonObject', [{"foo":"bar"},null,{"juu":3}], function(expected, actual) { assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
 }
 
 function testMapNullableJsonArray() {
-  testMapNullable('JsonArray', [["foo","bar"],null,["juu"]], function(expected, actual) { Assert.assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
+  testMapNullable('JsonArray', [["foo","bar"],null,["juu"]], function(expected, actual) { assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
 }
 
 function testMapNullableApi() {
   refed_obj.setString('first');
   refed_obj2.setString('third');
-  testMapNullableIn('Api', [refed_obj,null,refed_obj2], function(expected, actual) { Assert.assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
+  testMapNullableIn('Api', [refed_obj,null,refed_obj2], function(expected, actual) { assertEquals(JSON.stringify(expected),JSON.stringify(actual)); });
 }
 
 function testMapNullable(type, expectedMap, assertEquals) {
@@ -853,7 +856,7 @@ function testMapNullableOut(type, expectedMap, assertEquals) {
     Assert.assertNull(err);
     count++;
   });
-  Assert.assertEquals(2, count, 0);
+  assertEquals(2, count);
   checkMap(nullableTCK['methodWithMapNullable' + type + 'Return']());
 }
 
@@ -861,16 +864,16 @@ function testNullableHandler() {
   var count = 0;
   nullableTCK.methodWithNullableHandler(true, null);
   nullableTCK.methodWithNullableHandler(false, function(res) {
-    Assert.assertEquals("the_string_value", res);
+    assertEquals("the_string_value", res);
     count++;
   });
   nullableTCK.methodWithNullableHandlerAsyncResult(true, null);
   nullableTCK.methodWithNullableHandlerAsyncResult(false, function(res, err) {
-    Assert.assertEquals("the_string_value", res);
+    assertEquals("the_string_value", res);
     Assert.assertNull(err);
     count++;
   });
-  Assert.assertEquals(2, count, 0);
+  assertEquals(2, count);
 }
 
 

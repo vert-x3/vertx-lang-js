@@ -5,19 +5,22 @@ var overload = ClassParamOverload.create();
 
 var that = this;
 
+var testUtils = require("test_utils");
+var assertEquals = testUtils.assertEquals;
+
 function testTypeVarReturn() {
   Assert.assertEquals("wibble", overload.typeVarReturn());
-  Assert.assertEquals(5, overload.typeVarReturn(Number), 0);
+  assertEquals(5, overload.typeVarReturn(Number));
 }
 
 function testParameterizedReturn() {
-  Assert.assertEquals("cheese", overload.parameterizedReturn().get());
-  Assert.assertEquals(10, overload.parameterizedReturn(Number).get(), 0);
+  assertEquals("cheese", overload.parameterizedReturn().get());
+  assertEquals(10, overload.parameterizedReturn(Number).get());
 }
 
 function testTypeVarParam() {
-  Assert.assertEquals(true, overload.typeVarParam("wibble"));
-  Assert.assertEquals(true, overload.typeVarParam(Number, 20));
+  assertEquals(true, overload.typeVarParam("wibble"));
+  assertEquals(true, overload.typeVarParam(Number, 20));
 }
 
 if (typeof this[testName] === 'undefined') {

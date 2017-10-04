@@ -1,35 +1,38 @@
 var Assert = org.junit.Assert;
 
+var testUtils = require("test_utils");
+var assertEquals = testUtils.assertEquals;
+
 function testRequireNoExtension() {
   var testMod = require("test_mod");
-  Assert.assertEquals("hello", testMod);
+  assertEquals("hello", testMod);
 }
 
 function testRequireWithExtension() {
   var testMod = require("test_mod.js");
-  Assert.assertEquals("hello", testMod);
+  assertEquals("hello", testMod);
 }
 
 function testRequireInDirectoryNoExtension() {
   var testMod = require("somedir/test_mod2");
-  Assert.assertEquals("socks", testMod);
+  assertEquals("socks", testMod);
 }
 
 function testRequireInDirectoryWithExtension() {
   var testMod = require("somedir/test_mod2.js");
-  Assert.assertEquals("socks", testMod);
+  assertEquals("socks", testMod);
 }
 
 function testRequireRelative() {
   var testMod = require("somedir/../somedir/./test_mod3");
-  Assert.assertEquals("socks", testMod);
+  assertEquals("socks", testMod);
 }
 
 function testRequireNotFound() {
   try {
     require("nosuchmodule");
   } catch (e) {
-    Assert.assertEquals("Cannot find module nosuchmodule", e.message);
+    assertEquals("Cannot find module nosuchmodule", e.message);
   }
 }
 
@@ -41,8 +44,8 @@ function testBrokenModuleSyntaxError() {
     // FIXME - Nashorn issue where syntax error is not reported properly from line in eval.
     // So we just have to log the error to stderr in npm-jvm.js for now
     //Assert.assertTrue(e.message.contains("brokenmodule_syntaxerror.js@0:5:2 Expected ; but found ar"));
-    //Assert.assertEquals("brokenmodule_syntaxerror.js", e.fileName);
-    //Assert.assertEquals(5, e.lineNumber, 0);
+    //assertEquals("brokenmodule_syntaxerror.js", e.fileName);
+    //assertEquals(5, e.lineNumber, 0);
     Assert.assertTrue(e instanceof SyntaxError);
   }
 }
@@ -60,7 +63,7 @@ function testBrokenModuleTypeErrorInMainBody() {
       Assert.fail("Unexpected error message " + e.message);
     }
     Assert.assertTrue(e.fileName.contains("brokenmodule_typeerror.js"));
-    Assert.assertEquals(6, e.lineNumber, 0);
+    assertEquals(6, e.lineNumber);
     Assert.assertTrue(e instanceof TypeError);
   }
 }
@@ -78,7 +81,7 @@ function testBrokenModuleTypeErrorInFunction() {
     } else {
       Assert.fail("Unexpected error message " + e.message);
     }
-    Assert.assertEquals(9, e.lineNumber, 0);
+    assertEquals(9, e.lineNumber);
     Assert.assertTrue(e instanceof TypeError);
   }
 }
@@ -98,17 +101,17 @@ function testCachedRequires() {
 
 function testRequireNPMModule() {
   var testMod1 = require("src/test/npm/testmod1");
-  Assert.assertEquals("hello from testmod1", testMod1);
+  assertEquals("hello from testmod1", testMod1);
 }
 
 function testRequireNPMModuleUsingNodePath() {
   var testMod1 = require("testmod1");
-  Assert.assertEquals("hello from testmod1", testMod1);
+  assertEquals("hello from testmod1", testMod1);
 }
 
 function testRequireNPMModuleUsingClassPath() {
   var my_npm_verticle = require("my_npm_module.js");
-  Assert.assertEquals("Hello vertx", my_npm_verticle);
+  assertEquals("Hello vertx", my_npm_verticle);
 }
 
 /**
@@ -166,7 +169,7 @@ function testMultipleConcurrentRequires() {
     }
   });
 
-  // Deploy a number of instances 
+  // Deploy a number of instances
   vertx.deployVerticle("js:test_multiple_concurrent_requires_verticle", {instances: numInstances});
   Assert.assertTrue(latch.await(2, TimeUnit.MINUTES));
   Assert.assertFalse(tooMany);

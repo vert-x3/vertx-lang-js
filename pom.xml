@@ -4,7 +4,7 @@
   <parent>
     <groupId>io.vertx</groupId>
     <artifactId>vertx-parent</artifactId>
-    <version>10</version>
+    <version>11</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -180,6 +180,7 @@
             <configuration>
               <systemProperties>
                 <java.util.logging.SimpleFormatter.format>%4$s: %3$s - %5$s %6$s%n</java.util.logging.SimpleFormatter.format>
+                <mvel2.disable.jit>true</mvel2.disable.jit>
               </systemProperties>
               <processors>
                 <processor>io.vertx.codegen.CodeGenProcessor</processor>
