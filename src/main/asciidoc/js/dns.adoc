@@ -13,9 +13,31 @@ var client = vertx.createDnsClient(53, "10.0.0.1");
 
 ----
 
-Be aware that you can pass in a varargs of InetSocketAddress arguments to specifiy more then one DNS Server to try
-to query for DNS resolution. The DNS Servers will be queried in the same order as specified here. Where the next
-will be used once the first produce an error while be used.
+You can also create the client with options and configure the query timeout.
+
+[source,js]
+----
+var client = vertx.createDnsClient({
+  "port" : 53,
+  "host" : "10.0.0.1",
+  "queryTimeout" : 10000
+});
+
+----
+
+Creating the client with no arguments or omitting the server address will use the address of the server used internally
+for non blocking address resolution.
+
+[source,js]
+----
+var client1 = vertx.createDnsClient();
+
+// Just the same but with a different query timeout
+var client2 = vertx.createDnsClient({
+  "queryTimeout" : 10000
+});
+
+----
 
 === lookup
 
@@ -26,7 +48,7 @@ To lookup the A / AAAA record for "vertx.io" you would typically use it like:
 
 [source,js]
 ----
-var client = vertx.createDnsClient(53, "10.0.0.1");
+var client = vertx.createDnsClient(53, "9.9.9.9");
 client.lookup("vertx.io", function (ar, ar_err) {
   if (ar_err == null) {
     console.log(ar);
@@ -46,7 +68,7 @@ To lookup the A record for "vertx.io" you would typically use it like:
 
 [source,js]
 ----
-var client = vertx.createDnsClient(53, "10.0.0.1");
+var client = vertx.createDnsClient(53, "9.9.9.9");
 client.lookup4("vertx.io", function (ar, ar_err) {
   if (ar_err == null) {
     console.log(ar);
@@ -66,7 +88,7 @@ To lookup the A record for "vertx.io" you would typically use it like:
 
 [source,js]
 ----
-var client = vertx.createDnsClient(53, "10.0.0.1");
+var client = vertx.createDnsClient(53, "9.9.9.9");
 client.lookup6("vertx.io", function (ar, ar_err) {
   if (ar_err == null) {
     console.log(ar);
@@ -86,7 +108,7 @@ To lookup all the A records for "vertx.io" you would typically do:
 
 [source,js]
 ----
-var client = vertx.createDnsClient(53, "10.0.0.1");
+var client = vertx.createDnsClient(53, "9.9.9.9");
 client.resolveA("vertx.io", function (ar, ar_err) {
   if (ar_err == null) {
     var records = ar;
@@ -109,7 +131,7 @@ To lookup all the AAAAA records for "vertx.io" you would typically do:
 
 [source,js]
 ----
-var client = vertx.createDnsClient(53, "10.0.0.1");
+var client = vertx.createDnsClient(53, "9.9.9.9");
 client.resolveAAAA("vertx.io", function (ar, ar_err) {
   if (ar_err == null) {
     var records = ar;
@@ -132,7 +154,7 @@ To lookup all the CNAME records for "vertx.io" you would typically do:
 
 [source,js]
 ----
-var client = vertx.createDnsClient(53, "10.0.0.1");
+var client = vertx.createDnsClient(53, "9.9.9.9");
 client.resolveCNAME("vertx.io", function (ar, ar_err) {
   if (ar_err == null) {
     var records = ar;
@@ -155,7 +177,7 @@ To lookup all the MX records for "vertx.io" you would typically do:
 
 [source,js]
 ----
-var client = vertx.createDnsClient(53, "10.0.0.1");
+var client = vertx.createDnsClient(53, "9.9.9.9");
 client.resolveMX("vertx.io", function (ar, ar_err) {
   if (ar_err == null) {
     var records = ar;
@@ -189,7 +211,7 @@ To resolve all the TXT records for "vertx.io" you could use something along thes
 
 [source,js]
 ----
-var client = vertx.createDnsClient(53, "10.0.0.1");
+var client = vertx.createDnsClient(53, "9.9.9.9");
 client.resolveTXT("vertx.io", function (ar, ar_err) {
   if (ar_err == null) {
     var records = ar;
@@ -212,7 +234,7 @@ To resolve all the NS records for "vertx.io" you could use something along these
 
 [source,js]
 ----
-var client = vertx.createDnsClient(53, "10.0.0.1");
+var client = vertx.createDnsClient(53, "9.9.9.9");
 client.resolveNS("vertx.io", function (ar, ar_err) {
   if (ar_err == null) {
     var records = ar;
@@ -235,7 +257,7 @@ To lookup all the SRV records for "vertx.io" you would typically do:
 
 [source,js]
 ----
-var client = vertx.createDnsClient(53, "10.0.0.1");
+var client = vertx.createDnsClient(53, "9.9.9.9");
 client.resolveSRV("vertx.io", function (ar, ar_err) {
   if (ar_err == null) {
     var records = ar;
@@ -276,7 +298,7 @@ To resolve the PTR record for the ipaddress 10.0.0.1 you would use the PTR notio
 
 [source,js]
 ----
-var client = vertx.createDnsClient(53, "10.0.0.1");
+var client = vertx.createDnsClient(53, "9.9.9.9");
 client.resolvePTR("1.0.0.10.in-addr.arpa", function (ar, ar_err) {
   if (ar_err == null) {
     var record = ar;
@@ -297,7 +319,7 @@ To do a reverse lookup for the ipaddress 10.0.0.1 do something similar like this
 
 [source,js]
 ----
-var client = vertx.createDnsClient(53, "10.0.0.1");
+var client = vertx.createDnsClient(53, "9.9.9.9");
 client.reverseLookup("10.0.0.1", function (ar, ar_err) {
   if (ar_err == null) {
     var record = ar;

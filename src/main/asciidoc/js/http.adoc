@@ -1427,7 +1427,7 @@ request.exceptionHandler(function (err) {
 
 ----
 
-=== Handling http responses
+=== Handling HTTP responses
 
 You receive an instance of `link:../../jsdoc/module-vertx-js_http_client_response-HttpClientResponse.html[HttpClientResponse]` into the handler that you specify in of
 the request methods or by setting a handler directly on the `link:../../jsdoc/module-vertx-js_http_client_request-HttpClientRequest.html[HttpClientRequest]` object.
