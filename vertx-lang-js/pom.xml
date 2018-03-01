@@ -22,6 +22,11 @@
 
     <dependency>
       <groupId>io.vertx</groupId>
+      <artifactId>vertx-lang-js-codegen</artifactId>
+      <version>3.6.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
       <artifactId>vertx-codegen</artifactId>
       <scope>provided</scope>
     </dependency>
@@ -59,23 +64,11 @@
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
-      <artifactId>vertx-codegen</artifactId>
-      <classifier>tck</classifier>
+      <artifactId>vertx-lang-js-codegen</artifactId>
+      <version>3.6.0-SNAPSHOT</version>
+      <type>test-jar</type>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-codegen</artifactId>
-      <classifier>tck-sources</classifier>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-codegen</artifactId>
-      <classifier>sources</classifier>
-      <scope>test</scope>
-    </dependency>
-
   </dependencies>
 
   <build>
@@ -134,21 +127,6 @@
               <includes>io/vertx/core/**/*.java,examples/**/*.java</includes>
               <excludes>**/impl/**/*.java,**/logging/**/*.java</excludes>
               <outputDirectory>${project.build.directory}/sources/vertx-core</outputDirectory>
-            </configuration>
-          </execution>
-          <!-- Unpack codegen source code to target/sources/codegen -->
-          <execution>
-            <id>unpack-codegen</id>
-            <phase>generate-test-sources</phase>
-            <goals>
-              <goal>unpack-dependencies</goal>
-            </goals>
-            <configuration>
-              <includeGroupIds>io.vertx</includeGroupIds>
-              <includeArtifactIds>vertx-codegen</includeArtifactIds>
-              <includeTypes>jar</includeTypes>
-              <includeClassifiers>tck-sources</includeClassifiers>
-              <outputDirectory>${project.build.directory}/sources/codegen</outputDirectory>
             </configuration>
           </execution>
         </executions>
@@ -225,31 +203,6 @@
               <sourceDirectory>src/main/docoverride</sourceDirectory>
             </configuration>
           </execution>
-
-          <!-- Run the annotation processor on codegen and generate the js codegen -->
-          <execution>
-            <id>generate-codegen</id>
-            <goals>
-              <goal>process</goal>
-            </goals>
-            <phase>generate-test-sources</phase>
-            <configuration>
-              <systemProperties>
-                <java.util.logging.SimpleFormatter.format>%4$s: %3$s - %5$s %6$s%n</java.util.logging.SimpleFormatter.format>
-              </systemProperties>
-              <processors>
-                <processor>io.vertx.codegen.CodeGenProcessor</processor>
-              </processors>
-              <optionMap>
-                <codegen.output>${project.basedir}/src/test</codegen.output>
-                <codegen.generators>JavaScript</codegen.generators>
-              </optionMap>
-              <sourceDirectory>${project.build.directory}/sources/codegen</sourceDirectory>
-              <additionalSourceDirectories>
-                <additionalSourceDirectory>${project.basedir}/src/test/java</additionalSourceDirectory>
-              </additionalSourceDirectories>
-            </configuration>
-          </execution>
         </executions>
         <dependencies>
           <dependency>
@@ -259,6 +212,7 @@
           </dependency>
         </dependencies>
       </plugin>
+      <!--
       <plugin>
         <groupId>com.phasebash.jsdoc</groupId>
         <artifactId>jsdoc3-maven-plugin</artifactId>
@@ -279,6 +233,7 @@
           </execution>
         </executions>
       </plugin>
+      -->
       <plugin>
         <groupId>org.asciidoctor</groupId>
         <artifactId>asciidoctor-maven-plugin</artifactId>

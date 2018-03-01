@@ -30,6 +30,7 @@
   </dependencyManagement>
 
   <modules>
+    <module>vertx-lang-js-codegen</module>
     <module>vertx-lang-js</module>
   </modules>
 
