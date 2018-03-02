@@ -37,11 +37,6 @@ function getBindings() {
 
 getVertx().eventBus().consumer("http-ref", function (message) {
   discovery.getRecord(function (rec) {
-    console.log("GET RECORD " + rec.name)
-    console.log("GET RECORD " + rec.name)
-    console.log("GET RECORD " + rec.name)
-    console.log("GET RECORD " + rec.name)
-    console.log("GET RECORD " + rec.name)
     return rec.name === "my-http-service"
   }, function (rec, err) {
     var result = {};
@@ -49,19 +44,6 @@ getVertx().eventBus().consumer("http-ref", function (message) {
       err.printStackTrace();
       message.reply("FAIL - no http service");
     } else {
-      console.log("REC " + rec)
-      console.log("REC " + rec)
-      console.log("REC " + rec)
-      console.log("REC " + rec)
-      console.log("REC " + rec)
-      console.log("REC " + rec)
-      console.log("REC " + rec)
-      console.log("REC " + rec)
-      console.log("REC " + rec)
-      console.log("REC " + rec)
-      console.log("REC " + rec)
-      console.log("REC " + rec)
-      console.log("REC " + rec)
       var reference = discovery.getReference(rec);
       result.ref_del = getDelegate(reference);
       if (!reference) {
