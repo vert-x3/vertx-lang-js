@@ -14,7 +14,7 @@
  * You may elect to redistribute this code under either of these licenses.
  */
 
-package io.vertx.test.discovery.service;
+package io.vertx.test.it.discovery.service;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;

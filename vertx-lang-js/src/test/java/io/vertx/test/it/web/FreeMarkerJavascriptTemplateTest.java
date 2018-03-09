@@ -14,7 +14,7 @@
  * under the License.
  */
 
-package io.vertx.test.web;
+package io.vertx.test.it.web;
 
 import io.vertx.lang.js.ClasspathFileResolver;
 import io.vertx.test.lang.js.JSTestBase;
@@ -31,7 +31,7 @@ public class FreeMarkerJavascriptTemplateTest extends JSTestBase {
 
   @Override
   protected String getTestFile() {
-    return "web/freemarker_javascript_template_test.js";
+    return "it/web/freemarker_javascript_template_test.js";
   }
 
   @Test

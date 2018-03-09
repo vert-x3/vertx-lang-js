@@ -18,6 +18,6 @@
  * @author <a href="http://escoffier.me">Clement Escoffier</a>
  */
 @ModuleGen(name = "test-services", groupPackage = "io.vertx")
-package io.vertx.test.discovery.service;
+package io.vertx.test.it.discovery.service;
 
 import io.vertx.codegen.annotations.ModuleGen;

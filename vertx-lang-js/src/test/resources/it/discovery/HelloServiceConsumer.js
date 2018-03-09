@@ -27,7 +27,7 @@ var discovery = ServiceDiscovery.create(vertx, {
 
 
 EventBusService.getServiceProxyWithJsonFilter(discovery,
-  { "service.interface" : "io.vertx.test.discovery.service.HelloService"},
+  { "service.interface" : "io.vertx.test.it.discovery.service.HelloService"},
   HelloService,
   function(ar, ar_err) {
     var proxy = ar;

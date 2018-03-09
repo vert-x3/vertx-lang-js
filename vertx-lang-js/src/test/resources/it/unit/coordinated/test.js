@@ -3,7 +3,7 @@ var TestSuite = require('vertx-unit-js/test_suite');
 var suite = TestSuite.create("my_suite").
     before(function(context) {
         var async = context.async();
-        vertx.deployVerticle("js:unit/verticle/coordinated/server", function(id, err) {
+        vertx.deployVerticle("js:it/unit/coordinated/server", function(id, err) {
             context.assertTrue(err === null);
             async.complete();
         });

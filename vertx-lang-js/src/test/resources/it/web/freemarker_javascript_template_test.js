@@ -33,7 +33,7 @@ function testTemplate() {
   var router = Router.router(vertx);
 
   var engine = FreeMarkerTemplateEngine.create();
-  var handler = TemplateHandler.create(engine, "web", "text/plain");
+  var handler = TemplateHandler.create(engine, "it/web", "text/plain");
 
   router.route().handler(function (context) {
     context.put("foo", "badger");

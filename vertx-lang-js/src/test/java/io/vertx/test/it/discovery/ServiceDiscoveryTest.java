@@ -14,7 +14,7 @@
  * You may elect to redistribute this code under either of these licenses.
  */
 
-package io.vertx.test.discovery;
+package io.vertx.test.it.discovery;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
@@ -27,8 +27,8 @@ import io.vertx.servicediscovery.ServiceDiscoveryOptions;
 import io.vertx.servicediscovery.impl.DiscoveryImpl;
 import io.vertx.servicediscovery.types.*;
 import io.vertx.serviceproxy.ProxyHelper;
-import io.vertx.test.discovery.service.HelloService;
-import io.vertx.test.discovery.service.HelloServiceImpl;
+import io.vertx.test.it.discovery.service.HelloService;
+import io.vertx.test.it.discovery.service.HelloServiceImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -83,7 +83,7 @@ public class ServiceDiscoveryTest {
     vertx.eventBus().<JsonObject>consumer("result", message -> result.set(message.body()));
 
     // Step 3 - deploy the verticle
-    vertx.deployVerticle("discovery/HelloServiceConsumer.js", ar -> {
+    vertx.deployVerticle("it/discovery/HelloServiceConsumer.js", ar -> {
       if (ar.failed()) {
         // Will fail anyway.
         ar.cause().printStackTrace();
@@ -176,7 +176,7 @@ public class ServiceDiscoveryTest {
     Async mongo_ref = tc.async();
     Async mongo_sugar = tc.async();
 
-    vertx.deployVerticle("discovery/polyglot/my-verticle.js", deployed -> {
+    vertx.deployVerticle("it/discovery/polyglot/my-verticle.js", deployed -> {
 
       vertx.eventBus().<JsonObject>send("http-ref", "", reply -> {
         if (! reply.succeeded()) {

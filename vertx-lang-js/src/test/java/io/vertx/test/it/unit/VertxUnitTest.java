@@ -1,4 +1,4 @@
-package io.vertx.test.unit;
+package io.vertx.test.it.unit;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.collect.EventBusCollector;
@@ -12,7 +12,7 @@ public class VertxUnitTest extends VertxTestBase {
 
   @Test
   public void testAssertionsJs() throws Exception {
-    testAssertions("js:unit/verticle/assertions");
+    testAssertions("js:it/unit/assertions");
   }
 
   private void testAssertions(String verticle) throws Exception {
@@ -40,7 +40,7 @@ public class VertxUnitTest extends VertxTestBase {
 
   @Test
   public void testJavaScriptTimer() {
-    vertx.deployVerticle("js:unit/verticle/timer", ar -> {
+    vertx.deployVerticle("js:it/unit/timer", ar -> {
       assertTrue(ar.succeeded());
       testComplete();
     });
@@ -49,7 +49,7 @@ public class VertxUnitTest extends VertxTestBase {
 
   @Test
   public void testJavaScriptFailure() {
-    vertx.deployVerticle("js:unit/verticle/failing", ar -> {
+    vertx.deployVerticle("js:it/unit/failing", ar -> {
       assertTrue(ar.failed());
       assertEquals("Error: the_failure", ar.cause().getMessage());
       testComplete();
@@ -70,7 +70,7 @@ public class VertxUnitTest extends VertxTestBase {
           break;
       }
     });
-    vertx.deployVerticle("js:unit/verticle/coordinated/test", ar -> {
+    vertx.deployVerticle("js:it/unit/coordinated/test", ar -> {
       assertTrue(ar.succeeded());
     });
     await();
