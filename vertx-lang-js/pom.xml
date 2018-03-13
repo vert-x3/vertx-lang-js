@@ -151,16 +151,12 @@
 
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
-        <dependencies>
-          <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-ext-resources</artifactId>
-            <version>30</version>
-          </dependency>
-        </dependencies>
         <executions>
           <execution>
             <id>package-docs</id>
+          </execution>
+          <execution>
+            <id>assemble-docs</id>
           </execution>
         </executions>
       </plugin>
@@ -170,7 +166,7 @@
         <artifactId>jsdoc3-maven-plugin</artifactId>
         <executions>
           <execution>
-            <phase>process-resources</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>jsdoc3</goal>
             </goals>
@@ -179,11 +175,12 @@
               <directoryRoots>
                 <directoryRoot>${project.build.outputDirectory}</directoryRoot>
               </directoryRoots>
-              <outputDirectory>${project.build.directory}/asciidoc/jsdoc</outputDirectory>
+              <outputDirectory>${project.build.directory}/jsdoc</outputDirectory>
             </configuration>
           </execution>
         </executions>
       </plugin>
+
       <!--
       <plugin>
         <groupId>org.bsc.maven</groupId>
