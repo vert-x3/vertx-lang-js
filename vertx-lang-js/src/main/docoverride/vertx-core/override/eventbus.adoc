@@ -1,0 +1,1 @@
+Message codecs are available exclusively with the Java API.

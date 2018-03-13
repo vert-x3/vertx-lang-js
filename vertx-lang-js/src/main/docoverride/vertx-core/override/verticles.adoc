@@ -68,8 +68,8 @@ You can't block waiting for the other verticles to deploy in your start method a
 
 So how can you do this?
 
-The way to do it is to implement the *asynchronous* start method. This version of the method takes a `Future` object
-as a parameter. When the method returns the verticle will *not* be considered deployed yet. Some time later, after
+The way to do it is to implement theasynchronous* start method. This version of the method takes a `Future` object
+as a parameter. When the method returns the verticle willnot* be considered deployed yet. Some time later, after
 you've done everything you need to do (e.g. start other verticles), you can call complete on the Future (or fail) to
 signal that you're done.
 

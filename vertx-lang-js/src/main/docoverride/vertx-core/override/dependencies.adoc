@@ -8,12 +8,12 @@ project descriptor to access the Vert.x Core API and enable the JavaScript suppo
 <dependency>
  <groupId>io.vertx</groupId>
  <artifactId>vertx-core</artifactId>
- <version>3.6.0-SNAPSHOT</version>
+ <version>${maven.version}</version>
 </dependency>
 <dependency>
-  <groupId>io.vertx</groupId>
-  <artifactId>vertx-lang-js</artifactId>
-  <version>3.6.0-SNAPSHOT</version>
+  <groupId>${maven.groupId}</groupId>
+  <artifactId>${maven.artifactId}</artifactId>
+  <version>${maven.version}</version>
 </dependency>
 ----
 
@@ -21,16 +21,14 @@ project descriptor to access the Vert.x Core API and enable the JavaScript suppo
 
 [source,groovy,subs="+attributes"]
 ----
-compile "io.vertx:vertx-core:3.6.0-SNAPSHOT"
-compile "io.vertx:vertx-lang-js:3.6.0-SNAPSHOT"
+compile "io.vertx:vertx-core:${maven.version}"
+compile "${maven.groupId}:${maven.artifactId}:${maven.version}"
 ----
 
 [IMPORTANT]
 ====
 The JavaScript support is based on http://openjdk.java.net/projects/nashorn/[Nashorn], and so is
-constrained by Nashorn feature set and limits.
-
-It does not support EcmaScript 6, because Nashorn does not support it.
+constrained by Nashorn feature set and limits. It does not support EcmaScript 6, because Nashorn does not support it.
 
 In addition, _native_ NPM modules cannot be used as they are _compiled_ for Node.JS. NPMs developed in EcmaScript 6
 are also not usable.

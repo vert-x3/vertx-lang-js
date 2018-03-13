@@ -1,9 +1,7 @@
 ==== Setting headers on messages
 
-Messages sent over the event bus can also contain headers.
-
-This can be specified by providing a `headers` object
-inside the `link:../../vertx-core/dataobjects.html#DeliveryOptions[DeliveryOptions]` object when sending or publishing:
+Messages sent over the event bus can also contain headers. This can be specified by providing a `headers` object
+inside the {@link io.vertx.core.eventbus.DeliveryOptions} object when sending or publishing:
 
 [source,javascript]
 ----
