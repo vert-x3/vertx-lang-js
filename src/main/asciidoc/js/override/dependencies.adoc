@@ -8,12 +8,12 @@ project descriptor to access the Vert.x Core API and enable the JavaScript suppo
 <dependency>
  <groupId>io.vertx</groupId>
  <artifactId>vertx-core</artifactId>
- <version>3.5.2.CR2</version>
+ <version>3.5.2.CR3</version>
 </dependency>
 <dependency>
   <groupId>io.vertx</groupId>
   <artifactId>vertx-lang-js</artifactId>
-  <version>3.5.2.CR2</version>
+  <version>3.5.2.CR3</version>
 </dependency>
 ----
 
@@ -21,8 +21,8 @@ project descriptor to access the Vert.x Core API and enable the JavaScript suppo
 
 [source,groovy,subs="+attributes"]
 ----
-compile "io.vertx:vertx-core:3.5.2.CR2"
-compile "io.vertx:vertx-lang-js:3.5.2.CR2"
+compile "io.vertx:vertx-core:3.5.2.CR3"
+compile "io.vertx:vertx-lang-js:3.5.2.CR3"
 ----
 
 [IMPORTANT]
