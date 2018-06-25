@@ -9,12 +9,15 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <packaging>pom</packaging>
-  <artifactId>vertx-lang-js-parent</artifactId>
+  <artifactId>vertx-lang-js-codegen</artifactId>
   <version>3.6.0-SNAPSHOT</version>
+
+  <name>Vert.x JavaScript Language Support</name>
 
   <properties>
     <stack.version>3.6.0-SNAPSHOT</stack.version>
+    <asciidoc.dir>${project.basedir}/src/main/asciidoc</asciidoc.dir>
+    <tools.jar>${java.home}/../lib/tools.jar</tools.jar>
   </properties>
 
   <dependencyManagement>
@@ -29,14 +32,142 @@
     </dependencies>
   </dependencyManagement>
 
-  <modules>
-    <module>vertx-lang-js-codegen</module>
-  </modules>
-
   <dependencies>
+
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-codegen</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-docgen</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-codetrans</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.mvel</groupId>
+      <artifactId>mvel2</artifactId>
+      <version>2.3.1.Final</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-codegen</artifactId>
+      <classifier>tck</classifier>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-codegen</artifactId>
+      <classifier>tck-sources</classifier>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-codegen</artifactId>
+      <classifier>sources</classifier>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <configuration>
+            <systemPropertyVariables>
+              <java.util.logging.SimpleFormatter.format>%4$s: %3$s - %5$s %6$s%n</java.util.logging.SimpleFormatter.format>
+            </systemPropertyVariables>
+            <additionalClasspathElements>
+              <additionalClasspathElement>${project.build.testSourceDirectory}</additionalClasspathElement>
+              <additionalClasspathElement>${project.basedir}/src/main/resources</additionalClasspathElement>
+            </additionalClasspathElements>
+            <environmentVariables>
+              <NODE_PATH>src/test/npm</NODE_PATH>
+            </environmentVariables>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <!-- Unpack codegen source code to target/sources/codegen -->
+          <execution>
+            <id>unpack-codegen</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>unpack-dependencies</goal>
+            </goals>
+            <configuration>
+              <includeGroupIds>io.vertx</includeGroupIds>
+              <includeArtifactIds>vertx-codegen</includeArtifactIds>
+              <includeTypes>jar</includeTypes>
+              <includeClassifiers>tck-sources</includeClassifiers>
+              <outputDirectory>${project.build.directory}/sources/codegen</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.bsc.maven</groupId>
+        <artifactId>maven-processor-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <!-- Run the annotation processor on codegen and generate the js codegen -->
+          <execution>
+            <id>generate-codegen</id>
+            <goals>
+              <goal>process</goal>
+            </goals>
+            <phase>generate-test-sources</phase>
+            <configuration>
+              <systemProperties>
+                <java.util.logging.SimpleFormatter.format>%4$s: %3$s - %5$s %6$s%n</java.util.logging.SimpleFormatter.format>
+              </systemProperties>
+              <processors>
+                <processor>io.vertx.codegen.CodeGenProcessor</processor>
+              </processors>
+              <optionMap>
+                <codegen.output>${project.basedir}/src/test</codegen.output>
+                <codegen.generators>JavaScript</codegen.generators>
+              </optionMap>
+              <sourceDirectory>${project.build.directory}/sources/codegen</sourceDirectory>
+              <additionalSourceDirectories>
+                <additionalSourceDirectory>${project.basedir}/src/test/java</additionalSourceDirectory>
+              </additionalSourceDirectories>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
   </build>
 
 </project>
