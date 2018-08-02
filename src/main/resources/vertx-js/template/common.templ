@@ -250,7 +250,7 @@ ar.result()
 	@if{methodFilter != null}
 		@code{methodList = new java.util.ArrayList()}
 		@foreach{method : methodsByName.get(methodName)}
-			@if{methodFilter(method)}
+			@if{!method.containingAnyJavaType && methodFilter(method)}
 				@code{methodList.add(method)}
 			@end{}
 		@end{}
