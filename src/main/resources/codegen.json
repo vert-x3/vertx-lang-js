@@ -1,8 +1,0 @@
-{
-  "name": "JavaScript",
-  "generators": [ {
-    "kind": "class",
-    "fileName": "'resources/' + type.raw.moduleName + '-js/' + helper.convertCamelCaseToUnderscores(type.raw.simpleName) + '.js'",
-    "templateFileName": "vertx-js/template/js.templ"
-  }]
-}
