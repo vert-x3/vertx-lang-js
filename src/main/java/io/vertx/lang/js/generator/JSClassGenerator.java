@@ -31,7 +31,7 @@ public class JSClassGenerator extends Generator<ClassModel> {
   @Override
   public String filename(ClassModel model) {
     ClassTypeInfo type = model.getType();
-    return "js/" + type.getModuleName() + "-js/" + Helper.convertCamelCaseToUnderscores(type.getSimpleName()) + ".js";
+    return "resources/" + type.getModuleName() + "-js/" + Helper.convertCamelCaseToUnderscores(type.getSimpleName()) + ".js";
   }
 
   @Override
@@ -439,7 +439,6 @@ public class JSClassGenerator extends Generator<ClassModel> {
         writer.print("      that.cached");
         writer.print(method.getName());
         writer.print(" = ");
-//        convReturn(model, ind, method, method.getReturnType(), this::genMethodCall, writer);
         convReturn(model, ind, method, method.getReturnType(), this.genMethodCallSupplier(model, ind, method), writer);
         writer.println(";");
         writer.print(ind);
@@ -451,7 +450,6 @@ public class JSClassGenerator extends Generator<ClassModel> {
       } else {
         writer.print(ind);
         writer.print("    return ");
-//        convReturn(model, ind, method, method.getReturnType(), this::genMethodCall, writer);
         convReturn(model, ind, method, method.getReturnType(), this.genMethodCallSupplier(model, ind, method), writer);
         writer.println(";");
       }
@@ -463,10 +461,6 @@ public class JSClassGenerator extends Generator<ClassModel> {
     }
   }
 
-  //  @SuppressWarnings("unused")
-//  privae void arVal(ClassModel model, String ind, MethodInfo method, PrintWriter writer) {
-//    writer.print("ar.result()");
-//  }
   private void arVal(PrintWriter writer) {
     writer.print("ar.result()");
   }
@@ -475,10 +469,6 @@ public class JSClassGenerator extends Generator<ClassModel> {
   private void basicVal(PrintWriter writer) {
     writer.print("jVal");
   }
-//  @SuppressWarnings("unused")
-//  private void basicVal(ClassModel model, String ind, MethodInfo method, PrintWriter writer) {
-//    writer.print("jVal");
-//  }
 
   private void genMethodCall(ClassModel model, String ind, MethodInfo method, PrintWriter writer) {
     String simpleName = model.getType().getSimpleName();
@@ -535,33 +525,27 @@ public class JSClassGenerator extends Generator<ClassModel> {
       if (elementKind.json) {
         writer.print("utils.convReturnListSetJson(");
         templ.accept(writer);
-//        templ.gen(model, ind, method, writer);
         writer.print(")");
       } else if (elementKind == DATA_OBJECT) {
         writer.print("utils.convReturnListSetDataObject(");
         templ.accept(writer);
-//        templ.gen(model, ind, method, writer);
         writer.print(")");
       } else if (elementKind == ENUM) {
         writer.print("utils.convReturnListSetEnum(");
         templ.accept(writer);
-//        templ.gen(model, ind, method, writer);
         writer.print(")");
       } else if (elementKind == API) {
         writer.print("utils.convReturnListSetVertxGen(");
         templ.accept(writer);
-//        templ.gen(model, ind, method, writer);
         writer.print(", ");
         writer.print(elementType.getRaw().getSimpleName());
         writer.print(")");
       } else if ("java.lang.Long".equals(elementType.getName())) {
         writer.print("utils.convReturnListSetLong(");
         templ.accept(writer);
-//        templ.gen(model, ind, method, writer);
         writer.print(")");
       } else {
         templ.accept(writer);
-//        templ.gen(model, ind, method, writer);
       }
     } else if (kind == SET) {
       TypeInfo elementType = ((ParameterizedTypeInfo) returnType).getArg(0);
@@ -569,21 +553,17 @@ public class JSClassGenerator extends Generator<ClassModel> {
       if (elementKind.json) {
         writer.print("utils.convReturnListSetJson(");
         templ.accept(writer);
-//        templ.gen(model, ind, method, writer);
         writer.print(")");
       } else if (elementKind == DATA_OBJECT) {
         writer.print("utils.convReturnListSetDataObject(");
         templ.accept(writer);
-//        templ.gen(model, ind, method, writer);
         writer.print(")");
       } else if (elementKind == ENUM) {
         writer.print("utils.convReturnListSetEnum(");
         templ.accept(writer);
-//        templ.gen(model, ind, method, writer);
         writer.print(")");
       } else if (elementKind == API) {
         writer.print("utils.convReturnListSetVertxGen(");
-//        templ.gen(model, ind, method, writer);
         templ.accept(writer);
         writer.print(", ");
         writer.print(elementType.getRaw().getSimpleName());
@@ -591,40 +571,33 @@ public class JSClassGenerator extends Generator<ClassModel> {
       } else if ("java.lang.Long".equals(elementType.getName())) {
         writer.print("utils.convReturnListSetLong(");
         templ.accept(writer);
-//        templ.gen(model, ind, method, writer);
         writer.print(")");
       } else {
         writer.print("utils.convReturnSet(");
         templ.accept(writer);
-//        templ.gen(model, ind, method, writer);
         writer.print(")");
       }
     } else if (kind == MAP) {
       writer.print("utils.convReturnMap(");
       templ.accept(writer);
-//        templ.gen(model, ind, method, writer);
       writer.print(")");
     } else if (kind.json) {
       writer.print("utils.convReturnJson(");
       templ.accept(writer);
-//        templ.gen(model, ind, method, writer);
       writer.print(")");
     } else if (kind.basic) {
       if ("java.lang.Long".equals(returnType.getName())) {
         writer.print("utils.convReturnLong(");
         templ.accept(writer);
-//        templ.gen(model, ind, method, writer);
         writer.print(")");
       } else {
         templ.accept(writer);
-//        templ.gen(model, ind, method, writer);
       }
     } else if (kind == API) {
       writer.print("utils.convReturnVertxGen(");
       writer.print(returnType.getRaw().getSimpleName());
       writer.print(", ");
       templ.accept(writer);
-//        templ.gen(model, ind, method, writer);
       if (returnType.isParameterized()) {
         for (TypeInfo arg : ((ParameterizedTypeInfo) returnType).getArgs()) {
           ClassKind argKind = arg.getKind();
@@ -654,31 +627,26 @@ public class JSClassGenerator extends Generator<ClassModel> {
     } else if (kind == ENUM) {
       writer.print("utils.convReturnEnum(");
       templ.accept(writer);
-//        templ.gen(model, ind, method, writer);
       writer.print(")");
     } else if (kind == DATA_OBJECT) {
       writer.print("utils.convReturnDataObject(");
       templ.accept(writer);
-//        templ.gen(model, ind, method, writer);
       writer.print(")");
     } else if (kind == THROWABLE) {
       writer.print("utils.convReturnThrowable(");
       templ.accept(writer);
-//        templ.gen(model, ind, method, writer);
       writer.print(")");
     } else if (kind == HANDLER) {
       ParameterizedTypeInfo type = (ParameterizedTypeInfo) returnType;
       if (type.getArg(0).getKind() == ASYNC_RESULT) {
         writer.print("utils.convReturnHandlerAsyncResult(");
         templ.accept(writer);
-//        templ.gen(model, ind, method, writer);
         writer.print(", function(result) { return ");
         convParam(model, method, ind, null, false, new ParamInfo(0, "result", null, (((ParameterizedTypeInfo) (type).getArg(0))).getArg(0)), writer);
         writer.print("; })");
       } else {
         writer.print("utils.convReturnHandler(");
         templ.accept(writer);
-//        templ.gen(model, ind, method, writer);
         writer.print(", function(result) { return ");
         convParam(model, method, ind, null, false, new ParamInfo(0, "result", null, type.getArg(0)), writer);
         writer.print("; })");
@@ -690,7 +658,6 @@ public class JSClassGenerator extends Generator<ClassModel> {
       writer.print(classTypeParam.getIndex());
       writer.print("]).wrap(");
       templ.accept(writer);
-//        templ.gen(model, ind, method, writer);
       writer.print(")");
     } else {
       //This will probably happen if the return type is generic
@@ -704,7 +671,6 @@ public class JSClassGenerator extends Generator<ClassModel> {
       writer.print(wrapper);
       writer.print("(");
       templ.accept(writer);
-//        templ.gen(model, ind, method, writer);
       writer.print(")");
     }
   }
