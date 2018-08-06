@@ -39,7 +39,7 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
     //Generate the requires
     genRequire(model, writer);
     writer.println();
-    genDoc(model, writer);
+    genDoc(model, "", writer);
 
     //The constructor
     writer.print("var ");

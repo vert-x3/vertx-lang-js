@@ -191,12 +191,14 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
   protected abstract void convReturn(M model, String ind, MethodInfo method, TypeInfo returnType, Consumer<PrintWriter> templ, PrintWriter writer);
 
 
-  protected void genDoc(M model, PrintWriter writer) {
+  protected void genDoc(M model, String ind, PrintWriter writer) {
+    writer.print(ind);
     writer.println("/**");
     if (model.getIfaceComment() != null) {
       writer.println(Helper.removeTags(model.getIfaceComment()));
     }
     writer.println(" @class");
+    writer.print(ind);
     writer.println("*/");
   }
   protected void unwrapToJava(MethodInfo method, ParamInfo param, TypeInfo unwrappedType, String unwrappedName, PrintWriter writer) {
