@@ -86,6 +86,8 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
       }
     } else if (kind == JSON_OBJECT) {
       return "Object";
+    } else if (kind == JSON_ARRAY) {
+      return "Array";
     } else if (kind == DATA_OBJECT) {
       return "Object";
     } else if (kind == ENUM) {
@@ -188,6 +190,15 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
 
   protected abstract void convReturn(M model, String ind, MethodInfo method, TypeInfo returnType, Consumer<PrintWriter> templ, PrintWriter writer);
 
+
+  protected void genDoc(M model, PrintWriter writer) {
+    writer.println("/**");
+    if (model.getIfaceComment() != null) {
+      writer.println(Helper.removeTags(model.getIfaceComment()));
+    }
+    writer.println(" @class");
+    writer.println("*/");
+  }
   protected void unwrapToJava(MethodInfo method, ParamInfo param, TypeInfo unwrappedType, String unwrappedName, PrintWriter writer) {
     ClassKind kind = unwrappedType.getKind();
     if (kind == JSON_OBJECT) {
@@ -679,4 +690,23 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
   }
 
   protected abstract void genMethodAdapter(M model, MethodInfo method, String ind, PrintWriter writer);
+
+
+  protected void genLicenses(PrintWriter writer) {
+    writer.println("/*");
+    writer.println(" * Copyright 2014 Red Hat, Inc.");
+    writer.println(" *");
+    writer.println(" * Red Hat licenses this file to you under the Apache License, version 2.0");
+    writer.println(" * (the \"License\"); you may not use this file except in compliance with the");
+    writer.println(" * License.  You may obtain a copy of the License at:");
+    writer.println(" *");
+    writer.println(" * http://www.apache.org/licenses/LICENSE-2.0");
+    writer.println(" *");
+    writer.println(" * Unless required by applicable law or agreed to in writing, software");
+    writer.println(" * distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT");
+    writer.println(" * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the");
+    writer.println(" * License for the specific language governing permissions and limitations");
+    writer.println(" * under the License.");
+    writer.println(" */");
+  }
 }

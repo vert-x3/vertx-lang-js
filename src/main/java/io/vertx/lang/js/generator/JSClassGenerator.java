@@ -20,7 +20,7 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
   @Override
   public String filename(ClassModel model) {
     ClassTypeInfo type = model.getType();
-    return "resources/" + type.getModuleName() + "-js/" + Helper.convertCamelCaseToUnderscores(type.getSimpleName()) + ".js";
+    return "resources/" + type.getModuleName() + "-js/" + Helper.convertCamelCaseToUnderscores(type.getRaw().getSimpleName()) + ".js";
   }
 
   @Override
@@ -415,16 +415,6 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
     }
   }
 
-
-  private void genDoc(ClassModel model, PrintWriter writer) {
-    writer.println("/**");
-    if (model.getIfaceComment() != null) {
-      writer.println(Helper.removeTags(model.getIfaceComment()));
-    }
-    writer.println(" @class");
-    writer.println("*/");
-  }
-
   private void genRequire(ClassModel model, PrintWriter writer) {
     ClassTypeInfo type = model.getType();
     writer.println("var utils = require('vertx-js/util/utils');");
@@ -451,23 +441,5 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
       writer.print(dataObjectType.getName());
       writer.println("');");
     }
-  }
-
-  private void genLicenses(PrintWriter writer) {
-    writer.println("/*");
-    writer.println(" * Copyright 2014 Red Hat, Inc.");
-    writer.println(" *");
-    writer.println(" * Red Hat licenses this file to you under the Apache License, version 2.0");
-    writer.println(" * (the \"License\"); you may not use this file except in compliance with the");
-    writer.println(" * License.  You may obtain a copy of the License at:");
-    writer.println(" *");
-    writer.println(" * http://www.apache.org/licenses/LICENSE-2.0");
-    writer.println(" *");
-    writer.println(" * Unless required by applicable law or agreed to in writing, software");
-    writer.println(" * distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT");
-    writer.println(" * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the");
-    writer.println(" * License for the specific language governing permissions and limitations");
-    writer.println(" * under the License.");
-    writer.println(" */");
   }
 }
