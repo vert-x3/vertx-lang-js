@@ -2,12 +2,12 @@ package io.vertx.lang.js.generator;
 
 import io.vertx.codegen.*;
 import io.vertx.codegen.type.*;
+import io.vertx.codegen.writer.CodeWriter;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Collections;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import static io.vertx.codegen.type.ClassKind.*;
 
@@ -29,199 +29,153 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
     String simpleName = type.getSimpleName();
     String ifaceName = Helper.decapitaliseFirstLetter(simpleName);
     StringWriter sw = new StringWriter();
-    PrintWriter writer = new PrintWriter(sw);
+    CodeWriter writer = new CodeWriter(sw).indentSize(6);
     genLicenses(writer);
     writer.println();
-    writer.print("/** @module ");
-    writer.print(getModuleName(type));
-    writer.println(" */");
+    writer.format("/** @module %s */\n", getModuleName(type));
 
     //Generate the requires
     genRequire(model, writer);
     writer.println();
-    genDoc(model, "", writer);
+    genDoc(model, writer);
 
     //The constructor
-    writer.print("var ");
-    writer.print(simpleName);
-    writer.print(" = function(j_val");
+    writer.format("var %s = function(j_val", simpleName);
     for (TypeParamInfo.Class param : model.getTypeParams()) {
-      writer.print(", j_arg_");
-      writer.print(param.getIndex());
+      writer.format(", j_arg_%s", param.getIndex());
     }
     writer.println(") {");
     writer.println();
 
-    writer.print("  var j_");
-    writer.print(ifaceName);
-    writer.println(" = j_val;");
-    writer.println("  var that = this;");
+    writer.indent();
+    writer.format("var j_%s = j_val;\n", ifaceName);
+    writer.println("var that = this;");
+    writer.unindent();
 
     for (TypeParamInfo.Class param : model.getTypeParams()) {
-      writer.print("  var j_");
-      writer.print(param.getName());
-      writer.print(" = typeof j_arg_");
-      writer.print(param.getIndex());
-      writer.print(" !== 'undefined' ? j_arg_");
-      writer.print(param.getIndex());
-      writer.println(" : utils.unknown_jtype;");
+      writer.format("  var j_%s = typeof j_arg_%s !== 'undefined' ? j_arg_%s : utils.unknown_jtype;", param.getName(), param.getIndex(), param.getIndex());
     }
+
+    writer.indent();
+
     //Apply any supertypes
     for (TypeInfo superType : model.getSuperTypes()) {
-      writer.print("  ");
       writer.print(superType.getRaw().getSimpleName());
       writer.print(".call(this, j_val");
       if (superType instanceof ParameterizedTypeInfo && ((ApiTypeInfo) superType.getRaw()).isConcrete()) {
         for (TypeInfo arg : ((ParameterizedTypeInfo) superType).getArgs()) {
           if (arg.getKind() == API) {
-            writer.print(", ");
-            writer.print(arg.getSimpleName());
-            writer.print("._jtype");
+            writer.format(", %s._jtype", arg.getSimpleName());
           } else if (arg.isVariable()) {
-            writer.print(", j_");
-            writer.print(arg.getName());
+            writer.format(", j_%s", arg.getName());
           } else {
             writer.print(", undefined");
           }
         }
       }
-      writer.println(");");
+      writer.append(");\n");
     }
     writer.println();
 
     //Now iterate through each unique method
     for (String methodName : model.getMethodMap().keySet()) {
       //Call out to actually generate the method, we only consider non static methods here
-      genMethod(model, methodName, "  ", false, null, writer);
+      genMethod(model, methodName, false, null, writer);
     }
 
     //Each object has a _jdel function which gives access to the underlying Java object
 
-    writer.println("  // A reference to the underlying Java delegate");
-    writer.println("  // NOTE! This is an internal API and must not be used in user code.");
-    writer.println("  // If you rely on this property your code is likely to break if we change it / remove it without warning.");
-    writer.print("  this._jdel = j_");
-    writer.print(ifaceName);
-    writer.println(";");
-    writer.println("};");
+    writer
+      .append("// A reference to the underlying Java delegate\n")
+      .append("// NOTE! This is an internal API and must not be used in user code.\n")
+      .append("// If you rely on this property your code is likely to break if we change it / remove it without warning.\n")
+      .format("this._jdel = j_%s;\n", ifaceName);
+
+    writer
+      .unindent()
+      .append("};\n");
+
     writer.println();
 
-    writer.print(simpleName);
-    writer.print("._jclass = utils.getJavaClass(\"");
-    writer.print(type.getRaw().getName());
-    writer.println("\");");
+    writer.format("%s._jclass = utils.getJavaClass(\"%s\");\n", simpleName, type.getRaw().getName());
 
-    writer.print(simpleName);
-    writer.println("._jtype = {");
-    writer.println("  accept: function(obj) {");
-    writer.print("    return ");
-    writer.print(simpleName);
-    writer.println("._jclass.isInstance(obj._jdel);");
-    writer.println("  },");
+    writer
+      .format("%s._jtype = {", simpleName)
+      .indent()
+      .append("accept: function(obj) {\n")
+      .indent()
+      .format("return %s._jclass.isInstance(obj._jdel);\n", simpleName)
+      .unindent()
+      .append("},")
+      .append("wrap: function(jdel) {\n")
+      .indent() //A bit of jiggery pokery to create the object given a reference to the constructor function
+      .format("var obj = Object.create(%s.prototype, {});\n", simpleName)
+      .format("%s.apply(obj, arguments);\n", simpleName)
+      .append("return obj;\n")
+      .unindent()
+      .append("},\n").append("unwrap: function(obj) {\n")
+      .indent()
+      .append("return obj._jdel;\n")
+      .unindent()
+      .append("}\n")
+      .unindent()
+      .append("};\n");
 
-    writer.println("  wrap: function(jdel) {");
-    //A bit of jiggery pokery to create the object given a reference to the constructor function
-    writer.print("    var obj = Object.create(");
-    writer.print(simpleName);
-    writer.println(".prototype, {});");
-    writer.print("    ");
-    writer.print(simpleName);
-    writer.println(".apply(obj, arguments);");
-    writer.println("    return obj;");
-    writer.println("  },");
-
-    writer.println("  unwrap: function(obj) {");
-    writer.println("    return obj._jdel;");
-    writer.println("  }");
-    writer.println("};");
-
-    writer.print(simpleName);
-    writer.println("._create = function(jdel) {");
-    //A bit of jiggery pokery to create the object given a reference to the constructor function
-    writer.print("  var obj = Object.create(");
-    writer.print(simpleName);
-    writer.println(".prototype, {});");
-    writer.print("  ");
-    writer.print(simpleName);
-    writer.println(".apply(obj, arguments);");
-    writer.println("  return obj;");
-    writer.println("}");
+    writer
+      .format("%s._create = function(jdel) {", simpleName)
+      .indent() //A bit of jiggery pokery to create the object given a reference to the constructor function
+      .format("var obj = Object.create(%s.prototype, {});\n", simpleName)
+      .format("%s.apply(obj, arguments);\n", simpleName)
+      .append("return obj;\n")
+      .unindent()
+      .append("}\n");
 
     //Iterate through the methods again, this time only considering the static ones
     for (String methodName : model.getMethodMap().keySet()) {
       //Call out to generate the static method
-      genMethod(model, methodName, "", true, null, writer);
+      genMethod(model, methodName, true, null, writer);
     }
 
     //We export the Constructor function
-    writer.print("module.exports = ");
-    writer.print(simpleName);
-    writer.print(";");
+    writer.format("module.exports = %s;", simpleName);
 
     return sw.toString();
   }
 
 
   @Override
-  protected void genMethodAdapter(ClassModel model, MethodInfo method, String ind, PrintWriter writer) {
+  protected void genMethodAdapter(ClassModel model, MethodInfo method, CodeWriter writer) {
     if (method.getReturnType().getKind() != VOID) {
       if (method.isFluent()) {
-        writer.print(ind);
-        writer.print("    ");
-        genMethodCall(model, ind, method, writer);
-        writer.println(";");
-        writer.print(ind);
-        writer.print("    return ");
-        if (method.isStaticMethod()) {
-          writer.print(model.getType().getSimpleName());
-        } else {
-          writer.print("that");
-        }
-        writer.println(";");
+        writer.format("%s ;\n", genMethodCall(model, method));
+        writer.format("return %s;\n", method.isStaticMethod() ? model.getType().getSimpleName() : "that");
       } else if (method.isCacheReturn()) {
-        writer.print(ind);
-        writer.print("    if (that.cached");
-        writer.print(method.getName());
-        writer.println(" == null) {");
-        writer.print(ind);
-        writer.print("      that.cached");
-        writer.print(method.getName());
-        writer.print(" = ");
-        convReturn(model, ind, method, method.getReturnType(), this.genMethodCallSupplier(model, ind, method), writer);
-        writer.println(";");
-        writer.print(ind);
-        writer.println("    }");
-        writer.print(ind);
-        writer.print("    return that.cached");
-        writer.print(method.getName());
-        writer.println(";");
+        writer
+          .format("if (that.cached%s == null) {\n", method.getName())
+          .indent()
+          .format("that.cached%s = %s;\n", method.getName(), convReturn(model, method, method.getReturnType(), genMethodCall(model, method)))
+          .unindent()
+          .append("}\n")
+          .format("return that.cached%s;\n", method.getName());
       } else {
-        writer.print(ind);
-        writer.print("    return ");
-        convReturn(model, ind, method, method.getReturnType(), this.genMethodCallSupplier(model, ind, method), writer);
-        writer.println(";");
+        writer.format("return %s ;\n", convReturn(model, method, method.getReturnType(), genMethodCall(model, method)));
       }
     } else {
-      writer.print(ind);
-      writer.print("    ");
-      genMethodCall(model, ind, method, writer);
-      writer.println(";");
+      writer.format("%s;\n", genMethodCall(model, method));
     }
   }
 
-  private void genMethodCall(ClassModel model, String ind, MethodInfo method, PrintWriter writer) {
+  private String genMethodCall(ClassModel model, MethodInfo method) {
+    StringWriter sw = new StringWriter();
+    PrintWriter writer = new PrintWriter(sw);
     String simpleName = model.getType().getSimpleName();
     String ifaceName = Helper.decapitaliseFirstLetter(simpleName);
     if (method.isStaticMethod()) {
-      writer.print("J");
-      writer.print(simpleName);
+      writer.format("J%s", simpleName);
     } else {
-      writer.print("j_");
-      writer.print(ifaceName);
+      writer.format("j_%s", ifaceName);
     }
-    writer.print("[\"");
-    writer.print(method.getName());
-    writer.print("(");
+    writer.format("[\"%s(", method.getName());
     boolean first = true;
     for (ParamInfo param : method.getParams()) {
       if (first) {
@@ -247,114 +201,60 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
         writer.print(", ");
       }
       boolean overloaded = model.getMethodMap().get(method.getName()).size() > 1;
-      convParam(model, method, ind, "__args[" + (pcnt++) + "]", overloaded, param, writer);
+      writer.print(convParam(model, method, "__args[" + (pcnt++) + "]", overloaded, param));
     }
     writer.print(")");
-  }
-
-  private Consumer<PrintWriter> genMethodCallSupplier(ClassModel model, String ind, MethodInfo method) {
-    return writer -> genMethodCall(model, ind, method, writer);
+    return sw.toString();
   }
 
   @Override
-  protected void convReturn(ClassModel model, String ind, MethodInfo method, TypeInfo returnType, Consumer<PrintWriter> templ, PrintWriter writer) {
+  protected String convReturn(ClassModel model, MethodInfo method, TypeInfo returnType, String templ) {
     ClassKind kind = returnType.getKind();
-    if (kind == LIST) {
+    if (kind == LIST || kind == SET) {
       TypeInfo elementType = ((ParameterizedTypeInfo) returnType).getArg(0);
       ClassKind elementKind = elementType.getKind();
       if (elementKind.json) {
-        writer.print("utils.convReturnListSetJson(");
-        templ.accept(writer);
-        writer.print(")");
+        return String.format("utils.convReturnListSetJson(%s)", templ);
       } else if (elementKind == DATA_OBJECT) {
-        writer.print("utils.convReturnListSetDataObject(");
-        templ.accept(writer);
-        writer.print(")");
+        return String.format("utils.convReturnListSetDataObject(%s)", templ);
       } else if (elementKind == ENUM) {
-        writer.print("utils.convReturnListSetEnum(");
-        templ.accept(writer);
-        writer.print(")");
+        return String.format("utils.convReturnListSetEnum(%s)", templ);
       } else if (elementKind == API) {
-        writer.print("utils.convReturnListSetVertxGen(");
-        templ.accept(writer);
-        writer.print(", ");
-        writer.print(elementType.getRaw().getSimpleName());
-        writer.print(")");
+        return String.format("utils.convReturnListSetVertxGen(%s, %s)", templ, elementType.getRaw().getSimpleName());
       } else if ("java.lang.Long".equals(elementType.getName())) {
-        writer.print("utils.convReturnListSetLong(");
-        templ.accept(writer);
-        writer.print(")");
+        return String.format("utils.convReturnListSetLong(%s)", templ);
       } else {
-        templ.accept(writer);
-      }
-    } else if (kind == SET) {
-      TypeInfo elementType = ((ParameterizedTypeInfo) returnType).getArg(0);
-      ClassKind elementKind = elementType.getKind();
-      if (elementKind.json) {
-        writer.print("utils.convReturnListSetJson(");
-        templ.accept(writer);
-        writer.print(")");
-      } else if (elementKind == DATA_OBJECT) {
-        writer.print("utils.convReturnListSetDataObject(");
-        templ.accept(writer);
-        writer.print(")");
-      } else if (elementKind == ENUM) {
-        writer.print("utils.convReturnListSetEnum(");
-        templ.accept(writer);
-        writer.print(")");
-      } else if (elementKind == API) {
-        writer.print("utils.convReturnListSetVertxGen(");
-        templ.accept(writer);
-        writer.print(", ");
-        writer.print(elementType.getRaw().getSimpleName());
-        writer.print(")");
-      } else if ("java.lang.Long".equals(elementType.getName())) {
-        writer.print("utils.convReturnListSetLong(");
-        templ.accept(writer);
-        writer.print(")");
-      } else {
-        writer.print("utils.convReturnSet(");
-        templ.accept(writer);
-        writer.print(")");
+        if (kind == LIST) {
+          return templ;
+        } else {
+          return String.format("utils.convReturnSet(%s)", templ);
+        }
       }
     } else if (kind == MAP) {
-      writer.print("utils.convReturnMap(");
-      templ.accept(writer);
-      writer.print(")");
+      return String.format("utils.convReturnMap(%s)", templ);
     } else if (kind.json) {
-      writer.print("utils.convReturnJson(");
-      templ.accept(writer);
-      writer.print(")");
+      return String.format("utils.convReturnJson(%s)", templ);
     } else if (kind.basic) {
       if ("java.lang.Long".equals(returnType.getName())) {
-        writer.print("utils.convReturnLong(");
-        templ.accept(writer);
-        writer.print(")");
+        return String.format("utils.convReturnLong(%s)", templ);
       } else {
-        templ.accept(writer);
+        return templ;
       }
     } else if (kind == API) {
-      writer.print("utils.convReturnVertxGen(");
-      writer.print(returnType.getRaw().getSimpleName());
-      writer.print(", ");
-      templ.accept(writer);
+      StringWriter buffer = new StringWriter();
+      PrintWriter writer = new PrintWriter(buffer);
+      writer.format("utils.convReturnVertxGen(%s, %s", returnType.getRaw().getSimpleName(), templ);
       if (returnType.isParameterized()) {
         for (TypeInfo arg : ((ParameterizedTypeInfo) returnType).getArgs()) {
           ClassKind argKind = arg.getKind();
           if (argKind == API) {
-            writer.print(", ");
-            writer.print(arg.getSimpleName());
-            writer.print("._jtype");
+            writer.format(", %s._jtype", arg.getSimpleName());
           } else if (argKind == ENUM) {
-            writer.print(", utils.enum_jtype(");
-            writer.print(arg.getName());
-            writer.print(")");
+            writer.format(", utils.enum_jtype(%s)", arg.getName());
           } else if (argKind == OBJECT) {
             ParamInfo classTypeParam = method.resolveClassTypeParam((TypeVariableInfo) arg);
             if (classTypeParam != null) {
-              writer.print(", utils.get_jtype(__args[");
-              writer.print(classTypeParam.getIndex());
-              writer.print("])");
+              writer.format(", utils.get_jtype(__args[%s])", classTypeParam.getIndex());
             } else {
               writer.print(", undefined");
             }
@@ -364,41 +264,27 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
         }
       }
       writer.print(")");
+      return buffer.toString();
     } else if (kind == ENUM) {
-      writer.print("utils.convReturnEnum(");
-      templ.accept(writer);
-      writer.print(")");
+      return String.format("utils.convReturnEnum(%s)", templ);
     } else if (kind == DATA_OBJECT) {
-      writer.print("utils.convReturnDataObject(");
-      templ.accept(writer);
-      writer.print(")");
+      return String.format("utils.convReturnDataObject(%s)", templ);
     } else if (kind == THROWABLE) {
-      writer.print("utils.convReturnThrowable(");
-      templ.accept(writer);
-      writer.print(")");
+      return String.format("utils.convReturnThrowable(%s)", templ);
     } else if (kind == HANDLER) {
       ParameterizedTypeInfo type = (ParameterizedTypeInfo) returnType;
       if (type.getArg(0).getKind() == ASYNC_RESULT) {
-        writer.print("utils.convReturnHandlerAsyncResult(");
-        templ.accept(writer);
-        writer.print(", function(result) { return ");
-        convParam(model, method, ind, null, false, new ParamInfo(0, "result", null, (((ParameterizedTypeInfo) (type).getArg(0))).getArg(0)), writer);
-        writer.print("; })");
+        return String.format("utils.convReturnHandlerAsyncResult(%s, function(result) { return %s; })",
+          templ,
+          convParam(model, method, null, false, new ParamInfo(0, "result", null, (((ParameterizedTypeInfo) (type).getArg(0))).getArg(0))));
       } else {
-        writer.print("utils.convReturnHandler(");
-        templ.accept(writer);
-        writer.print(", function(result) { return ");
-        convParam(model, method, ind, null, false, new ParamInfo(0, "result", null, type.getArg(0)), writer);
-        writer.print("; })");
-
+        return String.format("utils.convReturnHandler(%s, function(result) { return %s; })",
+          templ,
+          convParam(model, method, null, false, new ParamInfo(0, "result", null, type.getArg(0))));
       }
     } else if (returnType.isVariable() && (method.resolveClassTypeParam((TypeVariableInfo) returnType) != null)) {
       ParamInfo classTypeParam = method.resolveClassTypeParam((TypeVariableInfo) returnType);
-      writer.print("utils.get_jtype(__args[");
-      writer.print(classTypeParam.getIndex());
-      writer.print("]).wrap(");
-      templ.accept(writer);
-      writer.print(")");
+      return String.format("utils.get_jtype(__args[%s]).wrap(%s)", classTypeParam.getIndex(), templ);
     } else {
       //This will probably happen if the return type is generic
       String wrapper = "utils.convReturnTypeUnknown";
@@ -408,10 +294,7 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
           wrapper = "j_" + param.getName() + ".wrap";
         }
       }
-      writer.print(wrapper);
-      writer.print("(");
-      templ.accept(writer);
-      writer.print(")");
+      return String.format("%s(%s)", wrapper, templ);
     }
   }
 
@@ -419,27 +302,15 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
     ClassTypeInfo type = model.getType();
     writer.println("var utils = require('vertx-js/util/utils');");
     for (ClassTypeInfo referencedType : model.getReferencedTypes()) {
-      writer.print("var ");
-      writer.print(referencedType.getSimpleName());
-      writer.print(" = require('");
-      writer.print(getModuleName(referencedType));
-      writer.println("');");
+      writer.format("var %s = require('%s');\n", referencedType.getSimpleName(), getModuleName(referencedType));
     }
     writer.println();
     //The top level vars for the module
     writer.println("var io = Packages.io;");
     writer.println("var JsonObject = io.vertx.core.json.JsonObject;");
-    writer.print("var J");
-    writer.print(type.getSimpleName());
-    writer.print(" = Java.type('");
-    writer.print(type.getName());
-    writer.println("');");
+    writer.format("var J%s = Java.type('%s');\n", type.getSimpleName(), type.getName());
     for (ClassTypeInfo dataObjectType : model.getReferencedDataObjectTypes()) {
-      writer.print("var ");
-      writer.print(dataObjectType.getSimpleName());
-      writer.print(" = Java.type('");
-      writer.print(dataObjectType.getName());
-      writer.println("');");
+      writer.format("var %s = Java.type('%s');\n", dataObjectType.getSimpleName(), dataObjectType.getName());
     }
   }
 }

@@ -4,15 +4,16 @@ import io.vertx.codegen.*;
 import io.vertx.codegen.doc.Tag;
 import io.vertx.codegen.doc.Token;
 import io.vertx.codegen.type.*;
+import io.vertx.codegen.writer.CodeWriter;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -72,43 +73,47 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
    * Generate the JSDoc type of a type
    */
   protected String getJSDocType(TypeInfo type) {
-    ClassKind kind = type.getKind();
-    if (kind == STRING) {
-      return "string";
-    } else if (kind == PRIMITIVE || kind == BOXED_PRIMITIVE) {
-      String simpleName = type.getSimpleName();
-      if ("boolean".equalsIgnoreCase(simpleName)) {
-        return "boolean";
-      } else if ("char".equals(simpleName) || "Character".equals(simpleName)) {
+    switch (type.getKind()) {
+      case STRING:
         return "string";
-      } else {
-        return "number";
-      }
-    } else if (kind == JSON_OBJECT) {
-      return "Object";
-    } else if (kind == JSON_ARRAY) {
-      return "Array";
-    } else if (kind == DATA_OBJECT) {
-      return "Object";
-    } else if (kind == ENUM) {
-      return "Object";
-    } else if (kind == API) {
-      return type.getRaw().getSimpleName();
-    } else if (kind == MAP) {
-      //`Map` before `collection`, because of MAP.collection is true
-      return "Object.<string, " + getJSDocType(((ParameterizedTypeInfo) type).getArg(1)) + ">";
-    } else if (kind.collection) {
-      return "Array.<" + getJSDocType(((ParameterizedTypeInfo) type).getArg(0)) + ">";
-    } else if (kind == OBJECT) {
-      return "Object";
-    } else if (kind == HANDLER || kind == FUNCTION) {
-      return "function";
-    } else {
-      return "todo";
+      case PRIMITIVE:
+      case BOXED_PRIMITIVE:
+        switch (type.getSimpleName()) {
+          case "boolean":
+          case "Boolean":
+            return "boolean";
+          case "char":
+          case "Character":
+            return "string";
+          default:
+            return "number";
+        }
+      case JSON_OBJECT:
+      case DATA_OBJECT:
+      case ENUM:
+      case OBJECT:
+        return "Object";
+      case JSON_ARRAY:
+        return "Array";
+      case API:
+        return type.getRaw().getSimpleName();
+      case MAP:
+        //`Map` before `collection`, because of MAP.collection is true
+        return "Object.<string, " + getJSDocType(((ParameterizedTypeInfo) type).getArg(1)) + ">";
+      case HANDLER:
+      case FUNCTION:
+        return "function";
+      case SET:
+      case LIST:
+        return "Array.<" + getJSDocType(((ParameterizedTypeInfo) type).getArg(0)) + ">";
+      default:
+        return "todo";
     }
   }
 
-  protected void convParam(M model, MethodInfo method, String ind, String argName, boolean overloaded, ParamInfo param, PrintWriter writer) {
+  protected String convParam(M model, MethodInfo method, String argName, boolean overloaded, ParamInfo param) {
+    StringWriter buffer = new StringWriter();
+    CodeWriter writer = new CodeWriter(buffer);
     String paramName = overloaded ? argName : param.getName();
     ClassKind paramKind = param.getType().getKind();
     boolean funct = paramKind == FUNCTION;
@@ -117,18 +122,15 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
       if (type.getArg(0).getKind() == ASYNC_RESULT) {
         ParameterizedTypeInfo asyncType = (ParameterizedTypeInfo) type.getArg(0);
         if (param.isNullable()) {
-          writer.print(paramName);
-          writer.print(" == null ? null : ");
+          writer.format("%s == null ? null : ", paramName);
         }
         writer.println("function(ar) {");
+        writer.indent();
         if (funct) {
-          writer.print(ind);
-          writer.println("    var jRet;");
+          writer.println("var jRet;");
         }
-        writer.print(ind);
-        writer.println("    if (ar.succeeded()) {");
-        writer.print(ind);
-        writer.print("      ");
+        writer.println("if (ar.succeeded()) {");
+        writer.indent();
         if (funct) {
           writer.print("jRet = ");
         }
@@ -137,26 +139,24 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
         if ("java.lang.Void".equals(asyncType.getArg(0).getName())) {
           writer.print("null");
         } else {
-          convReturn(model, ind, method, asyncType.getArg(0), this::arVal, writer);
+          writer.print(convReturn(model, method, asyncType.getArg(0), arVal()));
         }
         writer.println(", null);");
-        writer.print(ind);
-        writer.println("    } else {");
-        writer.print(ind);
-        writer.print("      ");
+        writer.unindent();
+        writer.println("} else {");
+        writer.indent();
         if (funct) {
           writer.print("jRet = ");
         }
         writer.print(paramName);
         writer.println("(null, ar.cause());");
-        writer.print(ind);
-        writer.println("    }");
+        writer.unindent();
+        writer.println("}");
         if (funct) {
-          writer.print(ind);
-          writer.println("    return jRet;");
+          writer.println("return jRet;");
         }
-        writer.print(ind);
-        writer.print("  }");
+        writer.unindent();
+        writer.print("}");
       } else if ("java.lang.Void".equals(type.getArg(0).getName())) {
         writer.print(paramName);
       } else {
@@ -165,290 +165,182 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
           writer.print(" == null ? null : ");
         }
         writer.println("function(jVal) {");
-        writer.print(ind);
-        writer.print("    ");
+        writer.indent();
         if (funct) {
           writer.print("var jRet = ");
         }
         writer.print(paramName);
-        writer.print("(");
-        convReturn(model, ind, method, type.getArg(0), this::basicVal, writer);
-        writer.println(");");
+        writer.format("(%s);\n", convReturn(model, method, type.getArg(0), basicVal()));
         if (funct) {
-          writer.print(ind);
-          writer.print("    return ");
-          unwrapToJava(method, param, type.getArg(1), "jRet", writer);
-          writer.println(";");
+          writer.format("return %s;\n", unwrapToJava(method, param, type.getArg(1), "jRet"));
         }
-        writer.print(ind);
-        writer.print("  }");
+        writer.unindent();
+        writer.print("}");
       }
     } else {
-      unwrapToJava(method, param, param.getType(), paramName, writer);
+      writer.print(unwrapToJava(method, param, param.getType(), paramName));
     }
+    return buffer.toString();
   }
 
-  protected abstract void convReturn(M model, String ind, MethodInfo method, TypeInfo returnType, Consumer<PrintWriter> templ, PrintWriter writer);
+  protected abstract String convReturn(M model, MethodInfo method, TypeInfo returnType, String templ);
 
 
-  protected void genDoc(M model, String ind, PrintWriter writer) {
-    writer.print(ind);
+  protected void genDoc(M model, CodeWriter writer) {
     writer.println("/**");
     if (model.getIfaceComment() != null) {
       writer.println(Helper.removeTags(model.getIfaceComment()));
     }
     writer.println(" @class");
-    writer.print(ind);
     writer.println("*/");
   }
-  protected void unwrapToJava(MethodInfo method, ParamInfo param, TypeInfo unwrappedType, String unwrappedName, PrintWriter writer) {
+  protected String unwrapToJava(MethodInfo method, ParamInfo param, TypeInfo unwrappedType, String unwrappedName) {
+    StringWriter buffer = new StringWriter();
+    PrintWriter writer = new PrintWriter(buffer);
     ClassKind kind = unwrappedType.getKind();
-    if (kind == JSON_OBJECT) {
-      writer.print("utils.convParamJsonObject(");
-      writer.print(unwrappedName);
-      writer.print(")");
-    } else if (kind == JSON_ARRAY) {
-      writer.print("utils.convParamJsonArray(");
-      writer.print(unwrappedName);
-      writer.print(")");
-    } else if (kind == DATA_OBJECT) {
-      writer.print(unwrappedName);
-      writer.print(" != null ? new ");
-      writer.print(unwrappedType.getSimpleName());
-      writer.print("(new JsonObject(Java.asJSONCompatible(");
-      writer.print(unwrappedName);
-      writer.print("))) : null");
-    } else if (kind == ENUM) {
-      if (param.isNullable()) {
-        writer.print(unwrappedName);
-        writer.print(" == null ? null : ");
-      }
-      writer.print(unwrappedType.getName());
-      writer.print(".valueOf(");
-      writer.print(unwrappedName);
-      writer.print(")");
-    } else if (kind == OBJECT) {
-      if (unwrappedType.isVariable()) {
-        TypeVariableInfo type = (TypeVariableInfo) unwrappedType;
-        if (type.isClassParam()) {
-          writer.print("j_");
-          writer.print(unwrappedType.getName());
-          writer.print(".unwrap(");
-          writer.print(unwrappedName);
-          writer.print(")");
-        } else {
-          ParamInfo classTypeParam = method.resolveClassTypeParam(type);
-          if (classTypeParam != null) {
-            writer.print("utils.get_jtype(__args[");
-            writer.print(classTypeParam.getIndex());
-            writer.print("]).unwrap(");
-            writer.print(unwrappedName);
-            writer.print(")");
+    switch (kind) {
+      case JSON_OBJECT:
+        writer.format("utils.convParamJsonObject(%s)", unwrappedName);
+        break;
+      case JSON_ARRAY:
+        writer.format("utils.convParamJsonArray(%s)", unwrappedName);
+        break;
+      case DATA_OBJECT:
+        writer.format("%s  != null ? new %s(new JsonObject(Java.asJSONCompatible(%s))) : null", unwrappedName, unwrappedType.getSimpleName(), unwrappedName);
+        break;
+      case ENUM:
+        if (param.isNullable()) {
+          writer.format("%s == null ? null : ", unwrappedName);
+        }
+        writer.format("%s.valueOf(%s)", unwrappedType.getName(), unwrappedName);
+        break;
+      case OBJECT:
+        if (unwrappedType.isVariable()) {
+          TypeVariableInfo type = (TypeVariableInfo) unwrappedType;
+          if (type.isClassParam()) {
+            writer.format("j_%s.unwrap(%s)", unwrappedType.getName(), unwrappedName);
           } else {
-            writer.print("utils.convParamTypeUnknown(");
-            writer.print(unwrappedName);
-            writer.print(")");
+            ParamInfo classTypeParam = method.resolveClassTypeParam(type);
+            if (classTypeParam != null) {
+              writer.format("utils.get_jtype(__args[%s]).unwrap(%s)", classTypeParam.getIndex(), unwrappedName);
+            } else {
+              writer.format("utils.convParamTypeUnknown(%s)", unwrappedName);
+            }
           }
+        } else {
+          writer.format("utils.convParamTypeUnknown(%s)", unwrappedName);
         }
-      } else {
-        writer.print("utils.convParamTypeUnknown(");
-        writer.print(unwrappedName);
-        writer.print(")");
+        break;
+      case THROWABLE:
+        writer.format("utils.convParamThrowable(%s)", unwrappedName);
+        break;
+      case CLASS_TYPE:
+        writer.format("utils.get_jclass(%s)", unwrappedName);
+        break;
+      case LIST:
+      case SET: {
+        String container = kind == LIST ? "List" : "Set";
+        ParameterizedTypeInfo type = (ParameterizedTypeInfo) unwrappedType;
+        TypeInfo arg = type.getArg(0);
+        String argName = arg.getName();
+        ClassKind argKind = arg.getKind();
+        //Generics cannot be primitive
+        if ("java.lang.Long".equals(argName)) {
+          writer.format("utils.convParam%sLong(%s)", container, unwrappedName);
+        } else if ("java.lang.Short".equals(argName)) {
+          writer.format("utils.convParam%sShort(%s)", container, unwrappedName);
+        } else if ("java.lang.Byte".equals(argName)) {
+          writer.format("utils.convParam%sByte(%s)", container, unwrappedName);
+        } else if (argKind == API) {
+          writer.format("utils.convParam%sVertxGen(%s)", container, unwrappedName);
+        } else if (argKind == JSON_OBJECT) {
+          writer.format("utils.convParam%sJsonObject(%s)", container, unwrappedName);
+        } else if (argKind == JSON_ARRAY) {
+          writer.format("utils.convParam%sJsonArray(%s)", container, unwrappedName);
+        } else if (argKind == DATA_OBJECT) {
+          writer.format("utils.convParam%sDataObject(%s, function(json) { return new %s(json); })", container, unwrappedName, arg.getSimpleName());
+        } else if (argKind == ENUM) {
+          writer.format("utils.convParam%sEnum(%s, function(val) { return Packages.%s.valueOf(val); })", container, unwrappedName, arg.getName());
+        } else {
+          if (param.isNullable()) {
+            writer.format("%s == null ? null : ", unwrappedName);
+          }
+          writer.format("utils.convParam%sBasicOther(%s)", container, unwrappedName);
+        }
+        break;
       }
-    } else if (kind.basic) {
-      if ("java.lang.Byte".equals(unwrappedType.getName())) {
-        writer.print("utils.convParamByte(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else if ("java.lang.Short".equals(unwrappedType.getName())) {
-        writer.print("utils.convParamShort(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else if ("java.lang.Integer".equals(unwrappedType.getName())) {
-        writer.print("utils.convParamInteger(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else if ("java.lang.Long".equals(unwrappedType.getName())) {
-        writer.print("utils.convParamLong(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else if ("java.lang.Float".equals(unwrappedType.getName())) {
-        writer.print("utils.convParamFloat(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else if ("java.lang.Double".equals(unwrappedType.getName())) {
-        writer.print("utils.convParamDouble(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else if ("java.lang.Character".equals(unwrappedType.getName())) {
-        writer.print("utils.convParamCharacter(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else {
-        writer.print(unwrappedName);
-      }
-    } else if (kind == THROWABLE) {
-      writer.print("utils.convParamThrowable(");
-      writer.print(unwrappedName);
-      writer.print(")");
-    } else if (kind == LIST) {
-      ParameterizedTypeInfo type = (ParameterizedTypeInfo) unwrappedType;
-      TypeInfo arg = type.getArg(0);
-      String argName = arg.getName();
-      ClassKind argKind = arg.getKind();
-      //Generics cannot be primitive
-      if ("java.lang.Long".equals(argName)) {
-        writer.print("utils.convParamListLong(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else if ("java.lang.Short".equals(argName)) {
-        writer.print("utils.convParamListShort(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else if ("java.lang.Byte".equals(argName)) {
-        writer.print("utils.convParamListByte(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else if (argKind == API) {
-        writer.print("utils.convParamListVertxGen(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else if (argKind == JSON_OBJECT) {
-        writer.print("utils.convParamListJsonObject(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else if (argKind == JSON_ARRAY) {
-        writer.print("utils.convParamListJsonArray(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else if (argKind == DATA_OBJECT) {
-        writer.print("utils.convParamListDataObject(");
-        writer.print(unwrappedName);
-        writer.print(", function(json) { return new ");
-        writer.print(arg.getSimpleName());
-        writer.print("(json); })");
-      } else if (argKind == ENUM) {
-        writer.print("utils.convParamListEnum(");
-        writer.print(unwrappedName);
-        writer.print(", function(val) { return Packages.");
-        writer.print(arg.getName());
-        writer.print(".valueOf(val); })");
-      } else {
-        if (param.isNullable()) {
+      case MAP: {
+        ParameterizedTypeInfo type = (ParameterizedTypeInfo) unwrappedType;
+        TypeInfo arg = type.getArg(1);
+        String argName = arg.getName();
+        ClassKind argKind = arg.getKind();
+        //Generics cannot be primitive
+        if ("java.lang.Long".equals(argName)) {
+          writer.format("utils.convParamMapLong(%s)", unwrappedName);
+        } else if ("java.lang.Short".equals(argName)) {
+          writer.format("utils.convParamMapShort(%s)", unwrappedName);
+        } else if ("java.lang.Byte".equals(argName)) {
+          writer.format("utils.convParamMapByte(%s)", unwrappedName);
+        } else if (argKind == API) {
+          writer.format("utils.convParamMapVertxGen(%s)", unwrappedName);
+        } else if (argKind == JSON_OBJECT) {
+          writer.format("utils.convParamMapJsonObject(%s)", unwrappedName);
+        } else if (argKind == JSON_ARRAY) {
+          writer.format("utils.convParamMapJsonArray(%s)", unwrappedName);
+        } else {
           writer.print(unwrappedName);
-          writer.print("== null ? null : ");
         }
-        writer.print("utils.convParamListBasicOther(");
-        writer.print(unwrappedName);
-        writer.print(")");
+        break;
       }
-    } else if (kind == SET) {
-      ParameterizedTypeInfo type = (ParameterizedTypeInfo) unwrappedType;
-      TypeInfo arg = type.getArg(0);
-      String argName = arg.getName();
-      ClassKind argKind = arg.getKind();
-      //Generics cannot be primitive
-      if ("java.lang.Long".equals(argName)) {
-        writer.print("utils.convParamSetLong(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else if ("java.lang.Short".equals(argName)) {
-        writer.print("utils.convParamSetShort(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else if ("java.lang.Byte".equals(argName)) {
-        writer.print("utils.convParamSetByte(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else if (argKind == API) {
-        writer.print("utils.convParamSetVertxGen(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else if (argKind == JSON_OBJECT) {
-        writer.print("utils.convParamSetJsonObject(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else if (argKind == JSON_ARRAY) {
-        writer.print("utils.convParamSetJsonArray(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else if (argKind == DATA_OBJECT) {
-        writer.print("utils.convParamSetDataObject(");
-        writer.print(unwrappedName);
-        writer.print(", function(json) { return new ");
-        writer.print(arg.getSimpleName());
-        writer.print("(json); })");
-      } else if (argKind == ENUM) {
-        writer.print("utils.convParamSetEnum(");
-        writer.print(unwrappedName);
-        writer.print(", function(val) { return Packages.");
-        writer.print(arg.getName());
-        writer.print(".valueOf(val); })");
-      } else {
+      case PRIMITIVE:
+      case BOXED_PRIMITIVE:
+      case STRING:
+        switch (unwrappedType.getName()) {
+          case "java.lang.Byte":
+            writer.format("utils.convParamByte(%s)", unwrappedName);
+            break;
+          case "java.lang.Short":
+            writer.format("utils.convParamShort(%s)", unwrappedName);
+            break;
+          case "java.lang.Integer":
+            writer.format("utils.convParamInteger(%s)", unwrappedName);
+            break;
+          case "java.lang.Long":
+            writer.format("utils.convParamLong(%s)", unwrappedName);
+            break;
+          case "java.lang.Float":
+            writer.format("utils.convParamFloat(%s)", unwrappedName);
+            break;
+          case "java.lang.Double":
+            writer.format("utils.convParamDouble(%s)", unwrappedName);
+            break;
+          case "java.lang.Character":
+            writer.format("utils.convParamCharacter(%s)", unwrappedName);
+            break;
+          default:
+            writer.print(unwrappedName);
+            break;
+        }
+        break;
+      default:
         if (param.isNullable()) {
-          writer.print(unwrappedName);
-          writer.print("== null ? null : ");
+          writer.format("%s == null ? null : ", unwrappedName);
         }
-        writer.print("utils.convParamSetBasicOther(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      }
-    } else if (kind == CLASS_TYPE) {
-      writer.print("utils.get_jclass(");
-      writer.print(unwrappedName);
-      writer.print(")");
-    } else if (kind == MAP) {
-      ParameterizedTypeInfo type = (ParameterizedTypeInfo) unwrappedType;
-      TypeInfo arg = type.getArg(1);
-      String argName = arg.getName();
-      ClassKind argKind = arg.getKind();
-      //Generics cannot be primitive
-      if ("java.lang.Long".equals(argName)) {
-        writer.print("utils.convParamMapLong(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else if ("java.lang.Short".equals(argName)) {
-        writer.print("utils.convParamMapShort(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else if ("java.lang.Byte".equals(argName)) {
-        writer.print("utils.convParamMapByte(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else if (argKind == API) {
-        writer.print("utils.convParamMapVertxGen(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else if (argKind == JSON_OBJECT) {
-        writer.print("utils.convParamMapJsonObject(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else if (argKind == JSON_ARRAY) {
-        writer.print("utils.convParamMapJsonArray(");
-        writer.print(unwrappedName);
-        writer.print(")");
-      } else {
-        writer.print(unwrappedName);
-      }
-    } else {
-      if (param.isNullable()) {
-        writer.print(unwrappedName);
-        writer.print("== null ? null : ");
-      }
-      writer.print(unwrappedName);
-      writer.print("._jdel");
+        writer.format("%s._jdel", unwrappedName);
+        break;
     }
+    return buffer.toString();
   }
 
-  protected void arVal(PrintWriter writer) {
-    writer.print("ar.result()");
+  protected String arVal() {
+    return "ar.result()";
   }
 
-  protected void basicVal(PrintWriter writer) {
-    writer.print("jVal");
+  protected String basicVal() {
+    return "jVal";
   }
 
-  protected void genMethod(M model, String methodName, String ind, boolean genStatic, @SuppressWarnings("SameParameterValue") Predicate<MethodInfo> methodFilter, PrintWriter writer) {
+  protected void genMethod(M model, String methodName, boolean genStatic, @SuppressWarnings("SameParameterValue") Predicate<MethodInfo> methodFilter, CodeWriter writer) {
     ClassTypeInfo type = model.getType();
     String simpleName = type.getSimpleName();
     Map<String, List<MethodInfo>> methodsByName = model.getMethodMap();
@@ -466,17 +358,14 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
       boolean overloaded = methodList.size() > 1;
       MethodInfo method = methodList.get(methodList.size() - 1);
       if (genStatic == method.isStaticMethod()) {
-        writer.print(ind);
         writer.println("/**");
         if (method.getDoc() != null) {
-          Token.toHtml(method.getDoc().getTokens(), ind, this::renderLinkToHtml, "\n", writer);
+          Token.toHtml(method.getDoc().getTokens(), "", this::renderLinkToHtml, "\n", writer);
         }
         writer.println();
-        writer.print(ind);
         writer.print(" ");
         if (genStatic) {
-          writer.print("@memberof module:");
-          writer.println(getModuleName(type));
+          writer.format("@memberof module:%s", getModuleName(type));
         } else {
           writer.println("@public");
         }
@@ -487,12 +376,7 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
           } else {
             writer.println();
           }
-          writer.print(ind);
-          writer.print(" @param ");
-          writer.print(param.getName());
-          writer.print(" {");
-          writer.print(getJSDocType(param.getType()));
-          writer.print("} ");
+          writer.format(" @param %s {%s} ", param.getName(), getJSDocType(param.getType()));
           if (param.getDescription() != null) {
             Token.toHtml(param.getDescription().getTokens(), "", this::renderLinkToHtml, "", writer);
             writer.print(" ");
@@ -501,49 +385,28 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
         writer.println();
 
         if (method.getReturnType().getKind() != VOID) {
-          writer.print(ind);
-          writer.print(" @return {");
-          writer.print(getJSDocType(method.getReturnType()));
-          writer.print("}");
+          writer.format(" @return {%s}", getJSDocType(method.getReturnType()));
           if (method.getReturnDescription() != null) {
             writer.print(" ");
             Token.toHtml(method.getReturnDescription().getTokens(), "", this::renderLinkToHtml, "", writer);
           }
           writer.println();
         }
-        writer.print(ind);
         writer.println(" */");
 
-        writer.write(ind);
-        if (genStatic) {
-          writer.print(simpleName);
-        } else {
-          writer.print("this");
-        }
-        writer.print(".");
-        writer.print(methodName);
-        writer.print(" =");
+        writer.format("%s.%s = ", genStatic ? simpleName : "this", methodName);
         if (overloaded) {
           writer.println(" function() {");
         } else {
-          writer.print(" function(");
-          writer.print(method.getParams().stream().map(ParamInfo::getName).collect(Collectors.joining(", ")));
-          writer.println(") {");
+          writer.format(" function(%s) {\n", (method.getParams().stream().map(ParamInfo::getName).collect(Collectors.joining(", "))));
         }
         int mcnt = 0;
-        writer.print(ind);
-        writer.println("  var __args = arguments;");
+        writer.indent();
+        writer.println("var __args = arguments;");
         for (MethodInfo m : methodList) {
-          writer.print(ind);
-          if (mcnt == 0) {
-            writer.print("  if");
-          } else {
-            writer.print("else if");
-          }
-          mcnt++;
-          writer.print(" (__args.length === ");
+          writer.print(mcnt++ == 0 ? "if" : "else if");
           int paramSize = m.getParams().size();
-          writer.print(paramSize);
+          writer.format(" (__args.length === %s", paramSize);
           int cnt = 0;
           if (paramSize > 0) {
             writer.print(" && ");
@@ -555,143 +418,108 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
             } else {
               writer.print(" && ");
             }
-            ClassKind kind = param.getType().getKind();
-            if (kind == PRIMITIVE || kind == BOXED_PRIMITIVE) {
-              if (param.isNullable()) {
-                writer.print("(");
-              }
-              writer.print("typeof __args[");
-              writer.print(cnt);
-              writer.print("] ===");
-              String paramSimpleName = param.getType().getSimpleName();
-              if ("boolean".equalsIgnoreCase(paramSimpleName)) {
-                writer.print("'boolean'");
-              } else if ("char".equals(paramSimpleName) || "Character".equals(paramSimpleName)) {
-                writer.print("'string'");
-              } else {
-                writer.print("'number'");
-              }
-              if (param.isNullable()) {
-                writer.print(" || __args[");
-                writer.print(cnt);
-                writer.print("] == null)");
-              }
-            } else if (kind == STRING || kind == ENUM) {
-              if (param.isNullable()) {
-                writer.print("(");
-              }
-              writer.print("typeof __args[");
-              writer.print(cnt);
-              writer.print("] === ");
-              writer.print("'string'");
-              if (param.isNullable()) {
-                writer.print(" || __args[");
-                writer.print(cnt);
-                writer.print("] == null)");
-              }
-            } else if (kind == CLASS_TYPE) {
-              writer.print("typeof __args[");
-              writer.print(cnt);
-              writer.print("] === ");
-              writer.print("'function'");
-            } else if (kind == API) {
-              writer.print("typeof __args[");
-              writer.print(cnt);
-              writer.print("] === ");
-              writer.print("'object' && ");
-              if (param.isNullable()) {
-                writer.print("(__args[");
-                writer.print(cnt);
-                writer.print("] == null || ");
-              }
-              writer.print("__args[");
-              writer.print(cnt);
-              writer.print("]._jdel");
-              if (param.isNullable()) {
-                writer.print(")");
-              }
-            } else if (kind == JSON_ARRAY || kind == LIST || kind == SET) {
-              writer.print("typeof __args[");
-              writer.print(cnt);
-              writer.print("] === ");
-              writer.print("'object' && ");
-              if (param.isNullable()) {
-                writer.print("(");
-              }
-              writer.print("__args[");
-              writer.print(cnt);
-              writer.print("] instanceof Array");
-              if (param.isNullable()) {
-                writer.print(" || __args[");
-                writer.print(cnt);
-                writer.print("] == null)");
-              }
-            } else if (kind == HANDLER) {
-              if (param.isNullable()) {
-                writer.print("(");
-              }
-              writer.print("typeof __args[");
-              writer.print(cnt);
-              writer.print("] === ");
-              writer.print("'function'");
-              if (param.isNullable()) {
-                writer.print(" || __args[");
-                writer.print(cnt);
-                writer.print("] == null)");
-              }
-            } else if (kind == OBJECT) {
-              if (param.getType().isVariable() && ((TypeVariableInfo) param.getType()).isClassParam()) {
-                writer.print("j_");
-                writer.print(param.getType().getName());
-                writer.print(".accept(__args[");
-                writer.print(cnt);
-                writer.print("])");
-              } else {
-                writer.print("typeof __args[");
-                writer.print(cnt);
-                writer.print("] !== ");
-                writer.print("'function'");
-              }
-            } else if (kind == FUNCTION) {
-              writer.print("typeof __args[");
-              writer.print(cnt);
-              writer.print("] === ");
-              writer.print("'function'");
-            } else if (kind == THROWABLE) {
-              writer.print("typeof __args[");
-              writer.print(cnt);
-              writer.print("] === ");
-              writer.print("'object'");
-            } else {
-              if (!param.isNullable()) {
-                writer.print("(");
-              }
-              writer.print("typeof __args[");
-              writer.print(cnt);
-              writer.print("] === ");
-              writer.print("'object'");
-              if (!param.isNullable()) {
-                writer.print(" && __args[");
-                writer.print(cnt);
-                writer.print("] != null)");
-              }
+            switch (param.getType().getKind()) {
+              case PRIMITIVE:
+              case BOXED_PRIMITIVE:
+                if (param.isNullable()) {
+                  writer.print("(");
+                }
+                writer.format("typeof __args[%s] ===", cnt);
+                String paramSimpleName = param.getType().getSimpleName();
+                if ("boolean".equalsIgnoreCase(paramSimpleName)) {
+                  writer.print("'boolean'");
+                } else if ("char".equals(paramSimpleName) || "Character".equals(paramSimpleName)) {
+                  writer.print("'string'");
+                } else {
+                  writer.print("'number'");
+                }
+                if (param.isNullable()) {
+                  writer.format(" || __args[%s] == null)", cnt);
+                }
+                break;
+              case STRING:
+              case ENUM:
+                if (param.isNullable()) {
+                  writer.print("(");
+                }
+                writer.format("typeof __args[%s] === 'string'", cnt);
+                if (param.isNullable()) {
+                  writer.format(" || __args[%s] == null)", cnt);
+                }
+                break;
+              case CLASS_TYPE:
+                writer.format("typeof __args[%s] === 'function'", cnt);
+                break;
+              case API:
+                writer.format("typeof __args[%s] === 'object' && ", cnt);
+                if (param.isNullable()) {
+                  writer.format("(__args[%s] == null || ", cnt);
+                }
+                writer.format("__args[%s]._jdel", cnt);
+                if (param.isNullable()) {
+                  writer.print(")");
+                }
+                break;
+              case JSON_ARRAY:
+              case LIST:
+              case SET:
+                writer.format("typeof __args[%s] === 'object' && ", cnt);
+                if (param.isNullable()) {
+                  writer.print("(");
+                }
+                writer.format("__args[%s] instanceof Array", cnt);
+                if (param.isNullable()) {
+                  writer.format(" || __args[%s] == null)", cnt);
+                }
+                break;
+              case HANDLER:
+                if (param.isNullable()) {
+                  writer.print("(");
+                }
+                writer.format("typeof __args[%s] === 'function'", cnt);
+                if (param.isNullable()) {
+                  writer.format(" || __args[%s] == null)", cnt);
+                }
+                break;
+              case OBJECT:
+                if (param.getType().isVariable() && ((TypeVariableInfo) param.getType()).isClassParam()) {
+                  writer.format("j_%s.accept(__args[%s])", param.getType().getName(), cnt);
+                } else {
+                  writer.format("typeof __args[%s] !== 'function'", cnt);
+                }
+                break;
+              case FUNCTION:
+                writer.format("typeof __args[%s] === 'function'", cnt);
+                break;
+              case THROWABLE:
+                writer.format("typeof __args[%s] === 'object'", cnt);
+                break;
+              default:
+                if (!param.isNullable()) {
+                  writer.print("(");
+                }
+                writer.format("typeof __args[%s] === 'object'", cnt);
+                if (!param.isNullable()) {
+                  writer.format(" && __args[%s] != null)", cnt);
+                }
             }
             cnt++;
           }
           writer.println(") {");
-          genMethodAdapter(model, m, ind, writer);
-          writer.print(ind);
-          writer.print("  }");
+          writer.indent();
+          genMethodAdapter(model, m, writer);
+          writer.unindent();
+          writer.print("}");
         }
+        writer.unindent();
         writer.println(" else throw new TypeError('function invoked with invalid arguments');");
-        writer.print(ind);
         writer.println("};");
         writer.println();
       }
     }
   }
 
-  protected abstract void genMethodAdapter(M model, MethodInfo method, String ind, PrintWriter writer);
+  protected abstract void genMethodAdapter(M model, MethodInfo method, CodeWriter writer);
 
 
   protected void genLicenses(PrintWriter writer) {
