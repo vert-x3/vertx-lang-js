@@ -340,6 +340,14 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
     return "jVal";
   }
 
+  protected void genConstant(M model, ConstantInfo constant, CodeWriter writer) {
+
+    String templ = "J" + model.getType().getSimpleName() + "." + constant.getName();
+
+    writer.format("%s.%s = %s;\n", model.getType().getSimpleName(), constant.getName(), convReturn(model, null, constant.getType(), templ));
+
+  }
+
   protected void genMethod(M model, String methodName, boolean genStatic, @SuppressWarnings("SameParameterValue") Predicate<MethodInfo> methodFilter, CodeWriter writer) {
     ClassTypeInfo type = model.getType();
     String simpleName = type.getSimpleName();

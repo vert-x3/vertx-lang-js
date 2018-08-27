@@ -136,6 +136,11 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
       genMethod(model, methodName, true, null, writer);
     }
 
+    //Gen constants
+    for (ConstantInfo constant : model.getConstants()) {
+      genConstant(model, constant, writer);
+    }
+
     //We export the Constructor function
     writer.format("module.exports = %s;", simpleName);
 
@@ -252,7 +257,7 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
           } else if (argKind == ENUM) {
             writer.format(", utils.enum_jtype(%s)", arg.getName());
           } else if (argKind == OBJECT) {
-            ParamInfo classTypeParam = method.resolveClassTypeParam((TypeVariableInfo) arg);
+            ParamInfo classTypeParam = method != null ? method.resolveClassTypeParam((TypeVariableInfo) arg) : null;
             if (classTypeParam != null) {
               writer.format(", utils.get_jtype(__args[%s])", classTypeParam.getIndex());
             } else {
@@ -282,7 +287,7 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
           templ,
           convParam(model, method, null, false, new ParamInfo(0, "result", null, type.getArg(0))));
       }
-    } else if (returnType.isVariable() && (method.resolveClassTypeParam((TypeVariableInfo) returnType) != null)) {
+    } else if (returnType.isVariable() && (method != null && method.resolveClassTypeParam((TypeVariableInfo) returnType) != null)) {
       ParamInfo classTypeParam = method.resolveClassTypeParam((TypeVariableInfo) returnType);
       return String.format("utils.get_jtype(__args[%s]).wrap(%s)", classTypeParam.getIndex(), templ);
     } else {
