@@ -29,7 +29,7 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
     String simpleName = type.getSimpleName();
     String ifaceName = Helper.decapitaliseFirstLetter(simpleName);
     StringWriter sw = new StringWriter();
-    CodeWriter writer = new CodeWriter(sw).indentSize(6);
+    CodeWriter writer = new CodeWriter(sw);
     genLicenses(writer);
     writer.println();
     writer.format("/** @module %s */\n", getModuleName(type));
