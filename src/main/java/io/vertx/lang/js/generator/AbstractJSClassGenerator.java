@@ -373,7 +373,7 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
         writer.println();
         writer.print(" ");
         if (genStatic) {
-          writer.format("@memberof module:%s", getModuleName(type));
+          writer.format("@memberof module:%s", getModuleName(type)).println();
         } else {
           writer.println("@public");
         }
