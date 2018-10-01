@@ -32,6 +32,7 @@
   <modules>
     <module>vertx-lang-js-codegen</module>
     <module>vertx-lang-js</module>
+    <module>vertx-rx-js</module>
   </modules>
 
   <dependencies>
