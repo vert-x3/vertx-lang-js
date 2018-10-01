@@ -335,7 +335,6 @@
     </dependency>
 
     <!-- Extra dependencies -->
-
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-lang-js-codegen</artifactId>
