@@ -21,7 +21,6 @@
   <dependencies>
 
     <!-- Stack dependencies -->
-
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-codegen</artifactId>
