@@ -620,7 +620,7 @@
                 <processor>io.vertx.codegen.CodeGenProcessor</processor>
               </processors>
               <optionMap>
-                <outputDirectory>${project.basedir}/src/test</outputDirectory>
+                <codegen.output>${project.basedir}/src/test</codegen.output>
                 <codegen.output.service_proxy>${project.basedir}/src/test/java</codegen.output.service_proxy>
                 <codegen.output.service_proxy_handler>${project.basedir}/src/test/java</codegen.output.service_proxy_handler>
               </optionMap>
