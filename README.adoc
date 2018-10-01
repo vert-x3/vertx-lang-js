@@ -1,6 +1,6 @@
 # Nashorn JavaScript implementation for Vert.x
 
-image:https://vertx.ci.cloudbees.com/buildStatus/icon?job=vert.x3-lang-js["Build Status",link="https://vertx.ci.cloudbees.com/view/vert.x-3/job/vert.x3-lang-js/"]
+image:https://travis-ci.org/vert-x3/vertx-lang-js.svg?branch=master["Build Status",link="https://travis-ci.org/vert-x3/vertx-lang-js"]
 
 This project provides the JavaScript API implementation for Vert.x using the Nashorn JavaScript engine built into Java 8.
 
