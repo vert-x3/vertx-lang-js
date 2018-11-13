@@ -970,7 +970,7 @@ function testMethodWithListParams() {
     "foo": "String 1",
     "bar": 1,
     "wibble": 1.1
-  }, {"foo": "String 2", "bar": 2, "wibble": 2.2}], ["JULIEN", "TIM"]);
+  }, {"foo": "String 2", "bar": 2, "wibble": 2.2}], ["JULIEN", "TIM"], ["foo", 4, 3.4, true, { wibble: "eek"}, ["one", 2]]);
 }
 
 function testMethodWithSetParams() {
@@ -978,13 +978,13 @@ function testMethodWithSetParams() {
     "foo": "String 1",
     "bar": 1,
     "wibble": 1.1
-  }, {"foo": "String 2", "bar": 2, "wibble": 2.2}], ["JULIEN", "TIM"]);
+  }, {"foo": "String 2", "bar": 2, "wibble": 2.2}], ["JULIEN", "TIM"], ["foo", 4, 3.4, true, { wibble: "eek"}, ["one", 2]]);
 }
 
 function testMethodWithMapParams() {
   tck.methodWithMapParams({foo: "bar", eek: "wibble"}, {foo: 2, eek: 3}, {foo: 12, eek: 13}, {foo: 1234, eek: 1345},
     {foo: 123, eek: 456}, {foo: {foo: "bar"}, eek: {eek: "wibble"}}, {foo: ["foo"], eek: ["blah"]},
-    {foo: refed_obj.setString("foo"), eek: refed_obj2.setString("bar")});
+    {foo: refed_obj.setString("foo"), eek: refed_obj2.setString("bar")}, {string: "foo", integer: 4, float: 3.4, boolean: true, object: { wibble: "eek"}, array: ["one", 2]});
 }
 
 if (typeof this[testName] === 'undefined') {

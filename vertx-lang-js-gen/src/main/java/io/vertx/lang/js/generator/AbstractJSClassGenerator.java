@@ -261,6 +261,8 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
           writer.format("utils.convParam%sDataObject(%s, function(json) { return new %s(json); })", container, unwrappedName, arg.getSimpleName());
         } else if (argKind == ENUM) {
           writer.format("utils.convParam%sEnum(%s, function(val) { return Packages.%s.valueOf(val); })", container, unwrappedName, arg.getName());
+        } else if (argKind == OBJECT) {
+          writer.format("utils.convParam%s  Object(%s)", container, unwrappedName);
         } else {
           if (param.isNullable()) {
             writer.format("%s == null ? null : ", unwrappedName);
@@ -287,6 +289,8 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
           writer.format("utils.convParamMapJsonObject(%s)", unwrappedName);
         } else if (argKind == JSON_ARRAY) {
           writer.format("utils.convParamMapJsonArray(%s)", unwrappedName);
+        } else if (argKind == OBJECT) {
+          writer.format("utils.convParamMapObject(%s)", unwrappedName);
         } else {
           writer.print(unwrappedName);
         }

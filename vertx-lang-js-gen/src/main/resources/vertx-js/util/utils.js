@@ -178,6 +178,14 @@ utils.convParamMapJsonArray = function(arr) {
   }
 };
 
+utils.convParamMapObject = function(val) {
+  if (val) {
+    return new JsonObject(JSON.stringify(val)).copy().getMap();
+  } else {
+    return null;
+  }
+};
+
 utils.convParamListJsonObject = function(arr) {
   if (arr) {
     var len = arr.length;
@@ -201,6 +209,14 @@ utils.convParamListJsonArray = function(arr) {
       newarr[i] = elem != null ? new JsonArray(JSON.stringify(elem)) : null;
     }
     return newarr;
+  } else {
+    return null;
+  }
+};
+
+utils.convParamListObject = function(arr) {
+  if (arr) {
+    return new JsonArray(JSON.stringify(arr)).copy().getList();
   } else {
     return null;
   }
@@ -236,6 +252,10 @@ utils.convParamListEnum = function(arr, constructor) {
 
 utils.convParamSetJsonObject = function(arr) {
   return arr == null ? null : new ListConverterSet(utils.convParamListJsonObject(arr));
+};
+
+utils.convParamSetObject = function(arr) {
+  return arr == null ? null : new ListConverterSet(utils.convParamListObject(arr));
 };
 
 utils.convParamSetJsonArray = function(arr) {
