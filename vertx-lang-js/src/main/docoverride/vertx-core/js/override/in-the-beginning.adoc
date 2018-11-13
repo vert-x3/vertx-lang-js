@@ -1,0 +1,59 @@
+== In the beginning there was Vert.x
+
+You can't do much in Vert.x-land unless you can communicate with a {@link io.vertx.core.Vertx} object!
+
+It's the control centre of Vert.x and is how you do pretty much everything, including creating clients and servers,
+getting a reference to the event bus, setting timers, as well as many other things.
+
+So how do you get an instance?
+
+When you start your application with the CLI, a `vertx` variable will be made available to your code.
+
+[source,js]
+----
+var server = vertx.createHttpServer(); // <1>
+server.requestHandler(function (request) {
+  request.response().end("Hello world");
+});
+server.listen(8080);
+----
+<1> At runtime, `vertx` variable is available
+
+Then run the applicaton with the CLI:
+
+[source,bash]
+----
+vertx run my-verticle.js
+----
+
+NOTE: Most applications will only need a single Vert.x instance, but it's possible to create multiple Vert.x instances if you
+require, for example, isolation between the event bus or different groups of servers and clients.
+
+=== Specifying options when creating a Vertx object
+
+When creating a Vert.x object you can also specify options if the defaults aren't right for you.
+
+[source,bash]
+----
+vertx run my-verticle.js -options my-options.json
+----
+
+If you want to increase the worker pool size, your `my-options.json` file may look like:
+
+[source,json]
+----
+{
+  "workerPoolSize": 40
+}
+----
+
+The {@link io.vertx.core.VertxOptions} object has many settings and allows you to configure things like clustering, high availability, pool sizes and various other settings.
+
+=== Creating a clustered Vert.x object
+
+If you're creating a *clustered Vert.x* (See the section on the <<event_bus, event bus>> for more information on clustering the event bus), add the `-cluster` option:
+
+[source,bash]
+----
+vertx run my-verticle.js -cluster
+----
