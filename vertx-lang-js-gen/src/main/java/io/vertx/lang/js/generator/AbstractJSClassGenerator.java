@@ -262,7 +262,7 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
         } else if (argKind == ENUM) {
           writer.format("utils.convParam%sEnum(%s, function(val) { return Packages.%s.valueOf(val); })", container, unwrappedName, arg.getName());
         } else if (argKind == OBJECT) {
-          writer.format("utils.convParam%s  Object(%s)", container, unwrappedName);
+          writer.format("utils.convParam%sObject(%s)", container, unwrappedName);
         } else {
           if (param.isNullable()) {
             writer.format("%s == null ? null : ", unwrappedName);
