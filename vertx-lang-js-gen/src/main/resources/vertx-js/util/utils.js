@@ -330,6 +330,25 @@ utils.convReturnListSetJson = function(jList) {
   return arr;
 };
 
+// Convert a list/set containing object return
+utils.convReturnListSetObject = function(jList) {
+  if (jList == null) {
+    return null;
+  }
+  var arr = [];
+  arr.length = jList.size();
+  var iter = jList.iterator();
+  var pos = 0;
+  while (iter.hasNext()) {
+    var elem = iter.next();
+    if (elem instanceof JsonObject || elem instanceof JsonArray) {
+      elem = JSON.parse(elem.encode());
+    }
+    arr[pos++] = elem;
+  }
+  return arr;
+};
+
 utils.getJavaClass = function(fqn) {
   var type = Java.type(fqn + "[]");
   return new type(0).getClass().getComponentType();

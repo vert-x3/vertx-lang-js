@@ -49,6 +49,11 @@ public class CollectionTCKTest extends JSTestBase {
   }
 
   @Test
+  public void testMapObjectReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMapJsonArrayReturn() throws Exception {
     runTest();
   }
@@ -104,6 +109,11 @@ public class CollectionTCKTest extends JSTestBase {
   }
 
   @Test
+  public void testListObjectReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testSetStringReturn() throws Exception {
     runTest();
   }
@@ -145,6 +155,11 @@ public class CollectionTCKTest extends JSTestBase {
 
   @Test
   public void testSetEnumReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testSetObjectReturn() throws Exception {
     runTest();
   }
 

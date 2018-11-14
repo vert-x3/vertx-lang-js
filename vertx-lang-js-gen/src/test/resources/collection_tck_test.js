@@ -862,6 +862,20 @@ function testListEnumReturn() {
   assertEquals("TIM", listEnum[1]);
 }
 
+function testListObjectReturn() {
+  var listObject = tck.methodWithListObjectReturn();
+  Assert.assertTrue(typeof listObject === 'object');
+  assertEquals("foo", listObject[0]);
+  assertEquals(4, listObject[1]);
+  assertEquals(3.4, listObject[2]);
+  assertEquals(true, listObject[3]);
+  assertEquals("object", typeof listObject[4]);
+  assertEquals("eek", (listObject[4])["wibble"]);
+  Assert.assertTrue(Array.isArray(listObject[5]));
+  assertEquals("one", listObject[5][0]);
+  assertEquals(2, listObject[5][1]);
+}
+
 function testSetStringReturn() {
   var setString = tck.methodWithSetStringReturn();
   Assert.assertTrue(typeof setString === 'object');
@@ -953,6 +967,34 @@ function testSetEnumReturn() {
   Assert.assertTrue(typeof setEnum === 'object');
   assertEquals("JULIEN", setEnum[0]);
   assertEquals("TIM", setEnum[1]);
+}
+
+function testSetObjectReturn() {
+  var listObject = tck.methodWithSetObjectReturn();
+  Assert.assertTrue(typeof listObject === 'object');
+  assertEquals("foo", listObject[0]);
+  assertEquals(4, listObject[1]);
+  assertEquals(3.4, listObject[2]);
+  assertEquals(true, listObject[3]);
+  assertEquals("object", typeof listObject[4]);
+  assertEquals("eek", (listObject[4])["wibble"]);
+  Assert.assertTrue(Array.isArray(listObject[5]));
+  assertEquals("one", listObject[5][0]);
+  assertEquals(2, listObject[5][1]);
+}
+
+function testMapObjectReturn() {
+  var listObject = tck.methodWithMapObjectReturn(function () {});
+  Assert.assertTrue(typeof listObject === 'object');
+  assertEquals("foo", listObject["string"]);
+  assertEquals(4, listObject["integer"]);
+  assertEquals(3.4, listObject["float"]);
+  assertEquals(true, listObject["boolean"]);
+  assertEquals("object", typeof listObject["object"]);
+  assertEquals("eek", (listObject["object"])["wibble"]);
+  Assert.assertTrue(Array.isArray(listObject["array"]));
+  assertEquals("one", listObject["array"][0]);
+  assertEquals(2, listObject["array"][1]);
 }
 
 function testMapComplexJsonArrayReturn() {

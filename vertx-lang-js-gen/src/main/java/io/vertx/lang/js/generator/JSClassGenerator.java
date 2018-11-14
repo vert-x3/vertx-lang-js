@@ -220,6 +220,8 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
       ClassKind elementKind = elementType.getKind();
       if (elementKind.json) {
         return String.format("utils.convReturnListSetJson(%s)", templ);
+      } else if (elementKind == OBJECT) {
+        return String.format("utils.convReturnListSetObject(%s)", templ);
       } else if (elementKind == DATA_OBJECT) {
         return String.format("utils.convReturnListSetDataObject(%s)", templ);
       } else if (elementKind == ENUM) {
