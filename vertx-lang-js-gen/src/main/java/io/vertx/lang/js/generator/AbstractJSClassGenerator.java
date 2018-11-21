@@ -1,6 +1,8 @@
 package io.vertx.lang.js.generator;
 
 import io.vertx.codegen.*;
+import io.vertx.codegen.annotations.ModuleGen;
+import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.codegen.doc.Tag;
 import io.vertx.codegen.doc.Token;
 import io.vertx.codegen.type.*;
@@ -11,9 +13,8 @@ import javax.lang.model.element.ElementKind;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.lang.annotation.Annotation;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,12 @@ import static javax.lang.model.element.ElementKind.METHOD;
 
 @SuppressWarnings("WeakerAccess")
 public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Generator<M> {
+
+  @Override
+  public Collection<Class<? extends Annotation>> annotations() {
+    return Arrays.asList(VertxGen.class, ModuleGen.class);
+  }
+
   /**
    * Render a tag link to an html link, this function is used as parameter of the
    * renderDocToHtml function when it needs to render tag links.
