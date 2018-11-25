@@ -216,7 +216,7 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
       } else {
         writer.print(", ");
       }
-      boolean overloaded = model.getMethodMap().get(method.getName()).size() > 1;
+      boolean overloaded = model.getMethods().stream().map(MethodInfo::getName).count() > 1;
       writer.print(convParam(model, method, "__args[" + (pcnt++) + "]", overloaded, param));
     }
     writer.print(")");
