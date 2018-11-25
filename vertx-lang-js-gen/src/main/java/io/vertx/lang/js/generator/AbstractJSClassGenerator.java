@@ -360,10 +360,13 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
   }
 
   protected void genMethod(M model, String methodName, boolean genStatic, @SuppressWarnings("SameParameterValue") Predicate<MethodInfo> methodFilter, CodeWriter writer) {
+
+    List<MethodInfo> methodList = model.getMethods().stream()
+      .filter(method -> method.isStaticMethod() == genStatic && method.getName().equals(methodName))
+      .collect(Collectors.toList());
+
     ClassTypeInfo type = model.getType();
     String simpleName = type.getSimpleName();
-    Map<String, List<MethodInfo>> methodsByName = model.getMethodMap();
-    List<MethodInfo> methodList = methodsByName.get(methodName);
     if (methodFilter != null) {
       List<MethodInfo> methodTmpl = methodList;
       methodList = new ArrayList<>();
@@ -423,7 +426,7 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
         writer.indent();
         writer.println("var __args = arguments;");
         for (MethodInfo m : methodList) {
-          writer.print(mcnt++ == 0 ? "if" : "else if");
+          writer.print(mcnt++ == 0 ? "if" : " else if");
           int paramSize = m.getParams().size();
           writer.format(" (__args.length === %s", paramSize);
           int cnt = 0;
@@ -530,8 +533,13 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
           writer.unindent();
           writer.print("}");
         }
+        if (!genStatic) {
+          writer.format(" else if (typeof __super_%s != 'undefined') {\n", method.getName());
+          writer.indented(() -> writer.format("return __super_%s.apply(this, __args);\n", method.getName()));
+          writer.println("}");
+        }
+        writer.println("else throw new TypeError('function invoked with invalid arguments');");
         writer.unindent();
-        writer.println(" else throw new TypeError('function invoked with invalid arguments');");
         writer.println("};");
         writer.println();
       }

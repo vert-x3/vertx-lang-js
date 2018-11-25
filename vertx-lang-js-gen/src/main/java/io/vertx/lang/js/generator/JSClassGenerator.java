@@ -77,11 +77,19 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
     }
     writer.println();
 
+    //Get refs to parent methods before we overwrite them
+    model.getMethods().forEach(method -> {
+      writer.format("var __super_%s = this.%s;\n", method.getName(), method.getName());
+    });
+
     //Now iterate through each unique method
-    for (String methodName : model.getMethodMap().keySet()) {
+    model.getMethods()
+      .stream()
+      .filter(method -> !method.isStaticMethod())
+      .map(MethodInfo::getName).distinct().forEach(methodName -> {
       //Call out to actually generate the method, we only consider non static methods here
       genMethod(model, methodName, false, null, writer);
-    }
+    });
 
     //Each object has a _jdel function which gives access to the underlying Java object
 
@@ -131,10 +139,13 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
       .append("}\n");
 
     //Iterate through the methods again, this time only considering the static ones
-    for (String methodName : model.getMethodMap().keySet()) {
-      //Call out to generate the static method
+    model.getMethods()
+      .stream()
+      .filter(MethodInfo::isStaticMethod)
+      .map(MethodInfo::getName).distinct().forEach(methodName -> {
+      //Call out to actually generate the method, we only consider non static methods here
       genMethod(model, methodName, true, null, writer);
-    }
+    });
 
     //Gen constants
     for (ConstantInfo constant : model.getConstants()) {
