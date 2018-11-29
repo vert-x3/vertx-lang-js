@@ -32,7 +32,6 @@
   <modules>
     <module>vertx-lang-js-gen</module>
     <module>vertx-lang-js</module>
-    <module>vertx-rx-js</module>
   </modules>
 
   <dependencies>
