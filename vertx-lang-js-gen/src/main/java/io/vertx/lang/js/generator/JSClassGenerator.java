@@ -266,7 +266,7 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
         for (TypeInfo arg : ((ParameterizedTypeInfo) returnType).getArgs()) {
           ClassKind argKind = arg.getKind();
           if (argKind == API) {
-            writer.format(", %s._jtype", arg.getSimpleName());
+            writer.format(", %s._jtype", arg.getRaw().getSimpleName());
           } else if (argKind == ENUM) {
             writer.format(", utils.enum_jtype(%s)", arg.getName());
           } else if (argKind == OBJECT) {
