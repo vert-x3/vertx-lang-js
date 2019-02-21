@@ -186,6 +186,36 @@ utils.convParamMapObject = function(val) {
   }
 };
 
+utils.convParamMapDataObject = function(arr, constructor) {
+  if (arr) {
+    var newmap = {};
+    for (var key in arr) {
+      if (arr.hasOwnProperty(key)) {
+        var val = arr[key];
+        newmap[key] = val != null ? constructor(new JsonObject(JSON.stringify(val))) : null;
+      }
+    }
+    return newmap;
+  } else {
+    return null;
+  }
+};
+
+utils.convParamMapEnum = function(arr, constructor) {
+  if (arr) {
+    var newmap = {};
+    for (var key in arr) {
+      if (arr.hasOwnProperty(key)) {
+        var val = arr[key];
+        newmap[key] = val != null ? constructor(val) : null;
+      }
+    }
+    return newmap;
+  } else {
+    return null;
+  }
+};
+
 utils.convParamListJsonObject = function(arr) {
   if (arr) {
     var len = arr.length;
@@ -441,18 +471,42 @@ utils.convReturnListSet = function(jList, converter) {
   }
 };
 
+utils.convReturnMapDataObject = function(jMap, constructorFunction) {
+  return utils.convReturnMap(jMap,
+    function(elem) {
+      return JSON.parse(elem.toJson().encode());
+    },
+    function(elem) {
+      return constructorFunction(new JsonObject(JSON.stringify(elem)));
+    });
+}
+
+utils.convReturnMapVertxGen = function(jMap, constructorFunction) {
+  return utils.convReturnMap(jMap, function(elem) {
+    var obj = Object.create(constructorFunction.prototype, {});
+    constructorFunction.apply(obj, [elem]);
+    return obj;
+  }, function(elem) {
+    return elem._jdel;
+  });
+}
+
+utils.convReturnMapUnknown = function(jMap, toJS, toJava) {
+  return utils.convReturnMap(jMap, utils.convReturnTypeUnknown, utils.convParamTypeUnknown);
+}
+
 // Convert a map return
-utils.convReturnMap = function(jMap) {
+utils.convReturnMap = function(jMap, toJS, toJava) {
   if (jMap) {
     // Object.keys is not supported. hasOwnKeys is called on ScriptObject which does not get proxied down
     // to JSAdapter.
     return new JSAdapter({
       __get__: function (name) {
-        return utils.convReturnTypeUnknown(jMap.get(name));
+        return toJS(jMap.get(name));
       },
 
       __put__: function (name, value) {
-        jMap.put(name, utils.convParamTypeUnknown(value));
+        jMap.put(name, toJava(value));
       },
 
       __call__: function (name, arg1, arg2) {
@@ -463,7 +517,7 @@ utils.convReturnMap = function(jMap) {
           case "forEach": {
             if (typeof arg1 == 'function') {
               jMap.entrySet().forEach(function(entry) {
-                arg1(utils.convReturnTypeUnknown(entry.getValue()), entry.getKey());
+                arg1(toJS(entry.getValue()), entry.getKey());
               });
             } else {
               throw new TypeError(arg1 + " is not a function");

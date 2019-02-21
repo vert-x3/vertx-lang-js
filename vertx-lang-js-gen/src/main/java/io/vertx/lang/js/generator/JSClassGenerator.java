@@ -249,7 +249,17 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
         }
       }
     } else if (kind == MAP) {
-      return String.format("utils.convReturnMap(%s)", templ);
+      TypeInfo elementType = ((ParameterizedTypeInfo) returnType).getArg(1);
+      ClassKind elementKind = elementType.getKind();
+      if (elementKind == API) {
+        return String.format("utils.convReturnMapVertxGen(%s, %s)", templ, elementType.getRaw().getSimpleName());
+      } else if (elementKind == ENUM) {
+        return String.format("utils.convReturnMap(%s, function(elem) { return elem.toString(); })", templ);
+      } else if (elementKind == DATA_OBJECT) {
+        return String.format("utils.convReturnMapDataObject(%s, %s)", templ, elementType.getSimpleName());
+      } else {
+        return String.format("utils.convReturnMapUnknown(%s)", templ);
+      }
     } else if (kind.json) {
       return String.format("utils.convReturnJson(%s)", templ);
     } else if (kind.basic) {

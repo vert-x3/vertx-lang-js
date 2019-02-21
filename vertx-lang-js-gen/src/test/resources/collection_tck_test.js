@@ -755,6 +755,31 @@ function testMapJsonArrayReturn() {
   assertEquals("wibble", arr[0]);
 }
 
+function testMapVertxGenReturn() {
+  var map = tck.methodWithMapVertxGenReturn(function () {
+  });
+  Assert.assertTrue(typeof map === 'object');
+  var obj = map["foo"];
+  Assert.assertTrue(typeof obj === 'object');
+  assertEquals("foo", obj.getString());
+  Assert.assertTrue(obj._jdel);
+}
+
+function testMapDataObjectReturn() {
+  var map = tck.methodWithMapDataObjectReturn(function () {
+  });
+  Assert.assertTrue(typeof map === 'object');
+  var obj = map["foo"];
+  assertEquals("String 1", obj["foo"]);
+}
+
+function testMapEnumReturn() {
+  var map = tck.methodWithMapEnumReturn(function () {
+  });
+  Assert.assertTrue(typeof map === 'object');
+  assertEquals("JULIEN", map["foo"]);
+}
+
 function testMapLongReturn() {
   var map = tck.methodWithMapLongReturn(function () {
   });
@@ -1024,9 +1049,19 @@ function testMethodWithSetParams() {
 }
 
 function testMethodWithMapParams() {
-  tck.methodWithMapParams({foo: "bar", eek: "wibble"}, {foo: 2, eek: 3}, {foo: 12, eek: 13}, {foo: 1234, eek: 1345},
-    {foo: 123, eek: 456}, {foo: {foo: "bar"}, eek: {eek: "wibble"}}, {foo: ["foo"], eek: ["blah"]},
-    {foo: refed_obj.setString("foo"), eek: refed_obj2.setString("bar")}, {string: "foo", integer: 4, float: 3.4, boolean: true, object: { wibble: "eek"}, array: ["one", 2]});
+  tck.methodWithMapParams(
+    {foo: "bar", eek: "wibble"},
+    {foo: 2, eek: 3},
+    {foo: 12, eek: 13},
+    {foo: 1234, eek: 1345},
+    {foo: 123, eek: 456},
+    {foo: {foo: "bar"}, eek: {eek: "wibble"}},
+    {foo: ["foo"], eek: ["blah"]},
+    {foo: refed_obj.setString("foo"), eek: refed_obj2.setString("bar")},
+    {foo: {foo: "String 1", bar: 1, wibble: 1.1}},
+    {foo: "JULIEN"},
+    {string: "foo", integer: 4, float: 3.4, boolean: true, object: { wibble: "eek"}, array: ["one", 2]}
+  );
 }
 
 if (typeof this[testName] === 'undefined') {

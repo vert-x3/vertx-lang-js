@@ -298,6 +298,10 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
           writer.format("utils.convParamMapJsonArray(%s)", unwrappedName);
         } else if (argKind == OBJECT) {
           writer.format("utils.convParamMapObject(%s)", unwrappedName);
+        } else if (argKind == DATA_OBJECT) {
+          writer.format("utils.convParamMapDataObject(%s, function(json) { return new %s(json); })", unwrappedName, arg.getSimpleName());
+        } else if (argKind == ENUM) {
+          writer.format("utils.convParamMapEnum(%s, function(val) { return Packages.%s.valueOf(val); })", unwrappedName, arg.getName());
         } else {
           writer.print(unwrappedName);
         }
