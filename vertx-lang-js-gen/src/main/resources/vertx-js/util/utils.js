@@ -402,64 +402,30 @@ utils.convReturnDataObject = function(dataObject) {
 
 // Convert a list/set containing VertxGen return
 utils.convReturnListSetVertxGen = function(jList, constructorFunction) {
-  if (jList) {
-    var arr = [];
-    arr.length = jList.size();
-    var iter = jList.iterator();
-    var pos = 0;
-    while (iter.hasNext()) {
-      var jVertxGen = iter.next();
-      // A bit of jiggery pokery to create the object given a reference to the constructor function
-      if (jVertxGen) {
-        var obj = Object.create(constructorFunction.prototype, {});
-        constructorFunction.apply(obj, [jVertxGen]);
-        arr[pos++] = obj;
-      } else {
-        arr[pos++] = null;
-      }
-    }
-    return arr;
-  } else {
-    return null;
-  }
+  return utils.convReturnListSet(jList, function(elem) {
+    var obj = Object.create(constructorFunction.prototype, {});
+    constructorFunction.apply(obj, [elem]);
+    return obj;
+  });
 };
 
 // Convert a list/set containing data object return
 utils.convReturnListSetDataObject = function(jList) {
-  if (jList) {
-    var arr = [];
-    arr.length = jList.size();
-    var iter = jList.iterator();
-    var pos = 0;
-    while (iter.hasNext()) {
-      var elem = iter.next();
-      arr[pos++] = elem != null ? JSON.parse(elem.toJson().encode()) : null;
-    }
-    return arr;
-  } else {
-    return null;
-  }
+  return utils.convReturnListSet(jList, function(elem) { return JSON.parse(elem.toJson().encode()); });
 };
 
 // Convert a list/set containing enum return
 utils.convReturnListSetEnum = function(jList) {
-  if (jList) {
-    var arr = [];
-    arr.length = jList.size();
-    var iter = jList.iterator();
-    var pos = 0;
-    while (iter.hasNext()) {
-      var elem = iter.next();
-      arr[pos++] = elem != null ? elem.toString() : null;
-    }
-    return arr;
-  } else {
-    return null;
-  }
+  return utils.convReturnListSet(jList, function(elem) { return elem.toString(); });
 };
 
 // Convert a list/set containing Long return
 utils.convReturnListSetLong = function(jList) {
+  return utils.convReturnListSet(jList, function(elem) { return elem.doubleValue(); });
+};
+
+// Convert a list/set containing
+utils.convReturnListSet = function(jList, converter) {
   if (jList) {
     var arr = [];
     arr.length = jList.size();
@@ -467,7 +433,7 @@ utils.convReturnListSetLong = function(jList) {
     var pos = 0;
     while (iter.hasNext()) {
       var elem = iter.next();
-      arr[pos++] = elem != null ? elem.doubleValue() : null;
+      arr[pos++] = elem != null ? converter(elem) : null;
     }
     return arr;
   } else {
