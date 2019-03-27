@@ -9,7 +9,7 @@ var HelloService = require("test-services-js/hello_service");
 var HttpClient = require("vertx-js/http_client");
 var WebClient = require("vertx-web-client-js/web_client");
 var MessageConsumer = require("vertx-js/message_consumer");
-var RedisClient = require("vertx-redis-js/redis_client");
+var Redis = require("vertx-redis-js/redis");
 var MongoClient = require("vertx-mongo-js/mongo_client");
 var JDBCClient = require("vertx-jdbc-js/jdbc_client");
 
@@ -255,7 +255,7 @@ getVertx().eventBus().consumer("redis-ref", function (message) {
       if (!reference) {
         message.reply("FAIL - reference is null");
       } else {
-        var client = reference.getAs(RedisClient);
+        var client = reference.getAs(Redis);
         if (!client) {
           message.reply("FAIL - client is null");
         } else {

@@ -266,7 +266,7 @@ public class ServiceDiscoveryTest {
       vertx.eventBus().<JsonObject>send("redis-ref", "", reply -> {
         tc.assertTrue(reply.succeeded());
         tc.assertTrue(reply.result().body().getString("ref_del").contains("RedisServiceReference"));
-        tc.assertTrue(reply.result().body().getString("client_del").contains("RedisClientImpl"));
+        tc.assertTrue(reply.result().body().getString("client_del").contains("RedisClient"));
         tc.assertTrue(reply.result().body().getJsonArray("bindings").isEmpty());
 
         redis_ref.complete();
