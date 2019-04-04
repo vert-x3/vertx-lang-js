@@ -375,6 +375,9 @@ Set the write option
 |[[contactPoints]]`@contactPoints`|`Array of String`|+++
 Set a list of hosts, where some of cluster nodes is located.
 +++
+|[[keyspace]]`@keyspace`|`String`|+++
+Set the keyspace to use when creating the Cassandra session. Defaults to <code>null</code>.
++++
 |[[port]]`@port`|`Number (int)`|+++
 Set which port should be used for all the hosts to connect to a cassandra service.
 +++
@@ -690,8 +693,22 @@ Set the trust options in jks format, aka Java truststore
 |[[useAlpn]]`@useAlpn`|`Boolean`|+++
 Set the ALPN usage.
 +++
-|[[usePooledBuffers]]`@usePooledBuffers`|`Boolean`|+++
-Set whether Netty pooled buffers are enabled
+|===
+
+[[Config]]
+== Config
+
+++++
+ A configuration object containing the configuration entries for a resource
+++++
+'''
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[entries]]`@entries`|`Array of link:dataobjects.html#ConfigEntry[ConfigEntry]`|+++
+Set the configuration entries for a resource
 +++
 |===
 
@@ -712,6 +729,64 @@ Sets the new configuration.
 +++
 |[[previousConfiguration]]`@previousConfiguration`|`Json object`|+++
 Sets the previous configuration.
++++
+|===
+
+[[ConfigEntry]]
+== ConfigEntry
+
+++++
+ A class representing a configuration entry containing name, value and additional metadata
+++++
+'''
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[default]]`@default`|`Boolean`|+++
+Set whether the config value is the default or if it's been explicitly set
++++
+|[[name]]`@name`|`String`|+++
+Set the config name
++++
+|[[readOnly]]`@readOnly`|`Boolean`|+++
+Set whether the config is read-only and cannot be updated
++++
+|[[sensitive]]`@sensitive`|`Boolean`|+++
+Set whether the config value is sensitive. The value is always set to null by the broker if the config value is sensitive
++++
+|[[source]]`@source`|`link:enums.html#ConfigSource[ConfigSource]`|+++
+Set the source of this configuration entry
++++
+|[[synonyms]]`@synonyms`|`Array of link:dataobjects.html#ConfigSynonym[ConfigSynonym]`|+++
+Set all config values that may be used as the value of this config along with their source, in the order of precedence
++++
+|[[value]]`@value`|`String`|+++
+Set the value or null. Null is returned if the config is unset or if isSensitive is true
++++
+|===
+
+[[ConfigResource]]
+== ConfigResource
+
+++++
+ A class representing resources that have configuration
+++++
+'''
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[default]]`@default`|`Boolean`|+++
+Set if this is the default resource of a resource type. Resource name is empty for the default resource.
++++
+|[[name]]`@name`|`String`|+++
+Set the resource name
++++
+|[[type]]`@type`|`link:enums.html#Type[Type]`|+++
+Set the resource type
 +++
 |===
 
@@ -765,6 +840,29 @@ Sets whether or not the store is optional. When the configuration is retrieve, i
 +++
 |[[type]]`@type`|`String`|+++
 Sets the configuration type
++++
+|===
+
+[[ConfigSynonym]]
+== ConfigSynonym
+
+++++
+ Class representing a configuration synonym of a link
+++++
+'''
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[name]]`@name`|`String`|+++
+Set the name of this configuration
++++
+|[[source]]`@source`|`link:enums.html#ConfigSource[ConfigSource]`|+++
+Set the source of this configuration
++++
+|[[value]]`@value`|`String`|+++
+Set the value of this configuration, which may be null if the configuration is sensitive
 +++
 |===
 
@@ -1000,16 +1098,16 @@ Set the trust options in jks format, aka Java truststore
 Set whether compression is enabled
 +++
 |[[tryUsePerFrameWebsocketCompression]]`@tryUsePerFrameWebsocketCompression`|`Boolean`|+++
-Set option to offer per frame WebSocket compression.
+Set whether the client will offer the WebSocket per-frame deflate compression extension.
 +++
 |[[tryUsePerMessageWebsocketCompression]]`@tryUsePerMessageWebsocketCompression`|`Boolean`|+++
-Set option to offer per message WebSocket compression.
+Set whether the client will offer the WebSocket per-message deflate compression extension.
++++
+|[[tryWebsocketDeflateFrameCompression]]`@tryWebsocketDeflateFrameCompression`|`Boolean`|+++
+
 +++
 |[[useAlpn]]`@useAlpn`|`Boolean`|+++
 Set the ALPN usage.
-+++
-|[[usePooledBuffers]]`@usePooledBuffers`|`Boolean`|+++
-Set whether Netty pooled buffers are enabled
 +++
 |[[userAgent]]`@userAgent`|`String`|+++
 Sets the Web Client user agent header. Defaults to Vert.x-WebClient/&lt;version&gt;.
@@ -1021,13 +1119,67 @@ Sets whether the Web Client should send a user agent header. Defaults to true.
 Set whether hostname verification is enabled
 +++
 |[[websocketCompressionAllowClientNoContext]]`@websocketCompressionAllowClientNoContext`|`Boolean`|+++
-Set the WebSocket compression allow client no context option.
+Set whether the <code>client_no_context_takeover</code> parameter of the WebSocket per-message
+ deflate compression extension will be offered.
 +++
 |[[websocketCompressionLevel]]`@websocketCompressionLevel`|`Number (int)`|+++
-Set WebSocket compression level
+Set the Websocket deflate compression level.
 +++
 |[[websocketCompressionRequestServerNoContext]]`@websocketCompressionRequestServerNoContext`|`Boolean`|+++
-Set the WebSocket compression server no context option
+Set whether the <code>server_no_context_takeover</code> parameter of the WebSocket per-message
+ deflate compression extension will be offered.
++++
+|===
+
+[[ConsumerGroupDescription]]
+== ConsumerGroupDescription
+
+++++
+ A detailed description of a single consumer group in the cluster
+++++
+'''
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[coordinator]]`@coordinator`|`link:dataobjects.html#Node[Node]`|+++
+Set the consumer group coordinator, or null if the coordinator is not known
++++
+|[[groupId]]`@groupId`|`String`|+++
+Set the id of the consumer group
++++
+|[[members]]`@members`|`Array of link:dataobjects.html#MemberDescription[MemberDescription]`|+++
+Set a list of the members of the consumer group
++++
+|[[partitionAssignor]]`@partitionAssignor`|`String`|+++
+Set the consumer group partition assignor
++++
+|[[simpleConsumerGroup]]`@simpleConsumerGroup`|`Boolean`|+++
+Set if consumer group is simple or not
++++
+|[[state]]`@state`|`link:enums.html#ConsumerGroupState[ConsumerGroupState]`|+++
+Set the consumer group state, or UNKNOWN if the state is too new for us to parse
++++
+|===
+
+[[ConsumerGroupListing]]
+== ConsumerGroupListing
+
+++++
+ A listing of a consumer group in the cluster.
+++++
+'''
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[groupId]]`@groupId`|`String`|+++
+Set the consumer group id
++++
+|[[simpleConsumerGroup]]`@simpleConsumerGroup`|`Boolean`|+++
+Set if consumer group is simple or not
 +++
 |===
 
@@ -1250,18 +1402,6 @@ Sets the value of max worker execute time, in link.
 +++
 |[[maxWorkerExecuteTimeUnit]]`@maxWorkerExecuteTimeUnit`|`link:enums.html#TimeUnit[TimeUnit]`|+++
 Set the time unit of <code>maxWorkerExecuteTime</code>
-+++
-|[[multiThreaded]]`@multiThreaded`|`Boolean`|+++
-Set whether the verticle(s) should be deployed as a multi-threaded worker verticle.
- <p>
- <strong>WARNING</strong>: Multi-threaded worker verticles are a deprecated feature.
- <p>
- Most applications will have no need for them. Because of the concurrency in these verticles you have to be
- very careful to keep the verticle in a consistent state using standard Java techniques for multi-threaded
- programming.
- <p>
- You can read the documentation that explains how you can replace this feature by the usage of custom worker
- pools or <code>executeBlocking</code> calls.
 +++
 |[[worker]]`@worker`|`Boolean`|+++
 Set whether the verticle(s) should be deployed as a worker verticle
@@ -1532,9 +1672,6 @@ Set the trust options in jks format, aka Java truststore
 |[[useAlpn]]`@useAlpn`|`Boolean`|+++
 Set the ALPN usage.
 +++
-|[[usePooledBuffers]]`@usePooledBuffers`|`Boolean`|+++
-Set whether Netty pooled buffers are enabled
-+++
 |===
 
 [[EventList]]
@@ -1619,6 +1756,11 @@ Set regular expression to filter by tag
 |[[classPathResolvingEnabled]]`@classPathResolvingEnabled`|`Boolean`|+++
 When vert.x cannot find the file on the filesystem it tries to resolve the
  file from the class path when this is set to <code>true</code>.
++++
+|[[fileCacheDir]]`@fileCacheDir`|`String`|+++
+When vert.x reads a file that is packaged with the application it gets
+ extracted to this directory first and subsequent reads will use the extracted
+ file to get better IO performance.
 +++
 |[[fileCachingEnabled]]`@fileCachingEnabled`|`Boolean`|+++
 Set to <code>true</code> to cache files on the real file system
@@ -1759,6 +1901,23 @@ Set the additional debug data
 +++
 |[[lastStreamId]]`@lastStreamId`|`Number (int)`|+++
 Set the last stream id.
++++
+|===
+
+[[GraphQLHandlerOptions]]
+== GraphQLHandlerOptions
+
+++++
+ Options for configuring the link.
+++++
+'''
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[requestBatchingEnabled]]`@requestBatchingEnabled`|`Boolean`|+++
+Whether request batching should be enabled. Defaults to <code>false</code>.
 +++
 |===
 
@@ -1953,10 +2112,10 @@ Set the maximum requests allowed in the wait queue, any requests beyond the max 
  a ConnectionPoolTooBusyException.  If the value is set to a negative number then the queue will be unbounded.
 +++
 |[[maxWebsocketFrameSize]]`@maxWebsocketFrameSize`|`Number (int)`|+++
-Set the max websocket frame size
+Set the max WebSocket frame size
 +++
 |[[maxWebsocketMessageSize]]`@maxWebsocketMessageSize`|`Number (int)`|+++
-Set the max websocket message size
+Set the max WebSocket message size
 +++
 |[[metricsName]]`@metricsName`|`String`|+++
 Set the metrics name identifying the reported metrics, useful for grouping metrics
@@ -2006,9 +2165,12 @@ Set the value of reuse port.
 Set the TCP send buffer size
 +++
 |[[sendUnmaskedFrames]]`@sendUnmaskedFrames`|`Boolean`|+++
-Set true when the client wants to skip frame masking.
- You may want to set it true on server by server websocket communication: In this case you are by passing RFC6455 protocol.
- It's false as default.
+Set <code>true</code> when the client wants to skip frame masking.
+ <p>
+ You may want to set it <code>true</code> on server by server WebSocket communication: in this case you are by passing
+ RFC6455 protocol.
+ <p>
+ It's <code>false</code> as default.
 +++
 |[[soLinger]]`@soLinger`|`Number (int)`|+++
 Set whether SO_linger keep alive is enabled
@@ -2044,28 +2206,30 @@ Set the trust options in jks format, aka Java truststore
 Set whether compression is enabled
 +++
 |[[tryUsePerFrameWebsocketCompression]]`@tryUsePerFrameWebsocketCompression`|`Boolean`|+++
-Set option to offer per frame WebSocket compression.
+Set whether the client will offer the WebSocket per-frame deflate compression extension.
 +++
 |[[tryUsePerMessageWebsocketCompression]]`@tryUsePerMessageWebsocketCompression`|`Boolean`|+++
-Set option to offer per message WebSocket compression.
+Set whether the client will offer the WebSocket per-message deflate compression extension.
++++
+|[[tryWebsocketDeflateFrameCompression]]`@tryWebsocketDeflateFrameCompression`|`Boolean`|+++
+
 +++
 |[[useAlpn]]`@useAlpn`|`Boolean`|+++
 Set the ALPN usage.
-+++
-|[[usePooledBuffers]]`@usePooledBuffers`|`Boolean`|+++
-Set whether Netty pooled buffers are enabled
 +++
 |[[verifyHost]]`@verifyHost`|`Boolean`|+++
 Set whether hostname verification is enabled
 +++
 |[[websocketCompressionAllowClientNoContext]]`@websocketCompressionAllowClientNoContext`|`Boolean`|+++
-Set the WebSocket compression allow client no context option.
+Set whether the <code>client_no_context_takeover</code> parameter of the WebSocket per-message
+ deflate compression extension will be offered.
 +++
 |[[websocketCompressionLevel]]`@websocketCompressionLevel`|`Number (int)`|+++
-Set WebSocket compression level
+Set the Websocket deflate compression level.
 +++
 |[[websocketCompressionRequestServerNoContext]]`@websocketCompressionRequestServerNoContext`|`Boolean`|+++
-Set the WebSocket compression server no context option
+Set whether the <code>server_no_context_takeover</code> parameter of the WebSocket per-message
+ deflate compression extension will be offered.
 +++
 |===
 
@@ -2116,17 +2280,14 @@ Sets whether or not the HTTP service is using <code>https</code>.
 Set the accept back log
 +++
 |[[acceptUnmaskedFrames]]`@acceptUnmaskedFrames`|`Boolean`|+++
-Set true when the server accepts unmasked frame.
- As default Server doesn't accept unmasked frame, you can bypass this behaviour (RFC 6455) setting true
- It's set to false as default.
+Set <code>true</code> when the server accepts unmasked frame.
+ As default Server doesn't accept unmasked frame, you can bypass this behaviour (RFC 6455) setting <code>true</code>.
+ It's set to <code>false</code> as default.
 +++
 |[[alpnVersions]]`@alpnVersions`|`Array of link:enums.html#HttpVersion[HttpVersion]`|+++
 Set the list of protocol versions to provide to the server during the Application-Layer Protocol Negotiatiation.
 +++
 |[[clientAuth]]`@clientAuth`|`link:enums.html#ClientAuth[ClientAuth]`|+++
-Set whether client auth is required
-+++
-|[[clientAuthRequired]]`@clientAuthRequired`|`Boolean`|+++
 Set whether client auth is required
 +++
 |[[compressionLevel]]`@compressionLevel`|`Number (int)`|+++
@@ -2216,10 +2377,10 @@ Set the maximum length of all headers for HTTP/1.x .
 Set the maximum length of the initial line for HTTP/1.x (e.g. <code>"GET / HTTP/1.0"</code>)
 +++
 |[[maxWebsocketFrameSize]]`@maxWebsocketFrameSize`|`Number (int)`|+++
-Set the maximum websocket frames size
+Set the maximum WebSocket frames size
 +++
 |[[maxWebsocketMessageSize]]`@maxWebsocketMessageSize`|`Number (int)`|+++
-Set the maximum websocket message size
+Set the maximum WebSocket message size
 +++
 |[[openSslEngineOptions]]`@openSslEngineOptions`|`link:dataobjects.html#OpenSSLEngineOptions[OpenSSLEngineOptions]`|-
 |[[pemKeyCertOptions]]`@pemKeyCertOptions`|`link:dataobjects.html#PemKeyCertOptions[PemKeyCertOptions]`|+++
@@ -2229,10 +2390,10 @@ Set the key/cert store options in pem format.
 Set the trust options in pem format
 +++
 |[[perFrameWebsocketCompressionSupported]]`@perFrameWebsocketCompressionSupported`|`Boolean`|+++
-Enable or disable support for WebSocket Defalte Frame compression
+Enable or disable support for the WebSocket per-frame deflate compression extension.
 +++
 |[[perMessageWebsocketCompressionSupported]]`@perMessageWebsocketCompressionSupported`|`Boolean`|+++
-Enable or disable support for WebSocket Permessage Deflate compression
+Enable or disable support for WebSocket per-message deflate compression extension.
 +++
 |[[pfxKeyCertOptions]]`@pfxKeyCertOptions`|`link:dataobjects.html#PfxOptions[PfxOptions]`|+++
 Set the key/cert options in pfx format.
@@ -2290,20 +2451,19 @@ Set the trust options in jks format, aka Java truststore
 |[[useAlpn]]`@useAlpn`|`Boolean`|+++
 Set the ALPN usage.
 +++
-|[[usePooledBuffers]]`@usePooledBuffers`|`Boolean`|+++
-Set whether Netty pooled buffers are enabled
-+++
 |[[websocketAllowServerNoContext]]`@websocketAllowServerNoContext`|`Boolean`|+++
-Set the WebSocket Allow Server No Context option
+Set whether the WebSocket server will accept the <code>server_no_context_takeover</code> parameter of the per-message
+ deflate compression extension offered by the client.
 +++
 |[[websocketCompressionLevel]]`@websocketCompressionLevel`|`Number (int)`|+++
-Set the WebSocket compression level
+Set the WebSocket compression level.
 +++
 |[[websocketPreferredClientNoContext]]`@websocketPreferredClientNoContext`|`Boolean`|+++
-Set the WebSocket Preferred Client No Context setting
+Set whether the WebSocket server will accept the <code>client_no_context_takeover</code> parameter of the per-message
+ deflate compression extension offered by the client.
 +++
 |[[websocketSubProtocols]]`@websocketSubProtocols`|`String`|+++
-Set the websocket subprotocols supported by the server.
+Set the WebSocket sub-protocols supported by the server.
 +++
 |===
 
@@ -2323,9 +2483,9 @@ Set the websocket subprotocols supported by the server.
 Set the accept back log
 +++
 |[[acceptUnmaskedFrames]]`@acceptUnmaskedFrames`|`Boolean`|+++
-Set true when the server accepts unmasked frame.
- As default Server doesn't accept unmasked frame, you can bypass this behaviour (RFC 6455) setting true
- It's set to false as default.
+Set <code>true</code> when the server accepts unmasked frame.
+ As default Server doesn't accept unmasked frame, you can bypass this behaviour (RFC 6455) setting <code>true</code>.
+ It's set to <code>false</code> as default.
 +++
 |[[alpnVersions]]`@alpnVersions`|`Array of link:enums.html#HttpVersion[HttpVersion]`|+++
 Set the list of protocol versions to provide to the server during the Application-Layer Protocol Negotiatiation.
@@ -2337,9 +2497,6 @@ Set the list of protocol versions to provide to the server during the Applicatio
 Set the charset used for encoding / decoding text data from/to SockJS
 +++
 |[[clientAuth]]`@clientAuth`|`link:enums.html#ClientAuth[ClientAuth]`|+++
-Set whether client auth is required
-+++
-|[[clientAuthRequired]]`@clientAuthRequired`|`Boolean`|+++
 Set whether client auth is required
 +++
 |[[compressionLevel]]`@compressionLevel`|`Number (int)`|+++
@@ -2432,10 +2589,10 @@ Set the maximum length of all headers for HTTP/1.x .
 Set the maximum length of the initial line for HTTP/1.x (e.g. <code>"GET / HTTP/1.0"</code>)
 +++
 |[[maxWebsocketFrameSize]]`@maxWebsocketFrameSize`|`Number (int)`|+++
-Set the maximum websocket frames size
+Set the maximum WebSocket frames size
 +++
 |[[maxWebsocketMessageSize]]`@maxWebsocketMessageSize`|`Number (int)`|+++
-Set the maximum websocket message size
+Set the maximum WebSocket message size
 +++
 |[[openSslEngineOptions]]`@openSslEngineOptions`|`link:dataobjects.html#OpenSSLEngineOptions[OpenSSLEngineOptions]`|-
 |[[pemKeyCertOptions]]`@pemKeyCertOptions`|`link:dataobjects.html#PemKeyCertOptions[PemKeyCertOptions]`|+++
@@ -2445,10 +2602,10 @@ Set the key/cert store options in pem format.
 Set the trust options in pem format
 +++
 |[[perFrameWebsocketCompressionSupported]]`@perFrameWebsocketCompressionSupported`|`Boolean`|+++
-Enable or disable support for WebSocket Defalte Frame compression
+Enable or disable support for the WebSocket per-frame deflate compression extension.
 +++
 |[[perMessageWebsocketCompressionSupported]]`@perMessageWebsocketCompressionSupported`|`Boolean`|+++
-Enable or disable support for WebSocket Permessage Deflate compression
+Enable or disable support for WebSocket per-message deflate compression extension.
 +++
 |[[pfxKeyCertOptions]]`@pfxKeyCertOptions`|`link:dataobjects.html#PfxOptions[PfxOptions]`|+++
 Set the key/cert options in pfx format.
@@ -2518,23 +2675,22 @@ Set the trust options in jks format, aka Java truststore
 |[[useAlpn]]`@useAlpn`|`Boolean`|+++
 Set the ALPN usage.
 +++
-|[[usePooledBuffers]]`@usePooledBuffers`|`Boolean`|+++
-Set whether Netty pooled buffers are enabled
-+++
 |[[vertsShellJsResource]]`@vertsShellJsResource`|`Buffer`|+++
 Set <code>vertxshell.js</code> resource to use.
 +++
 |[[websocketAllowServerNoContext]]`@websocketAllowServerNoContext`|`Boolean`|+++
-Set the WebSocket Allow Server No Context option
+Set whether the WebSocket server will accept the <code>server_no_context_takeover</code> parameter of the per-message
+ deflate compression extension offered by the client.
 +++
 |[[websocketCompressionLevel]]`@websocketCompressionLevel`|`Number (int)`|+++
-Set the WebSocket compression level
+Set the WebSocket compression level.
 +++
 |[[websocketPreferredClientNoContext]]`@websocketPreferredClientNoContext`|`Boolean`|+++
-Set the WebSocket Preferred Client No Context setting
+Set whether the WebSocket server will accept the <code>client_no_context_takeover</code> parameter of the per-message
+ deflate compression extension offered by the client.
 +++
 |[[websocketSubProtocols]]`@websocketSubProtocols`|`String`|+++
-Set the websocket subprotocols supported by the server.
+Set the WebSocket sub-protocols supported by the server.
 +++
 |===
 
@@ -3208,6 +3364,49 @@ Set the matched value.
 +++
 |===
 
+[[MemberAssignment]]
+== MemberAssignment
+
+++++
+ A description of the assignments of a specific group member
+++++
+'''
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[topicPartitions]]`@topicPartitions`|`Array of link:dataobjects.html#TopicPartition[TopicPartition]`|+++
+Set the list of topic partitions
++++
+|===
+
+[[MemberDescription]]
+== MemberDescription
+
+++++
+ A detailed description of a single group instance in the cluster
+++++
+'''
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[assignment]]`@assignment`|`link:dataobjects.html#MemberAssignment[MemberAssignment]`|+++
+Set the assignment of the group member
++++
+|[[clientId]]`@clientId`|`String`|+++
+Set the client id of the group member
++++
+|[[consumerId]]`@consumerId`|`String`|+++
+Set the consumer id of the group member
++++
+|[[host]]`@host`|`String`|+++
+Set the host where the group member is running
++++
+|===
+
 [[MetricsOptions]]
 == MetricsOptions
 
@@ -3577,9 +3776,6 @@ Set the trust options in jks format, aka Java truststore
 |[[useAlpn]]`@useAlpn`|`Boolean`|+++
 Set the ALPN usage.
 +++
-|[[usePooledBuffers]]`@usePooledBuffers`|`Boolean`|+++
-Set whether Netty pooled buffers are enabled
-+++
 |[[username]]`@username`|`String`|+++
 Set the username
 +++
@@ -3619,9 +3815,6 @@ Set the accept back log
 Set if clientid should be auto-generated when it's "zero-bytes"
 +++
 |[[clientAuth]]`@clientAuth`|`link:enums.html#ClientAuth[ClientAuth]`|+++
-Set whether client auth is required
-+++
-|[[clientAuthRequired]]`@clientAuthRequired`|`Boolean`|+++
 Set whether client auth is required
 +++
 |[[crlPaths]]`@crlPaths`|`Array of String`|+++
@@ -3723,9 +3916,6 @@ Set the trust options in jks format, aka Java truststore
 +++
 |[[useAlpn]]`@useAlpn`|`Boolean`|+++
 Set the ALPN usage.
-+++
-|[[usePooledBuffers]]`@usePooledBuffers`|`Boolean`|+++
-Set whether Netty pooled buffers are enabled
 +++
 |===
 
@@ -3882,9 +4072,6 @@ Set the trust options in jks format, aka Java truststore
 |[[useAlpn]]`@useAlpn`|`Boolean`|+++
 Set the ALPN usage.
 +++
-|[[usePooledBuffers]]`@usePooledBuffers`|`Boolean`|+++
-Set whether Netty pooled buffers are enabled
-+++
 |===
 
 [[NetServerOptions]]
@@ -3903,9 +4090,6 @@ Set whether Netty pooled buffers are enabled
 Set the accept back log
 +++
 |[[clientAuth]]`@clientAuth`|`link:enums.html#ClientAuth[ClientAuth]`|+++
-Set whether client auth is required
-+++
-|[[clientAuthRequired]]`@clientAuthRequired`|`Boolean`|+++
 Set whether client auth is required
 +++
 |[[crlPaths]]`@crlPaths`|`Array of String`|+++
@@ -4002,9 +4186,6 @@ Set the trust options in jks format, aka Java truststore
 |[[useAlpn]]`@useAlpn`|`Boolean`|+++
 Set the ALPN usage.
 +++
-|[[usePooledBuffers]]`@usePooledBuffers`|`Boolean`|+++
-Set whether Netty pooled buffers are enabled
-+++
 |===
 
 [[NetworkOptions]]
@@ -4037,6 +4218,32 @@ Set the TCP send buffer size
 +++
 |[[trafficClass]]`@trafficClass`|`Number (int)`|+++
 Set the value of traffic class
++++
+|===
+
+[[NewTopic]]
+== NewTopic
+
+++++
+ A new topic to be created
+++++
+'''
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[config]]`@config`|`String`|+++
+Set the configuration for the new topic or null if no configs ever specified
++++
+|[[name]]`@name`|`String`|+++
+Set the name of the topic to be created
++++
+|[[numPartitions]]`@numPartitions`|`Number (int)`|+++
+Set the number of partitions for the new topic or -1 if a replica assignment has been specified
++++
+|[[replicationFactor]]`@replicationFactor`|`Number (short)`|+++
+Set the replication factor for the new topic or -1 if a replica assignment has been specified
 +++
 |===
 
@@ -4297,10 +4504,10 @@ Set the maximum requests allowed in the wait queue, any requests beyond the max 
  a ConnectionPoolTooBusyException.  If the value is set to a negative number then the queue will be unbounded.
 +++
 |[[maxWebsocketFrameSize]]`@maxWebsocketFrameSize`|`Number (int)`|+++
-Set the max websocket frame size
+Set the max WebSocket frame size
 +++
 |[[maxWebsocketMessageSize]]`@maxWebsocketMessageSize`|`Number (int)`|+++
-Set the max websocket message size
+Set the max WebSocket message size
 +++
 |[[metricsName]]`@metricsName`|`String`|+++
 Set the metrics name identifying the reported metrics, useful for grouping metrics
@@ -4359,9 +4566,12 @@ Set the provider scope separator
 Set the TCP send buffer size
 +++
 |[[sendUnmaskedFrames]]`@sendUnmaskedFrames`|`Boolean`|+++
-Set true when the client wants to skip frame masking.
- You may want to set it true on server by server websocket communication: In this case you are by passing RFC6455 protocol.
- It's false as default.
+Set <code>true</code> when the client wants to skip frame masking.
+ <p>
+ You may want to set it <code>true</code> on server by server WebSocket communication: in this case you are by passing
+ RFC6455 protocol.
+ <p>
+ It's <code>false</code> as default.
 +++
 |[[site]]`@site`|`String`|+++
 Root URL for the provider
@@ -4403,19 +4613,19 @@ Set the trust options in jks format, aka Java truststore
 Set whether compression is enabled
 +++
 |[[tryUsePerFrameWebsocketCompression]]`@tryUsePerFrameWebsocketCompression`|`Boolean`|+++
-Set option to offer per frame WebSocket compression.
+Set whether the client will offer the WebSocket per-frame deflate compression extension.
 +++
 |[[tryUsePerMessageWebsocketCompression]]`@tryUsePerMessageWebsocketCompression`|`Boolean`|+++
-Set option to offer per message WebSocket compression.
+Set whether the client will offer the WebSocket per-message deflate compression extension.
++++
+|[[tryWebsocketDeflateFrameCompression]]`@tryWebsocketDeflateFrameCompression`|`Boolean`|+++
+
 +++
 |[[useAlpn]]`@useAlpn`|`Boolean`|+++
 Set the ALPN usage.
 +++
 |[[useBasicAuthorizationHeader]]`@useBasicAuthorizationHeader`|`Boolean`|+++
 Flag to use HTTP basic auth header with client id, client secret.
-+++
-|[[usePooledBuffers]]`@usePooledBuffers`|`Boolean`|+++
-Set whether Netty pooled buffers are enabled
 +++
 |[[userAgent]]`@userAgent`|`String`|+++
 Set a custom user agent to use when communicating to a provider
@@ -4431,13 +4641,15 @@ Set the provider userInfo resource path
 Set whether hostname verification is enabled
 +++
 |[[websocketCompressionAllowClientNoContext]]`@websocketCompressionAllowClientNoContext`|`Boolean`|+++
-Set the WebSocket compression allow client no context option.
+Set whether the <code>client_no_context_takeover</code> parameter of the WebSocket per-message
+ deflate compression extension will be offered.
 +++
 |[[websocketCompressionLevel]]`@websocketCompressionLevel`|`Number (int)`|+++
-Set WebSocket compression level
+Set the Websocket deflate compression level.
 +++
 |[[websocketCompressionRequestServerNoContext]]`@websocketCompressionRequestServerNoContext`|`Boolean`|+++
-Set the WebSocket compression server no context option
+Set whether the <code>server_no_context_takeover</code> parameter of the WebSocket per-message
+ deflate compression extension will be offered.
 +++
 |===
 
@@ -5217,6 +5429,48 @@ Set the topic the record was appended to
 == RedisOptions
 
 ++++
+ Redis Client Configuration options.
+++++
+'''
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[masterName]]`@masterName`|`String`|+++
+Set the master name (only considered in HA mode).
++++
+|[[maxNestedArrays]]`@maxNestedArrays`|`Number (int)`|+++
+Tune how much nested arrays are allowed on a redis response. This affects the parser performance.
++++
+|[[maxWaitingHandlers]]`@maxWaitingHandlers`|`Number (int)`|+++
+The client will always work on pipeline mode, this means that messages can start queueing. You can control how much
+ backlog you're willing to accept. This methods sets how much handlers is the client willing to queue.
++++
+|[[netClientOptions]]`@netClientOptions`|`link:dataobjects.html#NetClientOptions[NetClientOptions]`|+++
+Set the net client options to be used while connecting to the redis server. Use this to tune your connection.
++++
+|[[password]]`@password`|`String`|+++
+Set the provided password to be used when establishing a connection to the server.
++++
+|[[role]]`@role`|`link:enums.html#RedisRole[RedisRole]`|+++
+Set the role name (only considered in HA mode).
++++
+|[[select]]`@select`|`Number (Integer)`|+++
+Set the provided database to be selected when establishing a connection to the server.
++++
+|[[type]]`@type`|`link:enums.html#RedisClientType[RedisClientType]`|+++
+Set the desired client type to be created.
++++
+|[[useSlave]]`@useSlave`|`link:enums.html#RedisSlaves[RedisSlaves]`|+++
+Set whether or not to use slave nodes (only considered in Cluster mode).
++++
+|===
+
+[[RedisOptions]]
+== RedisOptions
+
+++++
  This object controls the connection setting to the Redis Server. There is no need to specify most of the settings
  since it has built the following sensible defaults:
  <p>
@@ -5392,9 +5646,6 @@ Set the trust options in jks format, aka Java truststore
 +++
 |[[useAlpn]]`@useAlpn`|`Boolean`|+++
 Set the ALPN usage.
-+++
-|[[usePooledBuffers]]`@usePooledBuffers`|`Boolean`|+++
-Set whether Netty pooled buffers are enabled
 +++
 |===
 
@@ -6203,9 +6454,6 @@ Set the trust options in jks format, aka Java truststore
 |[[useAlpn]]`@useAlpn`|`Boolean`|+++
 Set the ALPN usage.
 +++
-|[[usePooledBuffers]]`@usePooledBuffers`|`Boolean`|+++
-Set whether Netty pooled buffers are enabled
-+++
 |[[useStompFrame]]`@useStompFrame`|`Boolean`|+++
 Sets whether or not the connection is made using the <code>STOMP</code> command instead of the <code>CONNECT</code> command.
  The <code>STOMP</code> command has been introduced in the 1.2 version of the protocol to ease the network analysis
@@ -6233,9 +6481,6 @@ Sets the virtual host that will be used as "host" header value in the `CONNECT` 
 Set the accept back log
 +++
 |[[clientAuth]]`@clientAuth`|`link:enums.html#ClientAuth[ClientAuth]`|+++
-Set whether client auth is required
-+++
-|[[clientAuthRequired]]`@clientAuthRequired`|`Boolean`|+++
 Set whether client auth is required
 +++
 |[[crlPaths]]`@crlPaths`|`Array of String`|+++
@@ -6374,9 +6619,6 @@ Set the trust options in jks format, aka Java truststore
 |[[useAlpn]]`@useAlpn`|`Boolean`|+++
 Set the ALPN usage.
 +++
-|[[usePooledBuffers]]`@usePooledBuffers`|`Boolean`|+++
-Set whether Netty pooled buffers are enabled
-+++
 |[[websocketBridge]]`@websocketBridge`|`Boolean`|+++
 Enables or disables the web socket bridge.
 +++
@@ -6505,9 +6747,6 @@ Set the trust options in jks format, aka Java truststore
 |[[useAlpn]]`@useAlpn`|`Boolean`|+++
 Set the ALPN usage.
 +++
-|[[usePooledBuffers]]`@usePooledBuffers`|`Boolean`|+++
-Set whether Netty pooled buffers are enabled
-+++
 |===
 
 [[TelnetTermOptions]]
@@ -6529,9 +6768,6 @@ Set the accept back log
 Set the charset to use when binary mode is active, see link and link.
 +++
 |[[clientAuth]]`@clientAuth`|`link:enums.html#ClientAuth[ClientAuth]`|+++
-Set whether client auth is required
-+++
-|[[clientAuthRequired]]`@clientAuthRequired`|`Boolean`|+++
 Set whether client auth is required
 +++
 |[[crlPaths]]`@crlPaths`|`Array of String`|+++
@@ -6639,9 +6875,6 @@ Set the trust options in jks format, aka Java truststore
 |[[useAlpn]]`@useAlpn`|`Boolean`|+++
 Set the ALPN usage.
 +++
-|[[usePooledBuffers]]`@usePooledBuffers`|`Boolean`|+++
-Set whether Netty pooled buffers are enabled
-+++
 |===
 
 [[TestOptions]]
@@ -6680,6 +6913,30 @@ Configure the execution to use an event loop when there is no one existing.
 +++
 |===
 
+[[TopicDescription]]
+== TopicDescription
+
+++++
+ A detailed description of a single topic in the cluster
+++++
+'''
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[internal]]`@internal`|`Boolean`|+++
+Set whether the topic is internal to Kafka.
++++
+|[[name]]`@name`|`String`|+++
+Set the name of the topic.
++++
+|[[partitions]]`@partitions`|`Array of link:dataobjects.html#TopicPartitionInfo[TopicPartitionInfo]`|+++
+Set A list of partitions where the index represents the partition id and the element
+ contains leadership and replica information for that partition.
++++
+|===
+
 [[TopicPartition]]
 == TopicPartition
 
@@ -6697,6 +6954,50 @@ Set the partition number
 +++
 |[[topic]]`@topic`|`String`|+++
 Set the topic name
++++
+|===
+
+[[TopicPartitionInfo]]
+== TopicPartitionInfo
+
+++++
+ A class containing leadership, replicas and ISR information for a topic partition.
+++++
+'''
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[isr]]`@isr`|`Array of link:dataobjects.html#Node[Node]`|+++
+Set the subset of the replicas that are in sync
++++
+|[[leader]]`@leader`|`link:dataobjects.html#Node[Node]`|+++
+Set the node id of the node currently acting as a leader
++++
+|[[partition]]`@partition`|`Number (int)`|+++
+Set the partition id
++++
+|[[replicas]]`@replicas`|`Array of link:dataobjects.html#Node[Node]`|+++
+Set the complete set of replicas for this partition
++++
+|===
+
+[[TracingOptions]]
+== TracingOptions
+
+++++
+ Vert.x tracing base configuration, this class can be extended by provider implementations to configure
+ those specific implementations.
+++++
+'''
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[enabled]]`@enabled`|`Boolean`|+++
+Set whether tracing will be enabled on the Vert.x instance.
 +++
 |===
 
@@ -6969,11 +7270,6 @@ Sets the event bus configuration to configure the host, port, ssl...
 |[[eventLoopPoolSize]]`@eventLoopPoolSize`|`Number (int)`|+++
 Set the number of event loop threads to be used by the Vert.x instance.
 +++
-|[[fileResolverCachingEnabled]]`@fileResolverCachingEnabled`|`Boolean`|+++
-Set whether the Vert.x file resolver uses caching for classpath resources.
-
- Deprecated. Use FileSystemOptions instead.
-+++
 |[[fileSystemOptions]]`@fileSystemOptions`|`link:dataobjects.html#FileSystemOptions[FileSystemOptions]`|+++
 Set the file system options
 +++
@@ -7011,6 +7307,7 @@ Set wether to prefer the native transport to the JDK transport.
 |[[quorumSize]]`@quorumSize`|`Number (int)`|+++
 Set the quorum size to be used when HA is enabled.
 +++
+|[[tracingOptions]]`@tracingOptions`|`link:dataobjects.html#TracingOptions[TracingOptions]`|-
 |[[warningExceptionTime]]`@warningExceptionTime`|`Number (long)`|+++
 Set the threshold value above this, the blocked warning contains a stack trace. in link.
  The default value of link is
@@ -7182,10 +7479,10 @@ Set the maximum requests allowed in the wait queue, any requests beyond the max 
  a ConnectionPoolTooBusyException.  If the value is set to a negative number then the queue will be unbounded.
 +++
 |[[maxWebsocketFrameSize]]`@maxWebsocketFrameSize`|`Number (int)`|+++
-Set the max websocket frame size
+Set the max WebSocket frame size
 +++
 |[[maxWebsocketMessageSize]]`@maxWebsocketMessageSize`|`Number (int)`|+++
-Set the max websocket message size
+Set the max WebSocket message size
 +++
 |[[metricsName]]`@metricsName`|`String`|+++
 Set the metrics name identifying the reported metrics, useful for grouping metrics
@@ -7235,9 +7532,12 @@ Set the value of reuse port.
 Set the TCP send buffer size
 +++
 |[[sendUnmaskedFrames]]`@sendUnmaskedFrames`|`Boolean`|+++
-Set true when the client wants to skip frame masking.
- You may want to set it true on server by server websocket communication: In this case you are by passing RFC6455 protocol.
- It's false as default.
+Set <code>true</code> when the client wants to skip frame masking.
+ <p>
+ You may want to set it <code>true</code> on server by server WebSocket communication: in this case you are by passing
+ RFC6455 protocol.
+ <p>
+ It's <code>false</code> as default.
 +++
 |[[soLinger]]`@soLinger`|`Number (int)`|+++
 Set whether SO_linger keep alive is enabled
@@ -7273,16 +7573,16 @@ Set the trust options in jks format, aka Java truststore
 Set whether compression is enabled
 +++
 |[[tryUsePerFrameWebsocketCompression]]`@tryUsePerFrameWebsocketCompression`|`Boolean`|+++
-Set option to offer per frame WebSocket compression.
+Set whether the client will offer the WebSocket per-frame deflate compression extension.
 +++
 |[[tryUsePerMessageWebsocketCompression]]`@tryUsePerMessageWebsocketCompression`|`Boolean`|+++
-Set option to offer per message WebSocket compression.
+Set whether the client will offer the WebSocket per-message deflate compression extension.
++++
+|[[tryWebsocketDeflateFrameCompression]]`@tryWebsocketDeflateFrameCompression`|`Boolean`|+++
+
 +++
 |[[useAlpn]]`@useAlpn`|`Boolean`|+++
 Set the ALPN usage.
-+++
-|[[usePooledBuffers]]`@usePooledBuffers`|`Boolean`|+++
-Set whether Netty pooled buffers are enabled
 +++
 |[[userAgent]]`@userAgent`|`String`|+++
 Sets the Web Client user agent header. Defaults to Vert.x-WebClient/&lt;version&gt;.
@@ -7294,13 +7594,15 @@ Sets whether the Web Client should send a user agent header. Defaults to true.
 Set whether hostname verification is enabled
 +++
 |[[websocketCompressionAllowClientNoContext]]`@websocketCompressionAllowClientNoContext`|`Boolean`|+++
-Set the WebSocket compression allow client no context option.
+Set whether the <code>client_no_context_takeover</code> parameter of the WebSocket per-message
+ deflate compression extension will be offered.
 +++
 |[[websocketCompressionLevel]]`@websocketCompressionLevel`|`Number (int)`|+++
-Set WebSocket compression level
+Set the Websocket deflate compression level.
 +++
 |[[websocketCompressionRequestServerNoContext]]`@websocketCompressionRequestServerNoContext`|`Boolean`|+++
-Set the WebSocket compression server no context option
+Set whether the <code>server_no_context_takeover</code> parameter of the WebSocket per-message
+ deflate compression extension will be offered.
 +++
 |===
 

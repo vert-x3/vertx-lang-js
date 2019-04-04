@@ -186,13 +186,16 @@ utils.convParamMapObject = function(val) {
   }
 };
 
-utils.convParamMapDataObject = function(arr, constructor) {
+utils.convParamMapDataObject = function(arr, decoder, cast) {
   if (arr) {
     var newmap = {};
     for (var key in arr) {
       if (arr.hasOwnProperty(key)) {
         var val = arr[key];
-        newmap[key] = val != null ? constructor(new JsonObject(JSON.stringify(val))) : null;
+        if (cast !== undefined)
+          newmap[key] = val != null ? decoder.decode(cast(JSON.stringify(val))) : null;
+        else
+          newmap[key] = val != null ? decoder.decode(val) : null;
       }
     }
     return newmap;
@@ -252,13 +255,16 @@ utils.convParamListObject = function(arr) {
   }
 };
 
-utils.convParamListDataObject = function(arr, constructor) {
+utils.convParamListDataObject = function(arr, decoder, cast) {
   if (arr) {
     var len = arr.length;
     var newarr = [];
     for (var i = 0; i < len; i++) {
       var elem = arr[i];
-      newarr[i] = elem != null ? constructor(new JsonObject(JSON.stringify(elem))) : null;
+      if (cast !== undefined)
+        newarr[i] = elem != null ? decoder.decode(cast(JSON.stringify(elem))) : null;
+      else
+        newarr[i] = elem != null ? decoder.decode(elem) : null;
     }
     return newarr;
   } else {
@@ -292,8 +298,8 @@ utils.convParamSetJsonArray = function(arr) {
   return arr == null ? null : new ListConverterSet(utils.convParamListJsonArray(arr));
 };
 
-utils.convParamSetDataObject = function(arr, constructor) {
-  return arr == null ? null : new ListConverterSet(utils.convParamListDataObject(arr, constructor));
+utils.convParamSetDataObject = function(arr, decoder, cast) {
+  return arr == null ? null : new ListConverterSet(utils.convParamListDataObject(arr, decoder, cast));
 };
 
 utils.convParamSetEnum = function(arr, constructor) {
@@ -423,9 +429,12 @@ utils.convReturnEnum = function(jVal) {
 };
 
 // Convert a DataObject return value
-utils.convReturnDataObject = function(dataObject) {
+utils.convReturnDataObject = function(dataObject, codec, isJson) {
   if (dataObject != null) {
-    return utils.convReturnJson(dataObject.toJson());
+    if (isJson)
+      return utils.convReturnJson(codec.encode(dataObject));
+    else
+      return codec.encode(dataObject);
   }
   return null;
 };
@@ -440,8 +449,8 @@ utils.convReturnListSetVertxGen = function(jList, constructorFunction) {
 };
 
 // Convert a list/set containing data object return
-utils.convReturnListSetDataObject = function(jList) {
-  return utils.convReturnListSet(jList, function(elem) { return JSON.parse(elem.toJson().encode()); });
+utils.convReturnListSetDataObject = function(jList, encoder, isJson) {
+  return utils.convReturnListSet(jList, function(elem) { return (isJson) ? JSON.parse(encoder.encode(elem).encode()) : encoder.encode(elem); });
 };
 
 // Convert a list/set containing enum return
@@ -471,13 +480,21 @@ utils.convReturnListSet = function(jList, converter) {
   }
 };
 
-utils.convReturnMapDataObject = function(jMap, constructorFunction) {
+utils.convReturnMapDataObject = function(jMap, encoder, decoder, isJsonObject, isJsonArray) {
   return utils.convReturnMap(jMap,
     function(elem) {
-      return JSON.parse(elem.toJson().encode());
+      if (isJsonArray || isJsonObject)
+        return JSON.parse(encoder.encode(elem).encode());
+      else
+        return encoder.encode(elem);
     },
     function(elem) {
-      return constructorFunction(new JsonObject(JSON.stringify(elem)));
+      if (isJsonArray)
+        return decoder.decode(new JsonArray(JSON.stringify(elem)));
+      else if (isJsonObject)
+        return decoder.decode(new JsonObject(JSON.stringify(elem)));
+      else
+        return decoder.decode(JSON.stringify(elem));
     });
 }
 

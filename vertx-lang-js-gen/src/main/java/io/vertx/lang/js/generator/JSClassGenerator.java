@@ -234,7 +234,8 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
       } else if (elementKind == OBJECT) {
         return String.format("utils.convReturnListSetObject(%s)", templ);
       } else if (elementKind == DATA_OBJECT) {
-        return String.format("utils.convReturnListSetDataObject(%s)", templ);
+        String isJson = (((DataObjectTypeInfo)elementType).getTargetJsonType().getKind().json) ? "true" : "false";
+        return String.format("utils.convReturnListSetDataObject(%s, Java.type('%s').INSTANCE, %s)", templ, ((DataObjectTypeInfo)elementType).getJsonEncoderFQCN(), isJson);
       } else if (elementKind == ENUM) {
         return String.format("utils.convReturnListSetEnum(%s)", templ);
       } else if (elementKind == API) {
@@ -256,7 +257,14 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
       } else if (elementKind == ENUM) {
         return String.format("utils.convReturnMap(%s, function(elem) { return elem.toString(); })", templ);
       } else if (elementKind == DATA_OBJECT) {
-        return String.format("utils.convReturnMapDataObject(%s, %s)", templ, elementType.getSimpleName());
+        DataObjectTypeInfo doTypeInfo = (DataObjectTypeInfo)elementType;
+        return String.format("utils.convReturnMapDataObject(%s, Java.type('%s').INSTANCE, Java.type('%s').INSTANCE, %s, %s)",
+          templ,
+          doTypeInfo.getJsonEncoderFQCN(),
+          doTypeInfo.getJsonDecoderFQCN(),
+          (doTypeInfo.getTargetJsonType().getKind() == JSON_OBJECT) ? "true" : "false",
+          (doTypeInfo.getTargetJsonType().getKind() == JSON_ARRAY) ? "true" : "false"
+        );
       } else {
         return String.format("utils.convReturnMapUnknown(%s)", templ);
       }
@@ -296,7 +304,11 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
     } else if (kind == ENUM) {
       return String.format("utils.convReturnEnum(%s)", templ);
     } else if (kind == DATA_OBJECT) {
-      return String.format("utils.convReturnDataObject(%s)", templ);
+      return String.format("utils.convReturnDataObject(%s, Java.type('%s').INSTANCE, %s)",
+        templ,
+        ((DataObjectTypeInfo)returnType).getJsonEncoderFQCN(),
+        ((DataObjectTypeInfo)returnType).getTargetJsonType().getKind().json ? "true" : "false"
+      );
     } else if (kind == THROWABLE) {
       return String.format("utils.convReturnThrowable(%s)", templ);
     } else if (kind == HANDLER) {
@@ -336,6 +348,7 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
     //The top level vars for the module
     writer.println("var io = Packages.io;");
     writer.println("var JsonObject = io.vertx.core.json.JsonObject;");
+    writer.println("var JsonArray = io.vertx.core.json.JsonArray;");
     writer.format("var J%s = Java.type('%s');\n", type.getSimpleName(), type.getName());
     for (ClassTypeInfo dataObjectType : model.getReferencedDataObjectTypes()) {
       writer.format("var %s = Java.type('%s');\n", dataObjectType.getSimpleName(), dataObjectType.getName());

@@ -213,7 +213,13 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
         writer.format("utils.convParamJsonArray(%s)", unwrappedName);
         break;
       case DATA_OBJECT:
-        writer.format("%s  != null ? new %s(new JsonObject(Java.asJSONCompatible(%s))) : null", unwrappedName, unwrappedType.getSimpleName(), unwrappedName);
+        DataObjectTypeInfo doTypeInfo = (DataObjectTypeInfo) unwrappedType;
+        if (doTypeInfo.getTargetJsonType().getKind() == JSON_OBJECT)
+          writer.format("%s != null ? Java.type('%s').INSTANCE.decode(new JsonObject(Java.asJSONCompatible(%s))) : null", unwrappedName, doTypeInfo.getJsonDecoderFQCN(), unwrappedName);
+        else if (doTypeInfo.getTargetJsonType().getKind() == JSON_ARRAY)
+          writer.format("%s != null ? Java.type('%s').INSTANCE.decode(new JsonArray(Java.asJSONCompatible(%s))) : null", unwrappedName, doTypeInfo.getJsonDecoderFQCN(), unwrappedName);
+        else
+          writer.format("%s != null ? Java.type('%s').INSTANCE.decode(Java.asJSONCompatible(%s)) : null", unwrappedName, doTypeInfo.getJsonDecoderFQCN(), unwrappedName);
         break;
       case ENUM:
         if (param.isNullable()) {
@@ -265,7 +271,13 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
         } else if (argKind == JSON_ARRAY) {
           writer.format("utils.convParam%sJsonArray(%s)", container, unwrappedName);
         } else if (argKind == DATA_OBJECT) {
-          writer.format("utils.convParam%sDataObject(%s, function(json) { return new %s(json); })", container, unwrappedName, arg.getSimpleName());
+          DataObjectTypeInfo doArgTypeInfo = (DataObjectTypeInfo) arg;
+          String cast =
+            (doArgTypeInfo.getTargetJsonType().getKind() == JSON_OBJECT) ?
+              ", function(str) { return new JsonObject(str); }" :
+              (doArgTypeInfo.getTargetJsonType().getKind() == JSON_ARRAY) ?
+                ", function(str) { return new JsonArray(str); }" : "";
+          writer.format("utils.convParam%sDataObject(%s, Java.type('%s').INSTANCE%s)", container, unwrappedName, doArgTypeInfo.getJsonDecoderFQCN(), cast);
         } else if (argKind == ENUM) {
           writer.format("utils.convParam%sEnum(%s, function(val) { return Packages.%s.valueOf(val); })", container, unwrappedName, arg.getName());
         } else if (argKind == OBJECT) {
@@ -299,7 +311,13 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
         } else if (argKind == OBJECT) {
           writer.format("utils.convParamMapObject(%s)", unwrappedName);
         } else if (argKind == DATA_OBJECT) {
-          writer.format("utils.convParamMapDataObject(%s, function(json) { return new %s(json); })", unwrappedName, arg.getSimpleName());
+          DataObjectTypeInfo doArgTypeInfo = (DataObjectTypeInfo) arg;
+          String cast =
+            (doArgTypeInfo.getTargetJsonType().getKind() == JSON_OBJECT) ?
+              ", function(str) { return new JsonObject(str); }" :
+              (doArgTypeInfo.getTargetJsonType().getKind() == JSON_ARRAY) ?
+                ", function(str) { return new JsonArray(str); }" : "";
+          writer.format("utils.convParamMapDataObject(%s, Java.type('%s').INSTANCE%s)", unwrappedName, doArgTypeInfo.getJsonDecoderFQCN(), cast);
         } else if (argKind == ENUM) {
           writer.format("utils.convParamMapEnum(%s, function(val) { return Packages.%s.valueOf(val); })", unwrappedName, arg.getName());
         } else {
@@ -444,91 +462,7 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
             } else {
               writer.print(" && ");
             }
-            switch (param.getType().getKind()) {
-              case PRIMITIVE:
-              case BOXED_PRIMITIVE:
-                if (param.isNullable()) {
-                  writer.print("(");
-                }
-                writer.format("typeof __args[%s] ===", cnt);
-                String paramSimpleName = param.getType().getSimpleName();
-                if ("boolean".equalsIgnoreCase(paramSimpleName)) {
-                  writer.print("'boolean'");
-                } else if ("char".equals(paramSimpleName) || "Character".equals(paramSimpleName)) {
-                  writer.print("'string'");
-                } else {
-                  writer.print("'number'");
-                }
-                if (param.isNullable()) {
-                  writer.format(" || __args[%s] == null)", cnt);
-                }
-                break;
-              case STRING:
-              case ENUM:
-                if (param.isNullable()) {
-                  writer.print("(");
-                }
-                writer.format("typeof __args[%s] === 'string'", cnt);
-                if (param.isNullable()) {
-                  writer.format(" || __args[%s] == null)", cnt);
-                }
-                break;
-              case CLASS_TYPE:
-                writer.format("typeof __args[%s] === 'function'", cnt);
-                break;
-              case API:
-                writer.format("typeof __args[%s] === 'object' && ", cnt);
-                if (param.isNullable()) {
-                  writer.format("(__args[%s] == null || ", cnt);
-                }
-                writer.format("__args[%s]._jdel", cnt);
-                if (param.isNullable()) {
-                  writer.print(")");
-                }
-                break;
-              case JSON_ARRAY:
-              case LIST:
-              case SET:
-                writer.format("typeof __args[%s] === 'object' && ", cnt);
-                if (param.isNullable()) {
-                  writer.print("(");
-                }
-                writer.format("__args[%s] instanceof Array", cnt);
-                if (param.isNullable()) {
-                  writer.format(" || __args[%s] == null)", cnt);
-                }
-                break;
-              case HANDLER:
-                if (param.isNullable()) {
-                  writer.print("(");
-                }
-                writer.format("typeof __args[%s] === 'function'", cnt);
-                if (param.isNullable()) {
-                  writer.format(" || __args[%s] == null)", cnt);
-                }
-                break;
-              case OBJECT:
-                if (param.getType().isVariable() && ((TypeVariableInfo) param.getType()).isClassParam()) {
-                  writer.format("j_%s.accept(__args[%s])", param.getType().getName(), cnt);
-                } else {
-                  writer.format("typeof __args[%s] !== 'function'", cnt);
-                }
-                break;
-              case FUNCTION:
-                writer.format("typeof __args[%s] === 'function'", cnt);
-                break;
-              case THROWABLE:
-                writer.format("typeof __args[%s] === 'object'", cnt);
-                break;
-              default:
-                if (!param.isNullable()) {
-                  writer.print("(");
-                }
-                writer.format("typeof __args[%s] === 'object'", cnt);
-                if (!param.isNullable()) {
-                  writer.format(" && __args[%s] != null)", cnt);
-                }
-            }
+            writeConditionParamType(param.getType(), param.isNullable(), cnt, writer);
             cnt++;
           }
           writer.println(") {");
@@ -547,6 +481,97 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
         writer.println("};");
         writer.println();
       }
+    }
+  }
+
+  private void writeConditionParamType(TypeInfo paramTypeInfo, boolean isNullable, int cnt, CodeWriter writer) {
+    switch (paramTypeInfo.getKind()) {
+      case PRIMITIVE:
+      case BOXED_PRIMITIVE:
+        if (isNullable) {
+          writer.print("(");
+        }
+        writer.format("typeof __args[%s] ===", cnt);
+        String paramSimpleName = paramTypeInfo.getSimpleName();
+        if ("boolean".equalsIgnoreCase(paramSimpleName)) {
+          writer.print("'boolean'");
+        } else if ("char".equals(paramSimpleName) || "Character".equals(paramSimpleName)) {
+          writer.print("'string'");
+        } else {
+          writer.print("'number'");
+        }
+        if (isNullable) {
+          writer.format(" || __args[%s] == null)", cnt);
+        }
+        break;
+      case STRING:
+      case ENUM:
+        if (isNullable) {
+          writer.print("(");
+        }
+        writer.format("typeof __args[%s] === 'string'", cnt);
+        if (isNullable) {
+          writer.format(" || __args[%s] == null)", cnt);
+        }
+        break;
+      case CLASS_TYPE:
+        writer.format("typeof __args[%s] === 'function'", cnt);
+        break;
+      case API:
+        writer.format("typeof __args[%s] === 'object' && ", cnt);
+        if (isNullable) {
+          writer.format("(__args[%s] == null || ", cnt);
+        }
+        writer.format("__args[%s]._jdel", cnt);
+        if (isNullable) {
+          writer.print(")");
+        }
+        break;
+      case JSON_ARRAY:
+      case LIST:
+      case SET:
+        writer.format("typeof __args[%s] === 'object' && ", cnt);
+        if (isNullable) {
+          writer.print("(");
+        }
+        writer.format("__args[%s] instanceof Array", cnt);
+        if (isNullable) {
+          writer.format(" || __args[%s] == null)", cnt);
+        }
+        break;
+      case HANDLER:
+        if (isNullable) {
+          writer.print("(");
+        }
+        writer.format("typeof __args[%s] === 'function'", cnt);
+        if (isNullable) {
+          writer.format(" || __args[%s] == null)", cnt);
+        }
+        break;
+      case OBJECT:
+        if (paramTypeInfo.isVariable() && ((TypeVariableInfo) paramTypeInfo).isClassParam()) {
+          writer.format("j_%s.accept(__args[%s])", paramTypeInfo.getName(), cnt);
+        } else {
+          writer.format("typeof __args[%s] !== 'function'", cnt);
+        }
+        break;
+      case FUNCTION:
+        writer.format("typeof __args[%s] === 'function'", cnt);
+        break;
+      case THROWABLE:
+        writer.format("typeof __args[%s] === 'object'", cnt);
+        break;
+      case DATA_OBJECT:
+        writeConditionParamType(((DataObjectTypeInfo)paramTypeInfo).getTargetJsonType(), isNullable, cnt, writer);
+        break;
+      default:
+        if (!isNullable) {
+          writer.print("(");
+        }
+        writer.format("typeof __args[%s] === 'object'", cnt);
+        if (!isNullable) {
+          writer.format(" && __args[%s] != null)", cnt);
+        }
     }
   }
 
