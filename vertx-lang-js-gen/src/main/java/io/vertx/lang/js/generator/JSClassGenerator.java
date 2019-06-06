@@ -276,6 +276,8 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
       } else {
         return templ;
       }
+    } else if (returnType.getName().equals(Number.class.getCanonicalName())) {
+      return templ;
     } else if (kind == API) {
       StringWriter buffer = new StringWriter();
       PrintWriter writer = new PrintWriter(buffer);

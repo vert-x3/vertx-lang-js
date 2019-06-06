@@ -80,6 +80,7 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
    * Generate the JSDoc type of a type
    */
   protected String getJSDocType(TypeInfo type) {
+    if (type.getName().equals(Number.class.getCanonicalName())) return "number";
     switch (type.getKind()) {
       case STRING:
         return "string";
@@ -95,8 +96,9 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
           default:
             return "number";
         }
-      case JSON_OBJECT:
       case DATA_OBJECT:
+        return getJSDocType(((DataObjectTypeInfo)type).getTargetJsonType());
+      case JSON_OBJECT:
       case ENUM:
       case OBJECT:
         return "Object";
@@ -355,6 +357,11 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
             break;
         }
         break;
+      case OTHER:
+        if (unwrappedType.getName().equals(Number.class.getCanonicalName())) {
+          writer.print(unwrappedName);
+          break;
+        }
       default:
         if (param.isNullable()) {
           writer.format("%s == null ? null : ", unwrappedName);
@@ -564,6 +571,11 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
       case DATA_OBJECT:
         writeConditionParamType(((DataObjectTypeInfo)paramTypeInfo).getTargetJsonType(), isNullable, cnt, writer);
         break;
+      case OTHER:
+        if (paramTypeInfo.getName().equals(Number.class.getCanonicalName())) {
+          writer.format("typeof __args[%s] === 'number'", cnt);
+          break;
+        }
       default:
         if (!isNullable) {
           writer.print("(");
