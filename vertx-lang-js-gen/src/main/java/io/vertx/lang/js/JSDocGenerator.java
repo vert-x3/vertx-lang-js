@@ -17,21 +17,23 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
 /**
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
 public class JSDocGenerator implements DocGenerator {
 
-  private TypeMirrorFactory factory;
   private CodeTranslator translator;
-  private ProcessingEnvironment env;
+  private Elements elementUtils;
+  private Types typeUtils;
 
   @Override
   public void init(ProcessingEnvironment processingEnv) {
-    factory = new TypeMirrorFactory(processingEnv.getElementUtils(), processingEnv.getTypeUtils());
     translator = new CodeTranslator(processingEnv);
-    env = processingEnv;
+    elementUtils = processingEnv.getElementUtils();
+    typeUtils = processingEnv.getTypeUtils();
   }
 
   @Override
@@ -52,6 +54,7 @@ public class JSDocGenerator implements DocGenerator {
 
   @Override
   public String resolveTypeLink(TypeElement elt, Coordinate coordinate) {
+    TypeMirrorFactory factory = new TypeMirrorFactory(elementUtils, typeUtils, elementUtils.getPackageOf(elt));
     TypeInfo type;
     try {
       type = factory.create(elt.asType());
@@ -101,6 +104,7 @@ public class JSDocGenerator implements DocGenerator {
 
   @Override
   public String resolveLabel(Element elt, String defaultLabel) {
+    TypeMirrorFactory factory = new TypeMirrorFactory(elementUtils, typeUtils, elementUtils.getPackageOf(elt));
     if (elt.getKind() == ElementKind.METHOD) {
       TypeInfo type = factory.create(elt.getEnclosingElement().asType());
       if (type.getKind() == ClassKind.DATA_OBJECT) {
