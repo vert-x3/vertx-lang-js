@@ -18,6 +18,7 @@ package io.vertx.lang.js;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
+import io.vertx.core.Promise;
 import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
 import io.vertx.core.spi.VerticleFactory;
@@ -96,7 +97,7 @@ public class JSVerticleFactory implements VerticleFactory {
     }
 
     @Override
-    public void start(Future<Void> startFuture) throws Exception {
+    public void start(Promise<Void> startFuture) throws Exception {
 
       /*
       NOTE:
@@ -119,7 +120,7 @@ public class JSVerticleFactory implements VerticleFactory {
     }
 
     @Override
-    public void stop(Future<Void> stopFuture) throws Exception {
+    public void stop(Promise<Void> stopFuture) throws Exception {
       if (functionExists(VERTX_STOP_FUNCTION)) {
         exports.callMember(VERTX_STOP_FUNCTION);
         stopFuture.complete();
@@ -154,7 +155,7 @@ public class JSVerticleFactory implements VerticleFactory {
       }
 
       try {
-        futureJSClass = (ScriptObjectMirror) engine.eval("require('vertx-js/future');");
+        futureJSClass = (ScriptObjectMirror) engine.eval("require('vertx-js/promise');");
         // Put the globals in
         engine.put("__jvertx", vertx);
         String globs =
