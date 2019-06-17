@@ -178,7 +178,7 @@ public class ServiceDiscoveryTest {
 
     vertx.deployVerticle("it/discovery/polyglot/my-verticle.js", deployed -> {
 
-      vertx.eventBus().<JsonObject>send("http-ref", "", reply -> {
+      vertx.eventBus().<JsonObject>request("http-ref", "", reply -> {
         if (! reply.succeeded()) {
           reply.cause().printStackTrace();
           tc.fail(reply.cause());
@@ -192,7 +192,7 @@ public class ServiceDiscoveryTest {
         http_ref.complete();
       });
 
-      vertx.eventBus().<JsonObject>send("http-sugar", "", reply -> {
+      vertx.eventBus().<JsonObject>request("http-sugar", "", reply -> {
         tc.assertTrue(reply.succeeded());
         tc.assertTrue(reply.result().body().getString("client_del").contains("HttpClient"));
         tc.assertTrue(reply.result().body().getJsonArray("bindings").isEmpty());
@@ -200,7 +200,7 @@ public class ServiceDiscoveryTest {
         http_sugar.complete();
       });
 
-      vertx.eventBus().<JsonObject>send("web-ref", "", reply -> {
+      vertx.eventBus().<JsonObject>request("web-ref", "", reply -> {
         tc.assertTrue(reply.succeeded());
         tc.assertTrue(reply.result().body().getString("ref_del").contains("HttpEndpointReference"));
         tc.assertTrue(reply.result().body().getString("client_del").contains("WebClient"));
@@ -210,7 +210,7 @@ public class ServiceDiscoveryTest {
         web_ref.complete();
       });
 
-      vertx.eventBus().<JsonObject>send("web-sugar", "", reply -> {
+      vertx.eventBus().<JsonObject>request("web-sugar", "", reply -> {
         tc.assertTrue(reply.succeeded());
         tc.assertTrue(reply.result().body().getString("client_del").contains("WebClient"));
         tc.assertTrue(reply.result().body().getJsonArray("bindings").isEmpty());
@@ -218,7 +218,7 @@ public class ServiceDiscoveryTest {
         web_sugar.complete();
       });
 
-      vertx.eventBus().<JsonObject>send("service-sugar", "", reply -> {
+      vertx.eventBus().<JsonObject>request("service-sugar", "", reply -> {
         tc.assertTrue(reply.succeeded());
         tc.assertTrue(reply.result().body().getString("client_del").contains("HelloServiceVertxEBProxy"));
         tc.assertTrue(reply.result().body().getString("client").contains("[object"));
@@ -227,7 +227,7 @@ public class ServiceDiscoveryTest {
         svc_sugar.complete();
       });
 
-      vertx.eventBus().<JsonObject>send("service-ref", "", reply -> {
+      vertx.eventBus().<JsonObject>request("service-ref", "", reply -> {
         tc.assertTrue(reply.succeeded());
         tc.assertTrue(reply.result().body().getString("ref_del").contains("EventBusServiceReference"));
         tc.assertTrue(reply.result().body().getString("client_del").contains("HelloServiceVertxEBProxy"));
@@ -238,7 +238,7 @@ public class ServiceDiscoveryTest {
         svc_ref.complete();
       });
 
-      vertx.eventBus().<JsonObject>send("ds-sugar", "", reply -> {
+      vertx.eventBus().<JsonObject>request("ds-sugar", "", reply -> {
         tc.assertTrue(reply.succeeded());
         tc.assertTrue(reply.result().body().getString("client_del").contains("JDBCClient"));
         tc.assertTrue(reply.result().body().getJsonArray("bindings").isEmpty());
@@ -246,7 +246,7 @@ public class ServiceDiscoveryTest {
         ds_sugar.complete();
       });
 
-      vertx.eventBus().<JsonObject>send("ds-ref", "", reply -> {
+      vertx.eventBus().<JsonObject>request("ds-ref", "", reply -> {
         tc.assertTrue(reply.succeeded());
         tc.assertTrue(reply.result().body().getString("ref_del").contains("JdbcServiceReference"));
         tc.assertTrue(reply.result().body().getString("client_del").contains("JDBCClientImpl"));
@@ -255,7 +255,7 @@ public class ServiceDiscoveryTest {
         ds_ref.complete();
       });
 
-      vertx.eventBus().<JsonObject>send("redis-sugar", "", reply -> {
+      vertx.eventBus().<JsonObject>request("redis-sugar", "", reply -> {
         tc.assertTrue(reply.succeeded());
         tc.assertTrue(reply.result().body().getString("client_del").contains("RedisClient"));
         tc.assertTrue(reply.result().body().getJsonArray("bindings").isEmpty());
@@ -263,7 +263,7 @@ public class ServiceDiscoveryTest {
         redis_sugar.complete();
       });
 
-      vertx.eventBus().<JsonObject>send("redis-ref", "", reply -> {
+      vertx.eventBus().<JsonObject>request("redis-ref", "", reply -> {
         tc.assertTrue(reply.succeeded());
         tc.assertTrue(reply.result().body().getString("ref_del").contains("RedisServiceReference"));
         tc.assertTrue(reply.result().body().getString("client_del").contains("RedisClient"));
@@ -272,7 +272,7 @@ public class ServiceDiscoveryTest {
         redis_ref.complete();
       });
 
-      vertx.eventBus().<JsonObject>send("mongo-sugar", "", reply -> {
+      vertx.eventBus().<JsonObject>request("mongo-sugar", "", reply -> {
         tc.assertTrue(reply.succeeded());
         tc.assertTrue(reply.result().body().getString("client_del").contains("MongoClient"));
         tc.assertTrue(reply.result().body().getJsonArray("bindings").isEmpty());
@@ -280,7 +280,7 @@ public class ServiceDiscoveryTest {
         mongo_sugar.complete();
       });
 
-      vertx.eventBus().<JsonObject>send("mongo-ref", "", reply -> {
+      vertx.eventBus().<JsonObject>request("mongo-ref", "", reply -> {
         tc.assertTrue(reply.succeeded());
         tc.assertTrue(reply.result().body().getString("ref_del").contains("MongoServiceReference"));
         tc.assertTrue(reply.result().body().getString("client_del").contains("MongoClientImpl"));
@@ -290,7 +290,7 @@ public class ServiceDiscoveryTest {
       });
 
 
-      vertx.eventBus().<JsonObject>send("source1-sugar", "", reply -> {
+      vertx.eventBus().<JsonObject>request("source1-sugar", "", reply -> {
         tc.assertTrue(reply.succeeded());
         tc.assertTrue(reply.result().body().getString("client_del").contains("HandlerRegistration"));
         tc.assertTrue(reply.result().body().getJsonArray("bindings").isEmpty());
@@ -298,7 +298,7 @@ public class ServiceDiscoveryTest {
         ms_sugar.complete();
       });
 
-      vertx.eventBus().<JsonObject>send("source1-ref", "", reply -> {
+      vertx.eventBus().<JsonObject>request("source1-ref", "", reply -> {
         tc.assertTrue(reply.succeeded());
         tc.assertTrue(reply.result().body().getString("ref_del").contains("MessageSourceReference"));
         tc.assertTrue(reply.result().body().getString("client_del").contains("HandlerRegistration"));
