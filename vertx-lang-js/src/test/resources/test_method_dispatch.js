@@ -10,7 +10,7 @@ function testObjectArgumentShouldIncreaseTheArgumentCount() {
   eb.consumer("the-address").handler(function (msg) {
     msg.reply(null);
   });
-  eb.send("the-address", "foo", function(msg, failure) {
+  eb.request("the-address", "foo", function(msg, failure) {
     latch.countDown();
   });
   Assert.assertTrue(latch.await(10, TimeUnit.SECONDS));
