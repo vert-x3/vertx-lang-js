@@ -7,6 +7,7 @@ import io.vertx.codegen.writer.CodeWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import static io.vertx.codegen.type.ClassKind.*;
@@ -160,28 +161,28 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
 
 
   @Override
-  protected void genMethodAdapter(ClassModel model, MethodInfo method, CodeWriter writer) {
+  protected void genMethodAdapter(ClassModel model, MethodInfo method, List<String> args, CodeWriter writer) {
     if (method.getReturnType().getKind() != VOID) {
       if (method.isFluent()) {
-        writer.format("%s ;\n", genMethodCall(model, method));
+        writer.format("%s ;\n", genMethodCall(model, method, args));
         writer.format("return %s;\n", method.isStaticMethod() ? model.getType().getSimpleName() : "that");
       } else if (method.isCacheReturn()) {
         writer
           .format("if (that.cached%s == null) {\n", method.getName())
           .indent()
-          .format("that.cached%s = %s;\n", method.getName(), convReturn(model, method, method.getReturnType(), genMethodCall(model, method)))
+          .format("that.cached%s = %s;\n", method.getName(), convReturn(model, method, method.getReturnType(), genMethodCall(model, method, args)))
           .unindent()
           .append("}\n")
           .format("return that.cached%s;\n", method.getName());
       } else {
-        writer.format("return %s ;\n", convReturn(model, method, method.getReturnType(), genMethodCall(model, method)));
+        writer.format("return %s ;\n", convReturn(model, method, method.getReturnType(), genMethodCall(model, method, args)));
       }
     } else {
-      writer.format("%s;\n", genMethodCall(model, method));
+      writer.format("%s;\n", genMethodCall(model, method, args));
     }
   }
 
-  private String genMethodCall(ClassModel model, MethodInfo method) {
+  private String genMethodCall(ClassModel model, MethodInfo method, List<String> args) {
     StringWriter sw = new StringWriter();
     PrintWriter writer = new PrintWriter(sw);
     String simpleName = model.getType().getSimpleName();
@@ -216,8 +217,7 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
       } else {
         writer.print(", ");
       }
-      boolean overloaded = model.getMethods().stream().map(MethodInfo::getName).count() > 1;
-      writer.print(convParam(model, method, "__args[" + (pcnt++) + "]", overloaded, param));
+      writer.print(convParam(model, method, args.get(pcnt++), param));
     }
     writer.print(")");
     return sw.toString();
@@ -332,11 +332,11 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
       if (type.getArg(0).getKind() == ASYNC_RESULT) {
         return String.format("utils.convReturnHandlerAsyncResult(%s, function(result) { return %s; })",
           templ,
-          convParam(model, method, null, false, new ParamInfo(0, "result", null, (((ParameterizedTypeInfo) (type).getArg(0))).getArg(0))));
+          convParam(model, method, "result", new ParamInfo(0, "result", null, (((ParameterizedTypeInfo) (type).getArg(0))).getArg(0))));
       } else {
         return String.format("utils.convReturnHandler(%s, function(result) { return %s; })",
           templ,
-          convParam(model, method, null, false, new ParamInfo(0, "result", null, type.getArg(0))));
+          convParam(model, method, "result", new ParamInfo(0, "result", null, type.getArg(0))));
       }
     } else if (returnType.isVariable() && (method != null && method.resolveClassTypeParam((TypeVariableInfo) returnType) != null)) {
       ParamInfo classTypeParam = method.resolveClassTypeParam((TypeVariableInfo) returnType);

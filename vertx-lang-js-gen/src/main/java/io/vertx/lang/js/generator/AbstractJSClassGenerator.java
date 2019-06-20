@@ -15,8 +15,10 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.util.*;
+import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static io.vertx.codegen.type.ClassKind.*;
 import static io.vertx.codegen.type.ClassKind.FUNCTION;
@@ -120,10 +122,9 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
     }
   }
 
-  protected String convParam(M model, MethodInfo method, String argName, boolean overloaded, ParamInfo param) {
+  protected String convParam(M model, MethodInfo method, String argName, ParamInfo param) {
     StringWriter buffer = new StringWriter();
     CodeWriter writer = new CodeWriter(buffer);
-    String paramName = overloaded ? argName : param.getName();
     ClassKind paramKind = param.getType().getKind();
     boolean funct = paramKind == FUNCTION;
     if (paramKind == HANDLER || funct) {
@@ -131,7 +132,7 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
       if (type.getArg(0).getKind() == ASYNC_RESULT) {
         ParameterizedTypeInfo asyncType = (ParameterizedTypeInfo) type.getArg(0);
         if (param.isNullable()) {
-          writer.format("%s == null ? null : ", paramName);
+          writer.format("%s == null ? null : ", argName);
         }
         writer.println("function(ar) {");
         writer.indent();
@@ -143,7 +144,7 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
         if (funct) {
           writer.print("jRet = ");
         }
-        writer.print(paramName);
+        writer.print(argName);
         writer.print("(");
         if ("java.lang.Void".equals(asyncType.getArg(0).getName())) {
           writer.print("null");
@@ -157,7 +158,7 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
         if (funct) {
           writer.print("jRet = ");
         }
-        writer.print(paramName);
+        writer.print(argName);
         writer.println("(null, ar.cause());");
         writer.unindent();
         writer.println("}");
@@ -167,10 +168,10 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
         writer.unindent();
         writer.print("}");
       } else if ("java.lang.Void".equals(type.getArg(0).getName())) {
-        writer.print(paramName);
+        writer.print(argName);
       } else {
         if (param.isNullable()) {
-          writer.print(paramName);
+          writer.print(argName);
           writer.print(" == null ? null : ");
         }
         writer.println("function(jVal) {");
@@ -178,7 +179,7 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
         if (funct) {
           writer.print("var jRet = ");
         }
-        writer.print(paramName);
+        writer.print(argName);
         writer.format("(%s);\n", convReturn(model, method, type.getArg(0), basicVal()));
         if (funct) {
           writer.format("return %s;\n", unwrapToJava(method, param, type.getArg(1), "jRet"));
@@ -187,7 +188,7 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
         writer.print("}");
       }
     } else {
-      writer.print(unwrapToJava(method, param, param.getType(), paramName));
+      writer.print(unwrapToJava(method, param, param.getType(), argName));
     }
     return buffer.toString();
   }
@@ -471,28 +472,18 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
         writer.indent();
         writer.println("var __args = arguments;");
         for (MethodInfo m : methodList) {
-          writer.print(mcnt++ == 0 ? "if" : " else if");
-          int paramSize = m.getParams().size();
-          writer.format(" (__args.length === %s", paramSize);
-          int cnt = 0;
-          if (paramSize > 0) {
-            writer.print(" && ");
+          genSwitchStatement(mcnt++ == 0, m, writer, () -> {
+            genMethodAdapter(model, m, genArgs(m, overloaded, m.getParams().size()), writer);
+          });
+          if (m.getKind() == MethodKind.FUTURE) {
+            MethodInfo copy = m.copy();
+            copy.getParams().remove(copy.getParams().size() - 1);
+            genSwitchStatement(mcnt++ == 0, copy, writer, () -> {
+              List<String> args = genArgs(m, overloaded, m.getParams().size() - 1);
+              args.add("function() { /* Ignore callback */ }");
+              genMethodAdapter(model, m, args, writer);
+            });
           }
-          first = true;
-          for (ParamInfo param : m.getParams()) {
-            if (first) {
-              first = false;
-            } else {
-              writer.print(" && ");
-            }
-            writeConditionParamType(param.getType(), param.isNullable(), cnt, writer);
-            cnt++;
-          }
-          writer.println(") {");
-          writer.indent();
-          genMethodAdapter(model, m, writer);
-          writer.unindent();
-          writer.print("}");
         }
         if (!genStatic) {
           writer.format(" else if (typeof __super_%s != 'undefined') {\n", method.getName());
@@ -505,6 +496,37 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
         writer.println();
       }
     }
+  }
+
+  private static List<String> genArgs(MethodInfo m, boolean overloaded, int size) {
+    IntFunction<String> argMapper;
+    if (overloaded) {
+      argMapper = i -> "__args[" + i + "]";
+    } else {
+      argMapper = i -> m.getParam(i).getName();
+    }
+    return IntStream.range(0, size).mapToObj(argMapper).collect(Collectors.toList());
+  }
+
+  private void genSwitchStatement(boolean first, MethodInfo m, CodeWriter writer, Runnable cb) {
+    writer.print(first ? "if" : " else if");
+    int paramSize = m.getParams().size();
+    writer.format(" (__args.length === %s", paramSize);
+    if (paramSize > 0) {
+      writer.print(" && ");
+    }
+    for (int idx = 0;idx < paramSize;idx++) {
+      ParamInfo param = m.getParam(idx);
+      if (idx > 0) {
+        writer.print(" && ");
+      }
+      writeConditionParamType(param.getType(), param.isNullable(), idx, writer);
+    }
+    writer.println(") {");
+    writer.indent();
+    cb.run();
+    writer.unindent();
+    writer.print("}");
   }
 
   private void writeConditionParamType(TypeInfo paramTypeInfo, boolean isNullable, int cnt, CodeWriter writer) {
@@ -603,7 +625,7 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
     }
   }
 
-  protected abstract void genMethodAdapter(M model, MethodInfo method, CodeWriter writer);
+  protected abstract void genMethodAdapter(M model, MethodInfo method, List<String> args, CodeWriter writer);
 
 
   protected void genLicenses(PrintWriter writer) {
