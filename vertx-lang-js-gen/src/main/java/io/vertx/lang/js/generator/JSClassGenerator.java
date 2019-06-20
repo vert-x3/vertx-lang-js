@@ -234,8 +234,13 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
       } else if (elementKind == OBJECT) {
         return String.format("utils.convReturnListSetObject(%s)", templ);
       } else if (elementKind == DATA_OBJECT) {
-        String isJson = (((DataObjectTypeInfo)elementType).getTargetJsonType().getKind().json) ? "true" : "false";
-        return String.format("utils.convReturnListSetDataObject(%s, Java.type('%s').INSTANCE, %s)", templ, ((DataObjectTypeInfo)elementType).getJsonEncoderFQCN(), isJson);
+        DataObjectTypeInfo doType = (DataObjectTypeInfo) elementType;
+        if (doType.isDataObjectAnnotatedType()) {
+          return String.format("utils.convReturnListSetDataObjectAnnotated(%s)", templ);
+        } else {
+          String isJson = (((DataObjectTypeInfo)elementType).getTargetJsonType().getKind().json) ? "true" : "false";
+          return String.format("utils.convReturnListSetWithJsonCodec(%s, Java.type('%s').INSTANCE, %s)", templ, doType.getJsonCodecInfo().getJsonEncoderFQCN(), isJson);
+        }
       } else if (elementKind == ENUM) {
         return String.format("utils.convReturnListSetEnum(%s)", templ);
       } else if (elementKind == API) {
@@ -258,13 +263,17 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
         return String.format("utils.convReturnMap(%s, function(elem) { return elem.toString(); })", templ);
       } else if (elementKind == DATA_OBJECT) {
         DataObjectTypeInfo doTypeInfo = (DataObjectTypeInfo)elementType;
-        return String.format("utils.convReturnMapDataObject(%s, Java.type('%s').INSTANCE, Java.type('%s').INSTANCE, %s, %s)",
-          templ,
-          doTypeInfo.getJsonEncoderFQCN(),
-          doTypeInfo.getJsonDecoderFQCN(),
-          (doTypeInfo.getTargetJsonType().getKind() == JSON_OBJECT) ? "true" : "false",
-          (doTypeInfo.getTargetJsonType().getKind() == JSON_ARRAY) ? "true" : "false"
-        );
+        if (doTypeInfo.isDataObjectAnnotatedType()) {
+          return String.format("utils.convReturnMapDataObjectAnnotated(%s, %s)", templ, elementType.getSimpleName());
+        } else {
+          return String.format("utils.convReturnMapWithJsonCodec(%s, Java.type('%s').INSTANCE, Java.type('%s').INSTANCE, %s, %s)",
+            templ,
+            doTypeInfo.getJsonCodecInfo().getJsonEncoderFQCN(),
+            doTypeInfo.getJsonCodecInfo().getJsonDecoderFQCN(),
+            (doTypeInfo.getTargetJsonType().getKind() == JSON_OBJECT) ? "true" : "false",
+            (doTypeInfo.getTargetJsonType().getKind() == JSON_ARRAY) ? "true" : "false"
+          );
+        }
       } else {
         return String.format("utils.convReturnMapUnknown(%s)", templ);
       }
@@ -306,11 +315,16 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
     } else if (kind == ENUM) {
       return String.format("utils.convReturnEnum(%s)", templ);
     } else if (kind == DATA_OBJECT) {
-      return String.format("utils.convReturnDataObject(%s, Java.type('%s').INSTANCE, %s)",
-        templ,
-        ((DataObjectTypeInfo)returnType).getJsonEncoderFQCN(),
-        ((DataObjectTypeInfo)returnType).getTargetJsonType().getKind().json ? "true" : "false"
-      );
+      DataObjectTypeInfo doType = (DataObjectTypeInfo) returnType;
+      if (doType.isDataObjectAnnotatedType()) {
+        return String.format("utils.convReturnDataObjectAnnotated(%s)", templ);
+      } else {
+        return String.format("utils.convReturnWithJsonCodec(%s, Java.type('%s').INSTANCE, %s)",
+          templ,
+          doType.getJsonCodecInfo().getJsonEncoderFQCN(),
+          doType.getTargetJsonType().getKind().json ? "true" : "false"
+        );
+      }
     } else if (kind == THROWABLE) {
       return String.format("utils.convReturnThrowable(%s)", templ);
     } else if (kind == HANDLER) {
