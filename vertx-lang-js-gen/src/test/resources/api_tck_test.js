@@ -882,6 +882,27 @@ function testCustomModule() {
   assertEquals("olleh", sub.reverse("hello"));
 }
 
+function testMethodWithHandlerAsyncResultTranslatedToFuture() {
+  var count = 0;
+  obj.methodWithHandlerAsyncResultUserTypes().setHandler(function(refedObj, err) {
+    Assert.assertNull(err);
+    assertEquals("cheetahs", refedObj.getString());
+    count++;
+  });
+  assertEquals(1, count);
+}
+
+function testMethodWithHandlerAsyncResultTranslatedToFutureFails() {
+  var count = 0;
+  obj.methodWithHandlerAsyncResultDataObject(true).setHandler(function(option, err) {
+    Assert.assertNull(option);
+    Assert.assertNotNull(err);
+    assertEquals("java.lang.Exception: foobar!", err.getMessage());
+    count++;
+  });
+  assertEquals(1, count);
+}
+
 if (typeof this[testName] === 'undefined') {
   throw "No such test: " + testName;
 }
