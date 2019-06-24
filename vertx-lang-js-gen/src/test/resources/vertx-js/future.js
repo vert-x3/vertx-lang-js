@@ -14,6 +14,9 @@
  * under the License.
  */
 
+/**
+ * This code was copied from generated code from vertx-lang-js module (target/generated-sources/apt/vertx-js)
+ */
 /** @module vertx-js/future */
 var utils = require('vertx-js/util/utils');
 var Promise = require('vertx-js/promise');
