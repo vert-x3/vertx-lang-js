@@ -15,5 +15,10 @@ public class AsyncStartTest extends JSTestBase {
   public void testAsyncStartStop() throws Exception {
     runTest();
   }
+
+  @Test
+  public void testAsyncStartStopWithFuture() throws Exception {
+    runTest();
+  }
 }
 

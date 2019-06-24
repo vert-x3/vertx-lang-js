@@ -32,4 +32,9 @@ public class EventBusTest extends JSTestBase {
   public void testSendBuffer() throws Exception {
     runTest();
   }
+
+  @Test
+  public void testSendReceiveWithFuture() throws Exception {
+    runTest();
+  }
 }
