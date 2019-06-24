@@ -357,8 +357,13 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
   private void genRequire(ClassModel model, PrintWriter writer) {
     ClassTypeInfo type = model.getType();
     writer.println("var utils = require('vertx-js/util/utils');");
+    boolean promiseAlreadyWrote = false;
     for (ClassTypeInfo referencedType : model.getReferencedTypes()) {
+      if (referencedType.getSimpleName().equals("Promise")) promiseAlreadyWrote = true;
       writer.format("var %s = require('%s');\n", referencedType.getSimpleName(), getModuleName(referencedType));
+    }
+    if (!promiseAlreadyWrote) {
+      writer.write("var Promise = require('vertx-js/promise');\n");
     }
     writer.println();
     //The top level vars for the module

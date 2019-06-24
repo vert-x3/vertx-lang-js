@@ -476,12 +476,19 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
             genMethodAdapter(model, m, genArgs(m, overloaded, m.getParams().size()), writer);
           });
           if (m.getKind() == MethodKind.FUTURE) {
-            MethodInfo copy = m.copy();
-            copy.getParams().remove(copy.getParams().size() - 1);
-            genSwitchStatement(mcnt++ == 0, copy, writer, () -> {
+            MethodInfo modifiedParamsMethodCopy = m.copy();
+            modifiedParamsMethodCopy.getParams().remove(modifiedParamsMethodCopy.getParams().size() - 1);
+            genSwitchStatement(mcnt++ == 0, modifiedParamsMethodCopy, writer, () -> {
+              MethodInfo modifiedReturnMethodCopy = m.copy();
+              modifiedReturnMethodCopy.setReturnType(VoidTypeInfo.INSTANCE);
+              modifiedReturnMethodCopy.setCacheReturn(false);
+              modifiedReturnMethodCopy.setFluent(false);
+              writer.write("var __prom = Promise.promise();\n");
+              writer.write("var __prom_completer_handler = function (result, cause) { if (cause === null) { __prom.complete(result); } else { __prom.fail(cause); } };\n");
               List<String> args = genArgs(m, overloaded, m.getParams().size() - 1);
-              args.add("function() { /* Ignore callback */ }");
-              genMethodAdapter(model, m, args, writer);
+              args.add("__prom_completer_handler");
+              genMethodAdapter(model, modifiedReturnMethodCopy, args, writer);
+              writer.write("return __prom.future();\n");
             });
           }
         }

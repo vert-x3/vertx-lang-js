@@ -299,4 +299,14 @@ public class ApiTCKTest extends JSTestBase {
   public void testCustomModule() throws Exception {
     runTest();
   }
+
+  @Test
+  public void testMethodWithHandlerAsyncResultTranslatedToFuture() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerAsyncResultTranslatedToFutureFails() throws Exception {
+    runTest();
+  }
 }
