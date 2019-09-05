@@ -2,9 +2,9 @@ package io.vertx.test.lang.js;
 
 import org.junit.Test;
 
-public class JsonCodecTCKTest extends JSTestBase {
+public class JsonMapperTCKTest extends JSTestBase {
 
-  @Override protected String getTestFile() { return "json_codec_tck_test.js"; }
+  @Override protected String getTestFile() { return "json_mapper_tck_test.js"; }
 
   @Test public void testMethodWithTypeToIntegerParam() throws Exception { runTest(); }
 

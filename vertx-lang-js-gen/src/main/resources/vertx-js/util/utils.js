@@ -201,16 +201,16 @@ utils.convParamMapDataObjectAnnotated = function(arr, constructor) {
   }
 };
 
-utils.convParamMapWithJsonCodec = function(arr, decoder, cast) {
+utils.convParamMapWithJsonMapper = function(arr, deserializer, cast) {
   if (arr) {
     var newmap = {};
     for (var key in arr) {
       if (arr.hasOwnProperty(key)) {
         var val = arr[key];
         if (cast !== undefined)
-          newmap[key] = val != null ? decoder.decode(cast(JSON.stringify(val))) : null;
+          newmap[key] = val != null ? deserializer.deserialize(cast(JSON.stringify(val))) : null;
         else
-          newmap[key] = val != null ? decoder.decode(val) : null;
+          newmap[key] = val != null ? deserializer.deserialize(val) : null;
       }
     }
     return newmap;
@@ -284,16 +284,16 @@ utils.convParamListDataObjectAnnotated = function(arr, constructor) {
   }
 };
 
-utils.convParamListWithJsonCodec = function(arr, decoder, cast) {
+utils.convParamListWithJsonMapper = function(arr, deserializer, cast) {
   if (arr) {
     var len = arr.length;
     var newarr = [];
     for (var i = 0; i < len; i++) {
       var elem = arr[i];
       if (cast !== undefined)
-        newarr[i] = elem != null ? decoder.decode(cast(JSON.stringify(elem))) : null;
+        newarr[i] = elem != null ? deserializer.deserialize(cast(JSON.stringify(elem))) : null;
       else
-        newarr[i] = elem != null ? decoder.decode(elem) : null;
+        newarr[i] = elem != null ? deserializer.deserialize(elem) : null;
     }
     return newarr;
   } else {
@@ -331,8 +331,8 @@ utils.convParamSetDataObjectAnnotated = function(arr, constructor) {
   return arr == null ? null : new ListConverterSet(utils.convParamListDataObjectAnnotated(arr, constructor));
 };
 
-utils.convParamSetWithJsonCodec = function(arr, decoder, cast) {
-  return arr == null ? null : new ListConverterSet(utils.convParamListWithJsonCodec(arr, decoder, cast));
+utils.convParamSetWithJsonMapper = function(arr, deserializer, cast) {
+  return arr == null ? null : new ListConverterSet(utils.convParamListWithJsonMapper(arr, deserializer, cast));
 };
 
 utils.convParamSetEnum = function(arr, constructor) {
@@ -462,12 +462,12 @@ utils.convReturnEnum = function(jVal) {
 };
 
 // Convert a DataObject return value
-utils.convReturnWithJsonCodec = function(dataObject, codec, isJson) {
+utils.convReturnWithJsonMapper = function(dataObject, mapper, isJson) {
   if (dataObject != null) {
     if (isJson)
-      return utils.convReturnJson(codec.encode(dataObject));
+      return utils.convReturnJson(mapper.serialize(dataObject));
     else
-      return codec.encode(dataObject);
+      return mapper.serialize(dataObject);
   }
   return null;
 };
@@ -490,8 +490,8 @@ utils.convReturnListSetVertxGen = function(jList, constructorFunction) {
 };
 
 // Convert a list/set containing data object with json codec return
-utils.convReturnListSetWithJsonCodec = function(jList, encoder, isJson) {
-  return utils.convReturnListSet(jList, function(elem) { return (isJson) ? JSON.parse(encoder.encode(elem).encode()) : encoder.encode(elem); });
+utils.convReturnListSetWithJsonMapper = function(jList, serializer, isJson) {
+  return utils.convReturnListSet(jList, function(elem) { return (isJson) ? JSON.parse(serializer.serialize(elem).encode()) : serializer.serialize(elem); });
 };
 
 // Convert a list/set containing data object annotated return
@@ -526,21 +526,21 @@ utils.convReturnListSet = function(jList, converter) {
   }
 };
 
-utils.convReturnMapWithJsonCodec = function(jMap, encoder, decoder, isJsonObject, isJsonArray) {
+utils.convReturnMapWithJsonMapper = function(jMap, serializer, deserializer, isJsonObject, isJsonArray) {
   return utils.convReturnMap(jMap,
     function(elem) {
       if (isJsonArray || isJsonObject)
-        return JSON.parse(encoder.encode(elem).encode());
+        return JSON.parse(serializer.serialize(elem).encode());
       else
-        return encoder.encode(elem);
+        return serializer.serialize(elem);
     },
     function(elem) {
       if (isJsonArray)
-        return decoder.decode(new JsonArray(JSON.stringify(elem)));
+        return deserializer.deserialize(new JsonArray(JSON.stringify(elem)));
       else if (isJsonObject)
-        return decoder.decode(new JsonObject(JSON.stringify(elem)));
+        return deserializer.deserialize(new JsonObject(JSON.stringify(elem)));
       else
-        return decoder.decode(JSON.stringify(elem));
+        return deserializer.deserialize(JSON.stringify(elem));
     });
 }
 

@@ -220,11 +220,11 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
         if (doTypeInfo.isDataObjectAnnotatedType()) {
           writer.format("%s  != null ? new %s(new JsonObject(Java.asJSONCompatible(%s))) : null", unwrappedName, unwrappedType.getSimpleName(), unwrappedName);
         } else if (doTypeInfo.getTargetJsonType().getKind() == JSON_OBJECT) {
-          writer.format("%s != null ? Java.type('%s').INSTANCE.decode(new JsonObject(Java.asJSONCompatible(%s))) : null", unwrappedName, doTypeInfo.getJsonCodecInfo().getJsonDecoderFQCN(), unwrappedName);
+          writer.format("%s != null ? Java.type('%s').INSTANCE.deserialize(new JsonObject(Java.asJSONCompatible(%s))) : null", unwrappedName, doTypeInfo.getJsonMapperInfo().getJsonDeserializerFQCN(), unwrappedName);
         } else if (doTypeInfo.getTargetJsonType().getKind() == JSON_ARRAY)
-          writer.format("%s != null ? Java.type('%s').INSTANCE.decode(new JsonArray(Java.asJSONCompatible(%s))) : null", unwrappedName, doTypeInfo.getJsonCodecInfo().getJsonDecoderFQCN(), unwrappedName);
+          writer.format("%s != null ? Java.type('%s').INSTANCE.deserialize(new JsonArray(Java.asJSONCompatible(%s))) : null", unwrappedName, doTypeInfo.getJsonMapperInfo().getJsonDeserializerFQCN(), unwrappedName);
         else {
-          writer.format("%s != null ? Java.type('%s').INSTANCE.decode(Java.asJSONCompatible(%s)) : null", unwrappedName, doTypeInfo.getJsonCodecInfo().getJsonDecoderFQCN(), unwrappedName);
+          writer.format("%s != null ? Java.type('%s').INSTANCE.deserialize(Java.asJSONCompatible(%s)) : null", unwrappedName, doTypeInfo.getJsonMapperInfo().getJsonDeserializerFQCN(), unwrappedName);
         }
         break;
       case ENUM:
@@ -286,7 +286,7 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
                 ", function(str) { return new JsonObject(str); }" :
                 (doArgTypeInfo.getTargetJsonType().getKind() == JSON_ARRAY) ?
                   ", function(str) { return new JsonArray(str); }" : "";
-            writer.format("utils.convParam%sWithJsonCodec(%s, Java.type('%s').INSTANCE%s)", container, unwrappedName, doArgTypeInfo.getJsonCodecInfo().getJsonDecoderFQCN(), cast);
+            writer.format("utils.convParam%sWithJsonMapper(%s, Java.type('%s').INSTANCE%s)", container, unwrappedName, doArgTypeInfo.getJsonMapperInfo().getJsonDeserializerFQCN(), cast);
           }
         } else if (argKind == ENUM) {
           writer.format("utils.convParam%sEnum(%s, function(val) { return Packages.%s.valueOf(val); })", container, unwrappedName, arg.getName());
@@ -331,9 +331,9 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
                 (doArgTypeInfo.getTargetJsonType().getKind() == JSON_ARRAY) ?
                   ", function(str) { return new JsonArray(str); }" : "";
             writer.format(
-              "utils.convParamMapWithJsonCodec(%s, Java.type('%s').INSTANCE%s)",
+              "utils.convParamMapWithJsonMapper(%s, Java.type('%s').INSTANCE%s)",
               unwrappedName,
-              doArgTypeInfo.getJsonCodecInfo().getJsonDecoderFQCN(),
+              doArgTypeInfo.getJsonMapperInfo().getJsonDeserializerFQCN(),
               cast
             );
           }

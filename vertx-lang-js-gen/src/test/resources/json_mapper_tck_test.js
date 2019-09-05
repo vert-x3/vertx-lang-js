@@ -4,48 +4,48 @@ var assertEquals = testUtils.assertEquals;
 var assertContains = testUtils.assertContains;
 var assertNull = Assert.assertNull;
 
-var JsonCodecTCK = require('testmodel-js/json_codec_tck');
-var jsonCodecTCK = new JsonCodecTCK(new Packages.io.vertx.codegen.testmodel.JsonCodecTCKImpl());
+var JsonMapperTCK = require('testmodel-js/json_mapper_tck');
+var jsonMapperTCK = new JsonMapperTCK(new Packages.io.vertx.codegen.testmodel.JsonMapperTCKImpl());
 
 var that = this;
 
 // JS number <-> Java Integer <-> MyPojoToInteger
 
 function testMethodWithTypeToIntegerParam() {
-  jsonCodecTCK.methodWithTypeToIntegerParam(1);
+  jsonMapperTCK.methodWithTypeToIntegerParam(1);
 }
 
 function testMethodWithListOfTypeToIntegerParam() {
-  jsonCodecTCK.methodWithListOfTypeToIntegerParam([1, 2]);
+  jsonMapperTCK.methodWithListOfTypeToIntegerParam([1, 2]);
 }
 
 function testMethodWithSetOfTypeToIntegerParam() {
-  jsonCodecTCK.methodWithSetOfTypeToIntegerParam([1, 2]);
+  jsonMapperTCK.methodWithSetOfTypeToIntegerParam([1, 2]);
 }
 
 function testMethodWithMapOfTypeToIntegerParam() {
-  jsonCodecTCK.methodWithMapOfTypeToIntegerParam({a: 1, b: 2});
+  jsonMapperTCK.methodWithMapOfTypeToIntegerParam({a: 1, b: 2});
 }
 
 function testMethodWithTypeToIntegerReturn() {
-  assertTypeToInteger(jsonCodecTCK.methodWithTypeToIntegerReturn());
+  assertTypeToInteger(jsonMapperTCK.methodWithTypeToIntegerReturn());
 }
 
 function testMethodWithListOfTypeToIntegerReturn() {
-  assertListSetTypeToInteger(jsonCodecTCK.methodWithListOfTypeToIntegerReturn());
+  assertListSetTypeToInteger(jsonMapperTCK.methodWithListOfTypeToIntegerReturn());
 }
 
 function testMethodWithSetOfTypeToIntegerReturn() {
-  assertListSetTypeToInteger(jsonCodecTCK.methodWithSetOfTypeToIntegerReturn());
+  assertListSetTypeToInteger(jsonMapperTCK.methodWithSetOfTypeToIntegerReturn());
 }
 
 function testMethodWithMapOfTypeToIntegerReturn() {
-  assertMapTypeToInteger(jsonCodecTCK.methodWithMapOfTypeToIntegerReturn());
+  assertMapTypeToInteger(jsonMapperTCK.methodWithMapOfTypeToIntegerReturn());
 }
 
 function testMethodWithHandlerTypeToIntegerParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerTypeToIntegerParam(function (result) {
+  jsonMapperTCK.methodWithHandlerTypeToIntegerParam(function (result) {
     assertTypeToInteger(result)
     count++
   })
@@ -54,7 +54,7 @@ function testMethodWithHandlerTypeToIntegerParam() {
 
 function testMethodWithHandlerListOfTypeToIntegerParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerListOfTypeToIntegerParam(function (result) {
+  jsonMapperTCK.methodWithHandlerListOfTypeToIntegerParam(function (result) {
     assertListSetTypeToInteger(result)
     count++
   })
@@ -63,7 +63,7 @@ function testMethodWithHandlerListOfTypeToIntegerParam() {
 
 function testMethodWithHandlerSetOfTypeToIntegerParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerSetOfTypeToIntegerParam(function (result) {
+  jsonMapperTCK.methodWithHandlerSetOfTypeToIntegerParam(function (result) {
     assertListSetTypeToInteger(result)
     count++
   })
@@ -72,7 +72,7 @@ function testMethodWithHandlerSetOfTypeToIntegerParam() {
 
 function testMethodWithHandlerMapOfTypeToIntegerParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerMapOfTypeToIntegerParam(function (result) {
+  jsonMapperTCK.methodWithHandlerMapOfTypeToIntegerParam(function (result) {
     assertMapTypeToInteger(result)
     count++
   })
@@ -81,7 +81,7 @@ function testMethodWithHandlerMapOfTypeToIntegerParam() {
 
 function testMethodWithHandlerAsyncResultTypeToIntegerParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerAsyncResultTypeToIntegerParam(function (result, err) {
+  jsonMapperTCK.methodWithHandlerAsyncResultTypeToIntegerParam(function (result, err) {
     assertTypeToInteger(result)
     assertNull(err)
     count++
@@ -91,7 +91,7 @@ function testMethodWithHandlerAsyncResultTypeToIntegerParam() {
 
 function testMethodWithHandlerAsyncResultListOfTypeToIntegerParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerAsyncResultListOfTypeToIntegerParam(function (result, err) {
+  jsonMapperTCK.methodWithHandlerAsyncResultListOfTypeToIntegerParam(function (result, err) {
     assertListSetTypeToInteger(result)
     assertNull(err)
     count++
@@ -101,7 +101,7 @@ function testMethodWithHandlerAsyncResultListOfTypeToIntegerParam() {
 
 function testMethodWithHandlerAsyncResultSetOfTypeToIntegerParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerAsyncResultSetOfTypeToIntegerParam(function (result, err) {
+  jsonMapperTCK.methodWithHandlerAsyncResultSetOfTypeToIntegerParam(function (result, err) {
     assertListSetTypeToInteger(result)
     assertNull(err)
     count++
@@ -111,7 +111,7 @@ function testMethodWithHandlerAsyncResultSetOfTypeToIntegerParam() {
 
 function testMethodWithHandlerAsyncResultMapOfTypeToIntegerParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerAsyncResultMapOfTypeToIntegerParam(function (result, err) {
+  jsonMapperTCK.methodWithHandlerAsyncResultMapOfTypeToIntegerParam(function (result, err) {
     assertMapTypeToInteger(result)
     assertNull(err)
     count++
@@ -143,40 +143,40 @@ function assertMapTypeToInteger(result) {
 // JS string <-> Java String <-> ZonedDateTime
 
 function testMethodWithTypeToStringParam() {
-  jsonCodecTCK.methodWithTypeToStringParam("2019-04-03T14:30:05.083+02:00[Europe/Rome]");
+  jsonMapperTCK.methodWithTypeToStringParam("2019-04-03T14:30:05.083+02:00[Europe/Rome]");
 }
 
 function testMethodWithListOfTypeToStringParam() {
-  jsonCodecTCK.methodWithListOfTypeToStringParam(["2019-04-03T14:30:05.083+02:00[Europe/Rome]", "2019-04-04T14:30:05.083+02:00[Europe/Rome]"]);
+  jsonMapperTCK.methodWithListOfTypeToStringParam(["2019-04-03T14:30:05.083+02:00[Europe/Rome]", "2019-04-04T14:30:05.083+02:00[Europe/Rome]"]);
 }
 
 function testMethodWithSetOfTypeToStringParam() {
-  jsonCodecTCK.methodWithSetOfTypeToStringParam(["2019-04-03T14:30:05.083+02:00[Europe/Rome]", "2019-04-04T14:30:05.083+02:00[Europe/Rome]"]);
+  jsonMapperTCK.methodWithSetOfTypeToStringParam(["2019-04-03T14:30:05.083+02:00[Europe/Rome]", "2019-04-04T14:30:05.083+02:00[Europe/Rome]"]);
 }
 
 function testMethodWithMapOfTypeToStringParam() {
-  jsonCodecTCK.methodWithMapOfTypeToStringParam({a: "2019-04-03T14:30:05.083+02:00[Europe/Rome]", b: "2019-04-04T14:30:05.083+02:00[Europe/Rome]"});
+  jsonMapperTCK.methodWithMapOfTypeToStringParam({a: "2019-04-03T14:30:05.083+02:00[Europe/Rome]", b: "2019-04-04T14:30:05.083+02:00[Europe/Rome]"});
 }
 
 function testMethodWithTypeToStringReturn() {
-  assertTypeToString(jsonCodecTCK.methodWithTypeToStringReturn());
+  assertTypeToString(jsonMapperTCK.methodWithTypeToStringReturn());
 }
 
 function testMethodWithListOfTypeToStringReturn() {
-  assertListTypeToString(jsonCodecTCK.methodWithListOfTypeToStringReturn());
+  assertListTypeToString(jsonMapperTCK.methodWithListOfTypeToStringReturn());
 }
 
 function testMethodWithSetOfTypeToStringReturn() {
-  assertSetTypeToString(jsonCodecTCK.methodWithSetOfTypeToStringReturn());
+  assertSetTypeToString(jsonMapperTCK.methodWithSetOfTypeToStringReturn());
 }
 
 function testMethodWithMapOfTypeToStringReturn() {
-  assertMapTypeToString(jsonCodecTCK.methodWithMapOfTypeToStringReturn());
+  assertMapTypeToString(jsonMapperTCK.methodWithMapOfTypeToStringReturn());
 }
 
 function testMethodWithHandlerTypeToStringParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerTypeToStringParam(function (result) {
+  jsonMapperTCK.methodWithHandlerTypeToStringParam(function (result) {
     assertTypeToString(result)
     count++
   })
@@ -185,7 +185,7 @@ function testMethodWithHandlerTypeToStringParam() {
 
 function testMethodWithHandlerListOfTypeToStringParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerListOfTypeToStringParam(function (result) {
+  jsonMapperTCK.methodWithHandlerListOfTypeToStringParam(function (result) {
     assertListTypeToString(result)
     count++
   })
@@ -194,7 +194,7 @@ function testMethodWithHandlerListOfTypeToStringParam() {
 
 function testMethodWithHandlerSetOfTypeToStringParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerSetOfTypeToStringParam(function (result) {
+  jsonMapperTCK.methodWithHandlerSetOfTypeToStringParam(function (result) {
     assertSetTypeToString(result)
     count++
   })
@@ -203,7 +203,7 @@ function testMethodWithHandlerSetOfTypeToStringParam() {
 
 function testMethodWithHandlerMapOfTypeToStringParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerMapOfTypeToStringParam(function (result) {
+  jsonMapperTCK.methodWithHandlerMapOfTypeToStringParam(function (result) {
     assertMapTypeToString(result)
     count++
   })
@@ -212,7 +212,7 @@ function testMethodWithHandlerMapOfTypeToStringParam() {
 
 function testMethodWithHandlerAsyncResultTypeToStringParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerAsyncResultTypeToStringParam(function (result, err) {
+  jsonMapperTCK.methodWithHandlerAsyncResultTypeToStringParam(function (result, err) {
     assertTypeToString(result)
     assertNull(err)
     count++
@@ -222,7 +222,7 @@ function testMethodWithHandlerAsyncResultTypeToStringParam() {
 
 function testMethodWithHandlerAsyncResultListOfTypeToStringParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerAsyncResultListOfTypeToStringParam(function (result, err) {
+  jsonMapperTCK.methodWithHandlerAsyncResultListOfTypeToStringParam(function (result, err) {
     assertListTypeToString(result)
     assertNull(err)
     count++
@@ -232,7 +232,7 @@ function testMethodWithHandlerAsyncResultListOfTypeToStringParam() {
 
 function testMethodWithHandlerAsyncResultSetOfTypeToStringParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerAsyncResultSetOfTypeToStringParam(function (result, err) {
+  jsonMapperTCK.methodWithHandlerAsyncResultSetOfTypeToStringParam(function (result, err) {
     assertSetTypeToString(result)
     assertNull(err)
     count++
@@ -242,7 +242,7 @@ function testMethodWithHandlerAsyncResultSetOfTypeToStringParam() {
 
 function testMethodWithHandlerAsyncResultMapOfTypeToStringParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerAsyncResultMapOfTypeToStringParam(function (result, err) {
+  jsonMapperTCK.methodWithHandlerAsyncResultMapOfTypeToStringParam(function (result, err) {
     assertMapTypeToString(result)
     assertNull(err)
     count++
@@ -282,40 +282,40 @@ function assertMapTypeToString(result) {
 // JS object <-> Java JsonArray <-> MyPojoToJsonArray
 
 function testMethodWithTypeToJsonArrayParam() {
-  jsonCodecTCK.methodWithTypeToJsonArrayParam([1, 2, 3]);
+  jsonMapperTCK.methodWithTypeToJsonArrayParam([1, 2, 3]);
 }
 
 function testMethodWithListOfTypeToJsonArrayParam() {
-  jsonCodecTCK.methodWithListOfTypeToJsonArrayParam([[1, 2, 3], [4, 5, 6]]);
+  jsonMapperTCK.methodWithListOfTypeToJsonArrayParam([[1, 2, 3], [4, 5, 6]]);
 }
 
 function testMethodWithSetOfTypeToJsonArrayParam() {
-  jsonCodecTCK.methodWithSetOfTypeToJsonArrayParam([[1, 2, 3], [4, 5, 6]]);
+  jsonMapperTCK.methodWithSetOfTypeToJsonArrayParam([[1, 2, 3], [4, 5, 6]]);
 }
 
 function testMethodWithMapOfTypeToJsonArrayParam() {
-  jsonCodecTCK.methodWithMapOfTypeToJsonArrayParam({a: [1, 2, 3], b: [4, 5, 6]});
+  jsonMapperTCK.methodWithMapOfTypeToJsonArrayParam({a: [1, 2, 3], b: [4, 5, 6]});
 }
 
 function testMethodWithTypeToJsonArrayReturn() {
-  assertTypeToJsonArray(jsonCodecTCK.methodWithTypeToJsonArrayReturn());
+  assertTypeToJsonArray(jsonMapperTCK.methodWithTypeToJsonArrayReturn());
 }
 
 function testMethodWithListOfTypeToJsonArrayReturn() {
-  assertListTypeToJsonArray(jsonCodecTCK.methodWithListOfTypeToJsonArrayReturn());
+  assertListTypeToJsonArray(jsonMapperTCK.methodWithListOfTypeToJsonArrayReturn());
 }
 
 function testMethodWithSetOfTypeToJsonArrayReturn() {
-  assertSetTypeToJsonArray(jsonCodecTCK.methodWithSetOfTypeToJsonArrayReturn());
+  assertSetTypeToJsonArray(jsonMapperTCK.methodWithSetOfTypeToJsonArrayReturn());
 }
 
 function testMethodWithMapOfTypeToJsonArrayReturn() {
-  assertMapTypeToJsonArray(jsonCodecTCK.methodWithMapOfTypeToJsonArrayReturn());
+  assertMapTypeToJsonArray(jsonMapperTCK.methodWithMapOfTypeToJsonArrayReturn());
 }
 
 function testMethodWithHandlerTypeToJsonArrayParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerTypeToJsonArrayParam(function (result) {
+  jsonMapperTCK.methodWithHandlerTypeToJsonArrayParam(function (result) {
     assertTypeToJsonArray(result)
     count++
   })
@@ -324,7 +324,7 @@ function testMethodWithHandlerTypeToJsonArrayParam() {
 
 function testMethodWithHandlerListOfTypeToJsonArrayParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerListOfTypeToJsonArrayParam(function (result) {
+  jsonMapperTCK.methodWithHandlerListOfTypeToJsonArrayParam(function (result) {
     assertListTypeToJsonArray(result)
     count++
   })
@@ -333,7 +333,7 @@ function testMethodWithHandlerListOfTypeToJsonArrayParam() {
 
 function testMethodWithHandlerSetOfTypeToJsonArrayParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerSetOfTypeToJsonArrayParam(function (result) {
+  jsonMapperTCK.methodWithHandlerSetOfTypeToJsonArrayParam(function (result) {
     assertSetTypeToJsonArray(result)
     count++
   })
@@ -342,7 +342,7 @@ function testMethodWithHandlerSetOfTypeToJsonArrayParam() {
 
 function testMethodWithHandlerMapOfTypeToJsonArrayParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerMapOfTypeToJsonArrayParam(function (result) {
+  jsonMapperTCK.methodWithHandlerMapOfTypeToJsonArrayParam(function (result) {
     assertMapTypeToJsonArray(result)
     count++
   })
@@ -351,7 +351,7 @@ function testMethodWithHandlerMapOfTypeToJsonArrayParam() {
 
 function testMethodWithHandlerAsyncResultTypeToJsonArrayParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerAsyncResultTypeToJsonArrayParam(function (result, err) {
+  jsonMapperTCK.methodWithHandlerAsyncResultTypeToJsonArrayParam(function (result, err) {
     assertTypeToJsonArray(result)
     assertNull(err)
     count++
@@ -361,7 +361,7 @@ function testMethodWithHandlerAsyncResultTypeToJsonArrayParam() {
 
 function testMethodWithHandlerAsyncResultListOfTypeToJsonArrayParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerAsyncResultListOfTypeToJsonArrayParam(function (result, err) {
+  jsonMapperTCK.methodWithHandlerAsyncResultListOfTypeToJsonArrayParam(function (result, err) {
     assertListTypeToJsonArray(result)
     assertNull(err)
     count++
@@ -371,7 +371,7 @@ function testMethodWithHandlerAsyncResultListOfTypeToJsonArrayParam() {
 
 function testMethodWithHandlerAsyncResultSetOfTypeToJsonArrayParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerAsyncResultSetOfTypeToJsonArrayParam(function (result, err) {
+  jsonMapperTCK.methodWithHandlerAsyncResultSetOfTypeToJsonArrayParam(function (result, err) {
     assertSetTypeToJsonArray(result)
     assertNull(err)
     count++
@@ -381,7 +381,7 @@ function testMethodWithHandlerAsyncResultSetOfTypeToJsonArrayParam() {
 
 function testMethodWithHandlerAsyncResultMapOfTypeToJsonArrayParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerAsyncResultMapOfTypeToJsonArrayParam(function (result, err) {
+  jsonMapperTCK.methodWithHandlerAsyncResultMapOfTypeToJsonArrayParam(function (result, err) {
     assertMapTypeToJsonArray(result)
     assertNull(err)
     count++
@@ -435,40 +435,40 @@ function assertMapTypeToJsonArray(result) {
 // JS object <-> Java JsonObject <-> MyPojoToJsonObject
 
 function testMethodWithTypeToJsonObjectParam() {
-  jsonCodecTCK.methodWithTypeToJsonObjectParam({v: 1});
+  jsonMapperTCK.methodWithTypeToJsonObjectParam({v: 1});
 }
 
 function testMethodWithListOfTypeToJsonObjectParam() {
-  jsonCodecTCK.methodWithListOfTypeToJsonObjectParam([{v: 1}, {v: 2}]);
+  jsonMapperTCK.methodWithListOfTypeToJsonObjectParam([{v: 1}, {v: 2}]);
 }
 
 function testMethodWithSetOfTypeToJsonObjectParam() {
-  jsonCodecTCK.methodWithSetOfTypeToJsonObjectParam([{v: 1}, {v: 2}]);
+  jsonMapperTCK.methodWithSetOfTypeToJsonObjectParam([{v: 1}, {v: 2}]);
 }
 
 function testMethodWithMapOfTypeToJsonObjectParam() {
-  jsonCodecTCK.methodWithMapOfTypeToJsonObjectParam({a: {v: 1}, b: {v: 2}});
+  jsonMapperTCK.methodWithMapOfTypeToJsonObjectParam({a: {v: 1}, b: {v: 2}});
 }
 
 function testMethodWithTypeToJsonObjectReturn() {
-  assertTypeToJsonObject(jsonCodecTCK.methodWithTypeToJsonObjectReturn());
+  assertTypeToJsonObject(jsonMapperTCK.methodWithTypeToJsonObjectReturn());
 }
 
 function testMethodWithListOfTypeToJsonObjectReturn() {
-  assertListTypeToJsonObject(jsonCodecTCK.methodWithListOfTypeToJsonObjectReturn());
+  assertListTypeToJsonObject(jsonMapperTCK.methodWithListOfTypeToJsonObjectReturn());
 }
 
 function testMethodWithSetOfTypeToJsonObjectReturn() {
-  assertSetTypeToJsonObject(jsonCodecTCK.methodWithSetOfTypeToJsonObjectReturn());
+  assertSetTypeToJsonObject(jsonMapperTCK.methodWithSetOfTypeToJsonObjectReturn());
 }
 
 function testMethodWithMapOfTypeToJsonObjectReturn() {
-  assertMapTypeToJsonObject(jsonCodecTCK.methodWithMapOfTypeToJsonObjectReturn());
+  assertMapTypeToJsonObject(jsonMapperTCK.methodWithMapOfTypeToJsonObjectReturn());
 }
 
 function testMethodWithHandlerTypeToJsonObjectParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerTypeToJsonObjectParam(function (result) {
+  jsonMapperTCK.methodWithHandlerTypeToJsonObjectParam(function (result) {
     assertTypeToJsonObject(result)
     count++
   })
@@ -477,7 +477,7 @@ function testMethodWithHandlerTypeToJsonObjectParam() {
 
 function testMethodWithHandlerListOfTypeToJsonObjectParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerListOfTypeToJsonObjectParam(function (result) {
+  jsonMapperTCK.methodWithHandlerListOfTypeToJsonObjectParam(function (result) {
     assertListTypeToJsonObject(result)
     count++
   })
@@ -486,7 +486,7 @@ function testMethodWithHandlerListOfTypeToJsonObjectParam() {
 
 function testMethodWithHandlerSetOfTypeToJsonObjectParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerSetOfTypeToJsonObjectParam(function (result) {
+  jsonMapperTCK.methodWithHandlerSetOfTypeToJsonObjectParam(function (result) {
     assertSetTypeToJsonObject(result)
     count++
   })
@@ -495,7 +495,7 @@ function testMethodWithHandlerSetOfTypeToJsonObjectParam() {
 
 function testMethodWithHandlerMapOfTypeToJsonObjectParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerMapOfTypeToJsonObjectParam(function (result) {
+  jsonMapperTCK.methodWithHandlerMapOfTypeToJsonObjectParam(function (result) {
     assertMapTypeToJsonObject(result)
     count++
   })
@@ -504,7 +504,7 @@ function testMethodWithHandlerMapOfTypeToJsonObjectParam() {
 
 function testMethodWithHandlerAsyncResultTypeToJsonObjectParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerAsyncResultTypeToJsonObjectParam(function (result, err) {
+  jsonMapperTCK.methodWithHandlerAsyncResultTypeToJsonObjectParam(function (result, err) {
     assertTypeToJsonObject(result)
     assertNull(err)
     count++
@@ -514,7 +514,7 @@ function testMethodWithHandlerAsyncResultTypeToJsonObjectParam() {
 
 function testMethodWithHandlerAsyncResultListOfTypeToJsonObjectParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerAsyncResultListOfTypeToJsonObjectParam(function (result, err) {
+  jsonMapperTCK.methodWithHandlerAsyncResultListOfTypeToJsonObjectParam(function (result, err) {
     assertListTypeToJsonObject(result)
     assertNull(err)
     count++
@@ -524,7 +524,7 @@ function testMethodWithHandlerAsyncResultListOfTypeToJsonObjectParam() {
 
 function testMethodWithHandlerAsyncResultSetOfTypeToJsonObjectParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerAsyncResultSetOfTypeToJsonObjectParam(function (result, err) {
+  jsonMapperTCK.methodWithHandlerAsyncResultSetOfTypeToJsonObjectParam(function (result, err) {
     assertSetTypeToJsonObject(result)
     assertNull(err)
     count++
@@ -534,7 +534,7 @@ function testMethodWithHandlerAsyncResultSetOfTypeToJsonObjectParam() {
 
 function testMethodWithHandlerAsyncResultMapOfTypeToJsonObjectParam() {
   var count = 0
-  jsonCodecTCK.methodWithHandlerAsyncResultMapOfTypeToJsonObjectParam(function (result, err) {
+  jsonMapperTCK.methodWithHandlerAsyncResultMapOfTypeToJsonObjectParam(function (result, err) {
     assertMapTypeToJsonObject(result)
     assertNull(err)
     count++

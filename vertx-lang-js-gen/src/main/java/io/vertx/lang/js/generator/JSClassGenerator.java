@@ -239,7 +239,7 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
           return String.format("utils.convReturnListSetDataObjectAnnotated(%s)", templ);
         } else {
           String isJson = (((DataObjectTypeInfo)elementType).getTargetJsonType().getKind().json) ? "true" : "false";
-          return String.format("utils.convReturnListSetWithJsonCodec(%s, Java.type('%s').INSTANCE, %s)", templ, doType.getJsonCodecInfo().getJsonEncoderFQCN(), isJson);
+          return String.format("utils.convReturnListSetWithJsonMapper(%s, Java.type('%s').INSTANCE, %s)", templ, doType.getJsonMapperInfo().getJsonSerializerFQCN(), isJson);
         }
       } else if (elementKind == ENUM) {
         return String.format("utils.convReturnListSetEnum(%s)", templ);
@@ -266,10 +266,10 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
         if (doTypeInfo.isDataObjectAnnotatedType()) {
           return String.format("utils.convReturnMapDataObjectAnnotated(%s, %s)", templ, elementType.getSimpleName());
         } else {
-          return String.format("utils.convReturnMapWithJsonCodec(%s, Java.type('%s').INSTANCE, Java.type('%s').INSTANCE, %s, %s)",
+          return String.format("utils.convReturnMapWithJsonMapper(%s, Java.type('%s').INSTANCE, Java.type('%s').INSTANCE, %s, %s)",
             templ,
-            doTypeInfo.getJsonCodecInfo().getJsonEncoderFQCN(),
-            doTypeInfo.getJsonCodecInfo().getJsonDecoderFQCN(),
+            doTypeInfo.getJsonMapperInfo().getJsonSerializerFQCN(),
+            doTypeInfo.getJsonMapperInfo().getJsonSerializerFQCN(),
             (doTypeInfo.getTargetJsonType().getKind() == JSON_OBJECT) ? "true" : "false",
             (doTypeInfo.getTargetJsonType().getKind() == JSON_ARRAY) ? "true" : "false"
           );
@@ -319,9 +319,9 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
       if (doType.isDataObjectAnnotatedType()) {
         return String.format("utils.convReturnDataObjectAnnotated(%s)", templ);
       } else {
-        return String.format("utils.convReturnWithJsonCodec(%s, Java.type('%s').INSTANCE, %s)",
+        return String.format("utils.convReturnWithJsonMapper(%s, Java.type('%s').INSTANCE, %s)",
           templ,
-          doType.getJsonCodecInfo().getJsonEncoderFQCN(),
+          doType.getJsonMapperInfo().getJsonSerializerFQCN(),
           doType.getTargetJsonType().getKind().json ? "true" : "false"
         );
       }
