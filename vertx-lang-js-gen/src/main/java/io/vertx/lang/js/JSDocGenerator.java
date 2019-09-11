@@ -54,7 +54,7 @@ public class JSDocGenerator implements DocGenerator {
 
   @Override
   public String resolveTypeLink(TypeElement elt, Coordinate coordinate) {
-    TypeMirrorFactory factory = new TypeMirrorFactory(elementUtils, typeUtils, elementUtils.getPackageOf(elt));
+    TypeMirrorFactory factory = new TypeMirrorFactory(elementUtils, typeUtils);
     TypeInfo type;
     try {
       type = factory.create(elt.asType());
@@ -104,7 +104,7 @@ public class JSDocGenerator implements DocGenerator {
 
   @Override
   public String resolveLabel(Element elt, String defaultLabel) {
-    TypeMirrorFactory factory = new TypeMirrorFactory(elementUtils, typeUtils, elementUtils.getPackageOf(elt));
+    TypeMirrorFactory factory = new TypeMirrorFactory(elementUtils, typeUtils);
     if (elt.getKind() == ElementKind.METHOD) {
       TypeInfo type = factory.create(elt.getEnclosingElement().asType());
       if (type.getKind() == ClassKind.DATA_OBJECT) {

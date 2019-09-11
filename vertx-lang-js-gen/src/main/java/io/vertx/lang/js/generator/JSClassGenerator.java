@@ -235,11 +235,20 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
         return String.format("utils.convReturnListSetObject(%s)", templ);
       } else if (elementKind == DATA_OBJECT) {
         DataObjectTypeInfo doType = (DataObjectTypeInfo) elementType;
-        if (doType.isDataObjectAnnotatedType()) {
-          return String.format("utils.convReturnListSetDataObjectAnnotated(%s)", templ);
-        } else {
-          String isJson = (((DataObjectTypeInfo)elementType).getTargetJsonType().getKind().json) ? "true" : "false";
-          return String.format("utils.convReturnListSetWithJsonMapper(%s, Java.type('%s').INSTANCE, %s)", templ, doType.getJsonMapperInfo().getJsonSerializerFQCN(), isJson);
+        MapperInfo serializer = doType.getSerializer();
+        String isJson = serializer.getTargetType().getKind().json ? "true" : "false";
+        switch (serializer.getKind()) {
+          case SELF:
+            return String.format("utils.convReturnListSetDataObjectAnnotated(%s)", templ);
+          case FUNCTION:
+          case STATIC_METHOD:
+            return String.format("utils.convReturnListSetWithJsonMapper(%s, Java.type('%s').%s, %s)",
+              templ,
+              serializer.getQualifiedName(),
+              serializer.getName(),
+              isJson);
+          default:
+            throw new AssertionError();
         }
       } else if (elementKind == ENUM) {
         return String.format("utils.convReturnListSetEnum(%s)", templ);
@@ -263,16 +272,25 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
         return String.format("utils.convReturnMap(%s, function(elem) { return elem.toString(); })", templ);
       } else if (elementKind == DATA_OBJECT) {
         DataObjectTypeInfo doTypeInfo = (DataObjectTypeInfo)elementType;
-        if (doTypeInfo.isDataObjectAnnotatedType()) {
+        MapperInfo serializer = doTypeInfo.getSerializer();
+        String isJsonObject = serializer.getTargetType().getKind() == JSON_OBJECT ? "true" : "false";
+        String isJsonArray = serializer.getTargetType().getKind() == JSON_ARRAY ? "true" : "false";
+        switch (serializer.getKind()) {
+          case SELF:
           return String.format("utils.convReturnMapDataObjectAnnotated(%s, %s)", templ, elementType.getSimpleName());
-        } else {
-          return String.format("utils.convReturnMapWithJsonMapper(%s, Java.type('%s').INSTANCE, Java.type('%s').INSTANCE, %s, %s)",
-            templ,
-            doTypeInfo.getJsonMapperInfo().getJsonSerializerFQCN(),
-            doTypeInfo.getJsonMapperInfo().getJsonSerializerFQCN(),
-            (doTypeInfo.getTargetJsonType().getKind() == JSON_OBJECT) ? "true" : "false",
-            (doTypeInfo.getTargetJsonType().getKind() == JSON_ARRAY) ? "true" : "false"
-          );
+          case FUNCTION:
+          case STATIC_METHOD:
+            return String.format("utils.convReturnMapWithJsonMapper(%s, Java.type('%s').%s, Java.type('%s').%s, %s, %s)",
+              templ,
+              serializer.getQualifiedName(),
+              serializer.getName(),
+              serializer.getQualifiedName(),
+              serializer.getName(),
+              isJsonObject,
+              isJsonArray
+            );
+          default:
+            throw new AssertionError();
         }
       } else {
         return String.format("utils.convReturnMapUnknown(%s)", templ);
@@ -316,14 +334,21 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
       return String.format("utils.convReturnEnum(%s)", templ);
     } else if (kind == DATA_OBJECT) {
       DataObjectTypeInfo doType = (DataObjectTypeInfo) returnType;
-      if (doType.isDataObjectAnnotatedType()) {
-        return String.format("utils.convReturnDataObjectAnnotated(%s)", templ);
-      } else {
-        return String.format("utils.convReturnWithJsonMapper(%s, Java.type('%s').INSTANCE, %s)",
-          templ,
-          doType.getJsonMapperInfo().getJsonSerializerFQCN(),
-          doType.getTargetJsonType().getKind().json ? "true" : "false"
-        );
+      MapperInfo serializer = doType.getSerializer();
+      String isJson = serializer.getTargetType().getKind().json ? "true" : "false";
+      switch (serializer.getKind()) {
+        case SELF:
+          return String.format("utils.convReturnDataObjectAnnotated(%s)", templ);
+        case FUNCTION:
+        case STATIC_METHOD:
+          return String.format("utils.convReturnWithJsonMapper(%s, Java.type('%s').%s, %s)",
+            templ,
+            serializer.getQualifiedName(),
+            serializer.getName(),
+            isJson
+          );
+        default:
+          throw new AssertionError();
       }
     } else if (kind == THROWABLE) {
       return String.format("utils.convReturnThrowable(%s)", templ);

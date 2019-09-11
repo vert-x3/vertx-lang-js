@@ -208,9 +208,9 @@ utils.convParamMapWithJsonMapper = function(arr, deserializer, cast) {
       if (arr.hasOwnProperty(key)) {
         var val = arr[key];
         if (cast !== undefined)
-          newmap[key] = val != null ? deserializer.deserialize(cast(JSON.stringify(val))) : null;
+          newmap[key] = val != null ? deserializer(cast(JSON.stringify(val))) : null;
         else
-          newmap[key] = val != null ? deserializer.deserialize(val) : null;
+          newmap[key] = val != null ? deserializer(val) : null;
       }
     }
     return newmap;
@@ -291,9 +291,10 @@ utils.convParamListWithJsonMapper = function(arr, deserializer, cast) {
     for (var i = 0; i < len; i++) {
       var elem = arr[i];
       if (cast !== undefined)
-        newarr[i] = elem != null ? deserializer.deserialize(cast(JSON.stringify(elem))) : null;
-      else
-        newarr[i] = elem != null ? deserializer.deserialize(elem) : null;
+        newarr[i] = elem != null ? deserializer(cast(JSON.stringify(elem))) : null;
+      else {
+        newarr[i] = elem != null ? deserializer(elem) : null;
+      }
     }
     return newarr;
   } else {
@@ -462,12 +463,12 @@ utils.convReturnEnum = function(jVal) {
 };
 
 // Convert a DataObject return value
-utils.convReturnWithJsonMapper = function(dataObject, mapper, isJson) {
+utils.convReturnWithJsonMapper = function(dataObject, serializer, isJson) {
   if (dataObject != null) {
     if (isJson)
-      return utils.convReturnJson(mapper.serialize(dataObject));
+      return utils.convReturnJson(serializer(dataObject));
     else
-      return mapper.serialize(dataObject);
+      return serializer(dataObject);
   }
   return null;
 };
@@ -491,7 +492,7 @@ utils.convReturnListSetVertxGen = function(jList, constructorFunction) {
 
 // Convert a list/set containing data object with json codec return
 utils.convReturnListSetWithJsonMapper = function(jList, serializer, isJson) {
-  return utils.convReturnListSet(jList, function(elem) { return (isJson) ? JSON.parse(serializer.serialize(elem).encode()) : serializer.serialize(elem); });
+  return utils.convReturnListSet(jList, function(elem) { return (isJson) ? JSON.parse(serializer(elem).encode()) : serializer(elem); });
 };
 
 // Convert a list/set containing data object annotated return
@@ -530,17 +531,17 @@ utils.convReturnMapWithJsonMapper = function(jMap, serializer, deserializer, isJ
   return utils.convReturnMap(jMap,
     function(elem) {
       if (isJsonArray || isJsonObject)
-        return JSON.parse(serializer.serialize(elem).encode());
+        return JSON.parse(serializer(elem).encode());
       else
-        return serializer.serialize(elem);
+        return serializer(elem);
     },
     function(elem) {
       if (isJsonArray)
-        return deserializer.deserialize(new JsonArray(JSON.stringify(elem)));
+        return deserializer(new JsonArray(JSON.stringify(elem)));
       else if (isJsonObject)
-        return deserializer.deserialize(new JsonObject(JSON.stringify(elem)));
+        return deserializer(new JsonObject(JSON.stringify(elem)));
       else
-        return deserializer.deserialize(JSON.stringify(elem));
+        return deserializer(JSON.stringify(elem));
     });
 }
 

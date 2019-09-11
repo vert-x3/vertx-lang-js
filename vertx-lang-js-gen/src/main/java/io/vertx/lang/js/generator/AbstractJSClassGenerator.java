@@ -99,7 +99,7 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
             return "number";
         }
       case DATA_OBJECT:
-        return getJSDocType(((DataObjectTypeInfo)type).getTargetJsonType());
+        return getJSDocType(((DataObjectTypeInfo)type).getTargetType());
       case JSON_OBJECT:
       case ENUM:
       case OBJECT:
@@ -215,18 +215,26 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
       case JSON_ARRAY:
         writer.format("utils.convParamJsonArray(%s)", unwrappedName);
         break;
-      case DATA_OBJECT:
+      case DATA_OBJECT: {
         DataObjectTypeInfo doTypeInfo = (DataObjectTypeInfo) unwrappedType;
-        if (doTypeInfo.isDataObjectAnnotatedType()) {
-          writer.format("%s  != null ? new %s(new JsonObject(Java.asJSONCompatible(%s))) : null", unwrappedName, unwrappedType.getSimpleName(), unwrappedName);
-        } else if (doTypeInfo.getTargetJsonType().getKind() == JSON_OBJECT) {
-          writer.format("%s != null ? Java.type('%s').INSTANCE.deserialize(new JsonObject(Java.asJSONCompatible(%s))) : null", unwrappedName, doTypeInfo.getJsonMapperInfo().getJsonDeserializerFQCN(), unwrappedName);
-        } else if (doTypeInfo.getTargetJsonType().getKind() == JSON_ARRAY)
-          writer.format("%s != null ? Java.type('%s').INSTANCE.deserialize(new JsonArray(Java.asJSONCompatible(%s))) : null", unwrappedName, doTypeInfo.getJsonMapperInfo().getJsonDeserializerFQCN(), unwrappedName);
-        else {
-          writer.format("%s != null ? Java.type('%s').INSTANCE.deserialize(Java.asJSONCompatible(%s)) : null", unwrappedName, doTypeInfo.getJsonMapperInfo().getJsonDeserializerFQCN(), unwrappedName);
+        MapperInfo deserializer = doTypeInfo.getDeserializer();
+        switch (deserializer.getKind()) {
+          case SELF:
+            writer.format("%s  != null ? new %s(new JsonObject(Java.asJSONCompatible(%s))) : null", unwrappedName, unwrappedType.getSimpleName(), unwrappedName);
+            break;
+          case FUNCTION:
+          case STATIC_METHOD:
+            if (doTypeInfo.getTargetType().getKind() == JSON_OBJECT) {
+              writer.format("%s != null ? Java.type('%s').%s(new JsonObject(Java.asJSONCompatible(%s))) : null", unwrappedName, deserializer.getQualifiedName(), deserializer.getName(), unwrappedName);
+            } else if (doTypeInfo.getTargetType().getKind() == JSON_ARRAY) {
+              writer.format("%s != null ? Java.type('%s').%s(new JsonArray(Java.asJSONCompatible(%s))) : null", unwrappedName, deserializer.getQualifiedName(), deserializer.getName(), unwrappedName);
+            } else {
+              writer.format("%s != null ? Java.type('%s').%s(Java.asJSONCompatible(%s)) : null", unwrappedName, deserializer.getQualifiedName(), deserializer.getName(), unwrappedName);
+            }
+            break;
         }
         break;
+      }
       case ENUM:
         if (param.isNullable()) {
           writer.format("%s == null ? null : ", unwrappedName);
@@ -278,15 +286,19 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
           writer.format("utils.convParam%sJsonArray(%s)", container, unwrappedName);
         } else if (argKind == DATA_OBJECT) {
           DataObjectTypeInfo doArgTypeInfo = (DataObjectTypeInfo) arg;
-          if (doArgTypeInfo.isDataObjectAnnotatedType()) {
-            writer.format("utils.convParam%sDataObjectAnnotated(%s, function(json) { return new %s(json); })", container, unwrappedName, arg.getSimpleName());
-          } else {
-            String cast =
-              (doArgTypeInfo.getTargetJsonType().getKind() == JSON_OBJECT) ?
-                ", function(str) { return new JsonObject(str); }" :
-                (doArgTypeInfo.getTargetJsonType().getKind() == JSON_ARRAY) ?
-                  ", function(str) { return new JsonArray(str); }" : "";
-            writer.format("utils.convParam%sWithJsonMapper(%s, Java.type('%s').INSTANCE%s)", container, unwrappedName, doArgTypeInfo.getJsonMapperInfo().getJsonDeserializerFQCN(), cast);
+          MapperInfo deserializer = doArgTypeInfo.getDeserializer();
+          switch (deserializer.getKind()) {
+            case SELF:
+              writer.format("utils.convParam%sDataObjectAnnotated(%s, function(json) { return new %s(json); })", container, unwrappedName, arg.getSimpleName());
+              break;
+            case FUNCTION:
+            case STATIC_METHOD:
+              String cast =
+                (doArgTypeInfo.getTargetType().getKind() == JSON_OBJECT) ?
+                  ", function(str) { return new JsonObject(str); }" :
+                  (doArgTypeInfo.getTargetType().getKind() == JSON_ARRAY) ?
+                    ", function(str) { return new JsonArray(str); }" : "";
+              writer.format("utils.convParam%sWithJsonMapper(%s, Java.type('%s').%s%s)", container, unwrappedName, deserializer.getQualifiedName(), deserializer.getName(), cast);
           }
         } else if (argKind == ENUM) {
           writer.format("utils.convParam%sEnum(%s, function(val) { return Packages.%s.valueOf(val); })", container, unwrappedName, arg.getName());
@@ -322,20 +334,26 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
           writer.format("utils.convParamMapObject(%s)", unwrappedName);
         } else if (argKind == DATA_OBJECT) {
           DataObjectTypeInfo doArgTypeInfo = (DataObjectTypeInfo) arg;
-          if (doArgTypeInfo.isDataObjectAnnotatedType()) {
-            writer.format("utils.convParamMapDataObjectAnnotated(%s, function(json) { return new %s(json); })", unwrappedName, arg.getSimpleName());
-          } else {
-            String cast =
-              (doArgTypeInfo.getTargetJsonType().getKind() == JSON_OBJECT) ?
-                ", function(str) { return new JsonObject(str); }" :
-                (doArgTypeInfo.getTargetJsonType().getKind() == JSON_ARRAY) ?
-                  ", function(str) { return new JsonArray(str); }" : "";
-            writer.format(
-              "utils.convParamMapWithJsonMapper(%s, Java.type('%s').INSTANCE%s)",
-              unwrappedName,
-              doArgTypeInfo.getJsonMapperInfo().getJsonDeserializerFQCN(),
-              cast
-            );
+          MapperInfo deserializer = doArgTypeInfo.getDeserializer();
+          switch (deserializer.getKind()) {
+            case SELF:
+              writer.format("utils.convParamMapDataObjectAnnotated(%s, function(json) { return new %s(json); })", unwrappedName, arg.getSimpleName());
+              break;
+            case FUNCTION:
+            case STATIC_METHOD:
+              String cast =
+                (doArgTypeInfo.getTargetType().getKind() == JSON_OBJECT) ?
+                  ", function(str) { return new JsonObject(str); }" :
+                  (doArgTypeInfo.getTargetType().getKind() == JSON_ARRAY) ?
+                    ", function(str) { return new JsonArray(str); }" : "";
+              writer.format(
+                "utils.convParamMapWithJsonMapper(%s, Java.type('%s').%s%s)",
+                unwrappedName,
+                deserializer.getQualifiedName(),
+                deserializer.getName(),
+                cast
+              );
+              break;
           }
         } else if (argKind == ENUM) {
           writer.format("utils.convParamMapEnum(%s, function(val) { return Packages.%s.valueOf(val); })", unwrappedName, arg.getName());
@@ -614,7 +632,7 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
         writer.format("typeof __args[%s] === 'object'", cnt);
         break;
       case DATA_OBJECT:
-        writeConditionParamType(((DataObjectTypeInfo)paramTypeInfo).getTargetJsonType(), isNullable, cnt, writer);
+        writeConditionParamType(((DataObjectTypeInfo)paramTypeInfo).getTargetType(), isNullable, cnt, writer);
         break;
       case OTHER:
         if (paramTypeInfo.getName().equals(Number.class.getCanonicalName())) {
