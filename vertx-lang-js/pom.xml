@@ -4,14 +4,14 @@
   <parent>
     <groupId>io.vertx</groupId>
     <artifactId>vertx-lang-js-parent</artifactId>
-    <version>3.8.3-SNAPSHOT</version>
+    <version>3.8.3</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>vertx-lang-js</artifactId>
-  <version>3.8.3-SNAPSHOT</version>
+  <version>3.8.3</version>
 
   <properties>
     <tools.jar>${java.home}/../lib/tools.jar</tools.jar>
@@ -342,7 +342,7 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-lang-js-gen</artifactId>
-      <version>3.8.3-SNAPSHOT</version>
+      <version>3.8.3</version>
     </dependency>
     <dependency>
       <groupId>org.mvel</groupId>
@@ -379,7 +379,7 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-lang-js-gen</artifactId>
-      <version>3.8.3-SNAPSHOT</version>
+      <version>3.8.3</version>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
