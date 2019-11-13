@@ -26,7 +26,7 @@ module.exports = {
         router.get("/health/*").handler(handler.handle);
 
         var server = vertx.createHttpServer();
-        server.requestHandler(router.accept).listen(5050);
+        server.requestHandler(router.handle).listen(5050);
         console.log('>>> verticle: now listening on port 5050')
 
         blockingFuture.complete()
