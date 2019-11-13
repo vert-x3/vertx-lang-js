@@ -29,6 +29,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.concurrent.Callable;
 
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>
@@ -52,7 +53,7 @@ public class JSVerticleFactory implements VerticleFactory {
   private static final String JVM_NPM = "vertx-js/util/jvm-npm.js";
 
   private Vertx vertx;
-  private ScriptEngine engine;
+  private Future<ScriptEngine> engineFuture;
   private ScriptObjectMirror futureJSClass;
 
   @Override
@@ -66,14 +67,18 @@ public class JSVerticleFactory implements VerticleFactory {
   }
 
   @Override
-  public boolean blockingCreate() {
-    return true;
-  }
-
-  @Override
-  public Verticle createVerticle(String verticleName, ClassLoader classLoader) throws Exception {
-    init();
-    return new JSVerticle(VerticleFactory.removePrefix(verticleName));
+  public void createVerticle(String verticleName, ClassLoader classLoader, Promise<Callable<Verticle>> promise) {
+    synchronized (this) {
+      if (engineFuture == null) {
+        engineFuture = vertx.executeBlocking(p -> {
+          p.complete(init());
+        });
+      }
+    }
+    Future<Callable<Verticle>> fut = engineFuture.map(
+      engine -> () -> new JSVerticle(engine, VerticleFactory.removePrefix(verticleName))
+    );
+    fut.onComplete(promise);
   }
 
   public class JSVerticle extends AbstractVerticle {
@@ -84,8 +89,10 @@ public class JSVerticleFactory implements VerticleFactory {
     private static final String VERTX_STOP_ASYNC_FUNCTION = "vertxStopAsync";
 
     private final String verticleName;
+    private final ScriptEngine engine;
 
-    private JSVerticle(String verticleName) {
+    private JSVerticle(ScriptEngine engine, String verticleName) {
+      this.engine = engine;
       this.verticleName = verticleName;
     }
 
@@ -133,33 +140,32 @@ public class JSVerticleFactory implements VerticleFactory {
     }
   }
 
-  private synchronized void init() {
+  private ScriptEngine init() {
+    ScriptEngineManager mgr = new ScriptEngineManager();
+    ScriptEngine engine = mgr.getEngineByName("nashorn");
     if (engine == null) {
-      ScriptEngineManager mgr = new ScriptEngineManager();
-      engine = mgr.getEngineByName("nashorn");
-      if (engine == null) {
-        throw new IllegalStateException("Cannot find Nashorn JavaScript engine - maybe you are not running with Java 8 or later?");
-      }
+      throw new IllegalStateException("Cannot find Nashorn JavaScript engine - maybe you are not running with Java 8 or later?");
+    }
 
-      URL url = getClass().getClassLoader().getResource(JVM_NPM);
-      if (url == null) {
-        throw new IllegalStateException("Cannot find " + JVM_NPM + " on classpath");
-      }
-      try (Scanner scanner = new Scanner(url.openStream(), "UTF-8").useDelimiter("\\A")) {
-        String jvmNpm = scanner.next();
-        String jvmNpmPath = ClasspathFileResolver.resolveFilename(JVM_NPM);
-        jvmNpm += "\n//# sourceURL=" + jvmNpmPath;
-        engine.eval(jvmNpm);
-      } catch (Exception e) {
-        throw new IllegalStateException(e);
-      }
+    URL url = getClass().getClassLoader().getResource(JVM_NPM);
+    if (url == null) {
+      throw new IllegalStateException("Cannot find " + JVM_NPM + " on classpath");
+    }
+    try (Scanner scanner = new Scanner(url.openStream(), "UTF-8").useDelimiter("\\A")) {
+      String jvmNpm = scanner.next();
+      String jvmNpmPath = ClasspathFileResolver.resolveFilename(JVM_NPM);
+      jvmNpm += "\n//# sourceURL=" + jvmNpmPath;
+      engine.eval(jvmNpm);
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
+    }
 
-      try {
-        futureJSClass = (ScriptObjectMirror) engine.eval("require('vertx-js/promise');");
-        // Put the globals in
-        engine.put("__jvertx", vertx);
-        String globs =
-          "var Vertx = require('vertx-js/vertx'); var vertx = new Vertx(__jvertx);" +
+    try {
+      futureJSClass = (ScriptObjectMirror) engine.eval("require('vertx-js/promise');");
+      // Put the globals in
+      engine.put("__jvertx", vertx);
+      String globs =
+        "var Vertx = require('vertx-js/vertx'); var vertx = new Vertx(__jvertx);" +
           "var console = require('vertx-js/util/console');" +
           "var setTimeout = function(callback,delay) { return vertx.setTimer(delay, callback).doubleValue(); };" +
           "var clearTimeout = function(id) { vertx.cancelTimer(id); };" +
@@ -167,14 +173,14 @@ public class JSVerticleFactory implements VerticleFactory {
           "var clearInterval = clearTimeout;" +
           "var parent = this;" +
           "var global = this;";
-        if (ADD_NODEJS_PROCESS_ENV) {
-          globs += "var process = {}; process.env=java.lang.System.getenv();";
-        }
-        engine.eval(globs);
-      } catch (ScriptException e) {
-        throw new IllegalStateException("Failed to eval: " + e.getMessage(), e);
+      if (ADD_NODEJS_PROCESS_ENV) {
+        globs += "var process = {}; process.env=java.lang.System.getenv();";
       }
+      engine.eval(globs);
+    } catch (ScriptException e) {
+      throw new IllegalStateException("Failed to eval: " + e.getMessage(), e);
     }
+    return engine;
   }
 
 }
