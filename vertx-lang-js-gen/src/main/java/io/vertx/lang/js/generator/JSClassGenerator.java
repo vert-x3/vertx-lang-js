@@ -154,7 +154,15 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
     }
 
     //We export the Constructor function
-    writer.format("module.exports = %s;", simpleName);
+    writer.format("module.exports = %s;\n", simpleName);
+
+    if (!simpleName.equals("Promise")) {
+      // Lazily import Promise if needed
+      writer.write("var Promise = require('vertx-js/promise');\n");
+    } else {
+      // Lazily import Future if needed
+      writer.write("var Future = require('vertx-js/future');\n");
+    }
 
     return sw.toString();
   }
@@ -382,13 +390,17 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
   private void genRequire(ClassModel model, PrintWriter writer) {
     ClassTypeInfo type = model.getType();
     writer.println("var utils = require('vertx-js/util/utils');");
-    boolean promiseAlreadyWrote = false;
+    // is this type the Promise interface?
+    boolean isPromise = type.getSimpleName().equals("Promise");
     for (ClassTypeInfo referencedType : model.getReferencedTypes()) {
-      if (referencedType.getSimpleName().equals("Promise")) promiseAlreadyWrote = true;
+      if (referencedType.getSimpleName().equals("Future")) {
+        // don't write the Future require if promise
+        // otherwise we create a circular reference
+        if (isPromise) {
+          continue;
+        }
+      }
       writer.format("var %s = require('%s');\n", referencedType.getSimpleName(), getModuleName(referencedType));
-    }
-    if (!promiseAlreadyWrote) {
-      writer.write("var Promise = require('vertx-js/promise');\n");
     }
     writer.println();
     //The top level vars for the module
