@@ -2,6 +2,7 @@ var Assert = org.junit.Assert;
 
 var TestInterface = require('testmodel-js/test_interface');
 var RefedInterface1 = require('testmodel-js/refed_interface1');
+var RefedInterface2 = require('testmodel-js/refed_interface2');
 var Factory = require('testmodel-js/factory');
 var SubInterface = require('acme-js/sub_interface');
 var MyInterface = require('acme-js/my_interface');
@@ -9,6 +10,7 @@ var MyInterface = require('acme-js/my_interface');
 var obj = new TestInterface(new Packages.io.vertx.codegen.testmodel.TestInterfaceImpl());
 var refed_obj = new RefedInterface1(new Packages.io.vertx.codegen.testmodel.RefedInterface1Impl());
 var refed_obj2 = new RefedInterface1(new Packages.io.vertx.codegen.testmodel.RefedInterface1Impl());
+var refed2_obj = new RefedInterface2(new Packages.io.vertx.codegen.testmodel.RefedInterface2Impl());
 
 var that = this;
 
@@ -196,6 +198,11 @@ function testMethodWithHandlerAsyncResultBasicTypesFails() {
 function testMethodWithUserTypes() {
   refed_obj.setString("aardvarks");
   obj.methodWithUserTypes(refed_obj);
+}
+
+function testMethodWithOverloadedUserTypes() {
+  assertEquals("refed1", obj.methodWithOverloadedUserTypes(refed_obj));
+  assertEquals("refed2", obj.methodWithOverloadedUserTypes(refed2_obj));
 }
 
 function testObjectParam() {

@@ -241,6 +241,11 @@ public class ApiTCKTest extends JSTestBase {
   }
 
   @Test
+  public void testMethodWithOverloadedUserTypes() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testSuperInterfaces() throws Exception {
     runTest();
   }

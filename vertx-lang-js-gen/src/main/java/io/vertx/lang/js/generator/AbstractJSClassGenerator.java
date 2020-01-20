@@ -592,7 +592,7 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
         if (isNullable) {
           writer.format("(__args[%s] == null || ", cnt);
         }
-        writer.format("__args[%s]._jdel", cnt);
+        writer.format("__args[%s]._jdel && %s._jclass.isInstance(__args[%s]._jdel) ", cnt, paramTypeInfo.getRaw().getSimpleName(), cnt);
         if (isNullable) {
           writer.print(")");
         }
