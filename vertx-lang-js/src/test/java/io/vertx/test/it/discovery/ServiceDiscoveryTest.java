@@ -292,7 +292,7 @@ public class ServiceDiscoveryTest {
 
       vertx.eventBus().<JsonObject>request("source1-sugar", "", reply -> {
         tc.assertTrue(reply.succeeded());
-        tc.assertTrue(reply.result().body().getString("client_del").contains("HandlerRegistration"));
+        tc.assertTrue(reply.result().body().getString("client_del").contains("MessageConsumerImpl"));
         tc.assertTrue(reply.result().body().getJsonArray("bindings").isEmpty());
 
         ms_sugar.complete();
@@ -301,7 +301,7 @@ public class ServiceDiscoveryTest {
       vertx.eventBus().<JsonObject>request("source1-ref", "", reply -> {
         tc.assertTrue(reply.succeeded());
         tc.assertTrue(reply.result().body().getString("ref_del").contains("MessageSourceReference"));
-        tc.assertTrue(reply.result().body().getString("client_del").contains("HandlerRegistration"));
+        tc.assertTrue(reply.result().body().getString("client_del").contains("MessageConsumerImpl"));
         tc.assertTrue(reply.result().body().getJsonArray("bindings").isEmpty());
 
         ms_ref.complete();

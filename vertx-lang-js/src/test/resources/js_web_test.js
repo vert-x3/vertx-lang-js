@@ -4,6 +4,7 @@ var CountDownLatch = java.util.concurrent.CountDownLatch;
 var Vertx = require("vertx-js/vertx");
 var Router = require("vertx-web-js/router");
 var Cookie = require("vertx-js/cookie");
+var HttpHeaders = require("vertx-js/http_headers");
 
 function testCookies() {
 
@@ -23,13 +24,11 @@ function testCookies() {
 
   var client = vertx.createHttpClient();
   var cookie2 = null;
-  var req = client.get(8080, "localhost", "/some-uri", function (response) {
+  client.get(8080, "localhost", "/some-uri", HttpHeaders.set("cookie", "cookie1=banana"), function (response) {
     console.log("Received response with status code " + response.statusCode());
     cookie2 = response.getHeader("set-cookie");
     latch.countDown();
   });
-  req.putHeader("cookie", "cookie1=banana");
-  req.end();
 
   Assert.assertTrue(latch.await(2, TimeUnit.MINUTES));
   vertx.close();
