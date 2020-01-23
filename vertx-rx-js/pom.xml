@@ -7,11 +7,11 @@
   <parent>
     <artifactId>vertx-lang-js-parent</artifactId>
     <groupId>io.vertx</groupId>
-    <version>3.8.5</version>
+    <version>3.8.6-SNAPSHOT</version>
   </parent>
 
   <artifactId>vertx-rx-js</artifactId>
-  <version>3.8.5</version>
+  <version>3.8.6-SNAPSHOT</version>
 
   <name>Vert.x RxJs API</name>
 
