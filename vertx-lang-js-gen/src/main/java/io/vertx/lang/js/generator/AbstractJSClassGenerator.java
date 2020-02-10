@@ -222,14 +222,13 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
           case SELF:
             writer.format("%s  != null ? new %s(new JsonObject(Java.asJSONCompatible(%s))) : null", unwrappedName, unwrappedType.getSimpleName(), unwrappedName);
             break;
-          case FUNCTION:
           case STATIC_METHOD:
             if (doTypeInfo.getTargetType().getKind() == JSON_OBJECT) {
-              writer.format("%s != null ? Java.type('%s').%s(new JsonObject(Java.asJSONCompatible(%s))) : null", unwrappedName, deserializer.getQualifiedName(), deserializer.getName(), unwrappedName);
+              writer.format("%s != null ? Java.type('%s').%s(new JsonObject(Java.asJSONCompatible(%s))) : null", unwrappedName, deserializer.getQualifiedName(), deserializer.getSelectors().get(0), unwrappedName);
             } else if (doTypeInfo.getTargetType().getKind() == JSON_ARRAY) {
-              writer.format("%s != null ? Java.type('%s').%s(new JsonArray(Java.asJSONCompatible(%s))) : null", unwrappedName, deserializer.getQualifiedName(), deserializer.getName(), unwrappedName);
+              writer.format("%s != null ? Java.type('%s').%s(new JsonArray(Java.asJSONCompatible(%s))) : null", unwrappedName, deserializer.getQualifiedName(), deserializer.getSelectors().get(0), unwrappedName);
             } else {
-              writer.format("%s != null ? Java.type('%s').%s(Java.asJSONCompatible(%s)) : null", unwrappedName, deserializer.getQualifiedName(), deserializer.getName(), unwrappedName);
+              writer.format("%s != null ? Java.type('%s').%s(Java.asJSONCompatible(%s)) : null", unwrappedName, deserializer.getQualifiedName(), deserializer.getSelectors().get(0), unwrappedName);
             }
             break;
         }
@@ -291,14 +290,13 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
             case SELF:
               writer.format("utils.convParam%sDataObjectAnnotated(%s, function(json) { return new %s(json); })", container, unwrappedName, arg.getSimpleName());
               break;
-            case FUNCTION:
             case STATIC_METHOD:
               String cast =
                 (doArgTypeInfo.getTargetType().getKind() == JSON_OBJECT) ?
                   ", function(str) { return new JsonObject(str); }" :
                   (doArgTypeInfo.getTargetType().getKind() == JSON_ARRAY) ?
                     ", function(str) { return new JsonArray(str); }" : "";
-              writer.format("utils.convParam%sWithJsonMapper(%s, Java.type('%s').%s%s)", container, unwrappedName, deserializer.getQualifiedName(), deserializer.getName(), cast);
+              writer.format("utils.convParam%sWithJsonMapper(%s, Java.type('%s').%s%s)", container, unwrappedName, deserializer.getQualifiedName(), deserializer.getSelectors().get(0), cast);
           }
         } else if (argKind == ENUM) {
           writer.format("utils.convParam%sEnum(%s, function(val) { return Packages.%s.valueOf(val); })", container, unwrappedName, arg.getName());
@@ -339,7 +337,6 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
             case SELF:
               writer.format("utils.convParamMapDataObjectAnnotated(%s, function(json) { return new %s(json); })", unwrappedName, arg.getSimpleName());
               break;
-            case FUNCTION:
             case STATIC_METHOD:
               String cast =
                 (doArgTypeInfo.getTargetType().getKind() == JSON_OBJECT) ?
@@ -350,7 +347,7 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
                 "utils.convParamMapWithJsonMapper(%s, Java.type('%s').%s%s)",
                 unwrappedName,
                 deserializer.getQualifiedName(),
-                deserializer.getName(),
+                deserializer.getSelectors().get(0),
                 cast
               );
               break;

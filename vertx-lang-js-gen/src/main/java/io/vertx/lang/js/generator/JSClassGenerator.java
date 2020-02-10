@@ -248,12 +248,11 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
         switch (serializer.getKind()) {
           case SELF:
             return String.format("utils.convReturnListSetDataObjectAnnotated(%s)", templ);
-          case FUNCTION:
           case STATIC_METHOD:
             return String.format("utils.convReturnListSetWithJsonMapper(%s, Java.type('%s').%s, %s)",
               templ,
               serializer.getQualifiedName(),
-              serializer.getName(),
+              serializer.getSelectors().get(0),
               isJson);
           default:
             throw new AssertionError();
@@ -286,14 +285,13 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
         switch (serializer.getKind()) {
           case SELF:
           return String.format("utils.convReturnMapDataObjectAnnotated(%s, %s)", templ, elementType.getSimpleName());
-          case FUNCTION:
           case STATIC_METHOD:
             return String.format("utils.convReturnMapWithJsonMapper(%s, Java.type('%s').%s, Java.type('%s').%s, %s, %s)",
               templ,
               serializer.getQualifiedName(),
-              serializer.getName(),
+              serializer.getSelectors().get(0),
               serializer.getQualifiedName(),
-              serializer.getName(),
+              serializer.getSelectors().get(0),
               isJsonObject,
               isJsonArray
             );
@@ -347,12 +345,11 @@ public class JSClassGenerator extends AbstractJSClassGenerator<ClassModel> {
       switch (serializer.getKind()) {
         case SELF:
           return String.format("utils.convReturnDataObjectAnnotated(%s)", templ);
-        case FUNCTION:
         case STATIC_METHOD:
           return String.format("utils.convReturnWithJsonMapper(%s, Java.type('%s').%s, %s)",
             templ,
             serializer.getQualifiedName(),
-            serializer.getName(),
+            serializer.getSelectors().get(0),
             isJson
           );
         default:
