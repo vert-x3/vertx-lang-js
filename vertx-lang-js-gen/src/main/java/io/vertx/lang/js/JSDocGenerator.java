@@ -71,6 +71,7 @@ public class JSDocGenerator implements DocGenerator {
       }
       return baselink + "enums.html#" + elt.getSimpleName().toString();
     }
+/*
     if (type.getKind() == ClassKind.DATA_OBJECT) {
       String baselink;
       if (coordinate == null) {
@@ -80,6 +81,7 @@ public class JSDocGenerator implements DocGenerator {
       }
       return baselink + "dataobjects.html#" + elt.getSimpleName().toString();
     }
+*/
     if (type.getKind() == ClassKind.API) {
       ClassTypeInfo ct = type.getRaw();
 
@@ -107,6 +109,7 @@ public class JSDocGenerator implements DocGenerator {
     TypeMirrorFactory factory = new TypeMirrorFactory(elementUtils, typeUtils);
     if (elt.getKind() == ElementKind.METHOD) {
       TypeInfo type = factory.create(elt.getEnclosingElement().asType());
+/*
       if (type.getKind() == ClassKind.DATA_OBJECT) {
         String name = elt.getSimpleName().toString();
         if (name.startsWith("set") && name.length() > 3 && Character.isUpperCase(name.charAt(3))) {
@@ -114,6 +117,7 @@ public class JSDocGenerator implements DocGenerator {
         }
         return name;
       }
+*/
     }
     return defaultLabel;
   }
