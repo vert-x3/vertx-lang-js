@@ -14,12 +14,10 @@
  * under the License.
  */
 
-/**
- * This code was copied from generated code from vertx-lang-js module (target/generated-sources/apt/vertx-js)
- */
 /** @module vertx-js/future */
 var utils = require('vertx-js/util/utils');
 var Promise = require('vertx-js/promise');
+var Context = require('vertx-js/context');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
@@ -43,12 +41,17 @@ var Future = function(j_val, j_arg_0) {
   var __super_failedFuture = this.failedFuture;
   var __super_failedFuture = this.failedFuture;
   var __super_isComplete = this.isComplete;
-  var __super_setHandler = this.setHandler;
+  var __super_onComplete = this.onComplete;
+  var __super_onSuccess = this.onSuccess;
+  var __super_onFailure = this.onFailure;
   var __super_getHandler = this.getHandler;
   var __super_result = this.result;
   var __super_cause = this.cause;
   var __super_succeeded = this.succeeded;
   var __super_failed = this.failed;
+  var __super_flatMap = this.flatMap;
+  var __super_compose = this.compose;
+  var __super_context = this.context;
   var __super_compose = this.compose;
   var __super_map = this.map;
   var __super_map = this.map;
@@ -77,19 +80,17 @@ var Future = function(j_val, j_arg_0) {
   };
 
   /**
-   Set a handler for the result.
-   <p>
-   If the future has already been completed it will be called immediately. Otherwise it will be called when the
-   future is completed.
+   Add a handler to be notified of the result.
+   <br/>
 
    @public
-   @param handler {function} the Handler that will be called with the result 
+   @param handler {function} the handler that will be called with the result
    @return {Future} a reference to this, so it can be used fluently
    */
-  this.setHandler =  function(handler) {
+  this.onComplete =  function(handler) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_future["setHandler(io.vertx.core.Handler)"](function(ar) {
+      j_future["onComplete(io.vertx.core.Handler)"](function(ar) {
         if (ar.succeeded()) {
           handler(j_T.wrap(ar.result()), null);
         } else {
@@ -98,16 +99,60 @@ var Future = function(j_val, j_arg_0) {
       }) ;
       return that;
     } else if (__args.length === 0) {
-      j_future["setHandler(io.vertx.core.Handler)"](function(ar) {
+      var __prom = Promise.promise();
+      var __prom_completer_handler = function (result, cause) { if (cause === null) { __prom.complete(result); } else { __prom.fail(cause); } };
+      j_future["onComplete(io.vertx.core.Handler)"](function(ar) {
         if (ar.succeeded()) {
-          function() { /* Ignore callback */ }(j_T.wrap(ar.result()), null);
+          __prom_completer_handler(j_T.wrap(ar.result()), null);
         } else {
-          function() { /* Ignore callback */ }(null, ar.cause());
+          __prom_completer_handler(null, ar.cause());
         }
+      });
+      return __prom.future();
+    } else if (typeof __super_onComplete != 'undefined') {
+      return __super_onComplete.apply(this, __args);
+    }
+    else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+   Add a handler to be notified of the succeeded result.
+   <br/>
+
+   @public
+   @param handler {function} the handler that will be called with the succeeded result
+   @return {Future} a reference to this, so it can be used fluently
+   */
+  this.onSuccess =  function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_future["onSuccess(io.vertx.core.Handler)"](function(jVal) {
+        handler(j_T.wrap(jVal));
       }) ;
       return that;
-    } else if (typeof __super_setHandler != 'undefined') {
-      return __super_setHandler.apply(this, __args);
+    } else if (typeof __super_onSuccess != 'undefined') {
+      return __super_onSuccess.apply(this, __args);
+    }
+    else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+   Add a handler to be notified of the failed result.
+   <br/>
+
+   @public
+   @param handler {function} the handler that will be called with the failed result
+   @return {Future} a reference to this, so it can be used fluently
+   */
+  this.onFailure =  function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_future["onFailure(io.vertx.core.Handler)"](function(jVal) {
+        handler(utils.convReturnThrowable(jVal));
+      }) ;
+      return that;
+    } else if (typeof __super_onFailure != 'undefined') {
+      return __super_onFailure.apply(this, __args);
     }
     else throw new TypeError('function invoked with invalid arguments');
   };
@@ -197,30 +242,76 @@ var Future = function(j_val, j_arg_0) {
   };
 
   /**
-   Compose this future with a <code>mapper</code> function.<p>
+   Alias for {@link Future#compose}.
 
-   When this future (the one on which <code>compose</code> is called) succeeds, the <code>mapper</code> will be called with
+   @public
+   @param mapper {function}
+   @return {Future}
+   */
+  this.flatMap =  function(mapper) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      return utils.convReturnVertxGen(Future, j_future["flatMap(java.util.function.Function)"](function(jVal) {
+        var jRet = mapper(j_T.wrap(jVal));
+        return jRet._jdel;
+      }), undefined) ;
+    } else if (typeof __super_flatMap != 'undefined') {
+      return __super_flatMap.apply(this, __args);
+    }
+    else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+   Compose this future with a <code>successMapper</code> and <code>failureMapper</code> functions.<p>
+
+   When this future (the one on which <code>compose</code> is called) succeeds, the <code>successMapper</code> will be called with
    the completed value and this mapper returns another future object. This returned future completion will complete
    the future returned by this method call.<p>
 
-   If the <code>mapper</code> throws an exception, the returned future will be failed with this exception.<p>
+   When this future (the one on which <code>compose</code> is called) fails, the <code>failureMapper</code> will be called with
+   the failure and this mapper returns another future object. This returned future completion will complete
+   the future returned by this method call.<p>
 
-   When this future fails, the failure will be propagated to the returned future and the <code>mapper</code>
-   will not be called.
+   If any mapper function throws an exception, the returned future will be failed with this exception.<p>
 
    @public
-   @param mapper {function} the mapper function 
+   @param successMapper {function} the function mapping the success
+   @param failureMapper {function} the function mapping the failure
    @return {Future} the composed future
    */
-  this.compose =  function(mapper) {
+  this.compose =  function() {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'function') {
       return utils.convReturnVertxGen(Future, j_future["compose(java.util.function.Function)"](function(jVal) {
-        var jRet = mapper(j_T.wrap(jVal));
+        var jRet = __args[0](j_T.wrap(jVal));
+        return jRet._jdel;
+      }), undefined) ;
+    } else if (__args.length === 2 && typeof __args[0] === 'function' && typeof __args[1] === 'function') {
+      return utils.convReturnVertxGen(Future, j_future["compose(java.util.function.Function,java.util.function.Function)"](function(jVal) {
+        var jRet = __args[0](j_T.wrap(jVal));
+        return jRet._jdel;
+      }, function(jVal) {
+        var jRet = __args[1](utils.convReturnThrowable(jVal));
         return jRet._jdel;
       }), undefined) ;
     } else if (typeof __super_compose != 'undefined') {
       return __super_compose.apply(this, __args);
+    }
+    else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+
+   @return {Context} the context associated with this future or <code>null</code> when
+   */
+  this.context =  function() {
+    var __args = arguments;
+    if (__args.length === 0) {
+      return utils.convReturnVertxGen(Context, j_future["context()"]()) ;
+    } else if (typeof __super_context != 'undefined') {
+      return __super_context.apply(this, __args);
     }
     else throw new TypeError('function invoked with invalid arguments');
   };
@@ -233,7 +324,7 @@ var Future = function(j_val, j_arg_0) {
    When this future fails, the failure will be propagated to the returned future.
 
    @public
-   @param value {Object} the value that eventually completes the mapped future 
+   @param value {Object} the value that eventually completes the mapped future
    @return {Future} the mapped future
    */
   this.map =  function() {
@@ -279,7 +370,7 @@ var Future = function(j_val, j_arg_0) {
    If the mapper fails, then the returned future will be failed with this failure.
 
    @public
-   @param mapper {function} A function which takes the exception of a failure and returns a new future. 
+   @param mapper {function} A function which takes the exception of a failure and returns a new future.
    @return {Future} A recovered future
    */
   this.recover =  function(mapper) {
@@ -303,7 +394,7 @@ var Future = function(j_val, j_arg_0) {
    When this future succeeds, the result will be propagated to the returned future.
 
    @public
-   @param value {Object} the value that eventually completes the mapped future 
+   @param value {Object} the value that eventually completes the mapped future
    @return {Future} the mapped future
    */
   this.otherwise =  function() {
@@ -370,7 +461,7 @@ Future._create = function(jdel) {var obj = Object.create(Future.prototype, {});
  Create a future that hasn't completed yet and that is passed to the <code>handler</code> before it is returned.
 
  @memberof module:vertx-js/future
- @param handler {function} the handler 
+ @param handler {function} the handler
  @return {Future} the future.
  */
 Future.future =  function(handler) {
@@ -386,7 +477,7 @@ Future.future =  function(handler) {
  Created a succeeded future with the specified result.
 
  @memberof module:vertx-js/future
- @param result {Object} the result 
+ @param result {Object} the result
  @return {Future} the future
  */
 Future.succeededFuture =  function() {
@@ -402,7 +493,7 @@ Future.succeededFuture =  function() {
  Create a failed future with the specified failure message.
 
  @memberof module:vertx-js/future
- @param failureMessage {string} the failure message 
+ @param failureMessage {string} the failure message
  @return {Future} the future
  */
 Future.failedFuture =  function() {
@@ -415,3 +506,4 @@ Future.failedFuture =  function() {
 };
 
 module.exports = Future;
+var Promise = require('vertx-js/promise');
