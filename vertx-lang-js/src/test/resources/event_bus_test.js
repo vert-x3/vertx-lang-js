@@ -32,7 +32,7 @@ function testSendReceiveWithFuture() {
     msg.reply(msg.body());
   }).completionHandler(function (v, err) {
     Assert.assertNull(err);
-    eventBus.request("echo", "The quick brown fox jumps over the lazy dog").setHandler(function (res, err2) {
+    eventBus.request("echo", "The quick brown fox jumps over the lazy dog").onComplete(function (res, err2) {
       Assert.assertEquals("The quick brown fox jumps over the lazy dog", res.body());
       Assert.assertNull(err2);
       latch.countDown();

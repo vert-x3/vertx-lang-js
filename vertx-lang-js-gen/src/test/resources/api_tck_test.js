@@ -891,7 +891,7 @@ function testCustomModule() {
 
 function testMethodWithHandlerAsyncResultTranslatedToFuture() {
   var count = 0;
-  obj.methodWithHandlerAsyncResultUserTypes().setHandler(function(refedObj, err) {
+  obj.methodWithHandlerAsyncResultUserTypes().onComplete(function(refedObj, err) {
     Assert.assertNull(err);
     assertEquals("cheetahs", refedObj.getString());
     count++;
@@ -901,7 +901,7 @@ function testMethodWithHandlerAsyncResultTranslatedToFuture() {
 
 function testMethodWithHandlerAsyncResultTranslatedToFutureFails() {
   var count = 0;
-  obj.methodWithHandlerAsyncResultDataObject(true).setHandler(function(option, err) {
+  obj.methodWithHandlerAsyncResultDataObject(true).onComplete(function(option, err) {
     Assert.assertNull(option);
     Assert.assertNotNull(err);
     assertEquals("java.lang.Exception: foobar!", err.getMessage());

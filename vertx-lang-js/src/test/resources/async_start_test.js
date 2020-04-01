@@ -32,7 +32,7 @@ function testAsyncStartStopWithFuture() {
   var vertx = Vertx.vertx();
   var latch = new CountDownLatch(1);
   var start = Date.now();
-  vertx.deployVerticle("js:async_test_verticle").setHandler(function(deploymentID, err) {
+  vertx.deployVerticle("js:async_test_verticle").onComplete(function(deploymentID, err) {
 
     Assert.assertNotNull(deploymentID);
     Assert.assertNull(err);
@@ -40,7 +40,7 @@ function testAsyncStartStopWithFuture() {
 
     var start2 = Date.now();
 
-    vertx.undeploy(deploymentID).setHandler(function (v, err) {
+    vertx.undeploy(deploymentID).onComplete(function (v, err) {
       Assert.assertNull(err);
       Assert.assertTrue(Date.now() - start2 > 1000);
       latch.countDown();

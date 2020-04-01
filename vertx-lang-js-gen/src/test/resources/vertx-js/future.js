@@ -21,7 +21,6 @@
 /** @module vertx-js/future */
 var utils = require('vertx-js/util/utils');
 var Promise = require('vertx-js/promise');
-var Context = require('vertx-js/context');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
@@ -55,7 +54,6 @@ var Future = function(j_val, j_arg_0) {
   var __super_failed = this.failed;
   var __super_flatMap = this.flatMap;
   var __super_compose = this.compose;
-  var __super_context = this.context;
   var __super_compose = this.compose;
   var __super_map = this.map;
   var __super_map = this.map;
@@ -300,22 +298,6 @@ var Future = function(j_val, j_arg_0) {
       }), undefined) ;
     } else if (typeof __super_compose != 'undefined') {
       return __super_compose.apply(this, __args);
-    }
-    else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-
-   @public
-
-   @return {Context} the context associated with this future or <code>null</code> when
-   */
-  this.context =  function() {
-    var __args = arguments;
-    if (__args.length === 0) {
-      return utils.convReturnVertxGen(Context, j_future["context()"]()) ;
-    } else if (typeof __super_context != 'undefined') {
-      return __super_context.apply(this, __args);
     }
     else throw new TypeError('function invoked with invalid arguments');
   };

@@ -17,6 +17,41 @@
 |[[MANAGEMENT]]`MANAGEMENT`|-
 |===
 
+[[AllowForwardHeaders]]
+== AllowForwardHeaders
+
+++++
+ What kind of forward header parsing are we allowing.
+++++
+'''
+
+[cols=">25%,75%"]
+[frame="topbot"]
+|===
+^|Name | Description
+|[[NONE]]`NONE`|+++
+No parsing shall be performed.
++++
+|[[FORWARD]]`FORWARD`|+++
+Only process the standard <code>Forward</code> header as defined by <a href="https://tools.ietf.org/html/rfc7239#section-4>RFC 7239, section 4: Forwarded</a>.
+
+ For more info see: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Forwarded">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Forwarded</a>
++++
+|[[X_FORWARD]]`X_FORWARD`|+++
+Only process the non standard but widely used <code>X-Forward-*</code> headers.
+
+ These headers are not official standards but widely used. Users are advised to avoid them for new applications.
++++
+|[[ALL]]`ALL`|+++
+Will process both  and . Be aware that mixing the 2 headers can open
+ security holes has specially crafted requests that are not validated as proxy level can allow bypassing
+ the proxy desired forward value.
+
+ For example, a proxy will add the <code>X-Forward-*</code> headers to a request but not filter out if the original
+ request includes the <code>Forward</code> header.
++++
+|===
+
 [[ApolloWSMessageType]]
 == ApolloWSMessageType
 
@@ -231,6 +266,32 @@ For internal usage, don't use it
 +++
 |[[matrix_exploded_array]]`matrix_exploded_array`|+++
 For internal usage, don't use it
++++
+|===
+
+[[CookieSameSite]]
+== CookieSameSite
+
+++++
+ Represents the Cookie SameSite policy to be used. For more info <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#SameSite_cookies">https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#SameSite_cookies</a>.
+++++
+'''
+
+[cols=">25%,75%"]
+[frame="topbot"]
+|===
+^|Name | Description
+|[[NONE]]`NONE`|+++
+The browser will send cookies with both cross-site requests and same-site requests.
++++
+|[[STRICT]]`STRICT`|+++
+The browser will only send cookies for same-site requests (requests originating from the site that set the cookie).
+ If the request originated from a different URL than the URL of the current location, none of the cookies tagged
+ with the Strict attribute will be included.
++++
+|[[LAX]]`LAX`|+++
+Same-site cookies are withheld on cross-site subrequests, such as calls to load images or frames, but will be sent
+ when a user navigates to the URL from an external site; for example, by following a link.
 +++
 |===
 
