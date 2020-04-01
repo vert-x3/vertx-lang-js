@@ -379,7 +379,7 @@ public abstract class AbstractJSClassGenerator<M extends ClassModel> extends Gen
           MapperInfo deserializer = doTypeInfo.getDeserializer();
           switch (deserializer.getKind()) {
             case SELF:
-              writer.format("%s  != null ? new %s(new JsonObject(Java.asJSONCompatible(%s))) : null", unwrappedName, unwrappedType.getSimpleName(), unwrappedName);
+              writer.format("%s  != null ? new %s(utils.convParamJson(%s)) : null", unwrappedName, unwrappedType.getSimpleName(), unwrappedName);
               break;
             case STATIC_METHOD:
               if (doTypeInfo.getJsonType().getKind() == JSON_OBJECT) {

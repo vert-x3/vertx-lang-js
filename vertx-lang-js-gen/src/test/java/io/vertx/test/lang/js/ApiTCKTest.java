@@ -59,6 +59,11 @@ public class ApiTCKTest extends JSTestBase {
   }
 
   @Test
+  public void testStringDataObjectParam() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMethodWithHandlerUserTypes() throws Exception {
     runTest();
   }
@@ -114,7 +119,17 @@ public class ApiTCKTest extends JSTestBase {
   }
 
   @Test
+  public void testMethodWithHandlerStringDataObject() throws Exception {
+    runTest();
+  }
+
+  @Test
   public void testMethodWithHandlerAsyncResultDataObject() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testMethodWithHandlerAsyncResultStringDataObject() throws Exception {
     runTest();
   }
 
@@ -227,6 +242,11 @@ public class ApiTCKTest extends JSTestBase {
 
   @Test
   public void testDataObjectReturn() throws Exception {
+    runTest();
+  }
+
+  @Test
+  public void testStringDataObjectReturn() throws Exception {
     runTest();
   }
 

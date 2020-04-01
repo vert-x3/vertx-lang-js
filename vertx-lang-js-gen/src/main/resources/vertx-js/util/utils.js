@@ -1,5 +1,6 @@
 var JsonObject = Packages.io.vertx.core.json.JsonObject;
 var JsonArray = Packages.io.vertx.core.json.JsonArray;
+var Json = Packages.io.vertx.core.json.Json;
 var asList = java.util.Arrays.asList;
 var Character = Java.type("java.lang.Character");
 var Long = Java.type("java.lang.Long");
@@ -31,6 +32,14 @@ utils.convParamJsonObject = function(param) {
 // Convert JS Array param to Java JsonArray
 utils.convParamJsonArray = function(param) {
   return param != null ? new JsonArray(JSON.stringify(param)) : null;
+};
+
+//
+utils.convParamJson = function(param) {
+  if (param == null || typeof param === "string") {
+    return param;
+  }
+  return Json.decodeValue(JSON.stringify(param));
 };
 
 // Convert Object type param (e.g. eventbus send)
@@ -362,9 +371,12 @@ utils.convReturnThrowable = function(ret) {
   }
 };
 
-// Convert a Java JsonObject/JsonArray return to JS JSON
+// Convert a Java JSON type String/JsonObject/JsonArray return to JS JSON
 utils.convReturnJson = function(param) {
-  return param != null ? JSON.parse(param.encode()) : null;
+  if (param == null || typeof param === "string") {
+    return param;
+  }
+  return JSON.parse(param.encode());
 };
 
 // Convert a java.lang.Long return to JS number

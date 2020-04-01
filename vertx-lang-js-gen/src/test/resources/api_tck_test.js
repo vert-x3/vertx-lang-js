@@ -229,6 +229,11 @@ function testDataObjectParam() {
   obj.methodWithDataObjectParam(dataObject);
 }
 
+function testStringDataObjectParam() {
+  var dataObject = "hello";
+  obj.methodWithStringDataObjectParam(dataObject);
+}
+
 function testMethodWithHandlerDataObject() {
   var count = 0;
 
@@ -237,6 +242,17 @@ function testMethodWithHandlerDataObject() {
     assertEquals("foo", option.foo);
     assertEquals(123, option.bar);
     assertEquals(0.0, option.wibble);
+    count++;
+  });
+  assertEquals(1, count);
+}
+
+function testMethodWithHandlerStringDataObject() {
+  var count = 0;
+
+  obj.methodWithHandlerStringDataObject(function(option) {
+    Assert.assertTrue(typeof option === 'string');
+    assertEquals("foo", option);
     count++;
   });
   assertEquals(1, count);
@@ -251,6 +267,18 @@ function testMethodWithHandlerAsyncResultDataObject() {
     assertEquals("foo", option.foo);
     assertEquals(123, option.bar);
     assertEquals(0.0, option.wibble);
+    count++;
+  });
+  assertEquals(1, count);
+}
+
+function testMethodWithHandlerAsyncResultStringDataObject() {
+  var count = 0;
+
+  obj.methodWithHandlerAsyncResultStringDataObject(false, function(option, err) {
+    Assert.assertNull(err);
+    Assert.assertTrue(typeof option === 'string');
+    assertEquals("foo", option);
     count++;
   });
   assertEquals(1, count);
@@ -605,6 +633,12 @@ function testDataObjectReturn() {
   assertEquals("foo", ret.foo);
   assertEquals(123, ret.bar);
   assertEquals(0.0, ret.wibble);
+}
+
+function testStringDataObjectReturn() {
+  var ret = obj.methodWithStringDataObjectReturn();
+  Assert.assertTrue(typeof ret === 'string');
+  assertEquals("foo", ret);
 }
 
 function testDataObjectNullReturn() {
