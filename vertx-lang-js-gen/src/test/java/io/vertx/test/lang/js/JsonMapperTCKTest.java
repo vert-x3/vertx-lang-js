@@ -134,36 +134,4 @@ public class JsonMapperTCKTest extends JSTestBase {
 
   @Test public void testMethodWithHandlerAsyncResultMapOfTypeToJsonObjectParam() throws Exception { runTest(); }
 
-  @Test public void testMethodWithFunctionMappedParam() throws Exception { runTest(); }
-
-  @Test public void testMethodWithListOfFunctionMappedParam() throws Exception { runTest(); }
-
-  @Test public void testMethodWithSetOfFunctionMappedParam() throws Exception { runTest(); }
-
-  @Test public void testMethodWithMapOfFunctionMappedParam() throws Exception { runTest(); }
-
-  @Test public void testMethodWithFunctionMappedReturn() throws Exception { runTest(); }
-
-  @Test public void testMethodWithListOfFunctionMappedReturn() throws Exception { runTest(); }
-
-  @Test public void testMethodWithSetOfFunctionMappedReturn() throws Exception { runTest(); }
-
-  @Test public void testMethodWithMapOfFunctionMappedReturn() throws Exception { runTest(); }
-
-  @Test public void testMethodWithHandlerFunctionMapped() throws Exception { runTest(); }
-
-  @Test public void testMethodWithHandlerListOfFunctionMapped() throws Exception { runTest(); }
-
-  @Test public void testMethodWithHandlerSetOfFunctionMapped() throws Exception { runTest(); }
-
-  @Test public void testMethodWithHandlerMapOfFunctionMapped() throws Exception { runTest(); }
-
-  @Test public void testMethodWithHandlerAsyncResultFunctionMapped() throws Exception { runTest(); }
-
-  @Test public void testMethodWithHandlerAsyncResultListOfFunctionMapped() throws Exception { runTest(); }
-
-  @Test public void testMethodWithHandlerAsyncResultSetOfFunctionMapped() throws Exception { runTest(); }
-
-  @Test public void testMethodWithHandlerAsyncResultMapOfFunctionMapped() throws Exception { runTest(); }
-
 }
