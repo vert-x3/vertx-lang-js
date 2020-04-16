@@ -1,11 +1,3 @@
 # Nashorn JavaScript implementation for Vert.x
 
-image:https://travis-ci.org/vert-x3/vertx-lang-js.svg?branch=master["Build Status",link="https://travis-ci.org/vert-x3/vertx-lang-js"]
-
-This project provides the JavaScript API implementation for Vert.x using the Nashorn JavaScript engine built into Java 8.
-
-As with all Vert.x 3 language implementations they are generated from a Java API using templates - this allows us to
-maintain just the canonical Java APIs which is a lot less work than maintaining them manually.
-
-This project provides a verticle factory implementation which knows how to deploy verticles with the prefix, or file
-extension `js`.
+This module is pruned in Vert.x 4, as alternative https://reactiverse.io/es4x/ should be used.
