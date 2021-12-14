@@ -16,7 +16,7 @@
   <properties>
     <tools.jar>${java.home}/../lib/tools.jar</tools.jar>
     <asciidoc.path>/js</asciidoc.path>
-    <log4j2.version>2.15.0</log4j2.version>
+    <log4j2.version>2.16.0</log4j2.version>
     <graphql.java.major.version>13</graphql.java.major.version>
     <graphql.java.version>${graphql.java.major.version}.0</graphql.java.version>
     <datastax-driver.minor.version>3.5</datastax-driver.minor.version>
